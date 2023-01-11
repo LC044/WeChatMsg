@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Frame</class>
+ <widget class="QFrame" name="Frame">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="cursor">
+   <cursorShape>IBeamCursor</cursorShape>
+  </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
+  <property name="tabletTracking">
+   <bool>true</bool>
+  </property>
+  <property name="windowTitle">
+   <string>Frame</string>
+  </property>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>100</y>
+     <width>429</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0" rowspan="3">
+     <widget class="QLabel" name="l_avatar">
+      <property name="minimumSize">
+       <size>
+        <width>80</width>
+        <height>80</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>80</width>
+        <height>80</height>
+       </size>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../../../a_img/be0fa6c0c4707fb5f7b37b660de826d3.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="l_remark">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>曹雨萱</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLabel" name="l_nickname">
+      <property name="text">
+       <string>昵称：997</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLabel" name="l_username">
+      <property name="text">
+       <string>账号：TextLabel</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>210</y>
+     <width>429</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="minimumSize">
+       <size>
+        <width>80</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>80</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>备注名</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="lineEdit">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>ArrowCursor</cursorShape>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background:transparent;border-width:0;border-style:outset</string>
+      </property>
+      <property name="text">
+       <string>曹雨萱</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="btn_update_remark">
+      <property name="minimumSize">
+       <size>
+        <width>140</width>
+        <height>40</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>修改备注</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="btn_delete_contact">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>370</y>
+     <width>140</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>140</width>
+     <height>40</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>140</width>
+     <height>40</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>删除好友</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Frame</class>
+ <widget class="QFrame" name="Frame">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Frame</string>
+  </property>
+  <widget class="QPushButton" name="back">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>返回</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="avatar_img">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>130</y>
+     <width>80</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>+</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>50</y>
+     <width>221</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>一纸情书</family>
+     <pointsize>20</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>添加群聊</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>181</x>
+     <y>113</y>
+     <width>311</width>
+     <height>281</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="minimumSize">
+         <size>
+          <width>53</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>58</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>群  号:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="line_g_id">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>50</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="minimumSize">
+         <size>
+          <width>38</width>
+          <height>21</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>58</width>
+          <height>21</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>群昵称:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="line_nickname">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>100000</width>
+          <height>50</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QPushButton" name="btn_search">
+      <property name="text">
+       <string>查找</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="btn_add">
+      <property name="text">
+       <string>添加</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QLCDNumber" name="time">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>400</y>
+     <width>51</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="lineWidth">
+    <number>5</number>
+   </property>
+   <property name="digitCount">
+    <number>1</number>
+   </property>
+   <property name="value" stdset="0">
+    <double>8.000000000000000</double>
+   </property>
+  </widget>
+  <widget class="QLabel" name="error">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>340</y>
+     <width>101</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:red</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="toolButton">
+   <property name="geometry">
+    <rect>
+     <x>750</x>
+     <y>0</y>
+     <width>47</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>...</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="tips">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>430</y>
+     <width>61</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>即将返回</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

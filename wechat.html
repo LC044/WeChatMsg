@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="aplus-terminal" content="1">
+<meta name="apple-mobile-web-app-title" content="">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="format-detection" content="telephone=no, address=no">
+<title>title</title>
+<style type="text/css">
+    /*公共样式*/
+    body,h1,h2,h3,h4,p,ul,ol,li,form,button,input,textarea,th,td {
+        margin:0;
+        padding:0
+    }
+    body,button,input,select,textarea {
+        font:12px/1.5 Microsoft YaHei UI Light,tahoma,arial,"\5b8b\4f53";
+        *line-height:1.5;
+        -ms-overflow-style:scrollbar
+    }
+    h1,h2,h3,h4{
+        font-size:100%
+    }
+    ul,ol {
+        list-style:none
+    }
+    a {
+     text-decoration:none
+    }
+    a:hover {
+        text-decoration:underline
+    }
+    img {
+        border:0
+    }
+    button,input,select,textarea {
+        font-size:100%
+    }
+    table {
+        border-collapse:collapse;
+        border-spacing:0
+    }
+
+    /*rem*/
+    html {
+           font-size:62.5%;
+     }
+     body {
+           font:16px/1.5 "microsoft yahei", 'tahoma';
+     }
+     body .mobile-page {
+           font-size: 1.6rem;
+     }
+
+     /*浮动*/
+    .fl{
+        float: left;
+     }
+    .fr{
+        float: right;
+     }
+    .clearfix:after{
+        content: '';
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+    }
+
+    body{
+     background-color: #F5F5F5;
+    }
+    .mobile-page{
+     max-width: 600px;
+    }
+    .mobile-page .admin-img, .mobile-page .user-img{
+     width: 45px;
+     height: 45px;
+    }
+    i.triangle-admin,i.triangle-user{
+     width: 0;
+         height: 0;
+         position: absolute;
+         top: 10px;
+     display: inline-block;
+         border-top: 10px solid transparent;
+         border-bottom: 10px solid transparent;
+    }
+    .mobile-page i.triangle-admin{
+     left: 4px;
+     border-right: 12px solid #fff;
+    }
+    .mobile-page i.triangle-user{
+     right: 4px;
+         border-left: 12px solid #9EEA6A;
+    }
+    .mobile-page .admin-group, .mobile-page .user-group{
+     padding: 6px;
+     display: flex;
+     display: -webkit-flex;
+    }
+    .mobile-page .admin-group{
+     justify-content: flex-start;
+     -webkit-justify-content: flex-start;
+    }
+    .mobile-page .user-group{
+     justify-content: flex-end;
+     -webkit-justify-content: flex-end;
+    }
+    .mobile-page .admin-reply, .mobile-page .user-reply{
+     display: inline-block;
+     padding: 8px;
+     border-radius: 4px;
+     background-color: #fff;
+     margin:0 15px 12px;
+    }
+    .mobile-page .admin-reply{
+     box-shadow: 0px 0px 2px #ddd;
+    }
+    .mobile-page .user-reply{
+     text-align: left;
+     background-color: #9EEA6A;
+     box-shadow: 0px 0px 2px #bbb;
+    }
+    .mobile-page .user-msg, .mobile-page .admin-msg{
+     width: 75%;
+     position: relative;
+    }
+    .mobile-page .user-msg{
+     text-align: right;
+    }
+</style>
+</head>
+<body>
+    <div class="mobile-page">
+     <div class="user-group">
+          <div class="user-msg">
+                <span class="user-reply">我要抢楼</span>
+                <i class="triangle-user"></i>
+          </div>
+           <img class="user-img" src="http://localhost/public/img/cc.jpg"/>
+     </div>
+     <div class="admin-group">
+           <img class="admin-img" src="http://localhost/public/img/aa.jpg"/>
+           <div class="admin-msg">
+                <i class="triangle-admin"></i>
+                <span class="admin-reply">欢迎来抢楼！欢迎来抢楼！欢迎来抢楼！欢迎来抢楼！欢迎来抢楼！欢迎来抢楼！欢迎来抢楼！</span>
+           </div>
+     </div>
+     <div class="user-group">
+          <div class="user-msg">
+                <span class="user-reply">我要抢楼我要抢楼我要抢楼。</span>
+                <i class="triangle-user"></i>
+          </div>
+           <img class="user-img" src="img/cc.jpg"/>
+     </div>
+     <div class="admin-group">
+           <img class="admin-img" src="img/aa.jpg"/>
+           <div class="admin-msg">
+                <i class="triangle-admin"></i>
+                <span class="admin-reply">欢迎来抢楼！欢迎来抢楼！欢迎来抢楼！欢迎来抢楼！欢迎来抢楼！欢迎来抢楼！</span>
+           </div>
+     </div>
+    </div>
+</body>
+</html>

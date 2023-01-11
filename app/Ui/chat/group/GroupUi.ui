@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1120</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QScrollArea" name="scrollArea">
+   <property name="geometry">
+    <rect>
+     <x>-1</x>
+     <y>70</y>
+     <width>322</width>
+     <height>651</height>
+    </rect>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOn</enum>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>299</width>
+      <height>649</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>321</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QPushButton" name="btn_create_group">
+      <property name="text">
+       <string>创建群聊</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="btn_add_group">
+      <property name="text">
+       <string>添加群聊</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QFrame" name="frame">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>0</y>
+     <width>800</width>
+     <height>720</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QFrame" name="frame_msg">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>800</width>
+      <height>720</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QTextBrowser" name="message">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>40</y>
+       <width>800</width>
+       <height>540</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QTextEdit" name="textEdit">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>580</y>
+       <width>800</width>
+       <height>140</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="l_g_name">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>0</y>
+       <width>431</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_sendMsg">
+     <property name="geometry">
+      <rect>
+       <x>678</x>
+       <y>668</y>
+       <width>121</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>黑体</family>
+       <pointsize>15</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>ArrowCursor</cursorShape>
+     </property>
+     <property name="mouseTracking">
+      <bool>false</bool>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	background-color: #f0f0f0;
+    
+	padding: 10px;
+	color:rgb(5,180,104);
+}</string>
+     </property>
+     <property name="text">
+      <string>发送</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="autoDefault">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QToolButton" name="toolButton">
+     <property name="geometry">
+      <rect>
+       <x>750</x>
+       <y>10</y>
+       <width>47</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>...</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_del_group">
+     <property name="geometry">
+      <rect>
+       <x>650</x>
+       <y>10</y>
+       <width>93</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>退群</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

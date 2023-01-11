@@ -1,0 +1,845 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="cursor">
+   <cursorShape>ArrowCursor</cursorShape>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>580</x>
+     <y>570</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <widget class="QTextBrowser" name="textBrowser">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>50</y>
+     <width>800</width>
+     <height>520</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="textEdit">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>600</y>
+     <width>800</width>
+     <height>120</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="toolButton">
+   <property name="geometry">
+    <rect>
+     <x>1240</x>
+     <y>0</y>
+     <width>47</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>...</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="sendMsg">
+   <property name="geometry">
+    <rect>
+     <x>1162</x>
+     <y>670</y>
+     <width>121</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>黑体</family>
+     <pointsize>15</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="cursor">
+    <cursorShape>ArrowCursor</cursorShape>
+   </property>
+   <property name="mouseTracking">
+    <bool>false</bool>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	background-color: #f0f0f0;
+    border: 1px solid #dcdfe6;
+	padding: 10px;
+	color:rgb(5,180,104);
+}</string>
+   </property>
+   <property name="text">
+    <string>发送</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>40</width>
+     <height>40</height>
+    </size>
+   </property>
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="autoDefault">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>570</y>
+     <width>800</width>
+     <height>3</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line_2">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>50</y>
+     <width>800</width>
+     <height>3</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line_3">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>0</y>
+     <width>3</width>
+     <height>720</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>370</y>
+     <width>411</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_5" rowstretch="5,3" columnstretch="1,3,1">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="horizontalSpacing">
+     <number>4</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="2">
+     <widget class="QLabel" name="time0_5">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>昨天</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="remark1_5">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>司小远</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" rowspan="2">
+     <widget class="QLabel" name="image5">
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #ffffff;</string>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1" colspan="2">
+     <widget class="QLabel" name="msg1_5">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>我没去</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="layoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>290</y>
+     <width>411</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_6" rowstretch="5,3" columnstretch="1,3,1">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="horizontalSpacing">
+     <number>4</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="2">
+     <widget class="QLabel" name="time0_4">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>昨天</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="remark1_6">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>司小远</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" rowspan="2">
+     <widget class="QLabel" name="image4">
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #ffffff;</string>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1" colspan="2">
+     <widget class="QLabel" name="msg1_6">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>我没去</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="layoutWidget_4">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>210</y>
+     <width>411</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_9" rowstretch="5,3" columnstretch="1,3,1">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="horizontalSpacing">
+     <number>4</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="2">
+     <widget class="QLabel" name="time0_3">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>昨天</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="remark1_9">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>司小远</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" rowspan="2">
+     <widget class="QLabel" name="image3">
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #ffffff;</string>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1" colspan="2">
+     <widget class="QLabel" name="msg1_9">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>我没去</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="layoutWidget_5">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>130</y>
+     <width>411</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_10" rowstretch="5,3" columnstretch="1,3,1">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="horizontalSpacing">
+     <number>4</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="2">
+     <widget class="QLabel" name="time0_2">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>昨天</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="remark2">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>司小远</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" rowspan="2">
+     <widget class="QLabel" name="image2">
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #ffffff;</string>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1" colspan="2">
+     <widget class="QLabel" name="msg2">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>我没去</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="layoutWidget_6">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>450</y>
+     <width>411</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_12" rowstretch="5,3" columnstretch="1,3,1">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="horizontalSpacing">
+     <number>4</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="2">
+     <widget class="QLabel" name="time0_6">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>昨天</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="remark1_12">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>司小远</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" rowspan="2">
+     <widget class="QLabel" name="image6">
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #ffffff;</string>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1" colspan="2">
+     <widget class="QLabel" name="msg1_12">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>我没去</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="layoutWidget_3">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>530</y>
+     <width>411</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_8" rowstretch="5,3" columnstretch="1,3,1">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="horizontalSpacing">
+     <number>4</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="2">
+     <widget class="QLabel" name="time0_7">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>昨天</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="remark1_8">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>司小远</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" rowspan="2">
+     <widget class="QLabel" name="image7">
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #ffffff;</string>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1" colspan="2">
+     <widget class="QLabel" name="msg1_8">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>我没去</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="layoutWidget_7">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>610</y>
+     <width>411</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_13" rowstretch="5,3" columnstretch="1,3,1">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="horizontalSpacing">
+     <number>4</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="2">
+     <widget class="QLabel" name="time0_8">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>昨天</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="remark1_13">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>司小远</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" rowspan="2">
+     <widget class="QLabel" name="image8">
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #ffffff;</string>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1" colspan="2">
+     <widget class="QLabel" name="msg1_13">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>我没去</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QScrollBar" name="verticalScrollBar">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>50</y>
+     <width>16</width>
+     <height>671</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QScrollBar" name="verticalScrollBar_2">
+   <property name="geometry">
+    <rect>
+     <x>1260</x>
+     <y>50</y>
+     <width>16</width>
+     <height>520</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #f0f0f0;</string>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>50</y>
+     <width>411</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout" rowstretch="5,3" columnstretch="1,3,1">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="horizontalSpacing">
+     <number>4</number>
+    </property>
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="2">
+     <widget class="QLabel" name="time0_1">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>昨天</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="remark1">
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>司小远</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" rowspan="2">
+     <widget class="QLabel" name="image1">
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #ffffff;</string>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1" colspan="2">
+     <widget class="QLabel" name="msg1">
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>我没去</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
