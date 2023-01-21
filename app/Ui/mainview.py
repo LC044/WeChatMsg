@@ -17,6 +17,7 @@ from PyQt5.QtGui import *
 from .mainviewUi import *
 from app.DataBase import data
 from .chat import chat
+from .contact import contact
 
 
 class MainWinController(QMainWindow, Ui_Dialog):
@@ -31,7 +32,8 @@ class MainWinController(QMainWindow, Ui_Dialog):
         self.Me = data.get_myinfo()
         self.chatView = chat.ChatController(self.Me, parent=self.frame_main)
         self.chatView.setVisible(False)
-
+        self.contactView = contact.ContactController(self.Me, parent=self.frame_main)
+        self.contactView.setVisible(False)
         self.btn_chat.clicked.connect(self.chat_view)  # 聊天按钮
         self.btn_contact.clicked.connect(self.contact_view)
         self.btn_myinfo.clicked.connect(self.myInfo)
@@ -40,9 +42,11 @@ class MainWinController(QMainWindow, Ui_Dialog):
         self.btn_about.setContextMenuPolicy(Qt.CustomContextMenu)
         self.btn_about.customContextMenuRequested.connect(self.create_rightmenu)  # 连接到菜单显示函数
         self.last_btn = None
+        self.lastView = None
         self.show_avatar()
 
         # 创建右键菜单函数
+
     def create_rightmenu(self):
         # 菜单对象
         self.groupBox_menu = QMenu(self)
@@ -59,6 +63,7 @@ class MainWinController(QMainWindow, Ui_Dialog):
         # self.actionB.triggered.connect(self.button_2)
 
         self.groupBox_menu.popup(QCursor.pos())  # 声明当鼠标在groupBox控件上右击时，在鼠标位置显示右键菜单   ,exec_,popup两个都可以，
+
     def show_avatar(self):
         avatar = data.get_avator(self.Me.username)
         pixmap = QPixmap(avatar).scaled(80, 80)  # 按指定路径找到图片
@@ -83,6 +88,8 @@ class MainWinController(QMainWindow, Ui_Dialog):
             self.last_btn.setStyleSheet("QPushButton {background-color: rgb(240,240,240);}"
                                         "QPushButton:hover{background-color: rgb(209,209,209);}\n")
         self.last_btn = self.btn_contact
+        self.setviewVisible(self.contactView)
+        self.contactView.showContact()
 
     def myInfo(self):
         self.now_btn = self.btn_myinfo
@@ -95,10 +102,11 @@ class MainWinController(QMainWindow, Ui_Dialog):
 
     def about(self):
         QMessageBox.about(self, "关于",
-                          "关于作者\n姓名：周帅康\n学号：2020303457"
+                          "关于作者\n姓名：周帅康\n联系方式：863909694"
                           )
 
     def setviewVisible(self, view):
         view.setVisible(True)
-        if view != self.chatView:
-            self.chatView.setVisible(False)
+        if view != self.lastView and self.lastView:
+            self.lastView.setVisible(False)
+        self.lastView = view

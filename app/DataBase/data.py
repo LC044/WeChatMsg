@@ -121,7 +121,11 @@ def get_conRemark(username):
     else:
         return result[1]
 
-
+def get_nickname(username):
+    sql = 'select nickname,alias from rcontact where username=?'
+    cursor.execute(sql, [username])
+    result = cursor.fetchone()
+    return result
 def avatar_md5(wxid):
     m = hashlib.md5()
     # 参数必须是byte类型，否则报Unicode-objects must be encoded before hashing错误
@@ -178,20 +182,31 @@ def download_emoji(imgPath, url):
         f.write(resp.content)
     return imgPath
 
-
+def get_chatroom_displayname(chatroom,username):
+    sql = 'select memberlist,displayname from chatroom where chatroomname =?'
+    cursor.execute(sql,[chatroom])
+    result = cursor.fetchone()
+    wxids = result[0].split(';')
+    names = result[1].split('、')
+    id = wxids.index(username)
+    print(result[0])
+    print(wxids)
+    for i in wxids:
+        print(get_conRemark(i))
+    return names[id]
+def get_contacts():
+    sql = '''
+        select * from rcontact
+        where type=3 or type = 333
+    '''
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return result
 if __name__ == '__main__':
     # rconversation = get_rconversation()
     # for i in rconversation:
     #     print(i)
-    timestamp2str(1632219794000)
-    conremark = get_conRemark('wxid_q3ozn70pweud22')
-    print(conremark)
-    print(get_avator('wxid_q3ozn70pweud22'))
-    me = get_myinfo()
-    print(me.__dict__)
-    # r = get_message('wxid_78ka0n92rzzj22', 0)
-    # r.reverse()
-    # for i in r:
-    #     print(i)
-    # print(len(r), type(r))
-    print(get_emoji('f5f8a6116e177937ca9795c47f10113d'))
+    contacts = get_contacts()
+    for contact in contacts:
+        print(contact)
+

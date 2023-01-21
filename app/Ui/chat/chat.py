@@ -12,21 +12,25 @@ import socket  # 导入socket模块
 import datetime
 import json
 import time
+
+import xmltodict
 from PIL import Image
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from .chatUi import *
 from ...DataBase import data
-
+from ...ImageBox.ui import MainDemo
 
 class ChatController(QWidget, Ui_Dialog):
     exitSignal = pyqtSignal()
+    urlSignal = pyqtSignal(QUrl)
 
     # username = ''
 
     def __init__(self, Me, parent=None):
         super(ChatController, self).__init__(parent)
+        self.chatroomFlag = None
         self.ta_avatar = None
         self.setupUi(self)
         self.setWindowTitle('WeChat')
@@ -50,6 +54,12 @@ class ChatController(QWidget, Ui_Dialog):
         self.showChat()
 
     def initui(self):
+        self.qurl = QUrl('baidu.com')
+        # self.urlSignal.connect(self.hyperlink)
+        self.message.setOpenLinks(False)
+        self.message.setOpenExternalLinks(False)
+        # self.message.anchorClicked(self.hyperlink())
+        self.message.anchorClicked.connect(self.hyperlink)
         with open('./wechat.html', 'r', encoding='utf-8') as f:
             self.message.setHtml(f.read())
         self.textEdit = myTextEdit(self.frame)
@@ -87,10 +97,9 @@ class ChatController(QWidget, Ui_Dialog):
 
     def showChat(self):
         """
-        显示聊天界面
+        显示联系人界面
         :return:
         """
-        print('show')
         if self.show_flag:
             return
         self.show_flag = True
@@ -133,6 +142,10 @@ class ChatController(QWidget, Ui_Dialog):
         self.message.clear()
         self.message.append(talkerId)
         self.ta_username = talkerId
+        if '@chatroom' in talkerId:
+            self.chatroomFlag = True
+        else:
+            self.chatroomFlag = False
         self.ta_avatar = data.get_avator(talkerId)
         self.textEdit.setFocus()
         self.Thread.ta_u = talkerId
@@ -213,20 +226,58 @@ class ChatController(QWidget, Ui_Dialog):
         self.check_time(msg_time)
 
         if msgType == '1':
+            # return
             self.show_text(isSend, content)
         elif msgType == '3':
-            self.show_img(isSend, imgPath)
+            # return
+            self.show_img(isSend, imgPath, content)
         elif msgType == '47':
-            self.show_emoji(isSend, imgPath)
-            # quit()
+            # return
+            self.show_emoji(isSend, imgPath, content)
+        elif msgType == '268445456':
+            self.show_recall_information(content)
+        elif msgType == '922746929':
+            self.pat_a_pat(content)
         # self.message.moveCursor(self.message.textCursor().End)
 
-    def show_emoji(self, isSend, imagePath):
+    def pat_a_pat(self, content):
+        pat_data = xmltodict.parse(content)
+        pat_data = pat_data['msg']['appmsg']['patMsg']['records']['record']
+        fromUser = pat_data['fromUser']
+        pattedUser = pat_data['pattedUser']
+        template = pat_data['template']
+        template = ''.join(template.split('${pattedusername@textstatusicon}'))
+        template = ''.join(template.split('${fromusername@textstatusicon}'))
+        template = template.replace(f'${{{fromUser}}}', data.get_conRemark(fromUser))
+        template = template.replace(f'${{{pattedUser}}}', data.get_conRemark(pattedUser))
+        print(template)
+        html = '''
+            <table align="center" style="vertical-align: middle;">
+            <tbody>
+                <tr>
+                    <td>%s</td>
+                </tr> 
+            </tbody>
+        </table>''' % template
+        self.message.insertHtml(html)
+
+    def show_recall_information(self, content):
+        html = '''
+                <table align="center" style="vertical-align: middle;">
+                <tbody>
+                    <tr>
+                        <td>%s</td>
+                    </tr> 
+                </tbody>
+            </table>''' % content
+        self.message.insertHtml(html)
+
+    def show_emoji(self, isSend, imagePath, content):
         imgPath = data.get_emoji(imagePath)
         image = Image.open(imgPath)
         imagePixmap = image.size  # 宽高像素
         # 设置最大宽度
-        if imagePixmap[0]<150:
+        if imagePixmap[0] < 150:
             size = ""
         else:
             size = '''height="150" width="150"'''
@@ -234,38 +285,82 @@ class ChatController(QWidget, Ui_Dialog):
                 <td style="border: 1px #000000 solid;"  height="150">
                 <img src="{0}" {1} >
                 </td>
-                '''.format(imgPath,size)
+                '''.format(imgPath, size)
         style = 'vertical-align: top'
         if isSend:
             self.right(html, style=style)
         else:
+            if self.chatroomFlag:
+                username = content.split(':')[0]
+                self.chatroom_left(html, username=username, style=style)
             self.left(html, style=style)
 
-    def show_img(self, isSend, imgPath):
+    def show_img(self, isSend, imgPath, content):
         'THUMBNAIL_DIRPATH://th_29cd0f0ca87652943be9ede365aabeaa'
         imgPath = imgPath.split('th_')[1]
         imgPath = f'./app/data/image2/{imgPath[0:2]}/{imgPath[2:4]}/th_{imgPath}'
         html = '''
-        <td style="border: 1px #000000 solid"><img align="right" src="%s"/></td>
-        ''' % imgPath
+        <td style="border: 1px #000000 solid">
+            <a href="%s" target="_blank">
+                <img herf= "baidu.com" align="right" src="%s"/>
+            </a>
+        </td>
+        ''' % (imgPath,imgPath)
         style = 'vertical-align: top'
         if isSend:
             self.right(html, style=style)
         else:
-            self.left(html, style=style)
+            if self.chatroomFlag:
+                username = content.split(':')[0]
+                self.chatroom_left(html, username=username, style=style)
+            else:
+                self.left(html, style=style)
 
     def show_text(self, isSend, content):
-
         if isSend:
             html = '''
             <td style="background-color: #9EEA6A;border-radius: 40px;">&nbsp;%s&nbsp;</td>       
-            ''' % (content)
+            ''' % content
             self.right(html)
         else:
-            html = '''
-            <td style="background-color: #fff;border-radius: 4px;">&nbsp;%s&nbsp;</td>
-            ''' % (content)
-            self.left(html)
+            if self.chatroomFlag:
+                # print(content)
+                'wxid_mv4jjhc0w0w521:'
+                username = content.split(':')[0]
+                msg = ''.join(content.split(':')[1:])
+                # avatar = data.get_avator(username)
+                html = '''
+                    <td  max-width = 300 style="background-color: #fff;border-radius: 4px;">
+                    %s
+                    </td>
+                    ''' % (msg)
+                # self.left(html, avatar=avatar)
+                self.chatroom_left(html, username=username)
+            else:
+                html = '''
+                <td max-width = 300 style="background-color: #fff;border-radius: 4px;">&nbsp;%s&nbsp;</td>
+                ''' % (content)
+                self.left(html)
+    def clearImagePath(self,imgpath):
+        path = imgpath.split('/')
+        newPath = '/'.join(path[:-1])+'/'+path[-1][3:]+'.jpg'
+        if os.path.exists(newPath):
+            return newPath
+        newPath = '/'.join(path[:-1]) + '/' + path[-1][3:] + '.png'
+        if os.path.exists(newPath):
+            return newPath
+        newPath = '/'.join(path[:-1]) + '/' + path[-1]+ 'hd'
+        if os.path.exists(newPath):
+            return newPath
+        return imgpath
+    def hyperlink(self, url:QUrl):
+        path = self.clearImagePath(url.path())
+        print(url.path(),path)
+        self.imagebox = MainDemo()
+        self.imagebox.show()
+        self.imagebox.box.set_image(path)
+
+
 
     def right(self, content, style='vertical-align: middle'):
         html = '''
@@ -286,21 +381,75 @@ class ChatController(QWidget, Ui_Dialog):
         # print(html)
         self.message.insertHtml(html)
 
-    def left(self, content, style='vertical-align: middle'):
+    def left(self, content, avatar=None, style='vertical-align: middle'):
+        if not avatar:
+            avatar = self.ta_avatar
+        if self.chatroomFlag == 5:
+            try:
+                username, msg = content.split('\n')
+                avatar = data.get_avator(username)
+                html = '''
+                        <div>
+                           <table align="left" style="%s;">
+                            <tbody>
+                                <tr>
+                                    <td width="15"></td>
+                                    <td rowspan="2" style="border: 1px #000000 solid"><img align="right" src="%s" width="45" height="45"/></td>
+                                    <td>：</td>
+                                    <td>：</td>
+                                </tr>
+                                <tr>
+                                    <td width="15"></td>
+                                    <td>：</td>
+                                    %s
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                        ''' % (style, avatar, msg)
+            except:
+                return
+        else:
+            html = '''
+            <div>
+               <table align="left" style="%s;">
+                <tbody>
+                    <tr>
+                        <td width="15"></td>
+                        <td style="border: 1px #000000 solid"><img align="right" src="%s" width="45" height="45"/></td>
+                        <td>：</td>
+                        %s
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            ''' % (style, avatar, content)
+        self.message.insertHtml(html)
+
+    def chatroom_left(self, content, username, style='vertical-align: middle'):
+        # if username:
+        avatar = data.get_avator(username)
+        # conRemark = data.get_conRemark(username)
+        conRemark = data.get_conRemark(username)
         html = '''
-        <div>
-           <table align="left" style="%s;">
-            <tbody>
-                <tr>
-                    <td width="15"></td>
-                    <td style="border: 1px #000000 solid"><img align="right" src="%s" width="45" height="45"/></td>
-                    <td>：</td>
-                    %s
-                </tr>
-            </tbody>
-        </table>
-        </div>
-        ''' % (style, self.ta_avatar, content)
+                <div>
+                   <table align="left" style="%s;">
+                    <tbody>
+                        <tr>
+                            <td width="15"></td>
+                            <td rowspan="2" style="border: 1px #000000 solid"><img align="right" src="%s" width="45" height="45"/></td>
+                            <td></td>
+                            <td>%s</td>
+                        </tr>
+                        <tr>
+                            <td width="15"></td>
+                            <td>：</td>
+                            %s
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+                ''' % (style, avatar, conRemark, content)
         self.message.insertHtml(html)
 
     def destroy_me(self):
