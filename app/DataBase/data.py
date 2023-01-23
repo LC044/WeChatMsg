@@ -121,11 +121,14 @@ def get_conRemark(username):
     else:
         return result[1]
 
+
 def get_nickname(username):
     sql = 'select nickname,alias from rcontact where username=?'
     cursor.execute(sql, [username])
     result = cursor.fetchone()
     return result
+
+
 def avatar_md5(wxid):
     m = hashlib.md5()
     # 参数必须是byte类型，否则报Unicode-objects must be encoded before hashing错误
@@ -160,6 +163,43 @@ def get_message(wxid, num):
     return cursor.fetchall()
 
 
+def search_send_message(start_time, end_time):
+    start_time = '2022-1-1 00:00:00'
+    end_time = '2023-1-1 00:00:00'
+    start = time.mktime(time.strptime(start_time, '%Y-%m-%d %H:%M:%S'))
+    end = time.mktime(time.strptime(end_time, '%Y-%m-%d %H:%M:%S'))
+    sql = '''
+        select count(*) from message
+        where  createTime >? and createTime < ? and isSend=0 and talker like '%wxid%';
+    '''
+    cursor.execute(sql,[start*1000 , end*1000])
+    return cursor.fetchone()
+
+
+def clearImagePath(imgpath):
+    path = imgpath.split('/')
+    newPath = '/'.join(path[:-1]) + '/' + path[-1][3:] + '.jpg'
+    if os.path.exists(newPath):
+        return newPath
+    newPath = '/'.join(path[:-1]) + '/' + path[-1][3:] + '.png'
+    if os.path.exists(newPath):
+        return newPath
+    newPath = '/'.join(path[:-1]) + '/' + path[-1] + 'hd'
+    if os.path.exists(newPath):
+        return newPath
+    return imgpath
+
+
+def get_all_message(wxid):
+    sql = '''
+        select * from message
+        where talker = ?
+        order by msgId 
+        '''
+    cursor.execute(sql, [wxid])
+    return cursor.fetchall()
+
+
 def get_emoji(imgPath):
     newPath = f"{os.path.abspath('.')}/app/data/emoji/{imgPath}"
     if os.path.exists(newPath):
@@ -172,7 +212,7 @@ def get_emoji(imgPath):
         '''
         cursor.execute(sql, [imgPath])
         result = cursor.fetchone()
-        download_emoji(newPath,result[0])
+        download_emoji(newPath, result[0])
     return newPath
 
 
@@ -182,9 +222,10 @@ def download_emoji(imgPath, url):
         f.write(resp.content)
     return imgPath
 
-def get_chatroom_displayname(chatroom,username):
+
+def get_chatroom_displayname(chatroom, username):
     sql = 'select memberlist,displayname from chatroom where chatroomname =?'
-    cursor.execute(sql,[chatroom])
+    cursor.execute(sql, [chatroom])
     result = cursor.fetchone()
     wxids = result[0].split(';')
     names = result[1].split('、')
@@ -194,6 +235,8 @@ def get_chatroom_displayname(chatroom,username):
     for i in wxids:
         print(get_conRemark(i))
     return names[id]
+
+
 def get_contacts():
     sql = '''
         select * from rcontact
@@ -202,11 +245,14 @@ def get_contacts():
     cursor.execute(sql)
     result = cursor.fetchall()
     return result
+
+
 if __name__ == '__main__':
     # rconversation = get_rconversation()
     # for i in rconversation:
     #     print(i)
-    contacts = get_contacts()
-    for contact in contacts:
-        print(contact)
-
+    # contacts = get_all_message('wxid_vqave8lcp49r22')
+    # for contact in contacts:
+    #     print(contact)
+    # [(177325,)] (73546,) (103770,)
+    print(search_send_message(1,1))

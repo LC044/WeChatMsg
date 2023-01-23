@@ -37,7 +37,7 @@ def mkdir(path):
     return True
 
 
-mkdir(path+'/emoji')
+mkdir(path + '/emoji')
 # mkdir('..//db_tables')
 '''
 #! 将wxid使用MD5编码加密
@@ -67,6 +67,7 @@ def get_avator(wxid):
                 avatar = file
                 break
     return Path + '/' + avatar
+
 
 def read_csv(conRemark):
     '''
@@ -118,9 +119,6 @@ def time_format(timestamp):
     return time.strftime("%Y-%m-%d %H:%M:%S", time_tuple)
 
 
-
-
-
 def IS_5_min(last_m, now_m):
     '''
     #! 判断两次聊天时间是不是大于五分钟
@@ -138,11 +136,6 @@ def IS_5_min(last_m, now_m):
 
 def judge_type(Type):
     pass
-
-
-
-
-
 
 
 '''合并word文档到一个文件里'''
@@ -176,6 +169,7 @@ class MyThread(QThread):
     self_text = pyqtSignal(str)
     ta_text = pyqtSignal(str)
     bar = pyqtSignal(int)
+
     def __init__(self):
         super(MyThread, self).__init__()
         self.ta_info = {}
@@ -206,7 +200,8 @@ class MyThread(QThread):
         # print(user_data)
         self.total_num = len(user_data)
         return user_data
-    def create_table(self,doc, isSend):
+
+    def create_table(self, doc, isSend):
         '''
         #! 创建一个1*2表格
         #! isSend = 1 (0,0)存聊天内容，(0,1)存头像
@@ -301,7 +296,7 @@ class MyThread(QThread):
         :return:
         '''
         if 1:
-        # try:
+            # try:
             Path = f'{path}/emoji/{imgPath}'
             is_Exist = os.path.exists(Path)
             if not is_Exist:
@@ -324,7 +319,7 @@ class MyThread(QThread):
         filename = r.lstrip('<title>').rstrip('<')
         self.text(doc, isSend, filename, status)
 
-    def retract_message(self,doc, isSend, content, status):
+    def retract_message(self, doc, isSend, content, status):
         '''
         #! 显示撤回消息
         :param isSend:
@@ -391,7 +386,6 @@ class MyThread(QThread):
             p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT
             reply_p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT
         doc.add_paragraph()
-
 
     def pat_a_pat(self, doc, isSend, content, status):
         '''
@@ -471,7 +465,7 @@ class MyThread(QThread):
         now_timestamp = '1600008700000.0'
         for row_index, row in user_data.iterrows():
             self.num += 1
-            self.bar.emit(int((self.num)/self.total_num*100))
+            self.bar.emit(int((self.num) / self.total_num * 100))
             Type = row['type']
             content = row['content']
             isSend = row['isSend']
@@ -493,7 +487,7 @@ class MyThread(QThread):
                 self.image(doc, isSend, 3, content, imgPath)
             elif Type == 47:
                 # print(content)
-                print(imgPath,content)
+                print(imgPath, content)
                 self.emoji(doc, isSend, content, imgPath)
             elif Type == 1090519089:
                 self.wx_file(doc, isSend, content, status)
@@ -509,9 +503,10 @@ class MyThread(QThread):
         # doc.add_paragraph(str(i))
         # print(filename)
         doc.save(filename)
+
     def run(self):
         if 1:
-        # try:
+            # try:
             self.get_avator()
             conRemark = self.ta_info['conRemark']
             self.self_text.emit(conRemark)
@@ -540,7 +535,9 @@ class MyThread(QThread):
         # except Exception as e:
         #     self.self_text.emit('发生异常')
         #     print(e)
-            #self.self_text.emit(e)
+        # self.self_text.emit(e)
+
+
 if __name__ == '__main__':
     # # conRemark = '张三' #! 微信备注名
     # n = 100  # ! 分割的文件个数
@@ -556,7 +553,7 @@ if __name__ == '__main__':
         'wxid': 'wxid_8piw6sb4hvfm22',
         'conRemark': '曹雨萱'
     }
-    #wxid_8piw6sb4hvfm22
+    # wxid_8piw6sb4hvfm22
     t.self_info = {
         'wxid': 'wxid_27hqbq7vx5hf22',
         'conRemark': 'Shuaikang Zhou'

@@ -22,6 +22,7 @@ from .chatUi import *
 from ...DataBase import data
 from ...ImageBox.ui import MainDemo
 
+
 class ChatController(QWidget, Ui_Dialog):
     exitSignal = pyqtSignal()
     urlSignal = pyqtSignal(QUrl)
@@ -305,7 +306,7 @@ class ChatController(QWidget, Ui_Dialog):
                 <img herf= "baidu.com" align="right" src="%s"/>
             </a>
         </td>
-        ''' % (imgPath,imgPath)
+        ''' % (imgPath, imgPath)
         style = 'vertical-align: top'
         if isSend:
             self.right(html, style=style)
@@ -341,26 +342,15 @@ class ChatController(QWidget, Ui_Dialog):
                 <td max-width = 300 style="background-color: #fff;border-radius: 4px;">&nbsp;%s&nbsp;</td>
                 ''' % (content)
                 self.left(html)
-    def clearImagePath(self,imgpath):
-        path = imgpath.split('/')
-        newPath = '/'.join(path[:-1])+'/'+path[-1][3:]+'.jpg'
-        if os.path.exists(newPath):
-            return newPath
-        newPath = '/'.join(path[:-1]) + '/' + path[-1][3:] + '.png'
-        if os.path.exists(newPath):
-            return newPath
-        newPath = '/'.join(path[:-1]) + '/' + path[-1]+ 'hd'
-        if os.path.exists(newPath):
-            return newPath
-        return imgpath
-    def hyperlink(self, url:QUrl):
-        path = self.clearImagePath(url.path())
-        print(url.path(),path)
+
+
+
+    def hyperlink(self, url: QUrl):
+        path = data.clearImagePath(url.path())
+        print(url.path(), path)
         self.imagebox = MainDemo()
         self.imagebox.show()
         self.imagebox.box.set_image(path)
-
-
 
     def right(self, content, style='vertical-align: middle'):
         html = '''

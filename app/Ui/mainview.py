@@ -102,7 +102,7 @@ class MainWinController(QMainWindow, Ui_Dialog):
 
     def about(self):
         QMessageBox.about(self, "关于",
-                          "关于作者\n姓名：周帅康\n联系方式：863909694"
+                          "关于作者\n姓名：周帅康\n邮箱：lc863854@mail.nwpu.edu.cn"
                           )
 
     def setviewVisible(self, view):
