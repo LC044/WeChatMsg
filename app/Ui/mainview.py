@@ -7,9 +7,6 @@
 @Version : Python3.10
 @comment : ···
 """
-import socket  # 导入socket模块
-import datetime
-import json
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *

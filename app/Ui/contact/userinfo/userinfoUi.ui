@@ -154,18 +154,31 @@
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="btn_outbut">
+  <widget class="QWidget" name="horizontalLayoutWidget_2">
    <property name="geometry">
     <rect>
-     <x>310</x>
-     <y>360</y>
-     <width>111</width>
-     <height>23</height>
+     <x>210</x>
+     <y>350</y>
+     <width>431</width>
+     <height>80</height>
     </rect>
    </property>
-   <property name="text">
-    <string>导出聊天记录</string>
-   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <widget class="QPushButton" name="btn_outbut">
+      <property name="text">
+       <string>导出聊天记录</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="btn_analysis">
+      <property name="text">
+       <string>聊天统计</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

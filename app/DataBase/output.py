@@ -2,16 +2,12 @@ import os
 import re
 import time
 import docx
-import pandas as pd
-import requests
 import xmltodict
 from docx import shared
 from docx.enum.table import WD_ALIGN_VERTICAL
 from docx.enum.text import WD_COLOR_INDEX, WD_PARAGRAPH_ALIGNMENT
 from docxcompose.composer import Composer
-from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from PyQt5.QtGui import *
 from . import data
 
 

@@ -7,10 +7,7 @@
 @Version : Python3.10
 @comment : ···
 """
-import os.path
-import socket  # 导入socket模块
 import datetime
-import json
 import time
 
 import xmltodict
@@ -61,8 +58,6 @@ class ChatController(QWidget, Ui_Dialog):
         self.message.setOpenExternalLinks(False)
         # self.message.anchorClicked(self.hyperlink())
         self.message.anchorClicked.connect(self.hyperlink)
-        with open('./wechat.html', 'r', encoding='utf-8') as f:
-            self.message.setHtml(f.read())
         self.textEdit = myTextEdit(self.frame)
         self.textEdit.setGeometry(QtCore.QRect(9, 580, 821, 141))
         font = QtGui.QFont()

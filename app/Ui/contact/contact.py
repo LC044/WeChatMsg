@@ -7,22 +7,14 @@
 @Version : Python3.10
 @comment : ···
 """
-import os.path
-import socket  # 导入socket模块
 import datetime
-import json
-import time
-
-import xmltodict
-from PIL import Image
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from .contactUi import *
 from ...DataBase import data, output
-from ...ImageBox.ui import MainDemo
 from .userinfo import userinfoUi
-
+from .analysis import analysis
 
 class ContactController(QWidget, Ui_Dialog):
     exitSignal = pyqtSignal()
@@ -53,6 +45,7 @@ class ContactController(QWidget, Ui_Dialog):
         self.userinfo = userinfoUi.Ui_Frame()
         self.userinfo.setupUi(self.frame)
         self.userinfo.btn_outbut.clicked.connect(self.output)
+        self.userinfo.btn_analysis.clicked.connect(self.analysis)
 
     def initui(self):
         self.qurl = QUrl('baidu.com')
@@ -127,6 +120,10 @@ class ContactController(QWidget, Ui_Dialog):
     def output(self):
         self.outputThread = output.Output(self.Me, self.now_talkerId)
         self.outputThread.start()
+    def analysis(self):
+        self.analysisView = analysis.AnalysisController(self.now_talkerId)
+        self.analysisView.show()
+        pass
 
 
 class Contact(QtWidgets.QPushButton):

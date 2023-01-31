@@ -11,11 +11,50 @@ import hashlib
 import os
 import sqlite3
 import time
-
 import requests
 
 DB = None
 cursor = None
+
+Type = {
+    1: '文本内容',
+    2: '位置信息',
+    3: '图片及视频',
+    34: '语音消息',
+    42: '名片（公众号名片）',
+    43: '图片及视频',
+    47: '表情包',
+    48: '定位信息',
+    49: '小程序链接',
+    10000: '撤回消息提醒',
+    1048625: '照片',
+    16777265: '链接',
+    285212721: '文件',
+    419430449: '微信转账',
+    436207665: '微信红包',
+    469762097: '微信红包',
+    11879048186: '位置共享',
+}
+
+Type0 = {
+    '1': '文字',
+    '3': '图片',
+    '43': '视频',
+    '-1879048185': '微信运动排行榜',
+    '5': '',
+    '47': '表情包',
+    '268445456': '撤回的消息',
+    '34': '语音',
+    '419430449': '转账',
+    '50': '语音电话',
+    '100001': '领取红包',
+    '10000': '消息已发出，但被对方拒收了。',
+    '822083633': '回复消息',
+    '922746929': '拍一拍',
+    '1090519089': '发送文件',
+    '318767153': '付款成功',
+    '436207665': '发红包',
+}
 
 
 def mkdir(path):
@@ -172,7 +211,7 @@ def search_send_message(start_time, end_time):
         select count(*) from message
         where  createTime >? and createTime < ? and isSend=0 and talker like '%wxid%';
     '''
-    cursor.execute(sql,[start*1000 , end*1000])
+    cursor.execute(sql, [start * 1000, end * 1000])
     return cursor.fetchone()
 
 
@@ -247,6 +286,93 @@ def get_contacts():
     return result
 
 
+def send_nums(username):
+    sql = '''
+        select count(*) from message
+        where talker = ? and isSend=1
+    '''
+    cursor.execute(sql, [username])
+    return cursor.fetchone()[0]
+
+
+def recv_nums(username):
+    sql = '''
+            select count(*) from message
+            where talker = ? and isSend=0
+        '''
+    cursor.execute(sql, [username])
+    return cursor.fetchone()[0]
+
+
+def get_text(username):
+    sql = '''
+        select content from message
+        where talker=? and type=1
+    '''
+    cursor.execute(sql, [username])
+    result = cursor.fetchall()
+    return ''.join(map(lambda x: x[0], result))
+
+
+def msg_type_num(username):
+    sql = '''
+        select type,count(*) from message
+        where talker = ?
+        group by type
+    '''
+    cursor.execute(sql, [username])
+    return cursor.fetchall()
+
+
+def get_msg_start_time(username):
+    sql = '''
+        select createTime from message
+        where talker = ?
+        order by msgId
+        limit 1
+    '''
+    cursor.execute(sql, [username])
+    return cursor.fetchone()[0]
+
+
+def get_msg_end_time(username):
+    sql = '''
+        select createTime from message
+        where talker = ?
+        order by msgId desc
+        limit 1
+    '''
+    cursor.execute(sql, [username])
+    try:
+        return cursor.fetchone()[0]
+    except:
+        return None
+
+
+def get_msg_by_days(username, year='2022'):
+    sql = '''
+        SELECT strftime('%Y-%m-%d',createTime/1000,'unixepoch','localtime') as days,count(msgId)
+        from message
+        where talker = ? and strftime('%Y',createTime/1000,'unixepoch','localtime') = ?
+        group by days
+    '''
+    cursor.execute(sql, [username, year])
+    result = cursor.fetchall()
+    return result
+
+
+def get_msg_by_month(username, year='2022'):
+    sql = '''
+            SELECT strftime('%Y-%m',createTime/1000,'unixepoch','localtime') as days,count(msgId)
+            from message
+            where talker = ? and strftime('%Y',createTime/1000,'unixepoch','localtime') = ?
+            group by days
+        '''
+    cursor.execute(sql, [username, year])
+    result = cursor.fetchall()
+    return result
+
+
 if __name__ == '__main__':
     # rconversation = get_rconversation()
     # for i in rconversation:
@@ -255,4 +381,14 @@ if __name__ == '__main__':
     # for contact in contacts:
     #     print(contact)
     # [(177325,)] (73546,) (103770,)
-    print(search_send_message(1,1))
+    print(search_send_message(1, 1))
+    print(send_nums('wxid_vqave8lcp49r22'))
+    print(recv_nums('wxid_vqave8lcp49r22'))
+    # for t in get_text('wxid_vqave8lcp49r22'):
+    #     print(t)
+    print(msg_type_num('wxid_vqave8lcp49r22'))
+    st = get_msg_start_time('wxid_vqave8lcp49r22')
+    print(st, timestamp2str(st))
+    st = get_msg_end_time('wxid_vqave8lcp49r22')
+    print(st, timestamp2str(st))
+    print(get_msg_by_month('wxid_8piw6sb4hvfm22', year='2022'))
