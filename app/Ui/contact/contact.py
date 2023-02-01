@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-@File    : mainview.py
+@File    : contact.py
 @Author  : Shuaikang Zhou
 @Time    : 2022/12/13 15:07
 @IDE     : Pycharm
@@ -15,6 +15,7 @@ from .contactUi import *
 from ...DataBase import data, output
 from .userinfo import userinfoUi
 from .analysis import analysis
+
 
 class ContactController(QWidget, Ui_Dialog):
     exitSignal = pyqtSignal()
@@ -42,7 +43,7 @@ class ContactController(QWidget, Ui_Dialog):
         self.last_talkerId = None
         self.now_talkerId = None
         self.showContact()
-        self.userinfo = userinfoUi.Ui_Frame()
+        self.userinfo = userinfoUi.Ui_Frame()  # 联系人信息界面
         self.userinfo.setupUi(self.frame)
         self.userinfo.btn_outbut.clicked.connect(self.output)
         self.userinfo.btn_analysis.clicked.connect(self.analysis)
@@ -55,7 +56,7 @@ class ContactController(QWidget, Ui_Dialog):
 
     def showContact(self):
         """
-        显示聊天界面
+        显示联系人
         :return:
         """
         print('show')
@@ -112,15 +113,32 @@ class ContactController(QWidget, Ui_Dialog):
         self.userinfo.l_username.setText(f'微信号：{alias}')
         self.userinfo.lineEdit.setText(conRemark)
 
-    def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
-        print("closed")
-        self.exitSignal.emit()
-        self.close()
-
     def output(self):
+        """
+        导出聊天记录
+        :return:
+        """
         self.outputThread = output.Output(self.Me, self.now_talkerId)
+        self.outputThread.progressSignal.connect(self.output_progress)
+        self.outputThread.rangeSignal.connect(self.set_progressBar_range)
+        self.outputThread.okSignal.connect(self.hide_progress_bar)
         self.outputThread.start()
+
+    def hide_progress_bar(self, int):
+        self.userinfo.progressBar.setVisible(False)
+
+    def set_progressBar_range(self, value):
+        self.userinfo.progressBar.setVisible(True)
+        self.userinfo.progressBar.setRange(0, value)
+
+    def output_progress(self, value):
+        self.userinfo.progressBar.setProperty('value', value)
+
     def analysis(self):
+        """
+        聊天分析
+        :return:
+        """
         self.analysisView = analysis.AnalysisController(self.now_talkerId)
         self.analysisView.show()
         pass

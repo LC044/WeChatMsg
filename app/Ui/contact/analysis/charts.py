@@ -1,12 +1,7 @@
-import datetime
 import os
-import random
-import time
-
 import jieba
 from pyecharts import options as opts
 from pyecharts.charts import Pie, WordCloud, Calendar, Bar
-from pyecharts.faker import Faker
 from ....DataBase import data
 
 data.mkdir(os.path.abspath('.') + '/data/聊天统计')

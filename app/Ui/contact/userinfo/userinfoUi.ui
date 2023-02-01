@@ -180,6 +180,19 @@
     </item>
    </layout>
   </widget>
+  <widget class="QProgressBar" name="progressBar">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>480</y>
+     <width>451</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="value">
+    <number>24</number>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

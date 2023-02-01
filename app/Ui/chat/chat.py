@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-@File    : mainview.py
+@File    : chat.py
 @Author  : Shuaikang Zhou
-@Time    : 2022/12/13 15:07
+@Time    : 2022/12/13 17:07
 @IDE     : Pycharm
 @Version : Python3.10
-@comment : ···
+@comment : 聊天窗口
 """
 import datetime
 import time
@@ -58,15 +58,6 @@ class ChatController(QWidget, Ui_Dialog):
         self.message.setOpenExternalLinks(False)
         # self.message.anchorClicked(self.hyperlink())
         self.message.anchorClicked.connect(self.hyperlink)
-        self.textEdit = myTextEdit(self.frame)
-        self.textEdit.setGeometry(QtCore.QRect(9, 580, 821, 141))
-        font = QtGui.QFont()
-        font.setPointSize(15)
-        self.textEdit.setFont(font)
-        self.textEdit.setTabStopWidth(80)
-        self.textEdit.setCursorWidth(1)
-        self.textEdit.setObjectName("textEdit")
-        self.textEdit.sendSignal.connect(self.sendMsg)
         self.btn_sendMsg = QtWidgets.QPushButton(self.frame)
         self.btn_sendMsg.setGeometry(QtCore.QRect(680, 670, 121, 51))
         font = QtGui.QFont()
@@ -176,9 +167,6 @@ class ChatController(QWidget, Ui_Dialog):
 
         print(pos)
         self.message.verticalScrollBar().setValue(pos)
-
-    def sendMsg(self, msg):
-        pass
 
     def check_time(self, msg_time):
         """
@@ -338,9 +326,12 @@ class ChatController(QWidget, Ui_Dialog):
                 ''' % (content)
                 self.left(html)
 
-
-
     def hyperlink(self, url: QUrl):
+        """
+        超链接，点击之后放大显示图片
+        :param url:
+        :return:
+        """
         path = data.clearImagePath(url.path())
         print(url.path(), path)
         self.imagebox = MainDemo()
@@ -540,7 +531,7 @@ class Contact(QtWidgets.QPushButton):
 
 class ChatMsg(QThread):
     """
-    发送信息线程
+    多线程显示信息
     """
     isSend_signal = pyqtSignal(tuple)
     okSignal = pyqtSignal(int)
@@ -571,11 +562,15 @@ class myTextEdit(QtWidgets.QTextEdit):  # 继承 原本组件
         self.parent = parent
         _translate = QtCore.QCoreApplication.translate
         self.setHtml(_translate("Dialog",
-                                "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+                                "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" "
+                                "\"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
                                 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
                                 "p, li { white-space: pre-wrap; }\n"
-                                "</style></head><body style=\" font-family:\'SimSun\'; font-size:15pt; font-weight:400; font-style:normal;\">\n"
-                                "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+                                "</style></head><body style=\" font-family:\'SimSun\'; font-size:15pt; "
+                                "font-weight:400; font-style:normal;\">\n"
+                                "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
+                                "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br "
+                                "/></p></body></html>"))
 
     def keyPressEvent(self, event):
         QtWidgets.QTextEdit.keyPressEvent(self, event)
@@ -587,7 +582,3 @@ class myTextEdit(QtWidgets.QTextEdit):  # 继承 原本组件
                 return
             self.sendSignal.emit(self.toPlainText())
             print('success press enter key', self.toPlainText())
-
-        # if modifiers == (Qt.ControlModifier) and event.key() == Qt.Key_Return:
-        #     self.sendSignal.emit(self.toPlainText())
-        #     print('success press enter key', self.toPlainText())

@@ -5,7 +5,7 @@
 @Time    : 2022/12/13 15:07
 @IDE     : Pycharm
 @Version : Python3.10
-@comment : ···
+@comment : 主窗口
 """
 
 from PyQt5.QtWidgets import *
@@ -67,6 +67,9 @@ class MainWinController(QMainWindow, Ui_Dialog):
         self.myavatar.setPixmap(pixmap)  # 在label上显示图片
 
     def chat_view(self):
+        """
+        聊天窗口
+        """
         self.now_btn = self.btn_chat
         self.now_btn.setStyleSheet(
             "QPushButton {background-color: rgb(198,198,198);}")
@@ -78,6 +81,9 @@ class MainWinController(QMainWindow, Ui_Dialog):
         self.chatView.showChat()
 
     def contact_view(self):
+        """
+        联系人窗口
+        """
         self.now_btn = self.btn_contact
         self.now_btn.setStyleSheet(
             "QPushButton {background-color: rgb(198,198,198);}")
@@ -89,6 +95,9 @@ class MainWinController(QMainWindow, Ui_Dialog):
         self.contactView.showContact()
 
     def myInfo(self):
+        """
+        显示我的个人信息
+        """
         self.now_btn = self.btn_myinfo
         self.now_btn.setStyleSheet(
             "QPushButton {background-color: rgb(198,198,198);}")
@@ -98,11 +107,17 @@ class MainWinController(QMainWindow, Ui_Dialog):
         self.last_btn = self.now_btn
 
     def about(self):
+        """
+        关于
+        """
         QMessageBox.about(self, "关于",
                           "关于作者\n姓名：周帅康\n邮箱：lc863854@mail.nwpu.edu.cn"
                           )
 
     def setviewVisible(self, view):
+        """
+        设置窗口可见性
+        """
         view.setVisible(True)
         if view != self.lastView and self.lastView:
             self.lastView.setVisible(False)

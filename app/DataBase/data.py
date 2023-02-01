@@ -72,7 +72,7 @@ if os.path.exists('./app/DataBase/Msg.db'):
     # '''创建游标'''
     cursor = DB.cursor()
 if os.path.exists('./Msg.db'):
-    DB = sqlite3.connect("./Msg.db")
+    DB = sqlite3.connect("./Msg.db", check_same_thread=False)
     # '''创建游标'''
     cursor = DB.cursor()
 
@@ -110,7 +110,7 @@ def decrypt(db, key):
     p = os.system(f"{os.path.abspath('.')}{cmd} {db} < ./app/DataBase/config.txt")
     global DB
     global cursor
-    DB = sqlite3.connect("./app/DataBase/Msg.db")
+    DB = sqlite3.connect("./app/DataBase/Msg.db", check_same_thread=False)
     # '''创建游标'''
     cursor = DB.cursor()
 
@@ -249,9 +249,13 @@ def get_emoji(imgPath):
         from EmojiInfo 
         where md5=?
         '''
-        cursor.execute(sql, [imgPath])
-        result = cursor.fetchone()
-        download_emoji(newPath, result[0])
+        try:
+            cursor.execute(sql, [imgPath])
+            result = cursor.fetchone()
+            download_emoji(newPath, result[0])
+        except sqlite3.ProgrammingError as e:
+            print(e, imgPath)
+            return False
     return newPath
 
 

@@ -81,6 +81,10 @@ class Ui_Frame(object):
         self.btn_analysis = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.btn_analysis.setObjectName("btn_analysis")
         self.horizontalLayout_2.addWidget(self.btn_analysis)
+        self.progressBar = QtWidgets.QProgressBar(Frame)
+        self.progressBar.setGeometry(QtCore.QRect(210, 480, 451, 23))
+        self.progressBar.setProperty("value", 24)
+        self.progressBar.setObjectName("progressBar")
 
         self.retranslateUi(Frame)
         QtCore.QMetaObject.connectSlotsByName(Frame)

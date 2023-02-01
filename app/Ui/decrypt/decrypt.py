@@ -5,7 +5,7 @@
 @Time    : 2023/1/5 18:13
 @IDE     : Pycharm
 @Version : Python3.10
-@comment : ···
+@comment : ··· 解密数据库，导出原始数据库文件
 """
 import hashlib
 import os
@@ -92,6 +92,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         return False
 
     def key(self, uin, IMEI='1234567890ABCDEF'):
+
         print(IMEI, uin)
         m = hashlib.md5()
         m.update(bytes((IMEI + uin).encode('utf-8')))
@@ -110,6 +111,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         :param value: 进度0-100
         :return: None
         """
+
         self.progressBar.setProperty('value', value)
         if value == '100':
             QMessageBox.information(self, "解密成功", "请退出该界面",

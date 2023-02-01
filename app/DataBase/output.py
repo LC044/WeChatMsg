@@ -33,35 +33,14 @@ def time_format(timestamp):
     return time.strftime("%Y-%m-%d %H:%M:%S", time_tuple)
 
 
-def merge_docx(conRemark, n):
-    origin_docx_path = f"{path}/{conRemark}"
-    all_word = os.listdir(origin_docx_path)
-    all_file_path = []
-    for i in range(n):
-        file_name = f"{conRemark}{i}.docx"
-        all_file_path.append(origin_docx_path + '/' + file_name)
-    filename = f"{conRemark}.docx"
-    # print(all_file_path)
-    doc = docx.Document()
-    doc.save(origin_docx_path + '/' + filename)
-    master = docx.Document(origin_docx_path + '/' + filename)
-    middle_new_docx = Composer(master)
-    num = 0
-    for word in all_file_path:
-        word_document = docx.Document(word)
-        word_document.add_page_break()
-        if num != 0:
-            middle_new_docx.append(word_document)
-        num = num + 1
-    middle_new_docx.save(origin_docx_path + '/' + filename)
-
-
 class Output(QThread):
     """
     发送信息线程
     """
     progressSignal = pyqtSignal(int)
-    successSignal = pyqtSignal(int)
+    rangeSignal = pyqtSignal(int)
+    okSignal = pyqtSignal(int)
+    i = 1
 
     def __init__(self, Me, ta_u, parent=None):
         super().__init__(parent)
@@ -70,6 +49,83 @@ class Output(QThread):
         self.ta_username = ta_u
         self.my_avatar = self.Me.my_avatar
         self.ta_avatar = data.get_avator(ta_u)
+        self.msg_id = 0
+
+    def merge_docx(self, conRemark, n):
+        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{conRemark}"
+        all_word = os.listdir(origin_docx_path)
+        all_file_path = []
+        for i in range(n):
+            file_name = f"{conRemark}{i}.docx"
+            all_file_path.append(origin_docx_path + '/' + file_name)
+        filename = f"{conRemark}.docx"
+        # print(all_file_path)
+        doc = docx.Document()
+        doc.save(origin_docx_path + '/' + filename)
+        master = docx.Document(origin_docx_path + '/' + filename)
+        middle_new_docx = Composer(master)
+        num = 0
+        for word in all_file_path:
+            word_document = docx.Document(word)
+            word_document.add_page_break()
+            if num != 0:
+                middle_new_docx.append(word_document)
+            num = num + 1
+        middle_new_docx.save(origin_docx_path + '/' + filename)
+
+    def progress(self, value):
+        self.i += 1
+        # 处理完成之后将多个文件合并
+        if self.i == self.total_num:
+            QThread.sleep(1)
+            conRemark = data.get_conRemark(self.ta_username)
+            self.progressSignal.emit(self.total_num-1)
+            self.merge_docx(conRemark, self.n)
+            print('ok')
+            self.progressSignal.emit(self.total_num)
+            self.okSignal.emit(1)
+        self.progressSignal.emit(self.i)
+
+    def run(self):
+        self.Child = {}
+        if 1:
+            conRemark = data.get_conRemark(self.ta_username)
+            data.mkdir(f"{os.path.abspath('.')}/data/聊天记录/{conRemark}")
+            messages = data.get_all_message(self.ta_username)
+            self.total_num = len(messages)
+            self.rangeSignal.emit(self.total_num)
+            l = len(messages)
+            self.n = 10
+            for i in range(self.n):
+                q = i * (l // self.n)
+                p = (i + 1) * (l // self.n)
+                if i == self.n - 1:
+                    p = l
+                len_data = messages[q:p]
+                # self.to_docx(len_data, i, conRemark)
+                self.Child[i] = ChildThread(self.Me, self.ta_username, len_data, conRemark,i)
+                self.Child[i].progressSignal.connect(self.progress)
+                self.Child[i].start()
+
+
+class ChildThread(QThread):
+    """
+        子线程，用于导出部分聊天记录
+    """
+    progressSignal = pyqtSignal(int)
+    rangeSignal = pyqtSignal(int)
+    i = 1
+
+    def __init__(self, Me, ta_u, message, conRemark,num, parent=None):
+        super().__init__(parent)
+        self.Me = Me
+        self.sec = 2  # 默认1000秒
+        self.ta_username = ta_u
+        self.num = num
+        self.my_avatar = self.Me.my_avatar
+        self.ta_avatar = data.get_avator(ta_u)
+        self.conRemark = conRemark
+        self.message = message
         self.msg_id = 0
 
     def create_table(self, doc, isSend):
@@ -268,11 +324,14 @@ class Output(QThread):
 
     def to_docx(self, messages, i, conRemark):
         '''创建联系人目录'''
-        data.mkdir(f"{os.path.abspath('.')}/data/聊天记录/{conRemark}")
+
         filename = f"{os.path.abspath('.')}/data/聊天记录/{conRemark}/{conRemark}{i}.docx"
         doc = docx.Document()
         last_timestamp = 1601968667000
+
         for message in messages:
+            self.progressSignal.emit(self.i)
+            self.i += 1
             msgId = message[0]
             ta_username = message[7]
             Type = int(message[2])
@@ -311,76 +370,11 @@ class Output(QThread):
         doc.save(filename)
 
     def run(self):
-        if 1:
-            conRemark = data.get_conRemark(self.ta_username)
-            messages = data.get_all_message(self.ta_username)
-            # self.self_text.emit(conRemark)
-            # self.self_text.emit(path)
-            self.to_docx(messages, 0, conRemark)
-            # l = len(user_data)
-            # n = 50
-            # for i in range(n):
-            #     q = i * (l // n)
-            #     p = (i + 1) * (l // n)
-            #     if i == n - 1:
-            #         p = l
-            #     len_data = user_data[q:p]
-            #     self.to_docx(len_data, i, conRemark)
 
-            # self.self_text.emit('\n\n\n导出进度还差一点点！！！')
-            # self.bar.emit(99)
-            # merge_docx(conRemark, n)
-            # self.self_text.emit(f'{conRemark}聊天记录导出成功！！！')
-            # self.bar.emit(100)
-
-    # def run(self):
-    #     self.ta_avatar = data.get_avator(self.ta_u)
-    #     messages = data.get_all_message(self.ta_u)
-    #     total_num = len(messages)
-    #     for message in messages:
-    #         msgId = message[0]
-    #         ta_username = message[7]
-    #         msgType = str(message[2])
-    #         isSend = message[4]
-    #         content = message[8]
-    #         imgPath = message[9]
-    #         msg_time = message[6]
-    #         self.check_time(msg_time)
-    #
-    #         if msgType == '1':
-    #             # return
-    #             self.show_text(isSend, content)
-    #         elif msgType == '3':
-    #             # return
-    #             self.show_img(isSend, imgPath, content)
-    #         elif msgType == '47':
-    #             # return
-    #             self.show_emoji(isSend, imgPath, content)
-    #         elif msgType == '268445456':
-    #             self.show_recall_information(content)
-    #         elif msgType == '922746929':
-    #             self.pat_a_pat(content)
+        self.to_docx(self.message, self.num, self.conRemark)
 
 
 if __name__ == '__main__':
-    # # conRemark = '张三' #! 微信备注名
-    # n = 100  # ! 分割的文件个数
-    # main(conRemark, n)
-    # img_self.close()
-    # img_ta.close()
     me = data.Me('wxid_27hqbq7vx5hf22')
     t = Output(Me=me, ta_u='wxid_q3ozn70pweud22')
-    # t.ta_info = {
-    #     'wxid': 'wxid_q3ozn70pweud22',
-    #     'conRemark': '小钱'
-    # }
-    # t.ta_info = {
-    #     'wxid': 'wxid_8piw6sb4hvfm22',
-    #     'conRemark': '曹雨萱'
-    # }
-    # # wxid_8piw6sb4hvfm22
-    # t.self_info = {
-    #     'wxid': 'wxid_27hqbq7vx5hf22',
-    #     'conRemark': 'Shuaikang Zhou'
-    # }
     t.run()
