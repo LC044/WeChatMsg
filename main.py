@@ -5,6 +5,7 @@ import sys
 from app.Ui import *
 
 
+#
 class ViewController:
     def loadDecryptView(self):
         """

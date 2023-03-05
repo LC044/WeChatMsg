@@ -370,7 +370,6 @@ class ChildThread(QThread):
         doc.save(filename)
 
     def run(self):
-
         self.to_docx(self.message, self.num, self.conRemark)
 
 

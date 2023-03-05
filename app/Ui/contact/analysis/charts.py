@@ -102,7 +102,7 @@ def message_word_cloud(username):
     text_data = sorted(wordcount.items(), key=lambda x: x[1], reverse=True)
     if len(text_data) > 100:
         text_data = text_data[:100]
-    print(text_data)
+    # print(text_data)
     (
         WordCloud(init_opts=opts.InitOpts(width="900px", height="550px"))
         .add(series_name="聊天文字", data_pair=text_data, word_size_range=[20, 100])

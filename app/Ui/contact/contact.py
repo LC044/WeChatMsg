@@ -46,6 +46,7 @@ class ContactController(QWidget, Ui_Dialog):
         self.userinfo = userinfoUi.Ui_Frame()  # 联系人信息界面
         self.userinfo.setupUi(self.frame)
         self.userinfo.btn_outbut.clicked.connect(self.output)
+        self.userinfo.progressBar.setVisible(False)
         self.userinfo.btn_analysis.clicked.connect(self.analysis)
 
     def initui(self):
@@ -125,6 +126,15 @@ class ContactController(QWidget, Ui_Dialog):
         self.outputThread.start()
 
     def hide_progress_bar(self, int):
+        reply = QMessageBox(self)
+        reply.setIcon(QMessageBox.Information)
+        reply.setWindowTitle('OK')
+        reply.setText("导出聊天记录成功")
+        reply.addButton("确认", QMessageBox.AcceptRole)
+        reply.addButton("取消", QMessageBox.RejectRole)
+        # reply.addButton("忽略", QMessageBox.DestructiveRole)
+        print(reply)
+        api = reply.exec_()
         self.userinfo.progressBar.setVisible(False)
 
     def set_progressBar_range(self, value):
