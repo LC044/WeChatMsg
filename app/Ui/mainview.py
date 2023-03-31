@@ -8,13 +8,14 @@
 @comment : 主窗口
 """
 
-from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from .mainviewUi import *
+from PyQt5.QtWidgets import *
+
 from app.DataBase import data
 from .chat import chat
 from .contact import contact
+from .mainviewUi import *
 
 
 class MainWinController(QMainWindow, Ui_Dialog):
@@ -31,9 +32,11 @@ class MainWinController(QMainWindow, Ui_Dialog):
         self.chatView.setVisible(False)
         self.contactView = contact.ContactController(self.Me, parent=self.frame_main)
         self.contactView.setVisible(False)
+        # self.myinfoView = userinfo.MyinfoController(self.Me, parent=self.frame_main)
+        # self.myinfoView.setVisible(False)
         self.btn_chat.clicked.connect(self.chat_view)  # 聊天按钮
         self.btn_contact.clicked.connect(self.contact_view)
-        self.btn_myinfo.clicked.connect(self.myInfo)
+        # self.btn_myinfo.clicked.connect(self.myInfo)
         self.btn_about.clicked.connect(self.about)
         self.now_btn = self.btn_chat
         self.btn_about.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -105,6 +108,7 @@ class MainWinController(QMainWindow, Ui_Dialog):
             self.last_btn.setStyleSheet("QPushButton {background-color: rgb(240,240,240);}"
                                         "QPushButton:hover{background-color: rgb(209,209,209);}\n")
         self.last_btn = self.now_btn
+        self.setviewVisible(self.myinfoView)
 
     def about(self):
         """

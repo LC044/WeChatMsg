@@ -1,13 +1,15 @@
 import os
 import re
 import time
+
 import docx
 import xmltodict
+from PyQt5.QtCore import *
 from docx import shared
 from docx.enum.table import WD_ALIGN_VERTICAL
 from docx.enum.text import WD_COLOR_INDEX, WD_PARAGRAPH_ALIGNMENT
 from docxcompose.composer import Composer
-from PyQt5.QtCore import *
+
 from . import data
 
 
@@ -79,7 +81,7 @@ class Output(QThread):
         if self.i == self.total_num:
             QThread.sleep(1)
             conRemark = data.get_conRemark(self.ta_username)
-            self.progressSignal.emit(self.total_num-1)
+            self.progressSignal.emit(self.total_num - 1)
             self.merge_docx(conRemark, self.n)
             print('ok')
             self.progressSignal.emit(self.total_num)
@@ -103,7 +105,7 @@ class Output(QThread):
                     p = l
                 len_data = messages[q:p]
                 # self.to_docx(len_data, i, conRemark)
-                self.Child[i] = ChildThread(self.Me, self.ta_username, len_data, conRemark,i)
+                self.Child[i] = ChildThread(self.Me, self.ta_username, len_data, conRemark, i)
                 self.Child[i].progressSignal.connect(self.progress)
                 self.Child[i].start()
 
@@ -116,7 +118,7 @@ class ChildThread(QThread):
     rangeSignal = pyqtSignal(int)
     i = 1
 
-    def __init__(self, Me, ta_u, message, conRemark,num, parent=None):
+    def __init__(self, Me, ta_u, message, conRemark, num, parent=None):
         super().__init__(parent)
         self.Me = Me
         self.sec = 2  # 默认1000秒
@@ -301,16 +303,20 @@ class ChildThread(QThread):
         :param status:
         :return:
         '''
-        pat_data = xmltodict.parse(content)
-        pat_data = pat_data['msg']['appmsg']['patMsg']['records']['record']
-        fromUser = pat_data['fromUser']
-        pattedUser = pat_data['pattedUser']
-        template = pat_data['template']
-        template = ''.join(template.split('${pattedusername@textstatusicon}'))
-        template = ''.join(template.split('${fromusername@textstatusicon}'))
-        template = template.replace(f'${{{fromUser}}}', data.get_conRemark(fromUser))
-        template = template.replace(f'${{{pattedUser}}}', data.get_conRemark(pattedUser))
-        print(template)
+        try:
+            pat_data = xmltodict.parse(content)
+            pat_data = pat_data['msg']['appmsg']['patMsg']['records']['record']
+            fromUser = pat_data['fromUser']
+            pattedUser = pat_data['pattedUser']
+            template = pat_data['template']
+            template = ''.join(template.split('${pattedusername@textstatusicon}'))
+            template = ''.join(template.split('${fromusername@textstatusicon}'))
+            template = template.replace(f'${{{fromUser}}}', data.get_conRemark(fromUser))
+            template = template.replace(f'${{{pattedUser}}}', data.get_conRemark(pattedUser))
+            print(template)
+        except Exception as e:
+            print(e)
+            template = '糟糕！出错了。'
         p = doc.add_paragraph()
         run = p.add_run(template)
         p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER

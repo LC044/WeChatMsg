@@ -10,13 +10,14 @@
 import hashlib
 import os
 import time
+import xml.etree.ElementTree as ET
 
+from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
+
 from . import decryptUi
 from ...DataBase import data
-import xml.etree.ElementTree as ET
 
 
 class DecryptControl(QWidget, decryptUi.Ui_Dialog):
@@ -103,7 +104,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         print("enter clicked")
         # 中间可以添加处理逻辑
         self.DecryptSignal.emit('ok')
-        self.close()
+        # self.close()
 
     def progressBar_view(self, value):
         """
@@ -120,7 +121,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
 
     def btnExitClicked(self):
         print("Exit clicked")
-        self.close()
+        # self.close()
 
 
 class DecryptThread(QThread):

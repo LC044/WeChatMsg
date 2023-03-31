@@ -1,7 +1,7 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
 import sys
+
+from PyQt5.QtWidgets import *
+
 from app.Ui import *
 
 
@@ -23,9 +23,10 @@ class ViewController:
         注册界面
         :return:
         """
-        self.viewDecrypt = register.registerControl()  # 需要将viewlogin设为成员变量
-        self.viewDecrypt.DecryptSignal.connect(self.loadDecryptView)
-        self.viewDecrypt.show()
+        pass
+        # self.viewDecrypt = register.registerControl()  # 需要将viewlogin设为成员变量
+        # self.viewDecrypt.DecryptSignal.connect(self.loadDecryptView)
+        # self.viewDecrypt.show()
 
     def loadMainWinView(self, username):
         """
@@ -46,6 +47,6 @@ class ViewController:
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     view = ViewController()
-    # view.loadDecryptView()  # 进入登录界面，如果viewlogin不是成员变量，则离开作用域后失效。
-    view.loadMainWinView('102')
+    view.loadDecryptView()  # 进入登录界面，如果viewlogin不是成员变量，则离开作用域后失效。
+    # view.loadMainWinView('102')
     sys.exit(app.exec_())

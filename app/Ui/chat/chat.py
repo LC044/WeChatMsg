@@ -12,9 +12,10 @@ import time
 
 import xmltodict
 from PIL import Image
-from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+
 from .chatUi import *
 from ...DataBase import data
 from ...ImageBox.ui import MainDemo
@@ -225,16 +226,21 @@ class ChatController(QWidget, Ui_Dialog):
         # self.message.moveCursor(self.message.textCursor().End)
 
     def pat_a_pat(self, content):
-        pat_data = xmltodict.parse(content)
-        pat_data = pat_data['msg']['appmsg']['patMsg']['records']['record']
-        fromUser = pat_data['fromUser']
-        pattedUser = pat_data['pattedUser']
-        template = pat_data['template']
-        template = ''.join(template.split('${pattedusername@textstatusicon}'))
-        template = ''.join(template.split('${fromusername@textstatusicon}'))
-        template = template.replace(f'${{{fromUser}}}', data.get_conRemark(fromUser))
-        template = template.replace(f'${{{pattedUser}}}', data.get_conRemark(pattedUser))
-        print(template)
+        try:
+            pat_data = xmltodict.parse(content)
+            pat_data = pat_data['msg']['appmsg']['patMsg']['records']['record']
+            fromUser = pat_data['fromUser']
+            pattedUser = pat_data['pattedUser']
+            template = pat_data['template']
+            template = ''.join(template.split('${pattedusername@textstatusicon}'))
+            template = ''.join(template.split('${fromusername@textstatusicon}'))
+            template = template.replace(f'${{{fromUser}}}', data.get_conRemark(fromUser))
+            template = template.replace(f'${{{pattedUser}}}', data.get_conRemark(pattedUser))
+            print(template)
+        except Exception as e:
+            print(e)
+            template = '糟糕！出错了。'
+
         html = '''
             <table align="center" style="vertical-align: middle;">
             <tbody>
@@ -258,6 +264,8 @@ class ChatController(QWidget, Ui_Dialog):
 
     def show_emoji(self, isSend, imagePath, content):
         imgPath = data.get_emoji(imagePath)
+        if not imgPath:
+            return False
         image = Image.open(imgPath)
         imagePixmap = image.size  # 宽高像素
         # 设置最大宽度
@@ -281,12 +289,13 @@ class ChatController(QWidget, Ui_Dialog):
 
     def show_img(self, isSend, imgPath, content):
         'THUMBNAIL_DIRPATH://th_29cd0f0ca87652943be9ede365aabeaa'
-        imgPath = imgPath.split('th_')[1]
-        imgPath = f'./app/data/image2/{imgPath[0:2]}/{imgPath[2:4]}/th_{imgPath}'
+        # imgPath = imgPath.split('th_')[1]
+        imgPath = data.get_imgPath(imgPath)
+        imgPath = f'./app/data/image2/{imgPath[0:2]}/{imgPath[2:4]}/{imgPath}'
         html = '''
-        <td style="border: 1px #000000 solid">
-            <a href="%s" target="_blank">
-                <img herf= "baidu.com" align="right" src="%s"/>
+         <td style="border: 1px #000000 solid;"  height="150">
+            <a href="%s" target="_blank" height="150">
+                <img herf= "baidu.com" align="right" src="%s" style="max-height:100%%" height="200">
             </a>
         </td>
         ''' % (imgPath, imgPath)

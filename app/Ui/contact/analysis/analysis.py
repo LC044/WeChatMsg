@@ -1,9 +1,10 @@
 import sys
 
-from PyQt5.QtWebEngineWidgets import QWebEngineView
-from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtWidgets import *
+
 from . import charts
 
 
@@ -14,7 +15,8 @@ class AnalysisController(QWidget):
         self.setWindowTitle('数据分析')
         self.setWindowIcon(QIcon('./app/data/icon.png'))
         # self.setWindowFlag(Qt.FramelessWindowHint)
-        self.setStyleSheet('''QWidget{background-color:rgb(255, 255, 255);}''')
+        # self.setStyleSheet('''QWidget{background-color:rgb(255, 255, 255);}''')
+        # self.setBackground()
         self.resize(400, 300)
         self.center()
         self.setAttribute(Qt.WA_AttributeCount)
@@ -40,16 +42,14 @@ class AnalysisController(QWidget):
 
     def m_movie(self):
         movie = QMovie("./app/data/bg.gif")
-
         self.label.setMovie(movie)
-
         movie.start()
 
     def initUI(self):
         self.label.setVisible(False)
         main_box = QHBoxLayout(self)
         self.browser1 = QWebEngineView()
-        self.browser1.load(QUrl('http://www.baidu.com'))
+        self.browser1.load(QUrl('file:///data/聊天统计/title.html'))
         # self.browser1 = QFrame(self)
         # self.browser1.setFrameShape(QFrame.StyledPanel)
         # self.layoutWidget = QtWidgets.QWidget(self.browser1)
@@ -67,13 +67,13 @@ class AnalysisController(QWidget):
         self.browser2 = QWebEngineView()
         self.browser2.load(QUrl('file:///data/聊天统计/wordcloud.html'))
         self.browser3 = QWebEngineView()
-        self.browser3.load(QUrl('http://www.baidu.com'))
+        self.browser3.load(QUrl('file:///data/聊天统计/time.html'))
         self.browser4 = QWebEngineView()
         self.browser4.load(QUrl('http://www.baidu.com'))
         self.browser5 = QWebEngineView()
-        self.browser5.load(QUrl('http://www.baidu.com'))
+        self.browser5.load(QUrl('file:///data/聊天统计/chat_session.html'))
         self.browser6 = QWebEngineView()
-        self.browser6.load(QUrl('http://www.baidu.com'))
+        self.browser6.load(QUrl('file:///data/聊天统计/sports.html'))
         self.browser7 = QWebEngineView()
         self.browser7.load(QUrl('file:///data/聊天统计/month_num.html'))
         self.browser8 = QWebEngineView()
@@ -95,7 +95,7 @@ class AnalysisController(QWidget):
 
         splitter1.addWidget(self.browser1)
         splitter1.addWidget(splitter2)
-        splitter1.setSizes([1, 5])
+        splitter1.setSizes([1, 8])
 
         splitter2.addWidget(splitter6)
         splitter2.addWidget(splitter3)
@@ -107,10 +107,10 @@ class AnalysisController(QWidget):
 
         splitter4.addWidget(splitter5)
         splitter4.addWidget(self.browser2)
-        splitter4.setSizes([1, 3])
+        splitter4.setSizes([1, 5])
 
         splitter5.addWidget(self.browser3)
-        splitter5.addWidget(self.browser4)
+        # splitter5.addWidget(self.browser4)
 
         splitter6.addWidget(self.browser5)
         splitter6.addWidget(splitter7)
@@ -144,16 +144,20 @@ class LoadData(QThread):
     """
     okSignal = pyqtSignal(int)
 
-    def __init__(self,ta_u, parent=None):
+    def __init__(self, ta_u, parent=None):
         super().__init__(parent)
         self.ta_username = ta_u
 
     def run(self):
+        charts.chat_start_endTime(self.ta_username)
+        charts.title(self.ta_username)
         charts.send_recv_rate(self.ta_username)
         charts.message_word_cloud(self.ta_username)
         charts.msg_type_rate(self.ta_username)
         charts.calendar_chart(self.ta_username)
         charts.month_num(self.ta_username)
+        charts.sport(self.ta_username)
+        charts.chat_session(self.ta_username)
         self.okSignal.emit(10)
 
 
