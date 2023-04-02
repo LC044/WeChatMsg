@@ -5,19 +5,20 @@ from PyQt5.QtGui import *
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import *
 
+QCoreApplication.setAttribute(Qt.AA_UseSoftwareOpenGL)
 from . import charts
 
 
 class AnalysisController(QWidget):
-    def __init__(self, username):
-        super().__init__()
+    def __init__(self, username, parent=None):
+        super().__init__(parent)
         self.ta_username = username
         self.setWindowTitle('数据分析')
         self.setWindowIcon(QIcon('./app/data/icon.png'))
         # self.setWindowFlag(Qt.FramelessWindowHint)
-        # self.setStyleSheet('''QWidget{background-color:rgb(255, 255, 255);}''')
+        self.setStyleSheet('''QWidget{background-color:rgb(255, 255, 255);}''')
         # self.setBackground()
-        self.resize(400, 300)
+        # self.resize(400, 300)
         self.center()
         self.setAttribute(Qt.WA_AttributeCount)
         self.label_01()
@@ -47,6 +48,7 @@ class AnalysisController(QWidget):
 
     def initUI(self):
         self.label.setVisible(False)
+        self.setStyleSheet('''QWidget{background-color:rgb(244, 244, 244);}''')
         main_box = QHBoxLayout(self)
         self.browser1 = QWebEngineView()
         self.browser1.load(QUrl('file:///data/聊天统计/title.html'))

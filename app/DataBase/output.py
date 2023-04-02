@@ -14,11 +14,11 @@ from . import data
 
 
 def IS_5_min(last_m, now_m):
-    '''
+    """
     #! 判断两次聊天时间是不是大于五分钟
     #! 若大于五分钟则显示时间
     #! 否则不显示
-    '''
+    """
     '''两次聊天记录时间差，单位是秒'''
     dt = now_m - last_m
     return abs(dt // 1000) >= 300
@@ -55,7 +55,6 @@ class Output(QThread):
 
     def merge_docx(self, conRemark, n):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{conRemark}"
-        all_word = os.listdir(origin_docx_path)
         all_file_path = []
         for i in range(n):
             file_name = f"{conRemark}{i}.docx"
@@ -295,14 +294,14 @@ class ChildThread(QThread):
         doc.add_paragraph()
 
     def pat_a_pat(self, doc, isSend, content, status):
-        '''
+        """
         #! 添加拍一拍信息
         todo 把wxid转化成昵称
         :param isSend:
         :param content:
         :param status:
         :return:
-        '''
+        """
         try:
             pat_data = xmltodict.parse(content)
             pat_data = pat_data['msg']['appmsg']['patMsg']['records']['record']

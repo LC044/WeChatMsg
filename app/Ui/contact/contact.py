@@ -8,13 +8,19 @@
 @comment : ···
 """
 import datetime
-from PyQt5.QtWidgets import *
+
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from .contactUi import *
-from ...DataBase import data, output
-from .userinfo import userinfoUi
+from PyQt5.QtWidgets import *
+
 from .analysis import analysis
+from .contactUi import *
+from .emotion import emotion
+from .userinfo import userinfoUi
+from ...DataBase import data, output
+
+EMOTION = 1
+ANALYSIS = 2
 
 
 class ContactController(QWidget, Ui_Dialog):
@@ -25,6 +31,8 @@ class ContactController(QWidget, Ui_Dialog):
 
     def __init__(self, Me, parent=None):
         super(ContactController, self).__init__(parent)
+        self.emotionView = None
+        self.analysisView = None
         self.chatroomFlag = None
         self.ta_avatar = None
         self.setupUi(self)
@@ -42,18 +50,32 @@ class ContactController(QWidget, Ui_Dialog):
         self.last_msg_time = 0  # 上次信息的时间
         self.last_talkerId = None
         self.now_talkerId = None
+        self.last_analysis = None
+        self.now_analysis = None
+        self.view_emotion = {}
+        self.view_analysis = {}
         self.showContact()
-        self.userinfo = userinfoUi.Ui_Frame()  # 联系人信息界面
-        self.userinfo.setupUi(self.frame)
-        self.userinfo.btn_outbut.clicked.connect(self.output)
-        self.userinfo.progressBar.setVisible(False)
-        self.userinfo.btn_analysis.clicked.connect(self.analysis)
+
+        self.now_btn = self.userinfo
+        self.last_btn = None
 
     def initui(self):
+        self.btn_back.clicked.connect(self.back)
+        self.btn_output.clicked.connect(self.output)
+        self.btn_analysis.clicked.connect(self.analysis)
+        self.btn_emotion.clicked.connect(self.emotionale_Analysis)
         self.qurl = QUrl('baidu.com')
-        # self.urlSignal.connect(self.hyperlink)
-        # self.message.setOpenLinks(False)
-        # self.message.setOpenExternalLinks(False)
+        self.lay0 = QHBoxLayout()
+        self.widget.setLayout(self.lay0)
+
+        self.frame = QtWidgets.QFrame()
+        self.frame.setObjectName("frame")
+        self.userinfo = userinfoUi.Ui_Frame()  # 联系人信息界面
+        self.userinfo.setupUi(self.frame)
+        # self.userinfo.btn_outbut.clicked.connect(self.output)
+        self.userinfo.progressBar.setVisible(False)
+        self.lay0.addWidget(self.frame)
+        # self.userinfo.btn_analysis.clicked.connect(self.analysis)
 
     def showContact(self):
         """
@@ -86,6 +108,8 @@ class ContactController(QWidget, Ui_Dialog):
         :return:
         """
         self.now_talkerId = talkerId
+        self.frame.setVisible(True)
+        self.setViewVisible(self.now_talkerId)
         # 把当前按钮设置为灰色
         if self.last_talkerId and self.last_talkerId != talkerId:
             print('对方账号：', self.last_talkerId)
@@ -149,9 +173,69 @@ class ContactController(QWidget, Ui_Dialog):
         聊天分析
         :return:
         """
-        self.analysisView = analysis.AnalysisController(self.now_talkerId)
-        self.analysisView.show()
+        self.frame.setVisible(False)
+
+        if self.now_talkerId in self.view_analysis:
+            self.setViewVisible(self.now_talkerId, mod=ANALYSIS)
+            return True
+        else:
+            self.setViewVisible(self.now_talkerId)
+        self.view_analysis[self.now_talkerId] = analysis.AnalysisController(self.now_talkerId)
+        self.lay0.addWidget(self.view_analysis[self.now_talkerId])
+        self.last_analysis = self.now_talkerId
+
+    def emotionale_Analysis(self):
+        print('情感分析', data.get_conRemark(self.now_talkerId))
+        self.frame.setVisible(False)
+        if self.now_talkerId in self.view_emotion:
+            self.setViewVisible(self.now_talkerId, mod=EMOTION)
+            return True
+        else:
+            self.setViewVisible(self.now_talkerId)
+        self.view_emotion[self.now_talkerId] = emotion.EmotionController(self.ta_username)
+        self.lay0.addWidget(self.view_emotion[self.now_talkerId])
+        self.last_analysis = self.now_talkerId
         pass
+
+    def showUserinfo(self):
+        self.analysisView = analysis.AnalysisController(self.now_talkerId)
+        self.lay0 = QHBoxLayout()
+        self.widget.setLayout(self.lay0)
+        self.lay0.addWidget(self.analysisView)
+
+    def back(self):
+        self.frame.setVisible(True)
+        self.setViewVisible(self.now_talkerId)
+
+    def setViewVisible(self, wxid: str, mod=None):
+        """将wxid的视图设置为可见"""
+        if not self.last_analysis:
+            return False
+        if mod == EMOTION:
+            for key, value in self.view_emotion.items():
+                # 如果key==wxid则将该视图设置为可见，否则不可见
+                if key == wxid:
+                    print(data.get_conRemark(wxid), '视图可见')
+                    value.setVisible(True)
+                else:
+                    print(data.get_conRemark(key), '视图不可见')
+                    value.setVisible(False)
+            for key, value in self.view_analysis.items():
+                value.setVisible(False)
+        elif mod == ANALYSIS:
+            for key, value in self.view_analysis.items():
+                # 如果key==wxid则将该视图设置为可见，否则不可见
+                if key == wxid:
+                    value.setVisible(True)
+                else:
+                    value.setVisible(False)
+            for key, value in self.view_emotion.items():
+                value.setVisible(False)
+        else:
+            for key, value in self.view_analysis.items():
+                value.setVisible(False)
+            for key, value in self.view_emotion.items():
+                value.setVisible(False)
 
 
 class Contact(QtWidgets.QPushButton):
@@ -235,6 +319,7 @@ class Contact(QtWidgets.QPushButton):
         self.show_info(id)
 
     def show_info(self, id):
+
         avatar = data.get_avator(self.username)
         # print(avatar)
         remark = data.get_conRemark(self.username)

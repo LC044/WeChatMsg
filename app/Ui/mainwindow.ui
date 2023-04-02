@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>MainWindow</class>
+    <widget class="QMainWindow" name="MainWindow">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>1280</width>
+                <height>779</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>MainWindow</string>
+        </property>
+        <widget class="QWidget" name="centralwidget">
+            <layout class="QHBoxLayout" name="horizontalLayout">
+                <property name="spacing">
+                    <number>0</number>
+                </property>
+                <property name="leftMargin">
+                    <number>0</number>
+                </property>
+                <property name="rightMargin">
+                    <number>0</number>
+                </property>
+                <item>
+                    <widget class="QFrame" name="frame_info">
+                        <property name="minimumSize">
+                            <size>
+                                <width>100</width>
+                                <height>500</height>
+                            </size>
+                        </property>
+                        <property name="maximumSize">
+                            <size>
+                                <width>100</width>
+                                <height>16777215</height>
+                            </size>
+                        </property>
+                        <property name="styleSheet">
+                            <string notr="true">background-color:rgb(240,240,240)</string>
+                        </property>
+                        <property name="frameShape">
+                            <enum>QFrame::StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                            <enum>QFrame::Sunken</enum>
+                        </property>
+                        <widget class="QWidget" name="verticalLayoutWidget">
+                            <property name="geometry">
+                                <rect>
+                                    <x>0</x>
+                                    <y>190</y>
+                                    <width>91</width>
+                                    <height>271</height>
+                                </rect>
+                            </property>
+                            <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,1,1">
+                                <property name="spacing">
+                                    <number>0</number>
+                                </property>
+                                <item>
+                                    <widget class="QPushButton" name="btn_chat">
+                                        <property name="minimumSize">
+                                            <size>
+                                                <width>0</width>
+                                                <height>60</height>
+                                            </size>
+                                        </property>
+                                        <property name="styleSheet">
+                                            <string notr="true">QPushButton {background-color: rgb(240,240,240);}
+                                                QPushButton:hover{background-color: rgb(209,209,209);}
+                                            </string>
+                                        </property>
+                                        <property name="text">
+                                            <string>聊天</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QPushButton" name="btn_contact">
+                                        <property name="minimumSize">
+                                            <size>
+                                                <width>0</width>
+                                                <height>60</height>
+                                            </size>
+                                        </property>
+                                        <property name="styleSheet">
+                                            <string notr="true">QPushButton {background-color: rgb(240,240,240);}
+                                                QPushButton:hover{background-color: rgb(209,209,209);}
+                                            </string>
+                                        </property>
+                                        <property name="text">
+                                            <string>联系人</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QPushButton" name="btn_myinfo">
+                                        <property name="minimumSize">
+                                            <size>
+                                                <width>60</width>
+                                                <height>60</height>
+                                            </size>
+                                        </property>
+                                        <property name="styleSheet">
+                                            <string notr="true">QPushButton {background-color: rgb(240,240,240);}
+                                                QPushButton:hover{background-color: rgb(209,209,209);}
+                                            </string>
+                                        </property>
+                                        <property name="text">
+                                            <string>我的</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QPushButton" name="btn_about">
+                                        <property name="minimumSize">
+                                            <size>
+                                                <width>60</width>
+                                                <height>60</height>
+                                            </size>
+                                        </property>
+                                        <property name="styleSheet">
+                                            <string notr="true">QPushButton {background-color: rgb(240,240,240);}
+                                                QPushButton:hover{background-color: rgb(209,209,209);}
+                                            </string>
+                                        </property>
+                                        <property name="text">
+                                            <string>关于</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                            </layout>
+                        </widget>
+                        <widget class="QLabel" name="myavatar">
+                            <property name="geometry">
+                                <rect>
+                                    <x>10</x>
+                                    <y>40</y>
+                                    <width>80</width>
+                                    <height>80</height>
+                                </rect>
+                            </property>
+                            <property name="text">
+                                <string>avatar</string>
+                            </property>
+                        </widget>
+                        <widget class="QPushButton" name="sign_up">
+                            <property name="geometry">
+                                <rect>
+                                    <x>0</x>
+                                    <y>0</y>
+                                    <width>40</width>
+                                    <height>28</height>
+                                </rect>
+                            </property>
+                            <property name="text">
+                                <string>退出</string>
+                            </property>
+                        </widget>
+                        <widget class="QPushButton" name="btn_destroy">
+                            <property name="geometry">
+                                <rect>
+                                    <x>50</x>
+                                    <y>0</y>
+                                    <width>40</width>
+                                    <height>28</height>
+                                </rect>
+                            </property>
+                            <property name="text">
+                                <string>注销</string>
+                            </property>
+                        </widget>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QFrame" name="frame_main">
+                        <property name="minimumSize">
+                            <size>
+                                <width>1120</width>
+                                <height>720</height>
+                            </size>
+                        </property>
+                        <property name="layoutDirection">
+                            <enum>Qt::LeftToRight</enum>
+                        </property>
+                        <property name="frameShape">
+                            <enum>QFrame::Box</enum>
+                        </property>
+                        <property name="frameShadow">
+                            <enum>QFrame::Raised</enum>
+                        </property>
+                    </widget>
+                </item>
+            </layout>
+        </widget>
+        <widget class="QMenuBar" name="menubar">
+            <property name="geometry">
+                <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>1280</width>
+                    <height>23</height>
+                </rect>
+            </property>
+            <widget class="QMenu" name="menu_F">
+                <property name="title">
+                    <string>文件(F)</string>
+                </property>
+                <addaction name="separator"/>
+                <addaction name="separator"/>
+                <addaction name="action_3"/>
+                <addaction name="action_4"/>
+            </widget>
+            <widget class="QMenu" name="menu">
+                <property name="title">
+                    <string>编辑</string>
+                </property>
+            </widget>
+            <widget class="QMenu" name="menu_2">
+                <property name="title">
+                    <string>帮助</string>
+                </property>
+                <addaction name="action"/>
+            </widget>
+            <addaction name="menu_F"/>
+            <addaction name="menu"/>
+            <addaction name="menu_2"/>
+        </widget>
+        <widget class="QStatusBar" name="statusbar"/>
+        <action name="action_3">
+            <property name="text">
+                <string>保存</string>
+            </property>
+        </action>
+        <action name="action_4">
+            <property name="text">
+                <string>退出</string>
+            </property>
+        </action>
+        <action name="action">
+            <property name="text">
+                <string>关于</string>
+            </property>
+        </action>
+    </widget>
+    <resources/>
+    <connections/>
+</ui>

@@ -13,12 +13,12 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 from app.DataBase import data
+from . import mainwindow
 from .chat import chat
 from .contact import contact
-from .mainviewUi import *
 
 
-class MainWinController(QMainWindow, Ui_Dialog):
+class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
     exitSignal = pyqtSignal()
 
     # username = ''
@@ -28,10 +28,22 @@ class MainWinController(QMainWindow, Ui_Dialog):
         self.setWindowTitle('WeChat')
         self.setWindowIcon(QIcon('./app/data/icon.png'))
         self.Me = data.get_myinfo()
-        self.chatView = chat.ChatController(self.Me, parent=self.frame_main)
+        self.setAttribute(Qt.WA_AttributeCount)
+
+        self.chatView = chat.ChatController(self.Me, parent=None)
         self.chatView.setVisible(False)
-        self.contactView = contact.ContactController(self.Me, parent=self.frame_main)
+        # self.chatView.setLayout()
+        self.lay = QHBoxLayout()
+        self.frame_main.setLayout(self.lay)
+        self.lay.addWidget(self.chatView)
+        # self.frame_main.setLayout(self.chatView)
+        # self.frame_main.setLayout()
+        self.contactView = contact.ContactController(self.Me, parent=None)
         self.contactView.setVisible(False)
+        self.lay0 = QHBoxLayout()
+        self.frame_main.setLayout(self.lay0)
+        self.lay.addWidget(self.contactView)
+
         # self.myinfoView = userinfo.MyinfoController(self.Me, parent=self.frame_main)
         # self.myinfoView.setVisible(False)
         self.btn_chat.clicked.connect(self.chat_view)  # 聊天按钮

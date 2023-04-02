@@ -286,7 +286,8 @@ def sport(username):
             .set_global_opts(
                 title_opts=opts.TitleOpts(title="{}月".format(months[i + 1].strftime("%Y-%m"))),
                 # legend_opts=opts.LegendOpts(is_show=False),
-                yaxis_opts=opts.AxisOpts(is_inverse=True)
+                yaxis_opts=opts.AxisOpts(is_inverse=True),
+                # xaxis_opts=opts.AxisOpts(type_='time')
             )
             .set_series_opts(
                 label_opts=opts.LabelOpts(
@@ -307,7 +308,8 @@ def sport(username):
 
             )
             .set_global_opts(
-                yaxis_opts=opts.AxisOpts(is_inverse=True)
+                yaxis_opts=opts.AxisOpts(is_inverse=True),
+                # xaxis_opts=opts.AxisOpts(type_='time')
             )
             .set_series_opts(
                 label_opts=opts.LabelOpts(

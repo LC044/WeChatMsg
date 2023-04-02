@@ -6,8 +6,8 @@
             <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1280</width>
-                <height>720</height>
+                <width>1244</width>
+                <height>738</height>
             </rect>
         </property>
         <property name="cursor">
@@ -22,11 +22,20 @@
         <widget class="QFrame" name="frame_main">
             <property name="geometry">
                 <rect>
-                    <x>160</x>
-                    <y>0</y>
+                    <x>115</x>
+                    <y>9</y>
                     <width>1120</width>
                     <height>720</height>
                 </rect>
+            </property>
+            <property name="minimumSize">
+                <size>
+                    <width>1120</width>
+                    <height>720</height>
+                </size>
+            </property>
+            <property name="layoutDirection">
+                <enum>Qt::LeftToRight</enum>
             </property>
             <property name="frameShape">
                 <enum>QFrame::StyledPanel</enum>
@@ -38,11 +47,17 @@
         <widget class="QFrame" name="frame_info">
             <property name="geometry">
                 <rect>
-                    <x>0</x>
-                    <y>0</y>
-                    <width>161</width>
-                    <height>721</height>
+                    <x>9</x>
+                    <y>9</y>
+                    <width>100</width>
+                    <height>720</height>
                 </rect>
+            </property>
+            <property name="minimumSize">
+                <size>
+                    <width>100</width>
+                    <height>500</height>
+                </size>
             </property>
             <property name="styleSheet">
                 <string notr="true">background-color:rgb(240,240,240)</string>
@@ -56,13 +71,13 @@
             <widget class="QWidget" name="verticalLayoutWidget">
                 <property name="geometry">
                     <rect>
-                        <x>20</x>
+                        <x>0</x>
                         <y>190</y>
-                        <width>111</width>
-                        <height>501</height>
+                        <width>91</width>
+                        <height>271</height>
                     </rect>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0,1,0">
+                <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,1,1">
                     <property name="spacing">
                         <number>0</number>
                     </property>
@@ -71,7 +86,7 @@
                             <property name="minimumSize">
                                 <size>
                                     <width>0</width>
-                                    <height>80</height>
+                                    <height>60</height>
                                 </size>
                             </property>
                             <property name="styleSheet">
@@ -89,7 +104,7 @@
                             <property name="minimumSize">
                                 <size>
                                     <width>0</width>
-                                    <height>80</height>
+                                    <height>60</height>
                                 </size>
                             </property>
                             <property name="styleSheet">
@@ -106,8 +121,8 @@
                         <widget class="QPushButton" name="btn_myinfo">
                             <property name="minimumSize">
                                 <size>
-                                    <width>100</width>
-                                    <height>80</height>
+                                    <width>60</width>
+                                    <height>60</height>
                                 </size>
                             </property>
                             <property name="styleSheet">
@@ -124,8 +139,8 @@
                         <widget class="QPushButton" name="btn_about">
                             <property name="minimumSize">
                                 <size>
-                                    <width>100</width>
-                                    <height>80</height>
+                                    <width>60</width>
+                                    <height>60</height>
                                 </size>
                             </property>
                             <property name="styleSheet">
@@ -143,10 +158,10 @@
             <widget class="QLabel" name="myavatar">
                 <property name="geometry">
                     <rect>
-                        <x>30</x>
-                        <y>50</y>
-                        <width>100</width>
-                        <height>100</height>
+                        <x>10</x>
+                        <y>40</y>
+                        <width>80</width>
+                        <height>80</height>
                     </rect>
                 </property>
                 <property name="text">
@@ -158,25 +173,25 @@
                     <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>71</width>
+                        <width>40</width>
                         <height>28</height>
                     </rect>
                 </property>
                 <property name="text">
-                    <string>退出登录</string>
+                    <string>退出</string>
                 </property>
             </widget>
             <widget class="QPushButton" name="btn_destroy">
                 <property name="geometry">
                     <rect>
-                        <x>80</x>
+                        <x>50</x>
                         <y>0</y>
-                        <width>71</width>
+                        <width>40</width>
                         <height>28</height>
                     </rect>
                 </property>
                 <property name="text">
-                    <string>注销账户</string>
+                    <string>注销</string>
                 </property>
             </widget>
         </widget>

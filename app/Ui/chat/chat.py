@@ -21,7 +21,7 @@ from ...DataBase import data
 from ...ImageBox.ui import MainDemo
 
 
-class ChatController(QWidget, Ui_Dialog):
+class ChatController(QWidget, Ui_Form):
     exitSignal = pyqtSignal()
     urlSignal = pyqtSignal(QUrl)
 
@@ -32,6 +32,11 @@ class ChatController(QWidget, Ui_Dialog):
         self.chatroomFlag = None
         self.ta_avatar = None
         self.setupUi(self)
+        self.message = self.message_2
+        self.frame = self.frame_2
+        self.scrollAreaWidgetContents = self.scrollAreaWidgetContents_2
+        self.label_remark = self.label_remark_2
+        self.textEdit = self.textEdit_2
         self.setWindowTitle('WeChat')
         self.setWindowIcon(QIcon('./app/data/icon.png'))
         self.initui()
@@ -43,6 +48,7 @@ class ChatController(QWidget, Ui_Dialog):
         self.last_btn = None
         self.chat_flag = True
         # self.showChat()
+
         self.message.verticalScrollBar().valueChanged.connect(self.textbrower_verticalScrollBar)
         self.show_flag = False
         self.ta_username = None
@@ -59,29 +65,29 @@ class ChatController(QWidget, Ui_Dialog):
         self.message.setOpenExternalLinks(False)
         # self.message.anchorClicked(self.hyperlink())
         self.message.anchorClicked.connect(self.hyperlink)
-        self.btn_sendMsg = QtWidgets.QPushButton(self.frame)
-        self.btn_sendMsg.setGeometry(QtCore.QRect(680, 670, 121, 51))
-        font = QtGui.QFont()
-        font.setFamily("黑体")
-        font.setPointSize(15)
-        font.setBold(False)
-        font.setWeight(50)
-        self.btn_sendMsg.setFont(font)
-        self.btn_sendMsg.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-        self.btn_sendMsg.setMouseTracking(False)
-        self.btn_sendMsg.setAutoFillBackground(False)
-        self.btn_sendMsg.setStyleSheet("QPushButton {background-color: #f0f0f0;\n"
-                                       "padding: 10px;\n"
-                                       "color:rgb(5,180,104);}\n"
-                                       "QPushButton:hover{background-color: rgb(198,198,198)}\n"
-                                       )
-        self.btn_sendMsg.setIconSize(QtCore.QSize(40, 40))
-        self.btn_sendMsg.setCheckable(False)
-        self.btn_sendMsg.setAutoDefault(True)
-        self.btn_sendMsg.setObjectName("btn_sendMsg")
-        _translate = QtCore.QCoreApplication.translate
-        self.btn_sendMsg.setText(_translate("Dialog", "发送"))
-        self.btn_sendMsg.setToolTip('按Enter键发送，按Ctrl+Enter键换行')
+        # self.btn_sendMsg = QtWidgets.QPushButton(self.textEdit)
+        # self.btn_sendMsg.setGeometry(QtCore.QRect(1, 1, 121, 51))
+        # font = QtGui.QFont()
+        # font.setFamily("黑体")
+        # font.setPointSize(15)
+        # font.setBold(False)
+        # font.setWeight(50)
+        # self.btn_sendMsg.setFont(font)
+        # self.btn_sendMsg.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+        # self.btn_sendMsg.setMouseTracking(False)
+        # self.btn_sendMsg.setAutoFillBackground(False)
+        # self.btn_sendMsg.setStyleSheet("QPushButton {background-color: #f0f0f0;\n"
+        #                                "padding: 10px;\n"
+        #                                "color:rgb(5,180,104);}\n"
+        #                                "QPushButton:hover{background-color: rgb(198,198,198)}\n"
+        #                                )
+        # self.btn_sendMsg.setIconSize(QtCore.QSize(40, 40))
+        # self.btn_sendMsg.setCheckable(False)
+        # self.btn_sendMsg.setAutoDefault(True)
+        # self.btn_sendMsg.setObjectName("btn_sendMsg")
+        # _translate = QtCore.QCoreApplication.translate
+        # self.btn_sendMsg.setText(_translate("Dialog", "发送"))
+        self.btn_sendMsg_2.setToolTip('按Enter键发送，按Ctrl+Enter键换行')
 
     def showChat(self):
         """
@@ -92,7 +98,9 @@ class ChatController(QWidget, Ui_Dialog):
             return
         self.show_flag = True
         rconversations = data.get_rconversation()
-        max_hight = max(len(rconversations) * 80, 680)
+        # max_hight = max(len(rconversations) * 80, 680)
+        max_hight = max(len(rconversations) * 80, self.size().height())
+
         self.scrollAreaWidgetContents.setGeometry(
             QtCore.QRect(0, 0, 300, max_hight))
         for i in range(len(rconversations)):
@@ -117,8 +125,8 @@ class ChatController(QWidget, Ui_Dialog):
         if self.last_talkerId and self.last_talkerId != talkerId:
             print('对方账号：', self.last_talkerId)
             self.contacts[self.last_talkerId].setStyleSheet(
-                "QPushButton {background-color: rgb(253,253,253);}"
-                "QPushButton:hover{background-color: rgb(209,209,209);}\n"
+                "QPushButton {background-color: rgb(220,220,220);}"
+                "QPushButton:hover{background-color: rgb(208,208,208);}\n"
             )
         self.last_talkerId = talkerId
         self.contacts[talkerId].setStyleSheet(
@@ -264,6 +272,7 @@ class ChatController(QWidget, Ui_Dialog):
 
     def show_emoji(self, isSend, imagePath, content):
         imgPath = data.get_emoji(imagePath)
+        print('emoji:', imgPath)
         if not imgPath:
             return False
         image = Image.open(imgPath)
@@ -496,8 +505,8 @@ class Contact(QtWidgets.QPushButton):
         self.gridLayout1.setRowStretch(1, 3)
         self.setLayout(self.gridLayout1)
         self.setStyleSheet(
-            "QPushButton {background-color: rgb(253,253,253);}"
-            "QPushButton:hover{background-color: rgb(209,209,209);}\n"
+            "QPushButton {background-color: rgb(220,220,220);}"
+            "QPushButton:hover{background-color: rgb(208,208,208);}\n"
         )
         self.msgCount = contact[0]
         self.username = contact[1]

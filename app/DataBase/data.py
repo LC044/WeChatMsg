@@ -200,10 +200,22 @@ def get_message(wxid, num):
     sql = '''
     select * from message
     where talker = ?
-    order by msgId desc
+    order by createTime desc
     limit ?,100
     '''
     cursor.execute(sql, [wxid, num * 100])
+    return cursor.fetchall()
+
+
+def get_text_by_num(wxid, num):
+    sql = '''
+            SELECT content,strftime('%Y-%m-%d',createTime/1000,'unixepoch','localtime') as days
+            from message
+            where talker = ? and type=1
+            order by days
+        '''
+    '''group by days'''
+    cursor.execute(sql, [wxid])
     return cursor.fetchall()
 
 
@@ -261,7 +273,7 @@ def get_emoji(imgPath):
         except sqlite3.ProgrammingError as e:
             print(e, imgPath)
             return False
-    return newPath
+    return False
 
 
 def download_emoji(imgPath, url):
@@ -655,6 +667,12 @@ def chat_start_endTime(username):
 
 
 if __name__ == '__main__':
+    wxid = 'wxid_8piw6sb4hvfm22'
+    wxid = 'wxid_wt2vsktnu4z022'
+    # emotion_analysis(wxid)
+    plot_emotion(wxid)
+'''
+if __name__ == '__main__':
     # rconversation = get_rconversation()
     # for i in rconversation:
     #     print(i)
@@ -680,5 +698,17 @@ if __name__ == '__main__':
     # print(result)
     # radar_hour('wxid_8piw6sb4hvfm22')
     # print(result)
-    print(get_msg_start_time('wxid_8piw6sb4hvfm22'), get_msg_end_time('wxid_8piw6sb4hvfm22'))
-    chat_start_endTime('wxid_8piw6sb4hvfm22')
+    # print(get_msg_start_time('wxid_8piw6sb4hvfm22'), get_msg_end_time('wxid_8piw6sb4hvfm22'))
+    # chat_start_endTime('wxid_8piw6sb4hvfm22')
+    msg = get_text_by_num('wxid_8piw6sb4hvfm22', 1)
+    from snownlp import SnowNLP
+
+    # print(msg[0])
+    for m in msg:
+        content = m[0]
+        print(content)
+        s = SnowNLP(content)
+        # # 输出情绪为积极的概率
+        print(s.sentiments)
+    # print(msg)
+'''
