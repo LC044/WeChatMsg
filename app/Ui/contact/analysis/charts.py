@@ -32,10 +32,10 @@ Type = {
     '436207665': '发红包',
     '49': '分享链接'
 }
-charts_width = 700
-charts_height = 600
-wordcloud_width = 700
-wordcloud_height = 600
+charts_width = 1000
+charts_height = 500
+wordcloud_width = 1000
+wordcloud_height = 500
 
 
 def send_recv_rate(username):

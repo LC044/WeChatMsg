@@ -41,9 +41,11 @@ class ChatController(QWidget, Ui_Form):
         self.setWindowIcon(QIcon('./app/data/icon.png'))
         self.initui()
         self.Me = Me
+
         self.Thread = ChatMsg(self.Me.username, None)
         self.Thread.isSend_signal.connect(self.showMsg)
         self.Thread.okSignal.connect(self.setScrollBarPos)
+
         self.contacts = {}
         self.last_btn = None
         self.chat_flag = True
@@ -133,7 +135,7 @@ class ChatController(QWidget, Ui_Form):
             "QPushButton {background-color: rgb(198,198,198);}"
             "QPushButton:hover{background-color: rgb(209,209,209);}\n"
         )
-        conRemark = data.get_conRemark(talkerId)
+        conRemark = self.contacts[talkerId].conRemark
         self.label_remark.setText(conRemark)
         self.message.clear()
         self.message.append(talkerId)
@@ -142,7 +144,7 @@ class ChatController(QWidget, Ui_Form):
             self.chatroomFlag = True
         else:
             self.chatroomFlag = False
-        self.ta_avatar = data.get_avator(talkerId)
+        self.ta_avatar = self.contacts[talkerId].avatar
         self.textEdit.setFocus()
         self.Thread.ta_u = talkerId
         self.Thread.msg_id = 0
@@ -532,14 +534,14 @@ class Contact(QtWidgets.QPushButton):
         self.show_info(id)
 
     def show_info(self, id):
-        avatar = data.get_avator(self.username)
+        self.avatar = data.get_avator(self.username)
         # print(avatar)
-        remark = data.get_conRemark(self.username)
+        self.conRemark = data.get_conRemark(self.username)
         time = datetime.datetime.now().strftime("%m-%d %H:%M")
         msg = '还没说话'
-        pixmap = QPixmap(avatar).scaled(60, 60)  # 按指定路径找到图片
+        pixmap = QPixmap(self.avatar).scaled(60, 60)  # 按指定路径找到图片
         self.label_avatar.setPixmap(pixmap)  # 在label上显示图片
-        self.label_remark.setText(remark)
+        self.label_remark.setText(self.conRemark)
         self.label_msg.setText(self.digest)
         self.label_time.setText(data.timestamp2str(self.conversationTime)[2:])
 

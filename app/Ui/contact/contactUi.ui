@@ -158,22 +158,7 @@
                                 <property name="frameShadow">
                                     <enum>QFrame::Raised</enum>
                                 </property>
-                                <layout class="QVBoxLayout" name="verticalLayout" stretch="1,30">
-                                    <property name="spacing">
-                                        <number>0</number>
-                                    </property>
-                                    <property name="leftMargin">
-                                        <number>0</number>
-                                    </property>
-                                    <property name="topMargin">
-                                        <number>0</number>
-                                    </property>
-                                    <property name="rightMargin">
-                                        <number>0</number>
-                                    </property>
-                                    <property name="bottomMargin">
-                                        <number>0</number>
-                                    </property>
+                                <layout class="QVBoxLayout" name="verticalLayout">
                                     <item>
                                         <layout class="QHBoxLayout" name="horizontalLayout_3">
                                             <property name="spacing">
@@ -228,10 +213,9 @@
                                         </layout>
                                     </item>
                                     <item>
-                                        <widget class="QWidget" name="widget" native="true">
-                                            <property name="autoFillBackground">
-                                                <bool>true</bool>
-                                            </property>
+                                        <widget class="QStackedWidget" name="stackedWidget">
+                                            <widget class="QWidget" name="page_3"/>
+                                            <widget class="QWidget" name="page_4"/>
                                         </widget>
                                     </item>
                                 </layout>
