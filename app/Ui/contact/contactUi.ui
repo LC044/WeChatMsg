@@ -153,14 +153,32 @@
                         <item>
                             <widget class="QFrame" name="frame">
                                 <property name="frameShape">
-                                    <enum>QFrame::StyledPanel</enum>
+                                    <enum>QFrame::NoFrame</enum>
                                 </property>
                                 <property name="frameShadow">
                                     <enum>QFrame::Raised</enum>
                                 </property>
                                 <layout class="QVBoxLayout" name="verticalLayout" stretch="1,30">
+                                    <property name="spacing">
+                                        <number>0</number>
+                                    </property>
+                                    <property name="leftMargin">
+                                        <number>0</number>
+                                    </property>
+                                    <property name="topMargin">
+                                        <number>0</number>
+                                    </property>
+                                    <property name="rightMargin">
+                                        <number>0</number>
+                                    </property>
+                                    <property name="bottomMargin">
+                                        <number>0</number>
+                                    </property>
                                     <item>
                                         <layout class="QHBoxLayout" name="horizontalLayout_3">
+                                            <property name="spacing">
+                                                <number>0</number>
+                                            </property>
                                             <item>
                                                 <widget class="QLabel" name="label_remark">
                                                     <property name="maximumSize">
@@ -210,7 +228,11 @@
                                         </layout>
                                     </item>
                                     <item>
-                                        <widget class="QWidget" name="widget" native="true"/>
+                                        <widget class="QWidget" name="widget" native="true">
+                                            <property name="autoFillBackground">
+                                                <bool>true</bool>
+                                            </property>
+                                        </widget>
                                     </item>
                                 </layout>
                             </widget>

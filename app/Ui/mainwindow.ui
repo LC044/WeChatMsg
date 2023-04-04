@@ -21,20 +21,26 @@
                 <property name="leftMargin">
                     <number>0</number>
                 </property>
+                <property name="topMargin">
+                    <number>0</number>
+                </property>
                 <property name="rightMargin">
+                    <number>0</number>
+                </property>
+                <property name="bottomMargin">
                     <number>0</number>
                 </property>
                 <item>
                     <widget class="QFrame" name="frame_info">
                         <property name="minimumSize">
                             <size>
-                                <width>100</width>
+                                <width>80</width>
                                 <height>500</height>
                             </size>
                         </property>
                         <property name="maximumSize">
                             <size>
-                                <width>100</width>
+                                <width>80</width>
                                 <height>16777215</height>
                             </size>
                         </property>
@@ -50,9 +56,9 @@
                         <widget class="QWidget" name="verticalLayoutWidget">
                             <property name="geometry">
                                 <rect>
-                                    <x>0</x>
+                                    <x>10</x>
                                     <y>190</y>
-                                    <width>91</width>
+                                    <width>61</width>
                                     <height>271</height>
                                 </rect>
                             </property>
@@ -137,40 +143,14 @@
                         <widget class="QLabel" name="myavatar">
                             <property name="geometry">
                                 <rect>
-                                    <x>10</x>
+                                    <x>5</x>
                                     <y>40</y>
-                                    <width>80</width>
-                                    <height>80</height>
+                                    <width>70</width>
+                                    <height>70</height>
                                 </rect>
                             </property>
                             <property name="text">
                                 <string>avatar</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" name="sign_up">
-                            <property name="geometry">
-                                <rect>
-                                    <x>0</x>
-                                    <y>0</y>
-                                    <width>40</width>
-                                    <height>28</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>退出</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" name="btn_destroy">
-                            <property name="geometry">
-                                <rect>
-                                    <x>50</x>
-                                    <y>0</y>
-                                    <width>40</width>
-                                    <height>28</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>注销</string>
                             </property>
                         </widget>
                     </widget>

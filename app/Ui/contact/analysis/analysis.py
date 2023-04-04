@@ -13,8 +13,9 @@ class AnalysisController(QWidget):
     def __init__(self, username, parent=None):
         super().__init__(parent)
         self.ta_username = username
-        self.setWindowTitle('数据分析')
-        self.setWindowIcon(QIcon('./app/data/icon.png'))
+        # self.setWindowTitle('数据分析')
+        # self.setWindowIcon(QIcon('./app/data/icon.png'))
+
         # self.setWindowFlag(Qt.FramelessWindowHint)
         self.setStyleSheet('''QWidget{background-color:rgb(255, 255, 255);}''')
         # self.setBackground()
@@ -37,7 +38,8 @@ class AnalysisController(QWidget):
 
     def label_01(self):
         self.label = QLabel(self)
-        self.label.setGeometry(150, 100, 100, 100)
+        size = self.geometry()
+        self.label.setGeometry(size.width() // 2, self.height() // 2, 100, 100)
         self.label.setToolTip("这是一个标签")
         self.m_movie()
 
@@ -49,29 +51,19 @@ class AnalysisController(QWidget):
     def initUI(self):
         self.label.setVisible(False)
         self.setStyleSheet('''QWidget{background-color:rgb(244, 244, 244);}''')
-        main_box = QHBoxLayout(self)
+
+        main_box = QVBoxLayout(self)
+
         self.browser1 = QWebEngineView()
         self.browser1.load(QUrl('file:///data/聊天统计/title.html'))
-        # self.browser1 = QFrame(self)
-        # self.browser1.setFrameShape(QFrame.StyledPanel)
-        # self.layoutWidget = QtWidgets.QWidget(self.browser1)
-        # # self.layoutWidget.setGeometry(QtCore.QRect(71, 63, 227, 155))
-        # self.verticalLayout = QtWidgets.QVBoxLayout(self.layoutWidget)
-        # self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        # self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
-        # self.label_2 = QtWidgets.QLabel(self.layoutWidget)
-        # _translate = QtCore.QCoreApplication.translate
-        # conRemark = data.get_conRemark(self.ta_username)
-        # self.label_2.setText(_translate("Dialog", f"{conRemark}"))
-        # self.horizontalLayout_2.addWidget(self.label_2)
-        # self.browser1.setLayout(self.horizontalLayout_2)
-
         self.browser2 = QWebEngineView()
         self.browser2.load(QUrl('file:///data/聊天统计/wordcloud.html'))
         self.browser3 = QWebEngineView()
         self.browser3.load(QUrl('file:///data/聊天统计/time.html'))
+
         self.browser4 = QWebEngineView()
         self.browser4.load(QUrl('http://www.baidu.com'))
+        # self.browser4.resize(800, 600)
         self.browser5 = QWebEngineView()
         self.browser5.load(QUrl('file:///data/聊天统计/chat_session.html'))
         self.browser6 = QWebEngineView()
@@ -85,6 +77,42 @@ class AnalysisController(QWidget):
         self.browser10 = QWebEngineView()
         self.browser10.load(QUrl('file:///data/聊天统计/send_recv_rate.html'))
 
+        main_box.addWidget(self.browser1)
+
+        scrollArea = QScrollArea(self)
+        scrollAreaContent = QWidget(scrollArea)
+        Vlayout2 = QVBoxLayout(scrollAreaContent)
+
+        splitter2 = QSplitter(Qt.Vertical)
+        splitter2.addWidget(self.browser2)
+        Vlayout2.addWidget(splitter2)
+
+        splitter3 = QSplitter(Qt.Vertical)
+        splitter3.addWidget(self.browser3)
+        Vlayout2.addWidget(splitter3)
+
+        splitter4 = QSplitter(Qt.Vertical)
+        splitter4.addWidget(self.browser4)
+        Vlayout2.addWidget(splitter4)
+
+        splitter5 = QSplitter(Qt.Vertical)
+        splitter5.addWidget(self.browser6)
+        Vlayout2.addWidget(splitter5)
+
+        Vlayout2.addWidget(self.browser3)
+        Vlayout2.addWidget(self.browser6)
+        Vlayout2.addWidget(self.browser5)
+        Vlayout2.addWidget(self.browser7)
+        Vlayout2.addWidget(self.browser8)
+        Vlayout2.addWidget(self.browser9)
+        Vlayout2.addWidget(self.browser10)
+
+        scrollAreaContent.setLayout(Vlayout2)
+        scrollArea.setWidget(scrollAreaContent)
+        main_box.addWidget(scrollArea)
+        main_box.setStretch(0, 1)
+        main_box.setStretch(1, 10)
+        '''
         splitter1 = QSplitter(Qt.Vertical)
         splitter2 = QSplitter(Qt.Horizontal)
         splitter3 = QSplitter(Qt.Horizontal)
@@ -97,7 +125,7 @@ class AnalysisController(QWidget):
 
         splitter1.addWidget(self.browser1)
         splitter1.addWidget(splitter2)
-        splitter1.setSizes([1, 8])
+        splitter1.setSizes([1, 13])
 
         splitter2.addWidget(splitter6)
         splitter2.addWidget(splitter3)
@@ -109,7 +137,7 @@ class AnalysisController(QWidget):
 
         splitter4.addWidget(splitter5)
         splitter4.addWidget(self.browser2)
-        splitter4.setSizes([1, 5])
+        splitter4.setSizes([2, 13])
 
         splitter5.addWidget(self.browser3)
         # splitter5.addWidget(self.browser4)
@@ -127,9 +155,10 @@ class AnalysisController(QWidget):
 
         splitter9.addWidget(self.browser9)
         splitter9.addWidget(self.browser10)
-
-        main_box.addWidget(splitter1)
+'''
+        # main_box.addWidget(splitter1)
         self.setLayout(main_box)
+        # self.setLayout(Vlayout1)
 
     def setBackground(self):
         palette = QPalette()

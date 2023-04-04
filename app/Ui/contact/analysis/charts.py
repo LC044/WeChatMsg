@@ -32,6 +32,10 @@ Type = {
     '436207665': '发红包',
     '49': '分享链接'
 }
+charts_width = 700
+charts_height = 600
+wordcloud_width = 700
+wordcloud_height = 600
 
 
 def send_recv_rate(username):
@@ -40,7 +44,7 @@ def send_recv_rate(username):
     total_num = send_num + recv_num
     print(send_num, recv_num)
     c = (
-        Pie(init_opts=opts.InitOpts(width="463px", height="243px"))
+        Pie(init_opts=opts.InitOpts(width=f"{charts_width}px", height=f"{charts_height}px"))
         .add(
             "",
             [
@@ -74,7 +78,7 @@ def msg_type_rate(username):
     new_data.append(('其他', data2))
 
     c = (
-        Pie(init_opts=opts.InitOpts(width="460px", height="240px"))
+        Pie(init_opts=opts.InitOpts(width=f"{charts_width}px", height=f"{charts_height}px"))
         .add(
             "",
             new_data
@@ -110,7 +114,7 @@ def message_word_cloud(username):
         text_data = text_data[:100]
     # print(text_data)
     (
-        WordCloud(init_opts=opts.InitOpts(width="900px", height="700px"))
+        WordCloud(init_opts=opts.InitOpts(width=f"{wordcloud_width}px", height=f"{wordcloud_height}px"))
         .add(series_name="聊天文字", data_pair=text_data, word_size_range=[20, 100])
         .set_global_opts(
             title_opts=opts.TitleOpts(
@@ -126,10 +130,12 @@ def message_word_cloud(username):
 
 def calendar_chart(username):
     msg_data = data.get_msg_by_days(username, year='2022')
+    if not msg_data:
+        return False
     min_ = min(map(lambda x: x[1], msg_data))
     max_ = max(map(lambda x: x[1], msg_data))
     c = (
-        Calendar(init_opts=opts.InitOpts(width="460px", height="270px"))
+        Calendar(init_opts=opts.InitOpts(width=f"{charts_width}px", height=f"{charts_height}px"))
         .add(
             "",
             msg_data,
@@ -160,11 +166,11 @@ def month_num(username):
     y_data = list(map(lambda x: x[1], msg_data))
     x_axis = list(map(lambda x: x[0], msg_data))
     c = (
-        Bar(init_opts=opts.InitOpts(width="440px", height="265px"))
+        Bar(init_opts=opts.InitOpts(width=f"{charts_width}px", height=f"{charts_height}px"))
         .add_xaxis(x_axis)
         .add_yaxis("消息数量", y_data)
         .set_global_opts(
-            title_opts=opts.TitleOpts(title="逐月聊天统计", subtitle=None),
+            title_opts=opts.TitleOpts(title="逐月统计", subtitle=None),
             datazoom_opts=opts.DataZoomOpts(),
             toolbox_opts=opts.ToolboxOpts(),
         )
@@ -180,7 +186,7 @@ def chat_session(username):
     # print(y_data)
     # max_ = max(y_data)
     c = (
-        Line(init_opts=opts.InitOpts(width="460px", height="270px"))
+        Line(init_opts=opts.InitOpts(width=f"{charts_width}px", height=f"{charts_height}px"))
         .add_xaxis(xaxis_data=x_axis)
         .add_yaxis(
             series_name="聊天频率",
@@ -236,12 +242,12 @@ def sport(username):
             continue
     df = pd.DataFrame({'ranks': ranks, 'score': steps, 'date': date}, index=date)
     months = pd.date_range(date[0], date[-1], freq='M')
-    tl = Timeline(init_opts=opts.InitOpts(width="440px", height="265px"))
+    tl = Timeline(init_opts=opts.InitOpts(width=f"{charts_width}px", height=f"{charts_height}px"))
     tl.add_schema(is_auto_play=True)
     for i in range(len(months) - 1):
         da = df[(months[i + 1].strftime("%Y-%m-%d") >= df['date']) & (df['date'] > months[i].strftime("%Y-%m-%d"))]
         bar = (
-            Bar(init_opts=opts.InitOpts(width="440px", height="265px"))
+            Bar(init_opts=opts.InitOpts(width=f"{charts_width}px", height=f"{charts_height}px"))
             .add_xaxis(list(da['date']))
             .add_yaxis(
                 "步数",
@@ -284,7 +290,10 @@ def sport(username):
                 )
             )
             .set_global_opts(
-                title_opts=opts.TitleOpts(title="{}月".format(months[i + 1].strftime("%Y-%m"))),
+                title_opts=opts.TitleOpts(
+                    title="{}".format(months[i + 1].strftime("%Y-%m")),
+
+                ),
                 # legend_opts=opts.LegendOpts(is_show=False),
                 yaxis_opts=opts.AxisOpts(is_inverse=True),
                 # xaxis_opts=opts.AxisOpts(type_='time')
@@ -297,7 +306,7 @@ def sport(username):
         )
         # init_opts = opts.InitOpts(width="400px", height="235px")
         line = (
-            Line(init_opts=opts.InitOpts(width="440px", height="265px"))
+            Line(init_opts=opts.InitOpts(width=f"{charts_width}px", height=f"{charts_height}px"))
             .add_xaxis(list(da['date']))
             .add_yaxis(
                 "排名",
@@ -319,7 +328,7 @@ def sport(username):
         )
         bar.overlap(line)
         grid = Grid()
-        grid.add(bar, opts.GridOpts(pos_left="7%", pos_right="11%"), is_control_axis_index=True)
+        grid.add(bar, opts.GridOpts(pos_left="5%", pos_right="11%"), is_control_axis_index=True)
         # grid.render("grid_multi_yaxis.html")
         tl.add(grid, "{}".format(months[i].strftime("%Y-%m")))
     tl.render("./data/聊天统计/sports.html")
@@ -349,8 +358,8 @@ def chat_start_endTime(username):
     <style>
 /* 倒计时开始 */
 .gn_box {
-padding: 10px 14px;
-margin-bottom: 10px;
+padding: 0px 0px;
+margin-bottom:0px;
 text-align: center;
 background-color: #fff;
 }
@@ -430,8 +439,8 @@ def title(username):
     <style>
 /* 倒计时开始 */
 .gn_box {
-padding: 10px 14px;
-margin-bottom: 10px;
+padding: 0px 0px;
+margin-bottom: 0px;
 text-align: center;
 background-color: #fff;
 }
@@ -460,7 +469,7 @@ font-size: 18px;
    font-size: 28px;
 }
 #table {
-    width: 600px; height: 400px;//可随意
+    width: 600px; height: 100px;//可随意
     position: absolute; left: 0; top: 0; right: 0; bottom: 0;
     margin: auto;    /* 有了这个就自动居中了 */
 }
@@ -475,7 +484,7 @@ font-size: 18px;
                 <table>
                     <tr>
                         <td>
-                            <img src="../../../%s" height="50" width="50"
+                            <img src="../../../%s" height="40" width="40"
                                  alt="Avatar"/>
                         </td>
                     </tr>

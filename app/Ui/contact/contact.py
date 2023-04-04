@@ -38,6 +38,7 @@ class ContactController(QWidget, Ui_Dialog):
         self.setupUi(self)
         self.setWindowTitle('WeChat')
         self.setWindowIcon(QIcon('./app/data/icon.png'))
+        # self.setStyleSheet('''QWidget{background-color:rgb(255, 255, 255);}''')
         self.initui()
         self.Me = Me
         self.Thread = ChatMsg(self.Me.username, None)
@@ -60,22 +61,21 @@ class ContactController(QWidget, Ui_Dialog):
         self.last_btn = None
 
     def initui(self):
+        # 槽函数连接
         self.btn_back.clicked.connect(self.back)
         self.btn_output.clicked.connect(self.output)
         self.btn_analysis.clicked.connect(self.analysis)
         self.btn_emotion.clicked.connect(self.emotionale_Analysis)
-        self.qurl = QUrl('baidu.com')
-        self.lay0 = QHBoxLayout()
-        self.widget.setLayout(self.lay0)
 
+        self.lay0 = QVBoxLayout()
+        self.widget.setLayout(self.lay0)
+        self.widget.setStyleSheet('''QWidget{background-color:rgb(255, 255, 255);}''')
         self.frame = QtWidgets.QFrame()
         self.frame.setObjectName("frame")
         self.userinfo = userinfoUi.Ui_Frame()  # 联系人信息界面
         self.userinfo.setupUi(self.frame)
-        # self.userinfo.btn_outbut.clicked.connect(self.output)
         self.userinfo.progressBar.setVisible(False)
         self.lay0.addWidget(self.frame)
-        # self.userinfo.btn_analysis.clicked.connect(self.analysis)
 
     def showContact(self):
         """
@@ -88,12 +88,15 @@ class ContactController(QWidget, Ui_Dialog):
         self.show_flag = True
         rconversations = data.get_rconversation()
         max_hight = max(len(rconversations) * 80, 680)
+        # 设置滚动区域的高度
         self.scrollAreaWidgetContents.setGeometry(
             QtCore.QRect(0, 0, 300, max_hight))
+
         for i in range(len(rconversations)):
             rconversation = rconversations[i]
             username = rconversation[1]
-            # print('联系人：', i, rconversation)
+            # 创建联系人按钮对象
+            # 将实例化对象添加到self.contacts储存起来
             pushButton_2 = Contact(self.scrollAreaWidgetContents, i, rconversation)
             pushButton_2.setGeometry(QtCore.QRect(0, 80 * i, 300, 80))
             pushButton_2.setLayoutDirection(QtCore.Qt.LeftToRight)
@@ -114,14 +117,15 @@ class ContactController(QWidget, Ui_Dialog):
         if self.last_talkerId and self.last_talkerId != talkerId:
             print('对方账号：', self.last_talkerId)
             self.contacts[self.last_talkerId].setStyleSheet(
-                "QPushButton {background-color: rgb(253,253,253);}"
-                "QPushButton:hover{background-color: rgb(209,209,209);}\n"
+                "QPushButton {background-color: rgb(220,220,220);}"
+                "QPushButton:hover{background-color: rgb(208,208,208);}\n"
             )
         self.last_talkerId = talkerId
         self.contacts[talkerId].setStyleSheet(
             "QPushButton {background-color: rgb(198,198,198);}"
             "QPushButton:hover{background-color: rgb(209,209,209);}\n"
         )
+        # 设置联系人的基本信息
         conRemark = data.get_conRemark(talkerId)
         nickname, alias = data.get_nickname(talkerId)
         self.label_remark.setText(conRemark)
@@ -173,8 +177,10 @@ class ContactController(QWidget, Ui_Dialog):
         聊天分析
         :return:
         """
-        self.frame.setVisible(False)
-
+        self.frame.setVisible(False)  # 将userinfo界面设置为不可见
+        # 判断talkerId是否已经分析过了
+        # 是：则清空其他界面，直接显示该界面
+        # 否：清空其他界面，创建用户界面并显示
         if self.now_talkerId in self.view_analysis:
             self.setViewVisible(self.now_talkerId, mod=ANALYSIS)
             return True
@@ -186,7 +192,10 @@ class ContactController(QWidget, Ui_Dialog):
 
     def emotionale_Analysis(self):
         print('情感分析', data.get_conRemark(self.now_talkerId))
-        self.frame.setVisible(False)
+        self.frame.setVisible(False)  # 将userinfo界面设置为不可见
+        # 判断talkerId是否已经分析过了
+        # 是：则清空其他界面，直接显示该界面
+        # 否：清空其他界面，创建用户界面并显示
         if self.now_talkerId in self.view_emotion:
             self.setViewVisible(self.now_talkerId, mod=EMOTION)
             return True
@@ -204,6 +213,9 @@ class ContactController(QWidget, Ui_Dialog):
         self.lay0.addWidget(self.analysisView)
 
     def back(self):
+        """
+        将userinfo界面设置为可见，其他界面设置为不可见
+        """
         self.frame.setVisible(True)
         self.setViewVisible(self.now_talkerId)
 
@@ -292,8 +304,8 @@ class Contact(QtWidgets.QPushButton):
         self.gridLayout1.setRowStretch(1, 3)
         self.setLayout(self.gridLayout1)
         self.setStyleSheet(
-            "QPushButton {background-color: rgb(253,253,253);}"
-            "QPushButton:hover{background-color: rgb(209,209,209);}\n"
+            "QPushButton {background-color: rgb(220,220,220);}"
+            "QPushButton:hover{background-color: rgb(208,208,208);}\n"
         )
         self.msgCount = contact[0]
         self.username = contact[1]
