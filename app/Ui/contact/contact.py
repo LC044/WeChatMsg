@@ -75,7 +75,7 @@ class ContactController(QWidget, Ui_Dialog):
         self.lay0 = QVBoxLayout()
         # self.widget.setLayout(self.lay0)
         # self.widget.setStyleSheet('''QWidget{background-color:rgb(255, 255, 255);}''')
-        self.stackedWidget.setStyleSheet('''QWidget{background-color:rgb(255, 255, 255);}''')
+        self.stackedWidget.setStyleSheet('''QWidget{background-color:rgb(240, 240, 240);}''')
         self.frame = QtWidgets.QFrame()
         self.frame.setObjectName("frame")
         self.userinfo = userinfoUi.Ui_Frame()  # 联系人信息界面

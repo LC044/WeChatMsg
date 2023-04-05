@@ -14,6 +14,21 @@
             <string>Form</string>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="spacing">
+                <number>0</number>
+            </property>
+            <property name="leftMargin">
+                <number>0</number>
+            </property>
+            <property name="topMargin">
+                <number>0</number>
+            </property>
+            <property name="rightMargin">
+                <number>0</number>
+            </property>
+            <property name="bottomMargin">
+                <number>0</number>
+            </property>
             <item>
                 <widget class="QScrollArea" name="scrollArea_2">
                     <property name="enabled">
@@ -117,11 +132,14 @@
                         <enum>QFrame::Raised</enum>
                     </property>
                     <layout class="QVBoxLayout" name="verticalLayout" stretch="2,2,60,2,2,1">
+                        <property name="spacing">
+                            <number>0</number>
+                        </property>
                         <property name="leftMargin">
                             <number>0</number>
                         </property>
                         <property name="topMargin">
-                            <number>5</number>
+                            <number>0</number>
                         </property>
                         <property name="rightMargin">
                             <number>0</number>
@@ -212,9 +230,10 @@
                                         p, li { white-space: pre-wrap; }
                                         &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun';
                                         font-size:15pt; font-weight:400; font-style:normal;&quot;&gt;
-                                        &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px;
-                                        margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br
-                                        /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+                                        &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px;
+                                        margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; &lt;/p&gt;
+                                        &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px;
+                                        margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                                     </string>
                                 </property>
                                 <property name="overwriteMode">

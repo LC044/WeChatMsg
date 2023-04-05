@@ -50,22 +50,33 @@ class AnalysisController(QWidget):
 
     def initUI(self):
         self.label.setVisible(False)
-        self.setStyleSheet('''QWidget{background-color:rgb(244, 244, 244);}''')
+        self.setStyleSheet('''QWidget{background-color:rgb(240, 240, 240);}''')
 
         main_box = QVBoxLayout(self)
+        main_box.setContentsMargins(0, 0, 0, 0)
+        main_box.setSpacing(0)
 
         self.browser1 = QWebEngineView()
         self.browser1.load(QUrl('file:///data/聊天统计/title.html'))
+        self.browser1.setMinimumSize(810, 60)
+        self.browser1.setStyleSheet('''QWidget{background-color:rgb(240, 240, 240);}''')
         self.browser2 = QWebEngineView()
         self.browser2.load(QUrl('file:///data/聊天统计/wordcloud.html'))
+        self.browser2.setStyleSheet('''QWidget{background-color:rgb(240, 240, 240);}''')
+        # self.browser2.setMinimumWidth(810)
+        self.browser2.setMinimumSize(810, 810)
         self.browser3 = QWebEngineView()
         self.browser3.load(QUrl('file:///data/聊天统计/time.html'))
-        # self.browser3.resize(800, 600)
+        self.browser3.setMaximumSize(810, 100)
+        self.browser3.adjustSize()
         self.browser4 = QWebEngineView()
         self.browser4.load(QUrl('http://www.baidu.com'))
-        # self.browser4.resize(800, 600)
+        self.browser4.resize(800, 600)
         self.browser5 = QWebEngineView()
         self.browser5.load(QUrl('file:///data/聊天统计/chat_session.html'))
+        # self.browser5.adjustSize()
+
+        # self.browser5.resize(800, 600)
         self.browser6 = QWebEngineView()
         self.browser6.load(QUrl('file:///data/聊天统计/sports.html'))
         self.browser7 = QWebEngineView()
@@ -80,95 +91,34 @@ class AnalysisController(QWidget):
         # self.browser10.
         main_box.addWidget(self.browser1)
 
-        self.scrollArea = QScrollArea(self)
+        self.scrollArea = QScrollArea()
         self.scrollArea.setEnabled(True)
         self.scrollArea.adjustSize()
-        self.scrollArea.setWidgetResizable(False)
+
         scrollAreaContent = QWidget(self.scrollArea)
-        Vlayout2 = QVBoxLayout(scrollAreaContent)
+        scrollAreaContent.setStyleSheet('''QWidget{background-color:rgb(240, 240, 240);}''')
 
-        # splitter2 = QSplitter(Qt.Vertical)
-        # splitter2.addWidget(self.browser2)
-        # # splitter2.resize(800, 600)
-        # Vlayout2.addWidget(splitter2)
-        #
-        # splitter3 = QSplitter(Qt.Vertical)
-        # splitter3.addWidget(self.browser3)
-        # Vlayout2.addWidget(splitter3)
-        #
-        # splitter4 = QSplitter(Qt.Vertical)
-        # splitter4.addWidget(self.browser4)
-        # Vlayout2.addWidget(splitter4)
-        #
-        # splitter5 = QSplitter(Qt.Vertical)
-        # splitter5.addWidget(self.browser6)
-        # Vlayout2.addWidget(splitter5)
+        Vlayout2 = QVBoxLayout()
+        Vlayout2.setContentsMargins(0, 0, 0, 0)
+        Vlayout2.setSpacing(0)
 
-        # Vlayout2.addWidget(self.browser3, stretch=1)
-        # Vlayout2.addWidget(self.browser6, stretch=2)
-        # Vlayout2.addWidget(self.browser5, stretch=3)
-        # Vlayout2.addWidget(self.browser7, stretch=4)
-        # Vlayout2.addWidget(self.browser8, stretch=5)
-        # Vlayout2.addWidget(self.browser9, stretch=6)
-        Vlayout2.addWidget(self.browser10, stretch=7)
+        Vlayout2.addWidget(self.browser3)
+        Vlayout2.addWidget(self.browser2)
 
-        # Vlayout2.setStretch(0, 1)
-        # Vlayout2.setStretch(1, 10)
+        Vlayout2.addWidget(self.browser8)
+        Vlayout2.addWidget(self.browser6)
+        Vlayout2.addWidget(self.browser5)
+        Vlayout2.addWidget(self.browser7)
 
+        Vlayout2.addWidget(self.browser9)
+        Vlayout2.addWidget(self.browser10)
         scrollAreaContent.setLayout(Vlayout2)
-        # self.scrollArea.setWidget(scrollAreaContent)
-        self.scrollArea.setWidget(self.browser9)
-        main_box.addWidget(self.browser10)
+
+        self.scrollArea.setWidget(scrollAreaContent)
         main_box.addWidget(self.scrollArea)
         main_box.setStretch(0, 1)
         main_box.setStretch(1, 10)
-        '''
-        splitter1 = QSplitter(Qt.Vertical)
-        splitter2 = QSplitter(Qt.Horizontal)
-        splitter3 = QSplitter(Qt.Horizontal)
-        splitter4 = QSplitter(Qt.Vertical)
-        splitter5 = QSplitter(Qt.Horizontal)
-        splitter6 = QSplitter(Qt.Vertical)
-        splitter7 = QSplitter(Qt.Vertical)
-        splitter8 = QSplitter(Qt.Vertical)
-        splitter9 = QSplitter(Qt.Vertical)
-
-        splitter1.addWidget(self.browser1)
-        splitter1.addWidget(splitter2)
-        splitter1.setSizes([1, 13])
-
-        splitter2.addWidget(splitter6)
-        splitter2.addWidget(splitter3)
-        splitter2.setSizes([1, 3])
-
-        splitter3.addWidget(splitter4)
-        splitter3.addWidget(splitter8)
-        splitter3.setSizes([2, 1])
-
-        splitter4.addWidget(splitter5)
-        splitter4.addWidget(self.browser2)
-        splitter4.setSizes([2, 13])
-
-        splitter5.addWidget(self.browser3)
-        # splitter5.addWidget(self.browser4)
-
-        splitter6.addWidget(self.browser5)
-        splitter6.addWidget(splitter7)
-        splitter6.setSizes([1, 2])
-
-        splitter7.addWidget(self.browser6)
-        splitter7.addWidget(self.browser7)
-
-        splitter8.addWidget(self.browser8)
-        splitter8.addWidget(splitter9)
-        splitter8.setSizes([1, 2])
-
-        splitter9.addWidget(self.browser9)
-        splitter9.addWidget(self.browser10)
-'''
-        # main_box.addWidget(splitter1)
         self.setLayout(main_box)
-        # self.setLayout(Vlayout1)
 
     def setBackground(self):
         palette = QPalette()

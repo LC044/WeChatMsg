@@ -16,6 +16,8 @@ class Ui_Form(object):
         Form.setObjectName("Form")
         Form.resize(878, 720)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.scrollArea_2 = QtWidgets.QScrollArea(Form)
         self.scrollArea_2.setEnabled(True)
@@ -51,7 +53,8 @@ class Ui_Form(object):
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.frame_2)
-        self.verticalLayout.setContentsMargins(0, 5, 0, 0)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
@@ -112,11 +115,12 @@ class Ui_Form(object):
         self.btn_sendMsg_2.setMouseTracking(False)
         self.btn_sendMsg_2.setAutoFillBackground(False)
         self.btn_sendMsg_2.setStyleSheet("QPushButton {\n"
-                                         "background-color:rgb(233,233,233);\n"
-                                         "padding: 10px;\n"
-                                         "color:rgb(5,180,104);}\n"
-                                         "QPushButton:hover{\n"
-                                         "background-color:rgb(198,198,198)}")
+                                         "                                                background-color:rgb(233,233,233);\n"
+                                         "                                                padding: 10px;\n"
+                                         "                                                color:rgb(5,180,104);}\n"
+                                         "                                                QPushButton:hover{\n"
+                                         "                                                background-color:rgb(198,198,198)}\n"
+                                         "                                            ")
         self.btn_sendMsg_2.setIconSize(QtCore.QSize(40, 40))
         self.btn_sendMsg_2.setCheckable(False)
         self.btn_sendMsg_2.setAutoDefault(True)
@@ -146,5 +150,6 @@ class Ui_Form(object):
                                            "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
                                            "p, li { white-space: pre-wrap; }\n"
                                            "</style></head><body style=\" font-family:\'SimSun\'; font-size:15pt; font-weight:400; font-style:normal;\">\n"
-                                           "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+                                           "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                                        </p>\n"
+                                           "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                                    </p></body></html>"))
         self.btn_sendMsg_2.setText(_translate("Form", "发送"))
