@@ -35,7 +35,7 @@ Type = {
 charts_width = 800
 charts_height = 450
 wordcloud_width = 780
-wordcloud_height = 780
+wordcloud_height = 720
 
 
 def send_recv_rate(username):
@@ -45,7 +45,7 @@ def send_recv_rate(username):
     print(send_num, recv_num)
     c = (
         Pie(init_opts=opts.InitOpts(
-            bg_color='rgb(240,240,240)',
+            # bg_color='rgb(240,240,240)',
             width=f"{charts_width}px",
             height=f"{charts_height}px")
         )

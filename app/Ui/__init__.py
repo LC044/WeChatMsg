@@ -7,9 +7,10 @@
 @Version : Python3.10
 @comment : ···
 """
-#文件__init__.py
+# 文件__init__.py
 # from login import login
 from . import mainview
 
 from .decrypt import decrypt
-__all__ = ["decrypt", 'mainview']
+
+# __all__ = ["decrypt", 'mainview']

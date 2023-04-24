@@ -5,7 +5,6 @@ from PyQt5.QtWidgets import *
 from app.Ui import *
 
 
-#
 class ViewController:
     def __init__(self):
         self.viewMainWIn = None

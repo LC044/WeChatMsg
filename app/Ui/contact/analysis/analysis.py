@@ -50,7 +50,7 @@ class AnalysisController(QWidget):
 
     def initUI(self):
         self.label.setVisible(False)
-        self.setStyleSheet('''QWidget{background-color:rgb(240, 240, 240);}''')
+        # self.setStyleSheet('''QWidget{background-color:rgb(240, 240, 240);}''')
 
         main_box = QVBoxLayout(self)
         main_box.setContentsMargins(0, 0, 0, 0)
