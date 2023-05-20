@@ -504,211 +504,42 @@ def get_myInfo():
     }
 
 
-from pyecharts import options as opts
-from pyecharts.charts import Bar, Line, Timeline, Grid
-import pandas as pd
-import xmltodict
+def search_Latest_chat_time(wxid):
+    # 查找聊天最晚的消息
+    sql = '''
+            SELECT strftime('%H:%M:%S',createTime/1000,'unixepoch','localtime') as t,content,strftime('%Y-%m-%d %H:%M:%S',createTime/1000,'unixepoch','localtime')
+            from message
+            where talker = ? and t>'00:00:00' and t<'05:00:00' and type=1
+            order by t desc
+        '''
+    cursor.execute(sql, [wxid])
+    result = cursor.fetchall()
+    return result
 
 
-def sport(username):
-    sports = get_sport()
-    ranks = []
-    steps = []
-    date = []
-    for sport in sports:
-        try:
-            timestamp, content, t = sport
-            rank_data = xmltodict.parse(content)
-            sub_data = rank_data['msg']['appmsg']['hardwareinfo']['messagenodeinfo']
-            # print(sub_data)
-            my_rank = sub_data['rankinfo']['rank']['rankdisplay']
-            my_steps = int(sub_data['rankinfo']['score']['scoredisplay'])
-            # print(f'rank: {my_rank},steps: {my_steps}')
-            rank_view = rank_data['msg']['appmsg']['hardwareinfo']['rankview']['rankinfolist']['rankinfo']
-            for userinfo in rank_view:
-                username0 = userinfo['username']
-                if username0 == username:
-                    rank_ta = int(userinfo['rank']['rankdisplay'])
-                    steps_ta = int(userinfo['score']['scoredisplay'])
-                    ranks.append(rank_ta)
-                    steps.append(steps_ta)
-                    date.append(t)
-        except:
-            continue
-    df = pd.DataFrame({'ranks': ranks, 'score': steps, 'date': date}, index=date)
-    months = pd.date_range(date[0], date[-1], freq='M')
-    tl = Timeline(init_opts=opts.InitOpts(width="440px", height="245px"))
-    tl.add_schema(is_auto_play=True)
-    for i in range(len(months) - 1):
-        da = df[(months[i + 1].strftime("%Y-%m-%d") >= df['date']) & (df['date'] > months[i].strftime("%Y-%m-%d"))]
-        bar = (
-            Bar(init_opts=opts.InitOpts(width="400px", height="235px"))
-            .add_xaxis(list(da['date']))
-            .add_yaxis(
-                "步数",
-                list(da['score']),
-                yaxis_index=1,
-                color="#d14a61",
-            )
-            .extend_axis(
-                yaxis=opts.AxisOpts(
-                    name="步数",
-                    type_="value",
-                    # grid_index=0,
-                    # min_=0,
-                    # max_=250,
-                    position="right",
-                    axisline_opts=opts.AxisLineOpts(
-                        linestyle_opts=opts.LineStyleOpts(color="#d14a61")
-                    ),
-                    # axislabel_opts=opts.LabelOpts(formatter="{value} ml"),
-                )
-            )
-            .extend_axis(
-                yaxis=opts.AxisOpts(
-                    type_="value",
-                    name="排名",
-                    # min_=0,
-                    # max_=25,
-                    position="left",
-                    is_inverse=True,
-                    # interval=True,
-                    # grid_index=1,
-                    axisline_opts=opts.AxisLineOpts(
-                        linestyle_opts=opts.LineStyleOpts(color="#675bba")
-                    ),
-                    # axislabel_opts=opts.LabelOpts(formatter="{value} °C"),
-                    splitline_opts=opts.SplitLineOpts(
-                        is_show=True, linestyle_opts=opts.LineStyleOpts(opacity=1)
-                    ),
-                )
-            )
-            .set_global_opts(
-                title_opts=opts.TitleOpts(title="{}月运动步数".format(months[i + 1].strftime("%Y-%m"))),
-                # legend_opts=opts.LegendOpts(is_show=False),
-                yaxis_opts=opts.AxisOpts(is_inverse=True)
-            )
-            .set_series_opts(
-                label_opts=opts.LabelOpts(
-                    is_show=False
-                )
-            )
-        )
-        # init_opts = opts.InitOpts(width="400px", height="235px")
-        line = (
-            Line(init_opts=opts.InitOpts(width="400px", height="235px"))
-            .add_xaxis(list(da['date']))
-            .add_yaxis(
-                "排名",
-                list(da['ranks']),
-                yaxis_index=0,
-                color="#675bba",
-                # label_opts=opts.LabelOpts(is_show=False),
-
-            )
-            .set_global_opts(
-                yaxis_opts=opts.AxisOpts(is_inverse=True)
-            )
-        )
-        bar.overlap(line)
-        grid = Grid()
-        grid.add(bar, opts.GridOpts(pos_left="5%", pos_right="20%"), is_control_axis_index=True)
-        grid.render("grid_multi_yaxis.html")
-        quit()
-        # tl.add(bar, "{}".format(months[i].strftime("%Y-%m")))
-    # tl.render("./sports.html")
-
-    return {
-        username: {
-            'ranks': ranks,
-            'score': steps,
-            'date': date,
-        }
-    }
-
-
-def radar_hour(username):
-    msg_data = get_msg_by_hour(username)
-    x_axis = list(map(lambda x: x[0], msg_data))
-    y_data = list(map(lambda x: x[1], msg_data))
-    print(x_axis)
-    print(y_data)
-    max_ = max(y_data)
-    c = (
-        Line()
-        .add_xaxis(xaxis_data=x_axis)
-        .add_yaxis(
-            series_name="聊天频率",
-            y_axis=y_data,
-            markpoint_opts=opts.MarkPointOpts(
-                data=[
-                    opts.MarkPointItem(type_="max", name="最大值"),
-                    opts.MarkPointItem(type_="min", name="最小值"),
-                ]
-            ),
-            markline_opts=opts.MarkLineOpts(
-                data=[opts.MarkLineItem(type_="average", name="平均值")]
-            ),
-        )
-        .render("temperature_change_line_chart.html")
-    )
-
-
-def chat_start_endTime(username):
-    start_time = get_msg_start_time(username)
-    end_time = get_msg_end_time(username)
-    year = start_time[:4]
-    month = start_time[5:7]
-    day = start_time[8:10]
-    hour = start_time[11:13]
-    minute = start_time[14:16]
-    second = start_time[17:]
-    print(year, month, day, hour, minute, second)
+def search_emoji(wxid):
+    # 查找聊天最晚的消息
+    sql = '''
+                SELECT imgPath,strftime('%Y-%m-%d %H:%M:%S',createTime/1000,'unixepoch','localtime') as t,count(imgPath)
+                from message
+                where talker = ? and t>'2022-01-01 00:00:00' and t<'2022-12-31 00::00:00' and type=47 and isSend=0
+                group by content
+                order by count(imgPath) desc
+            '''
+    cursor.execute(sql, [wxid])
+    result = cursor.fetchall()
+    return result
 
 
 if __name__ == '__main__':
     wxid = 'wxid_8piw6sb4hvfm22'
-    wxid = 'wxid_wt2vsktnu4z022'
+    # wxid = 'wxid_wt2vsktnu4z022'
     # emotion_analysis(wxid)
-    plot_emotion(wxid)
-'''
-if __name__ == '__main__':
-    # rconversation = get_rconversation()
-    # for i in rconversation:
-    #     print(i)
-    # contacts = get_all_message('wxid_vqave8lcp49r22')
-    # for contact in contacts:
-    #     print(contact)
-    # [(177325,)] (73546,) (103770,)
-    # print(search_send_message(1, 1))
-    # print(send_nums('wxid_vqave8lcp49r22'))
-    # print(recv_nums('wxid_vqave8lcp49r22'))
-    # # for t in get_text('wxid_vqave8lcp49r22'):
-    # #     print(t)
-    # print(msg_type_num('wxid_vqave8lcp49r22'))
-    # st = get_msg_start_time('wxid_vqave8lcp49r22')
-    # print(st, timestamp2str(st))
-    # st = get_msg_end_time('wxid_vqave8lcp49r22')
-    # print(st, timestamp2str(st))
-    # print(get_msg_by_month('wxid_8piw6sb4hvfm22', year='2022'))
-    # print(len(get_sport()))
-    # result = sport('wxid_8piw6sb4hvfm22')
-    # print(get_imgPath('THUMBNAIL_DIRPATH://th_92f32326df645b3e1aecef9b6266a3b8'))
-    # result = get_msg_by_hour('wxid_8piw6sb4hvfm22')
-    # print(result)
-    # radar_hour('wxid_8piw6sb4hvfm22')
-    # print(result)
-    # print(get_msg_start_time('wxid_8piw6sb4hvfm22'), get_msg_end_time('wxid_8piw6sb4hvfm22'))
-    # chat_start_endTime('wxid_8piw6sb4hvfm22')
-    msg = get_text_by_num('wxid_8piw6sb4hvfm22', 1)
-    from snownlp import SnowNLP
-
-    # print(msg[0])
-    for m in msg:
-        content = m[0]
-        print(content)
-        s = SnowNLP(content)
-        # # 输出情绪为积极的概率
-        print(s.sentiments)
-    # print(msg)
-'''
+    t = search_Latest_chat_time(wxid)
+    print(t[0])
+    d = get_msg_by_days(wxid)
+    print(len(d))
+    e = search_emoji(wxid)
+    print(e)
+    p = get_emoji(e[1][0])
+    print(p)

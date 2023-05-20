@@ -16,6 +16,7 @@ from PyQt5.QtWidgets import *
 from .analysis import analysis
 from .contactUi import *
 from .emotion import emotion
+from .report import report
 from .userinfo import userinfoUi
 from ...DataBase import data, output
 
@@ -71,6 +72,7 @@ class ContactController(QWidget, Ui_Dialog):
         self.btn_output.clicked.connect(self.output)
         self.btn_analysis.clicked.connect(self.analysis)
         self.btn_emotion.clicked.connect(self.emotionale_Analysis)
+        self.btn_report.clicked.connect(self.annual_report)
 
         self.lay0 = QVBoxLayout()
         # self.widget.setLayout(self.lay0)
@@ -192,6 +194,12 @@ class ContactController(QWidget, Ui_Dialog):
         # 判断talkerId是否已经分析过了
         # 是：则清空其他界面，直接显示该界面
         # 否：清空其他界面，创建用户界面并显示
+        if 'room' in self.now_talkerId:
+            QMessageBox.warning(
+                self, '警告',
+                '暂不支持群组'
+            )
+            return
         if self.now_talkerId in self.view_analysis:
             self.setViewVisible(self.now_talkerId, mod=ANALYSIS)
             return True
@@ -220,6 +228,10 @@ class ContactController(QWidget, Ui_Dialog):
         self.stackedWidget.addWidget(self.view_emotion[self.now_talkerId])
         self.setViewVisible(self.now_talkerId, mod=EMOTION)
         pass
+
+    def annual_report(self):
+        self.report = report.ReportController(123)
+        self.report.show()
 
     def showUserinfo(self):
         pass
