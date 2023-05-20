@@ -67,3 +67,6 @@ python main.py
 
 ![image-20230520235113261](doc/images/image-20230520235113261.png)
 
+## 项目还有很多bug，希望各位大佬能够共享代码
+
+项目地址：https://github.com/LC044/WeChatMsg
