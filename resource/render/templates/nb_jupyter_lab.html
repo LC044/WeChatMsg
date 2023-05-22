@@ -1,0 +1,16 @@
+{% import 'macro' as macro %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+{% for chart in charts %}
+{% if chart._component_type in ("table", "image") %}
+{{ macro.gen_components_content(chart) }}
+{% else %}
+{{ macro.render_chart_content(chart) }}
+{% endif %}
+{% endfor %}
+</body>
+</html>

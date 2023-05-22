@@ -1,0 +1,34 @@
+{% import 'macro' as macro %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ chart.page_title }}</title>
+    {{ macro.render_chart_dependencies(chart) }}
+    {{ macro.render_chart_css(chart) }}
+</head>
+<body {% if chart.page_border_color !='' %}style="background-color: {{ chart.page_border_color }}" {% endif %}>
+<style>.box { {{ chart.layout }} } </style>
+{% if chart.download_button %}
+<button onclick="downloadCfg()">Save Config</button>
+{% endif %}
+<div class="box">
+    {% for c in chart %}
+    {% if c._component_type in ("table", "image") %}
+    {{ macro.gen_components_content(c) }}
+    {% else %}
+    {{ macro.render_chart_content(c) }}
+    {% endif %}
+    {% for _ in range(chart.page_interval) %}
+    {% if chart.remove_br is false %}<br/>{% endif %}
+    {% endfor %}
+    {% endfor %}
+</div>
+<script>
+        {% for js in chart.js_functions.items %}
+            {{ js }}
+        {% endfor %}
+
+</script>
+</body>
+</html>

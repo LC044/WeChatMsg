@@ -1,0 +1,20 @@
+{% import 'macro' as macro %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+{{ macro.generate_tab_css() }}
+{{ macro.display_tablinks(charts) }}
+
+{% for chart in charts %}
+{% if chart._component_type in ("table", "image") %}
+{{ macro.gen_components_content(chart) }}
+{% else %}
+{{ macro.render_chart_content(chart) }}
+{% endif %}
+{% endfor %}
+{{ macro.switch_tabs() }}
+</body>
+</html>

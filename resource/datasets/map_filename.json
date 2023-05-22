@@ -1,0 +1,2550 @@
+{
+  "bulma": [
+    "bulma.min",
+    "css"
+  ],
+  "jquery": [
+    "jquery.min",
+    "js"
+  ],
+  "jquery-ui": [
+    "jquery-ui.min",
+    "js"
+  ],
+  "resize-sensor": [
+    "ResizeSensor",
+    "js"
+  ],
+  "echarts": [
+    "echarts.min",
+    "js"
+  ],
+  "echarts-gl": [
+    "echarts-gl.min",
+    "js"
+  ],
+  "echarts-liquidfill": [
+    "echarts-liquidfill.min",
+    "js"
+  ],
+  "echarts-wordcloud": [
+    "echarts-wordcloud.min",
+    "js"
+  ],
+  "bmap": [
+    "bmap.min",
+    "js"
+  ],
+  "chalk": [
+    "themes/chalk",
+    "js"
+  ],
+  "essos": [
+    "themes/essos",
+    "js"
+  ],
+  "halloween": [
+    "themes/halloween",
+    "js"
+  ],
+  "infographic": [
+    "themes/infographic",
+    "js"
+  ],
+  "macarons": [
+    "themes/macarons",
+    "js"
+  ],
+  "purple-passion": [
+    "themes/purple-passion",
+    "js"
+  ],
+  "roma": [
+    "themes/roma",
+    "js"
+  ],
+  "romantic": [
+    "themes/romantic",
+    "js"
+  ],
+  "shine": [
+    "themes/shine",
+    "js"
+  ],
+  "vintage": [
+    "themes/vintage",
+    "js"
+  ],
+  "walden": [
+    "themes/walden",
+    "js"
+  ],
+  "westeros": [
+    "themes/westeros",
+    "js"
+  ],
+  "wonderland": [
+    "themes/wonderland",
+    "js"
+  ],
+  "china": [
+    "maps/china",
+    "js"
+  ],
+  "china-cities": [
+    "maps/china-cities",
+    "js"
+  ],
+  "world": [
+    "maps/world",
+    "js"
+  ],
+  "world_china_provinces": [
+    "maps/world_china_provinces",
+    "js"
+  ],
+  "广东": [
+    "maps/guangdong",
+    "js"
+  ],
+  "安徽": [
+    "maps/anhui",
+    "js"
+  ],
+  "福建": [
+    "maps/fujian",
+    "js"
+  ],
+  "甘肃": [
+    "maps/gansu",
+    "js"
+  ],
+  "广西": [
+    "maps/guangxi",
+    "js"
+  ],
+  "贵州": [
+    "maps/guizhou",
+    "js"
+  ],
+  "海南": [
+    "maps/hainan",
+    "js"
+  ],
+  "河北": [
+    "maps/hebei",
+    "js"
+  ],
+  "黑龙江": [
+    "maps/heilongjiang",
+    "js"
+  ],
+  "河南": [
+    "maps/henan",
+    "js"
+  ],
+  "湖北": [
+    "maps/hubei",
+    "js"
+  ],
+  "湖南": [
+    "maps/hunan",
+    "js"
+  ],
+  "江苏": [
+    "maps/jiangsu",
+    "js"
+  ],
+  "江西": [
+    "maps/jiangxi",
+    "js"
+  ],
+  "吉林": [
+    "maps/jilin",
+    "js"
+  ],
+  "辽宁": [
+    "maps/liaoning",
+    "js"
+  ],
+  "内蒙古": [
+    "maps/neimenggu",
+    "js"
+  ],
+  "宁夏": [
+    "maps/ningxia",
+    "js"
+  ],
+  "青海": [
+    "maps/qinghai",
+    "js"
+  ],
+  "山东": [
+    "maps/shandong",
+    "js"
+  ],
+  "山西": [
+    "maps/shanxi",
+    "js"
+  ],
+  "陕西": [
+    "maps/shanxi1",
+    "js"
+  ],
+  "四川": [
+    "maps/sichuan",
+    "js"
+  ],
+  "台湾": [
+    "maps/taiwan",
+    "js"
+  ],
+  "新疆": [
+    "maps/xinjiang",
+    "js"
+  ],
+  "西藏": [
+    "maps/xizang",
+    "js"
+  ],
+  "云南": [
+    "maps/yunnan",
+    "js"
+  ],
+  "浙江": [
+    "maps/zhejiang",
+    "js"
+  ],
+  "七台河": [
+    "maps/hei1_long2_jiang1_qi1_tai2_he2",
+    "js"
+  ],
+  "万宁": [
+    "maps/hai3_nan2_wan4_ning2",
+    "js"
+  ],
+  "三亚": [
+    "maps/hai3_nan2_san1_ya4",
+    "js"
+  ],
+  "三明": [
+    "maps/fu2_jian4_san1_ming2",
+    "js"
+  ],
+  "三沙": [
+    "maps/hai3_nan2_san1_sha1",
+    "js"
+  ],
+  "三门峡": [
+    "maps/he2_nan2_san1_men2_xia2",
+    "js"
+  ],
+  "上海": [
+    "maps/shanghai",
+    "js"
+  ],
+  "上饶": [
+    "maps/jiang1_xi1_shang4_rao2",
+    "js"
+  ],
+  "东方": [
+    "maps/hai3_nan2_dong1_fang1",
+    "js"
+  ],
+  "东沙群岛": [
+    "maps/guang3_dong1_dong1_sha1_qun2_dao3",
+    "js"
+  ],
+  "东莞": [
+    "maps/guang3_dong1_dong1_guan1",
+    "js"
+  ],
+  "东营": [
+    "maps/shan1_dong1_dong1_ying2",
+    "js"
+  ],
+  "中卫": [
+    "maps/ning2_xia4_zhong1_wei4",
+    "js"
+  ],
+  "中山": [
+    "maps/guang3_dong1_zhong1_shan1",
+    "js"
+  ],
+  "临夏回族自治州": [
+    "maps/gan1_su4_lin2_xia4_hui2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "临汾": [
+    "maps/shan1_xi1_lin2_fen2",
+    "js"
+  ],
+  "临沂": [
+    "maps/shan1_dong1_lin2_yi2",
+    "js"
+  ],
+  "临沧": [
+    "maps/yun2_nan2_lin2_cang1",
+    "js"
+  ],
+  "临高县": [
+    "maps/hai3_nan2_lin2_gao1_xian4",
+    "js"
+  ],
+  "丹东": [
+    "maps/liao2_ning2_dan1_dong1",
+    "js"
+  ],
+  "丽水": [
+    "maps/zhe4_jiang1_li4_shui3",
+    "js"
+  ],
+  "丽江": [
+    "maps/yun2_nan2_li4_jiang1",
+    "js"
+  ],
+  "乌兰察布": [
+    "maps/nei4_meng2_gu3_wu1_lan2_cha2_bu4",
+    "js"
+  ],
+  "乌海": [
+    "maps/nei4_meng2_gu3_wu1_hai3",
+    "js"
+  ],
+  "乌鲁木齐": [
+    "maps/xin1_jiang1_wu1_lu3_mu4_qi2",
+    "js"
+  ],
+  "乐东黎族自治县": [
+    "maps/hai3_nan2_le4_dong1_li2_zu2_zi4_zhi4_xian4",
+    "js"
+  ],
+  "乐山": [
+    "maps/si4_chuan1_le4_shan1",
+    "js"
+  ],
+  "九江": [
+    "maps/jiang1_xi1_jiu3_jiang1",
+    "js"
+  ],
+  "云浮": [
+    "maps/guang3_dong1_yun2_fu2",
+    "js"
+  ],
+  "五家渠": [
+    "maps/xin1_jiang1_wu3_jia1_qu2",
+    "js"
+  ],
+  "五指山": [
+    "maps/hai3_nan2_wu3_zhi3_shan1",
+    "js"
+  ],
+  "亳州": [
+    "maps/an1_hui1_bo2_zhou1",
+    "js"
+  ],
+  "仙桃": [
+    "maps/hu2_bei3_xian1_tao2",
+    "js"
+  ],
+  "伊春": [
+    "maps/hei1_long2_jiang1_yi1_chun1",
+    "js"
+  ],
+  "伊犁哈萨克自治州": [
+    "maps/xin1_jiang1_yi1_li2_ha1_sa4_ke4_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "佛山": [
+    "maps/guang3_dong1_fo2_shan1",
+    "js"
+  ],
+  "佳木斯": [
+    "maps/hei1_long2_jiang1_jia1_mu4_si1",
+    "js"
+  ],
+  "保亭黎族苗族自治县": [
+    "maps/hai3_nan2_bao3_ting2_li2_zu2_miao2_zu2_zi4_zhi4_xian4",
+    "js"
+  ],
+  "保定": [
+    "maps/he2_bei3_bao3_ding4",
+    "js"
+  ],
+  "保山": [
+    "maps/yun2_nan2_bao3_shan1",
+    "js"
+  ],
+  "信阳": [
+    "maps/he2_nan2_xin4_yang2",
+    "js"
+  ],
+  "儋州": [
+    "maps/hai3_nan2_dan1_zhou1",
+    "js"
+  ],
+  "克孜勒苏柯尔克孜自治州": [
+    "maps/xin1_jiang1_ke4_zi1_le4_su1_ke1_er3_ke4_zi1_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "克拉玛依": [
+    "maps/xin1_jiang1_ke4_la1_ma3_yi1",
+    "js"
+  ],
+  "六安": [
+    "maps/an1_hui1_liu4_an1",
+    "js"
+  ],
+  "六盘水": [
+    "maps/gui4_zhou1_liu4_pan2_shui3",
+    "js"
+  ],
+  "兰州": [
+    "maps/gan1_su4_lan2_zhou1",
+    "js"
+  ],
+  "兴安盟": [
+    "maps/nei4_meng2_gu3_xing1_an1_meng2",
+    "js"
+  ],
+  "内江": [
+    "maps/si4_chuan1_nei4_jiang1",
+    "js"
+  ],
+  "凉山彝族自治州": [
+    "maps/si4_chuan1_liang2_shan1_yi2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "包头": [
+    "maps/nei4_meng2_gu3_bao1_tou2",
+    "js"
+  ],
+  "北京": [
+    "maps/beijing",
+    "js"
+  ],
+  "北屯": [
+    "maps/xin1_jiang1_bei3_tun2",
+    "js"
+  ],
+  "北海": [
+    "maps/guang3_xi1_bei3_hai3",
+    "js"
+  ],
+  "十堰": [
+    "maps/hu2_bei3_shi2_yan4",
+    "js"
+  ],
+  "南京": [
+    "maps/jiang1_su1_nan2_jing1",
+    "js"
+  ],
+  "南充": [
+    "maps/si4_chuan1_nan2_chong1",
+    "js"
+  ],
+  "南宁": [
+    "maps/guang3_xi1_nan2_ning2",
+    "js"
+  ],
+  "南平": [
+    "maps/fu2_jian4_nan2_ping2",
+    "js"
+  ],
+  "南昌": [
+    "maps/jiang1_xi1_nan2_chang1",
+    "js"
+  ],
+  "南通": [
+    "maps/jiang1_su1_nan2_tong1",
+    "js"
+  ],
+  "南阳": [
+    "maps/he2_nan2_nan2_yang2",
+    "js"
+  ],
+  "博尔塔拉蒙古自治州": [
+    "maps/xin1_jiang1_bo2_er3_ta3_la1_meng2_gu3_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "厦门": [
+    "maps/fu2_jian4_sha4_men2",
+    "js"
+  ],
+  "双河": [
+    "maps/xin1_jiang1_shuang1_he2",
+    "js"
+  ],
+  "双鸭山": [
+    "maps/hei1_long2_jiang1_shuang1_ya1_shan1",
+    "js"
+  ],
+  "可克达拉": [
+    "maps/xin1_jiang1_ke3_ke4_da2_la1",
+    "js"
+  ],
+  "台州": [
+    "maps/zhe4_jiang1_tai2_zhou1",
+    "js"
+  ],
+  "合肥": [
+    "maps/an1_hui1_he2_fei2",
+    "js"
+  ],
+  "吉安": [
+    "maps/jiang1_xi1_ji2_an1",
+    "js"
+  ],
+  "吉林市": [
+    "maps/ji2_lin2_ji2_lin2",
+    "js"
+  ],
+  "吐鲁番": [
+    "maps/xin1_jiang1_tu3_lu3_fan1",
+    "js"
+  ],
+  "吕梁": [
+    "maps/shan1_xi1_lv3_liang2",
+    "js"
+  ],
+  "吴忠": [
+    "maps/ning2_xia4_wu2_zhong1",
+    "js"
+  ],
+  "周口": [
+    "maps/he2_nan2_zhou1_kou3",
+    "js"
+  ],
+  "呼伦贝尔": [
+    "maps/nei4_meng2_gu3_hu1_lun2_bei4_er3",
+    "js"
+  ],
+  "呼和浩特": [
+    "maps/nei4_meng2_gu3_hu1_he2_hao4_te4",
+    "js"
+  ],
+  "和田地区": [
+    "maps/xin1_jiang1_he2_tian2_di4_qu1",
+    "js"
+  ],
+  "咸宁": [
+    "maps/hu2_bei3_xian2_ning2",
+    "js"
+  ],
+  "咸阳": [
+    "maps/shan3_xi1_xian2_yang2",
+    "js"
+  ],
+  "哈密": [
+    "maps/xin1_jiang1_ha1_mi4",
+    "js"
+  ],
+  "哈尔滨": [
+    "maps/hei1_long2_jiang1_ha1_er3_bin1",
+    "js"
+  ],
+  "唐山": [
+    "maps/he2_bei3_tang2_shan1",
+    "js"
+  ],
+  "商丘": [
+    "maps/he2_nan2_shang1_qiu1",
+    "js"
+  ],
+  "商洛": [
+    "maps/shan3_xi1_shang1_luo4",
+    "js"
+  ],
+  "喀什地区": [
+    "maps/xin1_jiang1_ka1_shi2_di4_qu1",
+    "js"
+  ],
+  "嘉兴": [
+    "maps/zhe4_jiang1_jia1_xing1",
+    "js"
+  ],
+  "嘉峪关": [
+    "maps/gan1_su4_jia1_yu4_guan1",
+    "js"
+  ],
+  "四平": [
+    "maps/ji2_lin2_si4_ping2",
+    "js"
+  ],
+  "固原": [
+    "maps/ning2_xia4_gu4_yuan2",
+    "js"
+  ],
+  "图木舒克": [
+    "maps/xin1_jiang1_tu2_mu4_shu1_ke4",
+    "js"
+  ],
+  "塔城地区": [
+    "maps/xin1_jiang1_ta3_cheng2_di4_qu1",
+    "js"
+  ],
+  "大兴安岭地区": [
+    "maps/hei1_long2_jiang1_da4_xing1_an1_ling2_di4_qu1",
+    "js"
+  ],
+  "大同": [
+    "maps/shan1_xi1_da4_tong2",
+    "js"
+  ],
+  "大庆": [
+    "maps/hei1_long2_jiang1_da4_qing4",
+    "js"
+  ],
+  "大理白族自治州": [
+    "maps/yun2_nan2_da4_li3_bai2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "大连": [
+    "maps/liao2_ning2_da4_lian2",
+    "js"
+  ],
+  "天水": [
+    "maps/gan1_su4_tian1_shui3",
+    "js"
+  ],
+  "天津": [
+    "maps/tianjin",
+    "js"
+  ],
+  "天门": [
+    "maps/hu2_bei3_tian1_men2",
+    "js"
+  ],
+  "太原": [
+    "maps/shan1_xi1_tai4_yuan2",
+    "js"
+  ],
+  "威海": [
+    "maps/shan1_dong1_wei1_hai3",
+    "js"
+  ],
+  "娄底": [
+    "maps/hu2_nan2_lou2_di3",
+    "js"
+  ],
+  "孝感": [
+    "maps/hu2_bei3_xiao4_gan3",
+    "js"
+  ],
+  "宁德": [
+    "maps/fu2_jian4_ning2_de2",
+    "js"
+  ],
+  "宁波": [
+    "maps/zhe4_jiang1_ning2_bo1",
+    "js"
+  ],
+  "安庆": [
+    "maps/an1_hui1_an1_qing4",
+    "js"
+  ],
+  "安康": [
+    "maps/shan3_xi1_an1_kang1",
+    "js"
+  ],
+  "安阳": [
+    "maps/he2_nan2_an1_yang2",
+    "js"
+  ],
+  "安顺": [
+    "maps/gui4_zhou1_an1_shun4",
+    "js"
+  ],
+  "定安县": [
+    "maps/hai3_nan2_ding4_an1_xian4",
+    "js"
+  ],
+  "定西": [
+    "maps/gan1_su4_ding4_xi1",
+    "js"
+  ],
+  "宜宾": [
+    "maps/si4_chuan1_yi2_bin1",
+    "js"
+  ],
+  "宜昌": [
+    "maps/hu2_bei3_yi2_chang1",
+    "js"
+  ],
+  "宜春": [
+    "maps/jiang1_xi1_yi2_chun1",
+    "js"
+  ],
+  "宝鸡": [
+    "maps/shan3_xi1_bao3_ji1",
+    "js"
+  ],
+  "宣城": [
+    "maps/an1_hui1_xuan1_cheng2",
+    "js"
+  ],
+  "宿州": [
+    "maps/an1_hui1_su4_zhou1",
+    "js"
+  ],
+  "宿迁": [
+    "maps/jiang1_su1_su4_qian1",
+    "js"
+  ],
+  "屯昌县": [
+    "maps/hai3_nan2_tun2_chang1_xian4",
+    "js"
+  ],
+  "山南": [
+    "maps/xi1_cang2_shan1_nan2",
+    "js"
+  ],
+  "岳阳": [
+    "maps/hu2_nan2_yue4_yang2",
+    "js"
+  ],
+  "崇左": [
+    "maps/guang3_xi1_chong2_zuo3",
+    "js"
+  ],
+  "巴中": [
+    "maps/si4_chuan1_ba1_zhong1",
+    "js"
+  ],
+  "巴彦淖尔": [
+    "maps/nei4_meng2_gu3_ba1_yan4_nao4_er3",
+    "js"
+  ],
+  "巴音郭楞蒙古自治州": [
+    "maps/xin1_jiang1_ba1_yin1_guo1_leng2_meng2_gu3_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "常州": [
+    "maps/jiang1_su1_chang2_zhou1",
+    "js"
+  ],
+  "常德": [
+    "maps/hu2_nan2_chang2_de2",
+    "js"
+  ],
+  "平凉": [
+    "maps/gan1_su4_ping2_liang2",
+    "js"
+  ],
+  "平顶山": [
+    "maps/he2_nan2_ping2_ding3_shan1",
+    "js"
+  ],
+  "广元": [
+    "maps/si4_chuan1_guang3_yuan2",
+    "js"
+  ],
+  "广安": [
+    "maps/si4_chuan1_guang3_an1",
+    "js"
+  ],
+  "广州": [
+    "maps/guang3_dong1_guang3_zhou1",
+    "js"
+  ],
+  "庆阳": [
+    "maps/gan1_su4_qing4_yang2",
+    "js"
+  ],
+  "廊坊": [
+    "maps/he2_bei3_lang2_fang1",
+    "js"
+  ],
+  "延安": [
+    "maps/shan3_xi1_yan2_an1",
+    "js"
+  ],
+  "延边朝鲜族自治州": [
+    "maps/ji2_lin2_yan2_bian1_zhao1_xian1_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "开封": [
+    "maps/he2_nan2_kai1_feng1",
+    "js"
+  ],
+  "张家口": [
+    "maps/he2_bei3_zhang1_jia1_kou3",
+    "js"
+  ],
+  "张家界": [
+    "maps/hu2_nan2_zhang1_jia1_jie4",
+    "js"
+  ],
+  "张掖": [
+    "maps/gan1_su4_zhang1_ye4",
+    "js"
+  ],
+  "徐州": [
+    "maps/jiang1_su1_xu2_zhou1",
+    "js"
+  ],
+  "德宏傣族景颇族自治州": [
+    "maps/yun2_nan2_de2_hong2_dai3_zu2_jing3_po3_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "德州": [
+    "maps/shan1_dong1_de2_zhou1",
+    "js"
+  ],
+  "德阳": [
+    "maps/si4_chuan1_de2_yang2",
+    "js"
+  ],
+  "忻州": [
+    "maps/shan1_xi1_xin1_zhou1",
+    "js"
+  ],
+  "怀化": [
+    "maps/hu2_nan2_huai2_hua4",
+    "js"
+  ],
+  "怒江傈僳族自治州": [
+    "maps/yun2_nan2_nu4_jiang1_li4_su4_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "恩施土家族苗族自治州": [
+    "maps/hu2_bei3_en1_shi1_tu3_jia1_zu2_miao2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "惠州": [
+    "maps/guang3_dong1_hui4_zhou1",
+    "js"
+  ],
+  "成都": [
+    "maps/si4_chuan1_cheng2_du1",
+    "js"
+  ],
+  "扬州": [
+    "maps/jiang1_su1_yang2_zhou1",
+    "js"
+  ],
+  "承德": [
+    "maps/he2_bei3_cheng2_de2",
+    "js"
+  ],
+  "抚州": [
+    "maps/jiang1_xi1_fu3_zhou1",
+    "js"
+  ],
+  "抚顺": [
+    "maps/liao2_ning2_fu3_shun4",
+    "js"
+  ],
+  "拉萨": [
+    "maps/xi1_cang2_la1_sa4",
+    "js"
+  ],
+  "揭阳": [
+    "maps/guang3_dong1_jie1_yang2",
+    "js"
+  ],
+  "攀枝花": [
+    "maps/si4_chuan1_pan1_zhi1_hua1",
+    "js"
+  ],
+  "文山壮族苗族自治州": [
+    "maps/yun2_nan2_wen2_shan1_zhuang4_zu2_miao2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "文昌": [
+    "maps/hai3_nan2_wen2_chang1",
+    "js"
+  ],
+  "新乡": [
+    "maps/he2_nan2_xin1_xiang1",
+    "js"
+  ],
+  "新余": [
+    "maps/jiang1_xi1_xin1_yu2",
+    "js"
+  ],
+  "无锡": [
+    "maps/jiang1_su1_wu2_xi2",
+    "js"
+  ],
+  "日喀则": [
+    "maps/xi1_cang2_ri4_ka1_ze2",
+    "js"
+  ],
+  "日照": [
+    "maps/shan1_dong1_ri4_zhao4",
+    "js"
+  ],
+  "昆明": [
+    "maps/yun2_nan2_kun1_ming2",
+    "js"
+  ],
+  "昆玉": [
+    "maps/xin1_jiang1_kun1_yu4",
+    "js"
+  ],
+  "昌吉回族自治州": [
+    "maps/xin1_jiang1_chang1_ji2_hui2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "昌江黎族自治县": [
+    "maps/hai3_nan2_chang1_jiang1_li2_zu2_zi4_zhi4_xian4",
+    "js"
+  ],
+  "昌都": [
+    "maps/xi1_cang2_chang1_du1",
+    "js"
+  ],
+  "昭通": [
+    "maps/yun2_nan2_zhao1_tong1",
+    "js"
+  ],
+  "晋中": [
+    "maps/shan1_xi1_jin4_zhong1",
+    "js"
+  ],
+  "晋城": [
+    "maps/shan1_xi1_jin4_cheng2",
+    "js"
+  ],
+  "普洱": [
+    "maps/yun2_nan2_pu3_er3",
+    "js"
+  ],
+  "景德镇": [
+    "maps/jiang1_xi1_jing3_de2_zhen4",
+    "js"
+  ],
+  "曲靖": [
+    "maps/yun2_nan2_qu1_jing4",
+    "js"
+  ],
+  "朔州": [
+    "maps/shan1_xi1_shuo4_zhou1",
+    "js"
+  ],
+  "朝阳": [
+    "maps/liao2_ning2_zhao1_yang2",
+    "js"
+  ],
+  "本溪": [
+    "maps/liao2_ning2_ben3_xi1",
+    "js"
+  ],
+  "来宾": [
+    "maps/guang3_xi1_lai2_bin1",
+    "js"
+  ],
+  "杭州": [
+    "maps/zhe4_jiang1_hang2_zhou1",
+    "js"
+  ],
+  "松原": [
+    "maps/ji2_lin2_song1_yuan2",
+    "js"
+  ],
+  "林芝": [
+    "maps/xi1_cang2_lin2_zhi1",
+    "js"
+  ],
+  "果洛藏族自治州": [
+    "maps/qing1_hai3_guo3_luo4_cang2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "枣庄": [
+    "maps/shan1_dong1_zao3_zhuang1",
+    "js"
+  ],
+  "柳州": [
+    "maps/guang3_xi1_liu3_zhou1",
+    "js"
+  ],
+  "株洲": [
+    "maps/hu2_nan2_zhu1_zhou1",
+    "js"
+  ],
+  "桂林": [
+    "maps/guang3_xi1_gui4_lin2",
+    "js"
+  ],
+  "梅州": [
+    "maps/guang3_dong1_mei2_zhou1",
+    "js"
+  ],
+  "梧州": [
+    "maps/guang3_xi1_wu2_zhou1",
+    "js"
+  ],
+  "楚雄彝族自治州": [
+    "maps/yun2_nan2_chu3_xiong2_yi2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "榆林": [
+    "maps/shan3_xi1_yu2_lin2",
+    "js"
+  ],
+  "武威": [
+    "maps/gan1_su4_wu3_wei1",
+    "js"
+  ],
+  "武汉": [
+    "maps/hu2_bei3_wu3_han4",
+    "js"
+  ],
+  "毕节": [
+    "maps/gui4_zhou1_bi4_jie2",
+    "js"
+  ],
+  "永州": [
+    "maps/hu2_nan2_yong3_zhou1",
+    "js"
+  ],
+  "汉中": [
+    "maps/shan3_xi1_han4_zhong1",
+    "js"
+  ],
+  "汕头": [
+    "maps/guang3_dong1_shan4_tou2",
+    "js"
+  ],
+  "汕尾": [
+    "maps/guang3_dong1_shan4_wei3",
+    "js"
+  ],
+  "江门": [
+    "maps/guang3_dong1_jiang1_men2",
+    "js"
+  ],
+  "池州": [
+    "maps/an1_hui1_chi2_zhou1",
+    "js"
+  ],
+  "沈阳": [
+    "maps/liao2_ning2_shen3_yang2",
+    "js"
+  ],
+  "沧州": [
+    "maps/he2_nan2_cang1_zhou1",
+    "js"
+  ],
+  "河池": [
+    "maps/guang3_xi1_he2_chi2",
+    "js"
+  ],
+  "河源": [
+    "maps/guang3_dong1_he2_yuan2",
+    "js"
+  ],
+  "泉州": [
+    "maps/fu2_jian4_quan2_zhou1",
+    "js"
+  ],
+  "泰安": [
+    "maps/shan1_dong1_tai4_an1",
+    "js"
+  ],
+  "泰州": [
+    "maps/jiang1_su1_tai4_zhou1",
+    "js"
+  ],
+  "泸州": [
+    "maps/si4_chuan1_lu2_zhou1",
+    "js"
+  ],
+  "洛阳": [
+    "maps/he2_nan2_luo4_yang2",
+    "js"
+  ],
+  "济南": [
+    "maps/shan1_dong1_ji4_nan2",
+    "js"
+  ],
+  "济宁": [
+    "maps/shan1_dong1_ji4_ning2",
+    "js"
+  ],
+  "济源": [
+    "maps/he2_nan2_ji4_yuan2",
+    "js"
+  ],
+  "海东": [
+    "maps/qing1_hai3_hai3_dong1",
+    "js"
+  ],
+  "海北藏族自治州": [
+    "maps/qing1_hai3_hai3_bei3_cang2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "海南藏族自治州": [
+    "maps/qing1_hai3_hai3_nan2_cang2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "海口": [
+    "maps/hai3_nan2_hai3_kou3",
+    "js"
+  ],
+  "海西蒙古族藏族自治州": [
+    "maps/qing1_hai3_hai3_xi1_meng2_gu3_zu2_cang2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "淄博": [
+    "maps/shan1_dong1_zi1_bo2",
+    "js"
+  ],
+  "淮北": [
+    "maps/an1_hui1_huai2_bei3",
+    "js"
+  ],
+  "淮南": [
+    "maps/an1_hui1_huai2_nan2",
+    "js"
+  ],
+  "淮安": [
+    "maps/jiang1_su1_huai2_an1",
+    "js"
+  ],
+  "深圳": [
+    "maps/guang3_dong1_shen1_zhen4",
+    "js"
+  ],
+  "清远": [
+    "maps/guang3_dong1_qing1_yuan3",
+    "js"
+  ],
+  "温州": [
+    "maps/zhe4_jiang1_wen1_zhou1",
+    "js"
+  ],
+  "渭南": [
+    "maps/shan3_xi1_wei4_nan2",
+    "js"
+  ],
+  "湖州": [
+    "maps/zhe4_jiang1_hu2_zhou1",
+    "js"
+  ],
+  "湘潭": [
+    "maps/hu2_nan2_xiang1_tan2",
+    "js"
+  ],
+  "湘西土家族苗族自治州": [
+    "maps/hu2_nan2_xiang1_xi1_tu3_jia1_zu2_miao2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "湛江": [
+    "maps/guang3_dong1_zhan4_jiang1",
+    "js"
+  ],
+  "滁州": [
+    "maps/an1_hui1_chu2_zhou1",
+    "js"
+  ],
+  "滨州": [
+    "maps/shan1_dong1_bin1_zhou1",
+    "js"
+  ],
+  "漯河": [
+    "maps/he2_nan2_ta4_he2",
+    "js"
+  ],
+  "漳州": [
+    "maps/fu2_jian4_zhang1_zhou1",
+    "js"
+  ],
+  "潍坊": [
+    "maps/shan1_dong1_wei2_fang1",
+    "js"
+  ],
+  "潜江": [
+    "maps/hu2_bei3_qian2_jiang1",
+    "js"
+  ],
+  "潮州": [
+    "maps/guang3_dong1_chao2_zhou1",
+    "js"
+  ],
+  "澄迈县": [
+    "maps/hai3_nan2_cheng2_mai4_xian4",
+    "js"
+  ],
+  "澳门": [
+    "maps/aomen",
+    "js"
+  ],
+  "濮阳": [
+    "maps/he2_nan2_pu2_yang2",
+    "js"
+  ],
+  "烟台": [
+    "maps/shan1_dong1_yan1_tai2",
+    "js"
+  ],
+  "焦作": [
+    "maps/he2_nan2_jiao1_zuo4",
+    "js"
+  ],
+  "牡丹江": [
+    "maps/hei1_long2_jiang1_mu3_dan1_jiang1",
+    "js"
+  ],
+  "玉林": [
+    "maps/guang3_xi1_yu4_lin2",
+    "js"
+  ],
+  "玉树藏族自治州": [
+    "maps/qing1_hai3_yu4_shu4_cang2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "玉溪": [
+    "maps/yun2_nan2_yu4_xi1",
+    "js"
+  ],
+  "珠海": [
+    "maps/guang3_dong1_zhu1_hai3",
+    "js"
+  ],
+  "琼中黎族苗族自治县": [
+    "maps/hai3_nan2_qiong2_zhong1_li2_zu2_miao2_zu2_zi4_zhi4_xian4",
+    "js"
+  ],
+  "琼海": [
+    "maps/hai3_nan2_qiong2_hai3",
+    "js"
+  ],
+  "甘南藏族自治州": [
+    "maps/gan1_su4_gan1_nan2_cang2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "甘孜藏族自治州": [
+    "maps/si4_chuan1_gan1_zi1_cang2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "白城": [
+    "maps/ji2_lin2_bai2_cheng2",
+    "js"
+  ],
+  "白山": [
+    "maps/ji2_lin2_bai2_shan1",
+    "js"
+  ],
+  "白沙黎族自治县": [
+    "maps/hai3_nan2_bai2_sha1_li2_zu2_zi4_zhi4_xian4",
+    "js"
+  ],
+  "白银": [
+    "maps/gan1_su4_bai2_yin2",
+    "js"
+  ],
+  "百色": [
+    "maps/guang3_xi1_bai3_se4",
+    "js"
+  ],
+  "益阳": [
+    "maps/hu2_nan2_yi4_yang2",
+    "js"
+  ],
+  "盐城": [
+    "maps/jiang1_su1_yan2_cheng2",
+    "js"
+  ],
+  "盘锦": [
+    "maps/liao2_ning2_pan2_jin3",
+    "js"
+  ],
+  "眉山": [
+    "maps/si4_chuan1_mei2_shan1",
+    "js"
+  ],
+  "石嘴山": [
+    "maps/ning2_xia4_shi2_zui3_shan1",
+    "js"
+  ],
+  "石家庄": [
+    "maps/he2_bei3_shi2_jia1_zhuang1",
+    "js"
+  ],
+  "石河子": [
+    "maps/xin1_jiang1_shi2_he2_zi3",
+    "js"
+  ],
+  "神农架林区": [
+    "maps/hu2_bei3_shen2_nong2_jia4_lin2_qu1",
+    "js"
+  ],
+  "福州": [
+    "maps/fu2_jian4_fu2_zhou1",
+    "js"
+  ],
+  "秦皇岛": [
+    "maps/he2_bei3_qin2_huang2_dao3",
+    "js"
+  ],
+  "红河哈尼族彝族自治州": [
+    "maps/yun2_nan2_hong2_he2_ha1_ni2_zu2_yi2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "绍兴": [
+    "maps/zhe4_jiang1_shao4_xing1",
+    "js"
+  ],
+  "绥化": [
+    "maps/hei1_long2_jiang1_sui1_hua4",
+    "js"
+  ],
+  "绵阳": [
+    "maps/si4_chuan1_mian2_yang2",
+    "js"
+  ],
+  "聊城": [
+    "maps/shan1_dong1_liao2_cheng2",
+    "js"
+  ],
+  "肇庆": [
+    "maps/guang3_dong1_zhao4_qing4",
+    "js"
+  ],
+  "自贡": [
+    "maps/si4_chuan1_zi4_gong4",
+    "js"
+  ],
+  "舟山": [
+    "maps/zhe4_jiang1_zhou1_shan1",
+    "js"
+  ],
+  "芜湖": [
+    "maps/an1_hui1_wu2_hu2",
+    "js"
+  ],
+  "苏州": [
+    "maps/jiang1_su1_su1_zhou1",
+    "js"
+  ],
+  "茂名": [
+    "maps/guang3_dong1_mao4_ming2",
+    "js"
+  ],
+  "荆州": [
+    "maps/hu2_bei3_jing1_zhou1",
+    "js"
+  ],
+  "荆门": [
+    "maps/hu2_bei3_jing1_men2",
+    "js"
+  ],
+  "莆田": [
+    "maps/fu2_jian4_fu3_tian2",
+    "js"
+  ],
+  "莱芜": [
+    "maps/shan1_dong1_lai2_wu2",
+    "js"
+  ],
+  "菏泽": [
+    "maps/shan1_dong1_he2_ze2",
+    "js"
+  ],
+  "萍乡": [
+    "maps/jiang1_xi1_ping2_xiang1",
+    "js"
+  ],
+  "营口": [
+    "maps/liao2_ning2_ying2_kou3",
+    "js"
+  ],
+  "葫芦岛": [
+    "maps/liao2_ning2_hu2_lu2_dao3",
+    "js"
+  ],
+  "蚌埠": [
+    "maps/an1_hui1_bang4_bu4",
+    "js"
+  ],
+  "衡水": [
+    "maps/he2_bei3_heng2_shui3",
+    "js"
+  ],
+  "衡阳": [
+    "maps/hu2_nan2_heng2_yang2",
+    "js"
+  ],
+  "衢州": [
+    "maps/zhe4_jiang1_qu2_zhou1",
+    "js"
+  ],
+  "襄阳": [
+    "maps/hu2_bei3_xiang1_yang2",
+    "js"
+  ],
+  "西双版纳傣族自治州": [
+    "maps/yun2_nan2_xi1_shuang1_ban3_na4_dai3_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "西宁": [
+    "maps/qing1_hai3_xi1_ning2",
+    "js"
+  ],
+  "西安": [
+    "maps/shan3_xi1_xi1_an1",
+    "js"
+  ],
+  "许昌": [
+    "maps/he2_nan2_xu3_chang1",
+    "js"
+  ],
+  "贵港": [
+    "maps/guang3_xi1_gui4_gang3",
+    "js"
+  ],
+  "贵阳": [
+    "maps/gui4_zhou1_gui4_yang2",
+    "js"
+  ],
+  "贺州": [
+    "maps/guang3_xi1_he4_zhou1",
+    "js"
+  ],
+  "资阳": [
+    "maps/si4_chuan1_zi1_yang2",
+    "js"
+  ],
+  "赣州": [
+    "maps/jiang1_xi1_gan4_zhou1",
+    "js"
+  ],
+  "赤峰": [
+    "maps/nei4_meng2_gu3_chi4_feng1",
+    "js"
+  ],
+  "辽源": [
+    "maps/ji2_lin2_liao2_yuan2",
+    "js"
+  ],
+  "辽阳": [
+    "maps/liao2_ning2_liao2_yang2",
+    "js"
+  ],
+  "达州": [
+    "maps/si4_chuan1_da2_zhou1",
+    "js"
+  ],
+  "运城": [
+    "maps/shan1_xi1_yun4_cheng2",
+    "js"
+  ],
+  "连云港": [
+    "maps/jiang1_su1_lian2_yun2_gang3",
+    "js"
+  ],
+  "迪庆藏族自治州": [
+    "maps/yun2_nan2_di2_qing4_cang2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "通化": [
+    "maps/ji2_lin2_tong1_hua4",
+    "js"
+  ],
+  "通辽": [
+    "maps/nei4_meng2_gu3_tong1_liao2",
+    "js"
+  ],
+  "遂宁": [
+    "maps/si4_chuan1_sui4_ning2",
+    "js"
+  ],
+  "遵义": [
+    "maps/gui4_zhou1_zun1_yi4",
+    "js"
+  ],
+  "邢台": [
+    "maps/he2_bei3_xing2_tai2",
+    "js"
+  ],
+  "那曲地区": [
+    "maps/xi1_cang2_na4_qu1_di4_qu1",
+    "js"
+  ],
+  "邯郸": [
+    "maps/he2_bei3_han2_dan1",
+    "js"
+  ],
+  "邵阳": [
+    "maps/hu2_nan2_shao4_yang2",
+    "js"
+  ],
+  "郑州": [
+    "maps/he2_nan2_zheng4_zhou1",
+    "js"
+  ],
+  "郴州": [
+    "maps/hu2_nan2_chen1_zhou1",
+    "js"
+  ],
+  "鄂尔多斯": [
+    "maps/nei4_meng2_gu3_e4_er3_duo1_si1",
+    "js"
+  ],
+  "鄂州": [
+    "maps/hu2_bei3_e4_zhou1",
+    "js"
+  ],
+  "酒泉": [
+    "maps/gan1_su4_jiu3_quan2",
+    "js"
+  ],
+  "重庆": [
+    "maps/chongqing",
+    "js"
+  ],
+  "金华": [
+    "maps/zhe4_jiang1_jin1_hua2",
+    "js"
+  ],
+  "金昌": [
+    "maps/gan1_su4_jin1_chang1",
+    "js"
+  ],
+  "钦州": [
+    "maps/guang3_xi1_qin1_zhou1",
+    "js"
+  ],
+  "铁岭": [
+    "maps/liao2_ning2_tie3_ling2",
+    "js"
+  ],
+  "铁门关": [
+    "maps/xin1_jiang1_tie3_men2_guan1",
+    "js"
+  ],
+  "铜仁": [
+    "maps/gui4_zhou1_tong2_ren2",
+    "js"
+  ],
+  "铜川": [
+    "maps/shan3_xi1_tong2_chuan1",
+    "js"
+  ],
+  "铜陵": [
+    "maps/an1_hui1_tong2_ling2",
+    "js"
+  ],
+  "银川": [
+    "maps/ning2_xia4_yin2_chuan1",
+    "js"
+  ],
+  "锡林郭勒盟": [
+    "maps/nei4_meng2_gu3_xi2_lin2_guo1_le4_meng2",
+    "js"
+  ],
+  "锦州": [
+    "maps/liao2_ning2_jin3_zhou1",
+    "js"
+  ],
+  "镇江": [
+    "maps/jiang1_su1_zhen4_jiang1",
+    "js"
+  ],
+  "长春": [
+    "maps/ji2_lin2_chang2_chun1",
+    "js"
+  ],
+  "长沙": [
+    "maps/hu2_nan2_chang2_sha1",
+    "js"
+  ],
+  "长治": [
+    "maps/shan1_xi1_chang2_zhi4",
+    "js"
+  ],
+  "阜新": [
+    "maps/liao2_ning2_fu4_xin1",
+    "js"
+  ],
+  "阜阳": [
+    "maps/an1_hui1_fu4_yang2",
+    "js"
+  ],
+  "防城港": [
+    "maps/guang3_xi1_fang2_cheng2_gang3",
+    "js"
+  ],
+  "阳江": [
+    "maps/guang3_dong1_yang2_jiang1",
+    "js"
+  ],
+  "阳泉": [
+    "maps/shan1_xi1_yang2_quan2",
+    "js"
+  ],
+  "阿克苏地区": [
+    "maps/xin1_jiang1_a1_ke4_su1_di4_qu1",
+    "js"
+  ],
+  "阿勒泰地区": [
+    "maps/xin1_jiang1_a1_le4_tai4_di4_qu1",
+    "js"
+  ],
+  "阿坝藏族羌族自治州": [
+    "maps/si4_chuan1_a1_ba4_cang2_zu2_qiang1_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "阿拉善盟": [
+    "maps/nei4_meng2_gu3_a1_la1_shan4_meng2",
+    "js"
+  ],
+  "阿拉尔": [
+    "maps/xin1_jiang1_a1_la1_er3",
+    "js"
+  ],
+  "阿里地区": [
+    "maps/xi1_cang2_a1_li3_di4_qu1",
+    "js"
+  ],
+  "陇南": [
+    "maps/gan1_su4_long3_nan2",
+    "js"
+  ],
+  "陵水黎族自治县": [
+    "maps/hai3_nan2_ling2_shui3_li2_zu2_zi4_zhi4_xian4",
+    "js"
+  ],
+  "随州": [
+    "maps/hu2_bei3_sui2_zhou1",
+    "js"
+  ],
+  "雅安": [
+    "maps/si4_chuan1_ya3_an1",
+    "js"
+  ],
+  "青岛": [
+    "maps/shan1_dong1_qing1_dao3",
+    "js"
+  ],
+  "鞍山": [
+    "maps/liao2_ning2_an1_shan1",
+    "js"
+  ],
+  "韶关": [
+    "maps/guang3_dong1_shao2_guan1",
+    "js"
+  ],
+  "香港": [
+    "maps/xianggang",
+    "js"
+  ],
+  "马鞍山": [
+    "maps/an1_hui1_ma3_an1_shan1",
+    "js"
+  ],
+  "驻马店": [
+    "maps/he2_nan2_zhu4_ma3_dian4",
+    "js"
+  ],
+  "鸡西": [
+    "maps/hei1_long2_jiang1_ji1_xi1",
+    "js"
+  ],
+  "鹤壁": [
+    "maps/he2_nan2_he4_bi4",
+    "js"
+  ],
+  "鹤岗": [
+    "maps/hei1_long2_jiang1_he4_gang3",
+    "js"
+  ],
+  "鹰潭": [
+    "maps/jiang1_xi1_ying1_tan2",
+    "js"
+  ],
+  "黄冈": [
+    "maps/hu2_bei3_huang2_gang1",
+    "js"
+  ],
+  "黄南藏族自治州": [
+    "maps/qing1_hai3_huang2_nan2_cang2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "黄山": [
+    "maps/an1_hui1_huang2_shan1",
+    "js"
+  ],
+  "黄石": [
+    "maps/hu2_bei3_huang2_shi2",
+    "js"
+  ],
+  "黑河": [
+    "maps/hei1_long2_jiang1_hei1_he2",
+    "js"
+  ],
+  "黔东南苗族侗族自治州": [
+    "maps/gui4_zhou1_qian2_dong1_nan2_miao2_zu2_tong1_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "黔南布依族苗族自治州": [
+    "maps/gui4_zhou1_qian2_nan2_bu4_yi1_zu2_miao2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "黔西南布依族苗族自治州": [
+    "maps/gui4_zhou1_qian2_xi1_nan2_bu4_yi1_zu2_miao2_zu2_zi4_zhi4_zhou1",
+    "js"
+  ],
+  "齐齐哈尔": [
+    "maps/hei1_long2_jiang1_qi2_qi2_ha1_er3",
+    "js"
+  ],
+  "龙岩": [
+    "maps/fu2_jian4_long2_yan2",
+    "js"
+  ],
+  "阿富汗": [
+    "maps/Afghanistan",
+    "js"
+  ],
+  "阿尔巴尼亚": [
+    "maps/Albania",
+    "js"
+  ],
+  "阿尔及利亚": [
+    "maps/Algeria",
+    "js"
+  ],
+  "安道尔": [
+    "maps/Andorra",
+    "js"
+  ],
+  "安哥拉": [
+    "maps/Angola",
+    "js"
+  ],
+  "安圭拉": [
+    "maps/Anguilla",
+    "js"
+  ],
+  "安提瓜和巴布达": [
+    "maps/Antigua_and_Barbuda",
+    "js"
+  ],
+  "阿根廷": [
+    "maps/Argentina",
+    "js"
+  ],
+  "亚美尼亚": [
+    "maps/Armenia",
+    "js"
+  ],
+  "澳大利亚": [
+    "maps/Australia",
+    "js"
+  ],
+  "奥地利": [
+    "maps/Austria",
+    "js"
+  ],
+  "阿塞拜疆": [
+    "maps/Azerbaijan",
+    "js"
+  ],
+  "巴林": [
+    "maps/Bahrain",
+    "js"
+  ],
+  "孟加拉国": [
+    "maps/Bangladesh",
+    "js"
+  ],
+  "巴巴多斯": [
+    "maps/Barbados",
+    "js"
+  ],
+  "白俄罗斯": [
+    "maps/Belarus",
+    "js"
+  ],
+  "比利时": [
+    "maps/Belgium",
+    "js"
+  ],
+  "伯利兹": [
+    "maps/Belize",
+    "js"
+  ],
+  "贝宁": [
+    "maps/Benin",
+    "js"
+  ],
+  "百慕达群岛": [
+    "maps/Bermuda",
+    "js"
+  ],
+  "不丹": [
+    "maps/Bhutan",
+    "js"
+  ],
+  "玻利维亚": [
+    "maps/Bolivia",
+    "js"
+  ],
+  "波斯尼亚-黑塞哥维那": [
+    "maps/Bosnia_and_Herzegovina",
+    "js"
+  ],
+  "博茨瓦纳": [
+    "maps/Botswana",
+    "js"
+  ],
+  "巴西": [
+    "maps/Brazil",
+    "js"
+  ],
+  "英属印度洋领地": [
+    "maps/British_Indian_Ocean_Territory",
+    "js"
+  ],
+  "英属维尔京群岛": [
+    "maps/British_Virgin_Islands",
+    "js"
+  ],
+  "文莱": [
+    "maps/Brunei",
+    "js"
+  ],
+  "保加利亚": [
+    "maps/Bulgaria",
+    "js"
+  ],
+  "布基纳法索": [
+    "maps/Burkina_Faso",
+    "js"
+  ],
+  "蒲隆地": [
+    "maps/Burundi",
+    "js"
+  ],
+  "柬埔寨": [
+    "maps/Cambodia",
+    "js"
+  ],
+  "喀麦隆": [
+    "maps/Cameroon",
+    "js"
+  ],
+  "加拿大": [
+    "maps/Canada",
+    "js"
+  ],
+  "佛得角": [
+    "maps/Cape_Verde",
+    "js"
+  ],
+  "开曼群岛": [
+    "maps/Cayman_Islands",
+    "js"
+  ],
+  "中非共和国": [
+    "maps/Central_African_Republic",
+    "js"
+  ],
+  "乍得": [
+    "maps/Chad",
+    "js"
+  ],
+  "智利": [
+    "maps/Chile",
+    "js"
+  ],
+  "哥伦比亚": [
+    "maps/Colombia",
+    "js"
+  ],
+  "科摩罗": [
+    "maps/Comoros",
+    "js"
+  ],
+  "刚果-布拉柴维尔": [
+    "maps/Congo-Brazzaville",
+    "js"
+  ],
+  "刚果金": [
+    "maps/Congo-Kinshasa",
+    "js"
+  ],
+  "库克群岛": [
+    "maps/Cook_Islands",
+    "js"
+  ],
+  "珊瑚海群岛领地": [
+    "maps/Coral_Sea_Islands_Territory",
+    "js"
+  ],
+  "哥斯达黎加": [
+    "maps/Costa_Rica",
+    "js"
+  ],
+  "克罗地亚": [
+    "maps/Croatia",
+    "js"
+  ],
+  "古巴": [
+    "maps/Cuba",
+    "js"
+  ],
+  "塞浦路斯": [
+    "maps/Cyprus",
+    "js"
+  ],
+  "捷克": [
+    "maps/Czechia",
+    "js"
+  ],
+  "丹麦": [
+    "maps/Denmark",
+    "js"
+  ],
+  "吉布提": [
+    "maps/Djibouti",
+    "js"
+  ],
+  "多米尼克": [
+    "maps/Dominica",
+    "js"
+  ],
+  "多米尼加共和国": [
+    "maps/Dominican_Republic",
+    "js"
+  ],
+  "东帝汶": [
+    "maps/East_Timor",
+    "js"
+  ],
+  "厄瓜多尔": [
+    "maps/Ecuador",
+    "js"
+  ],
+  "埃及": [
+    "maps/Egypt",
+    "js"
+  ],
+  "萨尔瓦多": [
+    "maps/El_Salvador",
+    "js"
+  ],
+  "赤道几内亚": [
+    "maps/Equatorial_Guinea",
+    "js"
+  ],
+  "厄立特里亚": [
+    "maps/Eritrea",
+    "js"
+  ],
+  "爱沙尼亚": [
+    "maps/Estonia",
+    "js"
+  ],
+  "埃塞俄比亚": [
+    "maps/Ethiopia",
+    "js"
+  ],
+  "福克兰群岛": [
+    "maps/Falkland_Islands",
+    "js"
+  ],
+  "法罗群岛": [
+    "maps/Faroe_Islands",
+    "js"
+  ],
+  "密克罗尼西亚联邦": [
+    "maps/Federated_States_of_Micronesia",
+    "js"
+  ],
+  "斐济": [
+    "maps/Fiji",
+    "js"
+  ],
+  "芬兰": [
+    "maps/Finland",
+    "js"
+  ],
+  "法国": [
+    "maps/France",
+    "js"
+  ],
+  "加蓬": [
+    "maps/Gabon",
+    "js"
+  ],
+  "格鲁吉亚": [
+    "maps/Georgia",
+    "js"
+  ],
+  "德国": [
+    "maps/Germany",
+    "js"
+  ],
+  "加纳": [
+    "maps/Ghana",
+    "js"
+  ],
+  "直布罗陀": [
+    "maps/Gibraltar",
+    "js"
+  ],
+  "希腊": [
+    "maps/Greece",
+    "js"
+  ],
+  "格陵兰": [
+    "maps/Greenland",
+    "js"
+  ],
+  "危地马拉": [
+    "maps/Guatemala",
+    "js"
+  ],
+  "根西": [
+    "maps/Guernsey",
+    "js"
+  ],
+  "几内亚比索": [
+    "maps/Guinea-Bissau",
+    "js"
+  ],
+  "几内亚": [
+    "maps/Guinea",
+    "js"
+  ],
+  "圭亚那": [
+    "maps/Guyana",
+    "js"
+  ],
+  "海地": [
+    "maps/Haiti",
+    "js"
+  ],
+  "洪都拉斯": [
+    "maps/Honduras",
+    "js"
+  ],
+  "匈牙利": [
+    "maps/Hungary",
+    "js"
+  ],
+  "冰岛": [
+    "maps/Iceland",
+    "js"
+  ],
+  "印度": [
+    "maps/India",
+    "js"
+  ],
+  "印度尼西亚, 印尼": [
+    "maps/Indonesia",
+    "js"
+  ],
+  "伊拉克": [
+    "maps/Iraq",
+    "js"
+  ],
+  "爱尔兰": [
+    "maps/Ireland",
+    "js"
+  ],
+  "伊朗": [
+    "maps/Islamic_Republic_of_Iran",
+    "js"
+  ],
+  "马恩岛": [
+    "maps/Isle_of_Man",
+    "js"
+  ],
+  "以色列": [
+    "maps/Israel",
+    "js"
+  ],
+  "意大利": [
+    "maps/Italy",
+    "js"
+  ],
+  "牙买加": [
+    "maps/Jamaica",
+    "js"
+  ],
+  "日本": [
+    "maps/Japan",
+    "js"
+  ],
+  "泽西": [
+    "maps/Jersey",
+    "js"
+  ],
+  "约旦": [
+    "maps/Jordan",
+    "js"
+  ],
+  "哈萨克斯坦": [
+    "maps/Kazakhstan",
+    "js"
+  ],
+  "肯尼亚": [
+    "maps/Kenya",
+    "js"
+  ],
+  "基里巴斯": [
+    "maps/Kiribati",
+    "js"
+  ],
+  "科威特": [
+    "maps/Kuwait",
+    "js"
+  ],
+  "吉尔吉斯斯坦": [
+    "maps/Kyrgyzstan",
+    "js"
+  ],
+  "老挝": [
+    "maps/Laos",
+    "js"
+  ],
+  "拉脱维亚": [
+    "maps/Latvia",
+    "js"
+  ],
+  "黎巴嫩": [
+    "maps/Lebanon",
+    "js"
+  ],
+  "莱索托": [
+    "maps/Lesotho",
+    "js"
+  ],
+  "利比里亚": [
+    "maps/Liberia",
+    "js"
+  ],
+  "利比亚": [
+    "maps/Libya",
+    "js"
+  ],
+  "列支敦士登": [
+    "maps/Liechtenstein",
+    "js"
+  ],
+  "立陶宛": [
+    "maps/Lithuania",
+    "js"
+  ],
+  "卢森堡": [
+    "maps/Luxemburg",
+    "js"
+  ],
+  "马其顿": [
+    "maps/Macedonia",
+    "js"
+  ],
+  "马达加斯加": [
+    "maps/Madagascar",
+    "js"
+  ],
+  "马拉维": [
+    "maps/Malawi",
+    "js"
+  ],
+  "马来西亚": [
+    "maps/Malaysia",
+    "js"
+  ],
+  "马尔代夫": [
+    "maps/Maldives",
+    "js"
+  ],
+  "马里": [
+    "maps/Mali",
+    "js"
+  ],
+  "马耳他": [
+    "maps/Malta",
+    "js"
+  ],
+  "马绍尔群岛": [
+    "maps/Marshall_Islands",
+    "js"
+  ],
+  "毛里塔尼亚": [
+    "maps/Mauritania",
+    "js"
+  ],
+  "毛里求斯": [
+    "maps/Mauritius",
+    "js"
+  ],
+  "墨西哥": [
+    "maps/Mexico",
+    "js"
+  ],
+  "摩尔多瓦": [
+    "maps/Moldova",
+    "js"
+  ],
+  "摩纳哥": [
+    "maps/Monaco",
+    "js"
+  ],
+  "蒙古": [
+    "maps/Mongolia",
+    "js"
+  ],
+  "黑山": [
+    "maps/Montenegro",
+    "js"
+  ],
+  "蒙特塞拉特": [
+    "maps/Montserrat",
+    "js"
+  ],
+  "摩洛哥": [
+    "maps/Morocco",
+    "js"
+  ],
+  "莫桑比克": [
+    "maps/Mozambique",
+    "js"
+  ],
+  "缅甸": [
+    "maps/Myanmar",
+    "js"
+  ],
+  "纳米比亚": [
+    "maps/Namibia",
+    "js"
+  ],
+  "尼泊尔": [
+    "maps/Nepal",
+    "js"
+  ],
+  "新西兰": [
+    "maps/New_Zealand",
+    "js"
+  ],
+  "尼加拉瓜": [
+    "maps/Nicaragua",
+    "js"
+  ],
+  "尼日尔": [
+    "maps/Niger",
+    "js"
+  ],
+  "尼日利亚": [
+    "maps/Nigeria",
+    "js"
+  ],
+  "纽埃": [
+    "maps/Niue",
+    "js"
+  ],
+  "朝鲜": [
+    "maps/North_Korea",
+    "js"
+  ],
+  "挪威": [
+    "maps/Norway",
+    "js"
+  ],
+  "阿曼": [
+    "maps/Oman",
+    "js"
+  ],
+  "巴基斯坦": [
+    "maps/Pakistan",
+    "js"
+  ],
+  "帕劳": [
+    "maps/Palau",
+    "js"
+  ],
+  "巴勒斯坦": [
+    "maps/Palestine",
+    "js"
+  ],
+  "巴拿马": [
+    "maps/Panama",
+    "js"
+  ],
+  "巴布亚新几内亚": [
+    "maps/Papua_New_Guinea",
+    "js"
+  ],
+  "巴拉圭": [
+    "maps/Paraguay",
+    "js"
+  ],
+  "秘鲁": [
+    "maps/Peru",
+    "js"
+  ],
+  "菲律宾": [
+    "maps/Philippines",
+    "js"
+  ],
+  "皮特凱恩群島": [
+    "maps/Pitcairn_Islands",
+    "js"
+  ],
+  "波兰": [
+    "maps/Poland",
+    "js"
+  ],
+  "葡萄牙": [
+    "maps/Portugal",
+    "js"
+  ],
+  "卡塔尔": [
+    "maps/Qatar",
+    "js"
+  ],
+  "科索沃": [
+    "maps/Republic_of_Kosovo",
+    "js"
+  ],
+  "罗马尼亚": [
+    "maps/Romania",
+    "js"
+  ],
+  "俄罗斯": [
+    "maps/Russia",
+    "js"
+  ],
+  "卢旺达": [
+    "maps/Rwanda",
+    "js"
+  ],
+  "撒拉威阿拉伯民主共和国": [
+    "maps/Sahrawi_Arab_Democratic_Republic",
+    "js"
+  ],
+  "圣赫勒拿-阿森松和特里斯坦-达库尼亚": [
+    "maps/Saint_Helena_Ascension_and_Tristan_da_Cunha",
+    "js"
+  ],
+  "圣基茨和尼维斯": [
+    "maps/Saint_Kitts_and_Nevis",
+    "js"
+  ],
+  "圣卢西亚": [
+    "maps/Saint_Lucia",
+    "js"
+  ],
+  "圣文森特和格林纳丁斯": [
+    "maps/Saint_Vincent_and_the_Grenadines",
+    "js"
+  ],
+  "萨摩亚": [
+    "maps/Samoa",
+    "js"
+  ],
+  "圣马力诺": [
+    "maps/San_Marino",
+    "js"
+  ],
+  "沙特阿拉伯": [
+    "maps/Saudi_Arabia",
+    "js"
+  ],
+  "塞内加尔": [
+    "maps/Senegal",
+    "js"
+  ],
+  "塞尔维亚": [
+    "maps/Serbia",
+    "js"
+  ],
+  "塞舌尔": [
+    "maps/Seychelles",
+    "js"
+  ],
+  "塞拉利昂": [
+    "maps/Sierra_Leone",
+    "js"
+  ],
+  "新加坡": [
+    "maps/Singapore",
+    "js"
+  ],
+  "斯洛伐克": [
+    "maps/Slovakia",
+    "js"
+  ],
+  "斯洛文尼亚": [
+    "maps/Slovenia",
+    "js"
+  ],
+  "所罗门群岛": [
+    "maps/Solomon_Islands",
+    "js"
+  ],
+  "索马里": [
+    "maps/Somalia",
+    "js"
+  ],
+  "南非": [
+    "maps/South_Africa",
+    "js"
+  ],
+  "南乔治亚和南桑威奇群岛": [
+    "maps/South_Georgia_and_the_South_Sandwich_Islands",
+    "js"
+  ],
+  "韩国": [
+    "maps/South_Korea",
+    "js"
+  ],
+  "南苏丹": [
+    "maps/South_Sudan",
+    "js"
+  ],
+  "西班牙": [
+    "maps/Spain",
+    "js"
+  ],
+  "斯里兰卡": [
+    "maps/Sri_Lanka",
+    "js"
+  ],
+  "苏丹": [
+    "maps/Sudan",
+    "js"
+  ],
+  "苏里南": [
+    "maps/Suriname",
+    "js"
+  ],
+  "史瓦济兰": [
+    "maps/Swaziland",
+    "js"
+  ],
+  "瑞士": [
+    "maps/Switzerland",
+    "js"
+  ],
+  "瑞典": [
+    "maps/Sweden",
+    "js"
+  ],
+  "叙利亚": [
+    "maps/Syria",
+    "js"
+  ],
+  "塔吉克斯坦": [
+    "maps/Tajikistan",
+    "js"
+  ],
+  "坦桑尼亚": [
+    "maps/Tanzania",
+    "js"
+  ],
+  "泰国": [
+    "maps/Thailand",
+    "js"
+  ],
+  "巴哈马": [
+    "maps/The_Bahamas",
+    "js"
+  ],
+  "冈比亚": [
+    "maps/The_Gambia",
+    "js"
+  ],
+  "荷兰": [
+    "maps/The_Netherlands",
+    "js"
+  ],
+  "多哥": [
+    "maps/Togo",
+    "js"
+  ],
+  "托克劳": [
+    "maps/Tokelau",
+    "js"
+  ],
+  "汤加": [
+    "maps/Tonga",
+    "js"
+  ],
+  "特立尼达和多巴哥": [
+    "maps/Trinidad_and_Tobago",
+    "js"
+  ],
+  "突尼斯": [
+    "maps/Tunisia",
+    "js"
+  ],
+  "土耳其": [
+    "maps/Turkey",
+    "js"
+  ],
+  "土库曼": [
+    "maps/Turkmenistan",
+    "js"
+  ],
+  "特克斯和凯科斯群岛": [
+    "maps/Turks_and_Caicos_Islands",
+    "js"
+  ],
+  "吐瓦鲁": [
+    "maps/Tuvalu",
+    "js"
+  ],
+  "乌干达": [
+    "maps/Uganda",
+    "js"
+  ],
+  "乌克兰": [
+    "maps/Ukraine",
+    "js"
+  ],
+  "阿拉伯联合酋长国": [
+    "maps/United_Arab_Emirates",
+    "js"
+  ],
+  "英国": [
+    "maps/United_Kingdom",
+    "js"
+  ],
+  "乌拉圭": [
+    "maps/Uruguay",
+    "js"
+  ],
+  "美国": [
+    "maps/USA",
+    "js"
+  ],
+  "乌兹别克斯坦": [
+    "maps/Uzbekistan",
+    "js"
+  ],
+  "瓦努阿图": [
+    "maps/Vanuatu",
+    "js"
+  ],
+  "梵蒂冈": [
+    "maps/Vatican_City",
+    "js"
+  ],
+  "委内瑞拉": [
+    "maps/Venezuela",
+    "js"
+  ],
+  "越南": [
+    "maps/Vietnam",
+    "js"
+  ],
+  "也门": [
+    "maps/Yemen",
+    "js"
+  ],
+  "赞比亚": [
+    "maps/Zambia",
+    "js"
+  ],
+  "津巴布韦": [
+    "maps/Zimbabwe",
+    "js"
+  ]
+}

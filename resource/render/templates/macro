@@ -1,0 +1,231 @@
+{%- macro render_chart_content(c) -%}
+    <div id="{{ c.chart_id }}" class="chart-container" style="width:{{ c.width }}; height:{{ c.height }}; {{ c.horizontal_center }}"></div>
+    {% if c._geo_json_name and c._geo_json %}
+    <script>
+        (function (root, factory) {
+            if (typeof define === 'function' && define.amd) {
+                // AMD. Register as an anonymous module.
+                define(['exports', 'echarts'], factory);
+            } else if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
+                // CommonJS
+                factory(exports, require('echarts'));
+            } else {
+                // Browser globals
+                factory({}, root.echarts);
+            }
+        }(this, function (exports, echarts) {
+            var log = function (msg) {
+                if (typeof console !== 'undefined') {
+                    console && console.error && console.error(msg);
+                }
+            }
+            if (!echarts) {
+                log('ECharts is not Loaded');
+                return;
+            }
+            if (!echarts.registerMap) {
+                log('ECharts Map is not loaded')
+                return;
+            }
+            echarts.registerMap('{{ c._geo_json_name }}', {{ c._geo_json }});
+        }));
+    </script>
+    {% endif %}
+    <script>
+        {% if c._is_tab_chart %}
+            document.getElementById('{{ c.chart_id }}').style.width = document.getElementById('{{ c.chart_id }}').parentNode.clientWidth + 'px';
+        {% endif %}
+        var chart_{{ c.chart_id }} = echarts.init(
+            document.getElementById('{{ c.chart_id }}'), '{{ c.theme }}', {renderer: '{{ c.renderer }}'});
+        {% for js in c.js_functions.items %}
+            {{ js }}
+        {% endfor %}
+        var option_{{ c.chart_id }} = {{ c.json_contents }};
+        chart_{{ c.chart_id }}.setOption(option_{{ c.chart_id }});
+        {% if c._is_geo_chart %}
+            var bmap = chart_{{ c.chart_id }}.getModel().getComponent('bmap').getBMap();
+            {% if c.bmap_js_functions %}
+                {% for fn in c.bmap_js_functions.items %}
+                    {{ fn }}
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+        {% if c.width.endswith('%') %}
+            window.addEventListener('resize', function(){
+                chart_{{ c.chart_id }}.resize();
+            })
+        {% endif %}
+    </script>
+{%- endmacro %}
+
+{%- macro render_notebook_charts(charts, libraries) -%}
+    <script>
+        require([{{ libraries | join(', ') }}], function(echarts) {
+        {% for c in charts %}
+            {% if c._component_type not in ("table", "image") %}
+                var chart_{{ c.chart_id }} = echarts.init(
+                    document.getElementById('{{ c.chart_id }}'), '{{ c.theme }}', {renderer: '{{ c.renderer }}'});
+                {% for js in c.js_functions.items %}
+                    {{ js }}
+                {% endfor %}
+                var option_{{ c.chart_id }} = {{ c.json_contents }};
+                chart_{{ c.chart_id }}.setOption(option_{{ c.chart_id }});
+                {% if c._is_geo_chart %}
+                    var bmap = chart_{{ c.chart_id }}.getModel().getComponent('bmap').getBMap();
+                    bmap.addControl(new BMap.MapTypeControl());
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        });
+    </script>
+{%- endmacro %}
+
+{%- macro render_chart_dependencies(c) -%}
+    {% for dep in c.dependencies %}
+        <script type="text/javascript" src="{{ dep }}"></script>
+    {% endfor %}
+{%- endmacro %}
+
+{%- macro render_chart_css(c) -%}
+    {% for dep in c.css_libs %}
+        <link rel="stylesheet"  href="{{ dep }}">
+    {% endfor %}
+{%- endmacro %}
+
+{%- macro display_tablinks(chart) -%}
+    <div class="tab">
+        {% for c in chart %}
+            <button class="tablinks" onclick="showChart(event, '{{ c.chart_id }}')">{{ c.tab_name }}</button>
+        {% endfor %}
+    </div>
+{%- endmacro %}
+
+{%- macro switch_tabs() -%}
+    <script>
+        (function() {
+            containers = document.getElementsByClassName("chart-container");
+            if(containers.length > 0) {
+                containers[0].style.display = "block";
+            }
+        })()
+
+        function showChart(evt, chartID) {
+            let containers = document.getElementsByClassName("chart-container");
+            for (let i = 0; i < containers.length; i++) {
+                containers[i].style.display = "none";
+            }
+
+            let tablinks = document.getElementsByClassName("tablinks");
+            for (let i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = "tablinks";
+            }
+
+            document.getElementById(chartID).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+{%- endmacro %}
+
+{%- macro generate_tab_css() %}
+    <style>
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 12px 16px;
+            transition: 0.3s;
+        }
+
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        .chart-container {
+            display: block;
+        }
+
+        .chart-container:nth-child(n+2) {
+            display: none;
+        }
+    </style>
+{%- endmacro %}
+
+{%- macro gen_components_content(chart) %}
+    {% if chart._component_type == "table" %}
+        <style>
+            .fl-table {
+                margin: 20px;
+                border-radius: 5px;
+                font-size: 12px;
+                border: none;
+                border-collapse: collapse;
+                max-width: 100%;
+                white-space: nowrap;
+                word-break: keep-all;
+            }
+
+            .fl-table th {
+                text-align: left;
+                font-size: 20px;
+            }
+
+            .fl-table tr {
+                display: table-row;
+                vertical-align: inherit;
+                border-color: inherit;
+            }
+
+            .fl-table tr:hover td {
+                background: #00d1b2;
+                color: #F8F8F8;
+            }
+
+            .fl-table td, .fl-table th {
+                border-style: none;
+                border-top: 1px solid #dbdbdb;
+                border-left: 1px solid #dbdbdb;
+                border-bottom: 3px solid #dbdbdb;
+                border-right: 1px solid #dbdbdb;
+                padding: .5em .55em;
+                font-size: 15px;
+            }
+
+            .fl-table td {
+                border-style: none;
+                font-size: 15px;
+                vertical-align: center;
+                border-bottom: 1px solid #dbdbdb;
+                border-left: 1px solid #dbdbdb;
+                border-right: 1px solid #dbdbdb;
+                height: 30px;
+            }
+
+            .fl-table tr:nth-child(even) {
+                background: #F8F8F8;
+            }
+        </style>
+        <div id="{{ chart.chart_id }}" class="chart-container" style="">
+            <p class="title" {{ chart.title_opts.title_style }}> {{ chart.title_opts.title }}</p>
+            <p class="subtitle" {{ chart.title_opts.subtitle_style }}> {{ chart.title_opts.subtitle }}</p>
+            {{ chart.html_content }}
+        </div>
+    {% elif chart._component_type == "image" %}
+        <div id="{{ chart.chart_id }}" class="chart-container" style="">
+            <p class="title" {{ chart.title_opts.title_style }}> {{ chart.title_opts.title }}</p>
+            <p class="subtitle" {{ chart.title_opts.subtitle_style }}> {{ chart.title_opts.subtitle }}</p>
+            <img {{ chart.html_content }}/>
+        </div>
+    {% endif %}
+{%- endmacro %}

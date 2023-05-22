@@ -1,0 +1,12 @@
+{% import 'macro' as macro %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ chart.page_title }}</title>
+    {{ macro.render_chart_dependencies(chart) }}
+</head>
+<body {% if chart.fill_bg %}style="background-color: {{ chart.bg_color }}" {% endif %}>
+{{ macro.render_chart_content(chart) }}
+</body>
+</html>

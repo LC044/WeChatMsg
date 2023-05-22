@@ -1,0 +1,13 @@
+{% import 'macro' as macro %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    {{ macro.render_chart_dependencies(chart) }}
+</head>
+<body>
+{% for c in chart %}
+{{ macro.render_chart_content(c) }}
+{% endfor %}
+</body>
+</html>

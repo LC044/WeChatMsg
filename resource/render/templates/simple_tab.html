@@ -1,0 +1,36 @@
+{% import 'macro' as macro %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ chart.page_title }}</title>
+    {{ macro.render_chart_dependencies(chart) }}
+    {{ macro.render_chart_css(chart) }}
+</head>
+<body {% if chart.bg_color !='' %}style="background-color: {{ chart.bg_color }}" {% endif %}>
+{% if chart.use_custom_tab_css is not true %}
+{{ macro.generate_tab_css() }}
+{% else %}
+<style>{{ chart.tab_custom_css }}</style>
+{% endif %}
+{{ macro.display_tablinks(chart) }}
+
+<div class="box">
+    {% for c in chart %}
+    {% if c._component_type in ("table", "image") %}
+    {{ macro.gen_components_content(c) }}
+    {% else %}
+    {{ macro.render_chart_content(c) }}
+    {% endif %}
+    {% endfor %}
+</div>
+
+<script>
+        {% for js in chart.js_functions.items %}
+            {{ js }}
+        {% endfor %}
+
+</script>
+{{ macro.switch_tabs() }}
+</body>
+</html>

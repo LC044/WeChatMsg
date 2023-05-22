@@ -1,0 +1,5 @@
+{% import 'macro' as macro %}
+
+{% for chart in charts %}
+{{ macro.gen_components_content(chart) }}
+{% endfor %}

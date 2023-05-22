@@ -1,0 +1,21 @@
+{% import 'macro' as macro %}
+
+<script>
+    require.config({
+        paths: {
+            {{ config_items | join(', ') }}
+        }
+    });
+
+
+</script>
+
+{% for chart in charts %}
+{% if chart._component_type in ("table", "image") %}
+{{ macro.gen_components_content(chart) }}
+{% else %}
+<div id="{{ chart.chart_id }}" style="width:{{ chart.width }}; height:{{ chart.height }};"></div>
+{% endif %}
+{% endfor %}
+
+{{ macro.render_notebook_charts(charts, libraries) }}

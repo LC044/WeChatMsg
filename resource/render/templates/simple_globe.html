@@ -1,0 +1,42 @@
+{% import 'macro' as macro %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ chart.page_title }}</title>
+    {{ macro.render_chart_dependencies(chart) }}
+</head>
+<body>
+<div id="{{ chart.chart_id }}" style="width:{{ chart.width }}; height:{{ chart.height }};"></div>
+<script>
+		var canvas_{{ chart.chart_id }} = document.createElement('canvas');
+        var mapChart_{{ chart.chart_id }} = echarts.init(
+		     canvas_{{ chart.chart_id }}, '{{ chart.theme }}', {width: 4096, height: 2048, renderer: '{{ chart.renderer }}'});
+        {% for js in chart.js_functions.items %}
+            {{ js }}
+        {% endfor %}
+        var mapOption_{{ chart.chart_id }} = {{ chart.json_contents }};
+        mapChart_{{ chart.chart_id }}.setOption(mapOption_{{ chart.chart_id }});
+
+		var chart_{{ chart.chart_id }} = echarts.init(
+        document.getElementById('{{ chart.chart_id }}'), '{{ chart.theme }}', {renderer: '{{ chart.renderer }}'});
+		var options_{{ chart.chart_id }} = {
+           "globe": {
+           "show": true,
+		   "baseTexture": mapChart_{{ chart.chart_id }},
+           shading: 'lambert',
+            light: {
+                ambient: {
+                    intensity: 0.6
+                },
+                main: {
+                    intensity: 0.2
+                }
+             }
+
+		   }};
+		chart_{{ chart.chart_id }}.setOption(options_{{ chart.chart_id }});
+
+</script>
+</body>
+</html>

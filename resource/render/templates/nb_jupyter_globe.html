@@ -1,0 +1,49 @@
+<script>
+    require.config({
+        paths: {
+            {{ config_items | join(', ') }}
+        }
+    });
+
+
+</script>
+
+{% for chart in charts %}
+<div id="{{ chart.chart_id }}" style="width:{{ chart.width }}; height:{{ chart.height }};"></div>
+{% endfor %}
+
+
+<script>
+    require([{{ libraries | join(', ') }}], function(echarts) {
+    {% for c in charts %}
+		var canvas_{{ c.chart_id }} = document.createElement('canvas');
+        var mapChart_{{ c.chart_id }} = echarts.init(
+	    canvas_{{ c.chart_id }}, '{{ c.theme }}', {width: 4096, height: 2048, renderer: '{{ c.renderer }}'});
+        var mapOption_{{ c.chart_id }} = {{ c.json_contents }};
+        mapChart_{{ c.chart_id }}.setOption(mapOption_{{ c.chart_id }});
+    	var chart_{{ c.chart_id }} = echarts.init(
+            document.getElementById('{{ c.chart_id }}'), '{{ c.theme }}', {renderer: '{{ c.renderer }}'});
+        {% for js in c.js_functions.items %}
+            {{ js }}
+        {% endfor %}
+	    var option_{{ c.chart_id }} = {
+           "globe": {
+           "show": true,
+		   "baseTexture": mapChart_{{ c.chart_id }},
+           shading: 'lambert',
+            light: {
+                ambient: {
+                    intensity: 0.6
+                },
+                main: {
+                    intensity: 0.2
+                }
+             }
+
+		   }};
+        chart_{{ c.chart_id }}.setOption(option_{{ c.chart_id }});
+    {% endfor %}
+    });
+
+
+</script>
