@@ -9,8 +9,8 @@
 """
 # 文件__init__.py
 # from login import login
+from . import mainwindow
 from . import mainview
-
 from .decrypt import decrypt
 
 # __all__ = ["decrypt", 'mainview']
