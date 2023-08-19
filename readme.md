@@ -34,6 +34,10 @@
     - EnMicroMsg.db——聊天数据库
 2. 安装依赖库
 
+python版本3.10
+
+**说明:用到了python3.10的match语法，不方便更换python版本的小伙伴可以把match(运行报错的地方)更改为if else**
+
 命令行运行以下代码
 
 ```bash
