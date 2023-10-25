@@ -1,5 +1,18 @@
 # 微信聊天记录可视化
 
+<div align="center">
+<img src="https://img.shields.io/badge/WeChat-聊天-blue.svg">
+<a href="https://github.com/LC044/WeChatMsg/stargazers">
+    <img src="https://img.shields.io/github/stars/LC044/WeChatMsg.svg" />
+</a>
+<a href="./doc/readme.md">
+    <img src="https://img.shields.io/badge/文档-最新-brightgreen.svg" />
+</a>
+<a href="LICENSE">
+    <img src="https://img.shields.io/badge/Apache-2.0-blue.svg" />
+</a>
+</div>
+
 ## 功能
 
 - 安卓 or 苹果都可以哦
@@ -8,6 +21,12 @@
 - 分析聊天数据，做成可视化年报
 - 小伙伴们想要其他功能可以留言哦🏆
 - 有任何问题可以随时联系我(863909694@qq.com)
+
+为了方便大家交流，我新建了一个QQ群：**474379264**
+
+大家有任何诉求可以群里反馈给我
+
+<img src="doc/images/qq.jpg" height=480/>
 
 ## 效果
 
