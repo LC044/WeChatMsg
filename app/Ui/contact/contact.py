@@ -69,7 +69,7 @@ class ContactController(QWidget, Ui_Dialog):
     def initui(self):
         # 槽函数连接
         self.btn_back.clicked.connect(self.back)
-        self.btn_output.clicked.connect(self.output)
+        # self.btn_output.clicked.connect(self.output)
         self.btn_analysis.clicked.connect(self.analysis)
         self.btn_emotion.clicked.connect(self.emotionale_Analysis)
         self.btn_report.clicked.connect(self.annual_report)
@@ -86,6 +86,19 @@ class ContactController(QWidget, Ui_Dialog):
         self.userinfo.progressBar.setVisible(False)
         self.stackedWidget.addWidget(self.frame)
         # self.lay0.addWidget(self.frame)
+        menu = QMenu(self)
+        self.toDocxAct = QAction(QIcon('app/data/icons/word.svg'), '导出Docx', self)
+        self.toCSVAct = QAction(QIcon('app/data/icons/csv.svg'), '导出CSV', self)
+        self.toHtmlAct = QAction(QIcon('app/data/icons/html.svg'), '导出HTML', self)
+        self.toolButton_output.setPopupMode(QToolButton.MenuButtonPopup)
+        menu.addAction(self.toDocxAct)
+        menu.addAction(self.toCSVAct)
+        menu.addAction(self.toHtmlAct)
+        self.toolButton_output.setMenu(menu)
+        # self.toolButton_output.addSeparator()
+        self.toHtmlAct.triggered.connect(self.output)
+        self.toDocxAct.triggered.connect(self.output)
+        self.toCSVAct.triggered.connect(self.output)
 
     def showContact(self):
         """
@@ -160,11 +173,27 @@ class ContactController(QWidget, Ui_Dialog):
         :return:
         """
         self.setViewVisible(self.now_talkerId)
-        self.outputThread = output.Output(self.Me, self.now_talkerId)
-        self.outputThread.progressSignal.connect(self.output_progress)
-        self.outputThread.rangeSignal.connect(self.set_progressBar_range)
-        self.outputThread.okSignal.connect(self.hide_progress_bar)
-        self.outputThread.start()
+
+        if self.sender() == self.toDocxAct:
+            self.outputThread = output.Output(self.Me, self.now_talkerId)
+            self.outputThread.progressSignal.connect(self.output_progress)
+            self.outputThread.rangeSignal.connect(self.set_progressBar_range)
+            self.outputThread.okSignal.connect(self.hide_progress_bar)
+            self.outputThread.start()
+        elif self.sender() == self.toCSVAct:
+            print('开始导出csv')
+            self.outputThread = output.Output(self.Me, self.now_talkerId, type_=output.Output.CSV)
+            self.outputThread.progressSignal.connect(self.output_progress)
+            self.outputThread.rangeSignal.connect(self.set_progressBar_range)
+            self.outputThread.okSignal.connect(self.hide_progress_bar)
+            self.outputThread.start()
+            print('导出csv')
+        elif self.sender() == self.toHtmlAct:
+            print('功能暂未实现')
+            QMessageBox.warning(self,
+                                "别急别急",
+                                "马上就实现该功能"
+                                )
 
     def hide_progress_bar(self, int):
         reply = QMessageBox(self)

@@ -3,6 +3,8 @@ import re
 import time
 
 import docx
+import numpy as np
+import pandas as pd
 import xmltodict
 from PyQt5.QtCore import *
 from docx import shared
@@ -11,6 +13,9 @@ from docx.enum.text import WD_COLOR_INDEX, WD_PARAGRAPH_ALIGNMENT
 from docxcompose.composer import Composer
 
 from . import data
+
+
+# import data
 
 
 def IS_5_min(last_m, now_m):
@@ -43,8 +48,11 @@ class Output(QThread):
     rangeSignal = pyqtSignal(int)
     okSignal = pyqtSignal(int)
     i = 1
+    CSV = 0
+    DOCX = 1
+    HTML = 2
 
-    def __init__(self, Me, ta_u, parent=None):
+    def __init__(self, Me, ta_u, parent=None, type_=DOCX):
         super().__init__(parent)
         self.Me = Me
         self.sec = 2  # 默认1000秒
@@ -52,6 +60,8 @@ class Output(QThread):
         self.my_avatar = self.Me.my_avatar
         self.ta_avatar = data.get_avator(ta_u)
         self.msg_id = 0
+        self.output_type = type_
+        self.total_num = 0
 
     def merge_docx(self, conRemark, n):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{conRemark}"
@@ -87,26 +97,46 @@ class Output(QThread):
             self.okSignal.emit(1)
         self.progressSignal.emit(self.i)
 
+    def to_csv(self, conRemark, path):
+        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{conRemark}"
+        messages = data.get_all_message(self.ta_username)
+        # print(messages)
+        self.Child0 = ChildThread(self.Me, self.ta_username, messages, conRemark, 0, type_=ChildThread.CSV)
+        self.Child0.progressSignal.connect(self.progress)
+        self.Child0.start()
+        print("成功导出CSV文件：", origin_docx_path)
+
     def run(self):
-        self.Child = {}
-        if 1:
-            conRemark = data.get_conRemark(self.ta_username)
-            data.mkdir(f"{os.path.abspath('.')}/data/聊天记录/{conRemark}")
+        conRemark = data.get_conRemark(self.ta_username)
+        data.mkdir(f"{os.path.abspath('.')}/data/聊天记录/{conRemark}")
+        if self.output_type == self.DOCX:
+            self.Child = {}
+            if 1:
+                messages = data.get_all_message(self.ta_username)
+                self.total_num = len(messages)
+                self.rangeSignal.emit(self.total_num)
+                l = len(messages)
+                self.n = 10
+                for i in range(self.n):
+                    q = i * (l // self.n)
+                    p = (i + 1) * (l // self.n)
+                    if i == self.n - 1:
+                        p = l
+                    len_data = messages[q:p]
+                    # self.to_docx(len_data, i, conRemark)
+                    self.Child[i] = ChildThread(self.Me, self.ta_username, len_data, conRemark, i)
+                    self.Child[i].progressSignal.connect(self.progress)
+                    self.Child[i].start()
+        elif self.output_type == self.CSV:
+            # print("线程导出csv")
+            # self.to_csv(self.ta_username, "path")
+            origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.ta_username}"
             messages = data.get_all_message(self.ta_username)
-            self.total_num = len(messages)
-            self.rangeSignal.emit(self.total_num)
-            l = len(messages)
-            self.n = 10
-            for i in range(self.n):
-                q = i * (l // self.n)
-                p = (i + 1) * (l // self.n)
-                if i == self.n - 1:
-                    p = l
-                len_data = messages[q:p]
-                # self.to_docx(len_data, i, conRemark)
-                self.Child[i] = ChildThread(self.Me, self.ta_username, len_data, conRemark, i)
-                self.Child[i].progressSignal.connect(self.progress)
-                self.Child[i].start()
+            # print(messages)
+            self.Child0 = ChildThread(self.Me, self.ta_username, messages, conRemark, 0, type_=ChildThread.CSV)
+            self.Child0.progressSignal.connect(self.progress)
+            self.Child0.run()
+            self.okSignal.emit(1)
 
 
 class ChildThread(QThread):
@@ -116,8 +146,11 @@ class ChildThread(QThread):
     progressSignal = pyqtSignal(int)
     rangeSignal = pyqtSignal(int)
     i = 1
+    CSV = 0
+    DOCX = 1
+    HTML = 2
 
-    def __init__(self, Me, ta_u, message, conRemark, num, parent=None):
+    def __init__(self, Me, ta_u, message, conRemark, num, parent=None, type_=DOCX):
         super().__init__(parent)
         self.Me = Me
         self.sec = 2  # 默认1000秒
@@ -128,6 +161,7 @@ class ChildThread(QThread):
         self.conRemark = conRemark
         self.message = message
         self.msg_id = 0
+        self.output_type = type_
 
     def create_table(self, doc, isSend):
         '''
@@ -374,11 +408,41 @@ class ChildThread(QThread):
         print(filename)
         doc.save(filename)
 
+    def to_csv(self, messages, i, conRemark):
+        '''创建联系人目录'''
+        # print('123', messages)
+        filename = f"{os.path.abspath('.')}/data/聊天记录/{conRemark}/{conRemark}.csv"
+        last_timestamp = 1601968667000
+        columns = ["用户名", "消息内容", "发送时间", "发送状态", "消息类型", "isSend", "msgId"]
+        df = pd.DataFrame()
+        df["用户名"] = np.array(list(map(lambda x: x[7], messages)))
+        df["消息内容"] = np.array(list(map(lambda x: x[8], messages)))
+        df["发送时间"] = np.array(list(map(lambda x: time_format(x[6]), messages)))
+        df["发送状态"] = np.array(list(map(lambda x: x[3], messages)))
+        df["消息类型"] = np.array(list(map(lambda x: x[2], messages)))
+        df["isSend"] = np.array(list(map(lambda x: x[4], messages)))
+        df["msgId"] = np.array(list(map(lambda x: x[0], messages)))
+        df.to_csv(filename)
+        # df.to_csv('data.csv')
+        print(df)
+        self.progressSignal.emit(self.num)
+
+    def to_html(self, messages, i, conRemark):
+        pass
+
     def run(self):
-        self.to_docx(self.message, self.num, self.conRemark)
+        if self.output_type == self.DOCX:
+            # print("导出docx")
+            self.to_docx(self.message, self.num, self.conRemark)
+        elif self.output_type == self.CSV:
+            print("导出csv001")
+            # print('00', self.message[0])
+            self.to_csv(self.message, self.num, self.conRemark)
 
 
 if __name__ == '__main__':
-    me = data.Me('wxid_27hqbq7vx5hf22')
-    t = Output(Me=me, ta_u='wxid_q3ozn70pweud22')
+    # wxid_0o18ef858vnu22
+    # wxid_fdkbu92el15h22
+    me = data.Me('wxid_fdkbu92el15h22')
+    t = Output(Me=me, ta_u='wxid_0o18ef858vnu22', type_=Output.CSV)
     t.run()

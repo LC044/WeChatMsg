@@ -250,7 +250,7 @@ def get_all_message(wxid):
     sql = '''
         select * from message
         where talker = ?
-        order by msgId 
+        order by createTime
         '''
     cursor.execute(sql, [wxid])
     return cursor.fetchall()

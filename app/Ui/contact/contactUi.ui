@@ -204,7 +204,7 @@
                                                 </widget>
                                             </item>
                                             <item>
-                                                <widget class="QPushButton" name="btn_output">
+                                                <widget class="QToolButton" name="toolButton_output">
                                                     <property name="text">
                                                         <string>导出聊天记录</string>
                                                     </property>
