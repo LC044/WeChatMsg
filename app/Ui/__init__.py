@@ -7,10 +7,12 @@
 @Version : Python3.10
 @comment : ···
 """
+from . import mainview
 # 文件__init__.py
 # from login import login
 from . import mainwindow
-from . import mainview
+from .ICON import Icon
+from .MyComponents import *
 from .decrypt import decrypt
 
-# __all__ = ["decrypt", 'mainview']
+__all__ = ["decrypt", 'mainview', 'Contact', 'Icon']

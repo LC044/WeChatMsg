@@ -43,7 +43,7 @@ class ContactController(QWidget, Ui_Dialog):
         self.ta_avatar = None
         self.setupUi(self)
         self.setWindowTitle('WeChat')
-        self.setWindowIcon(QIcon('./app/data/icon.png'))
+        self.setWindowIcon(QIcon('./app/data/icons/logo.svg'))
         # self.setStyleSheet('''QWidget{background-color:rgb(255, 255, 255);}''')
         self.initui()
         self.Me = Me
@@ -199,11 +199,9 @@ class ContactController(QWidget, Ui_Dialog):
         reply = QMessageBox(self)
         reply.setIcon(QMessageBox.Information)
         reply.setWindowTitle('OK')
-        reply.setText("导出聊天记录成功")
+        reply.setText(f"导出聊天记录成功\n在.\\data\\目录下")
         reply.addButton("确认", QMessageBox.AcceptRole)
         reply.addButton("取消", QMessageBox.RejectRole)
-        # reply.addButton("忽略", QMessageBox.DestructiveRole)
-        print(reply)
         api = reply.exec_()
         self.userinfo.progressBar.setVisible(False)
 

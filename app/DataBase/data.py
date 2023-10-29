@@ -89,17 +89,47 @@ class Me:
         self.province = None
 
 
+def is_db_exist() -> bool:
+    """
+    判断数据库是否正常使用
+    """
+    global DB
+    global cursor
+    if DB and cursor:
+        try:
+            sql = 'select * from userinfo where id=2'
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            me = Me(result[2])
+        except Exception as e:
+            return False
+    return True
+
+
+def init_database():
+    global DB
+    global cursor
+    if os.path.exists('./app/DataBase/Msg.db'):
+        DB = sqlite3.connect("./app/DataBase/Msg.db", check_same_thread=False)
+        # '''创建游标'''
+        cursor = DB.cursor()
+    if os.path.exists('./Msg.db'):
+        DB = sqlite3.connect("./Msg.db", check_same_thread=False)
+        # '''创建游标'''
+        cursor = DB.cursor()
+
+
 def decrypt(db, key):
     if not key:
         print('缺少数据库密钥')
         return False
     if not db:
         print('没有数据库文件')
+        return False
     if os.path.exists('./app/DataBase/Msg.db'):
         print('/app/DataBase/Msg.db  已经存在')
         return True
     cmd = './sqlcipher-3.0.1/bin/sqlcipher-shell32.exe'
-    print(os.path.abspath('.'))
     param = f"""
     PRAGMA key = '{key}';
     PRAGMA cipher_migrate;
@@ -107,7 +137,6 @@ def decrypt(db, key):
     SELECT sqlcipher_export('Msg');
     DETACH DATABASE Msg;
         """
-
     with open('./app/data/config.txt', 'w') as f:
         f.write(param)
     p = os.system(f"{os.path.abspath('.')}{cmd} {db} < ./app/data/config.txt")

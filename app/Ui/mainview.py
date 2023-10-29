@@ -7,6 +7,7 @@
 @Version : Python3.10
 @comment : 主窗口
 """
+import os.path
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -14,6 +15,7 @@ from PyQt5.QtWidgets import *
 
 from app.DataBase import data
 from . import mainwindow
+from .ICON import Icon
 from .chat import chat
 from .contact import contact
 
@@ -26,7 +28,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         super(MainWinController, self).__init__(parent)
         self.setupUi(self)
         self.setWindowTitle('WeChat')
-        self.setWindowIcon(QIcon('./app/data/icon.png'))
+        self.setWindowIcon(Icon.MainWindow)
         self.Me = data.get_myinfo()
         self.setAttribute(Qt.WA_AttributeCount)
 
@@ -78,6 +80,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
 
     def show_avatar(self):
         avatar = data.get_avator(self.Me.username)
+        if not os.path.exists(avatar):
+            avatar = './app/data/icons/default_avatar.svg'
         pixmap = QPixmap(avatar).scaled(80, 80)  # 按指定路径找到图片
         self.myavatar.setPixmap(pixmap)  # 在label上显示图片
 

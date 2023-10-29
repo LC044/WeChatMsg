@@ -28,13 +28,12 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         super(DecryptControl, self).__init__(parent)
         self.setupUi(self)
         self.setWindowTitle('解密')
-        self.setWindowIcon(QIcon('./app/data/icon.png'))
+        self.setWindowIcon(QIcon('./app/data/icons/logo.svg'))
         self.btn_db.clicked.connect(self.get_db)
         self.btn_xml.clicked.connect(self.get_xml)
         self.pushButton_3.clicked.connect(self.decrypt)
         self.xml_path = None
         self.db_path = None
-        # self.db_exist()
 
     def db_exist(self):
         if os.path.exists('./app/DataBase/Msg.db'):
@@ -74,11 +73,9 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         if not self.xml_path:
             return False
         pid = self.pid(self.xml_path)
-        print(pid)
         if not pid:
             return False
         key = self.key(pid)
-        print(key)
         return key
 
     def pid(self, xml_path):
@@ -86,25 +83,22 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         # 根节点
         root = tree.getroot()
         # 标签名
-        print('root_tag:', root.tag)
         for stu in root:
             if stu.attrib["name"] == '_auth_uin':
                 return stu.attrib['value']
         return False
 
     def key(self, uin, IMEI='1234567890ABCDEF'):
-
-        print(IMEI, uin)
         m = hashlib.md5()
         m.update(bytes((IMEI + uin).encode('utf-8')))
         psw = m.hexdigest()
         return psw[:7]
 
     def btnEnterClicked(self):
-        print("enter clicked")
+        # print("enter clicked")
         # 中间可以添加处理逻辑
         self.DecryptSignal.emit('ok')
-        # self.close()
+        self.close()
 
     def progressBar_view(self, value):
         """
@@ -112,16 +106,17 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         :param value: 进度0-100
         :return: None
         """
-
         self.progressBar.setProperty('value', value)
         if value == '100':
             QMessageBox.information(self, "解密成功", "请退出该界面",
                                     QMessageBox.Yes)
             self.btnExitClicked()
+            data.init_database()
 
     def btnExitClicked(self):
-        print("Exit clicked")
-        # self.close()
+        # print("Exit clicked")
+        self.DecryptSignal.emit('ok')
+        self.close()
 
 
 class DecryptThread(QThread):

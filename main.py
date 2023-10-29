@@ -2,6 +2,7 @@ import sys
 
 from PyQt5.QtWidgets import *
 
+import app.DataBase.data as DB
 from app.Ui import *
 
 
@@ -15,11 +16,14 @@ class ViewController:
         登录界面
         :return:
         """
-        self.viewDecrypt = decrypt.DecryptControl()  # 需要将view login设为成员变量
-        self.viewDecrypt.DecryptSignal.connect(self.loadMainWinView)
-        self.viewDecrypt.registerSignal.connect(self.loadRegisterView)
-        self.viewDecrypt.show()
-        self.viewDecrypt.db_exist()
+        if DB.is_db_exist():
+            self.loadMainWinView()
+        else:
+            self.viewDecrypt = decrypt.DecryptControl()  # 需要将view login设为成员变量
+            self.viewDecrypt.DecryptSignal.connect(self.loadMainWinView)
+            self.viewDecrypt.registerSignal.connect(self.loadRegisterView)
+            self.viewDecrypt.show()
+            self.viewDecrypt.db_exist()
 
     def loadRegisterView(self):
         """
@@ -31,7 +35,7 @@ class ViewController:
         # self.viewDecrypt.DecryptSignal.connect(self.loadDecryptView)
         # self.viewDecrypt.show()
 
-    def loadMainWinView(self, username):
+    def loadMainWinView(self, username=None):
         """
         聊天界面
         :param username: 账号
