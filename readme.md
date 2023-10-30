@@ -9,7 +9,7 @@
     <img src="https://img.shields.io/badge/文档-最新-brightgreen.svg" />
 </a>
 <a href="LICENSE">
-    <img src="https://img.shields.io/badge/Apache-2.0-blue.svg" />
+    <img src="https://img.shields.io/badge/GPL-3.0-blue.svg" />
 </a>
 </div>
 
@@ -51,6 +51,7 @@
 1. 根据[教程](https://blog.csdn.net/m0_59452630/article/details/124222235?spm=1001.2014.3001.5501)获得两个文件
     - auth_info_key_prefs.xml——解析数据库密码
     - EnMicroMsg.db——聊天数据库
+    - **上面这两个文件就可以**
 2. 安装依赖库
 
 python版本3.10
