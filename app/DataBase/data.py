@@ -101,9 +101,10 @@ def is_db_exist() -> bool:
             cursor.execute(sql)
             result = cursor.fetchone()
             me = Me(result[2])
+            return True
         except Exception as e:
             return False
-    return True
+    return False
 
 
 def init_database():
@@ -211,7 +212,7 @@ def avatar_md5(wxid):
 
 def get_avator(wxid):
     if wxid == None:
-        return
+        return './app/data/icons/default_avatar.svg'
     wxid = str(wxid)
     avatar = avatar_md5(wxid)
     avatar_path = r"./app/data/avatar/"

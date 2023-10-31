@@ -1,18 +1,44 @@
 from datetime import datetime
 
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+
+import app.DataBase.data as data
+from app.person import Contact
 
 
-class Contact(QtWidgets.QPushButton):
+class ContactUi(QtWidgets.QPushButton):
     """
     联系人类，继承自pyqt的按钮，里面封装了联系人头像等标签
     """
     usernameSingal = pyqtSignal(str)
 
-    def __init__(self, Ui, id=None, contact=None):
-        super(Contact, self).__init__(Ui)
+    def __init__(self, Ui, id=None, rconversation=None):
+        super(ContactUi, self).__init__(Ui)
+        self.contact: Contact = Contact(rconversation[1])
+        self.init_ui(Ui)
+        self.msgCount = rconversation[0]
+        self.username = rconversation[1]
+        self.conversationTime = rconversation[6]
+        self.msgType = rconversation[7]
+        self.digest = rconversation[8]
+        hasTrunc = rconversation[10]
+        attrflag = rconversation[11]
+        if hasTrunc == 0:
+            if attrflag == 0:
+                self.digest = '[动画表情]'
+            elif attrflag == 67108864:
+                try:
+                    remark = data.get_conRemark(rconversation[9])
+                    msg = self.digest.split(':')[1].strip('\n').strip()
+                    self.digest = f'{remark}:{msg}'
+                except Exception as e:
+                    pass
+            else:
+                pass
+        self.show_info(id)
+
+    def init_ui(self, Ui):
         self.layoutWidget = QtWidgets.QWidget(Ui)
         self.layoutWidget.setObjectName("layoutWidget")
         self.gridLayout1 = QtWidgets.QGridLayout(self.layoutWidget)
@@ -62,37 +88,12 @@ class Contact(QtWidgets.QPushButton):
             "QPushButton {background-color: rgb(220,220,220);}"
             "QPushButton:hover{background-color: rgb(208,208,208);}\n"
         )
-        self.msgCount = contact[0]
-        self.username = contact[1]
-        self.conversationTime = contact[6]
-        self.msgType = contact[7]
-        self.digest = contact[8]
-        hasTrunc = contact[10]
-        attrflag = contact[11]
-        if hasTrunc == 0:
-            if attrflag == 0:
-                self.digest = '[动画表情]'
-            elif attrflag == 67108864:
-                try:
-                    remark = data.get_conRemark(contact[9])
-                    msg = self.digest.split(':')[1].strip('\n').strip()
-                    self.digest = f'{remark}:{msg}'
-                except Exception as e:
-                    pass
-            else:
-                pass
-        self.show_info(id)
 
     def show_info(self, id):
-        self.avatar = data.get_avator(self.username)
-        # print(avatar)
-        self.conRemark = data.get_conRemark(self.username)
-        self.nickname, self.alias = data.get_nickname(self.username)
         time = datetime.now().strftime("%m-%d %H:%M")
         msg = '还没说话'
-        pixmap = QPixmap(self.avatar).scaled(60, 60)  # 按指定路径找到图片
-        self.label_avatar.setPixmap(pixmap)  # 在label上显示图片
-        self.label_remark.setText(self.conRemark)
+        self.label_avatar.setPixmap(self.contact.avatar)  # 在label上显示图片
+        self.label_remark.setText(self.contact.conRemark)
         self.label_msg.setText(self.digest)
         self.label_time.setText(data.timestamp2str(self.conversationTime)[2:])
 
