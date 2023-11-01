@@ -33,21 +33,15 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.setAttribute(Qt.WA_AttributeCount)
 
         self.chatView = chat.ChatController(self.Me, parent=None)
-        self.chatView.setVisible(False)
-        # self.chatView.setLayout()
         self.lay = QHBoxLayout()
-        self.frame_main.setLayout(self.lay)
+        self.page_chat.setLayout(self.lay)
         self.lay.addWidget(self.chatView)
-        # self.frame_main.setLayout(self.chatView)
-        # self.frame_main.setLayout()
-        self.contactView = contact.ContactController(self.Me, parent=None)
-        self.contactView.setVisible(False)
-        self.lay0 = QHBoxLayout()
-        self.frame_main.setLayout(self.lay0)
-        self.lay.addWidget(self.contactView)
 
-        # self.myinfoView = userinfo.MyinfoController(self.Me, parent=self.frame_main)
-        # self.myinfoView.setVisible(False)
+        self.contactView = contact.ContactController(self.Me, parent=None)
+        self.lay0 = QHBoxLayout()
+        self.page_contact.setLayout(self.lay0)
+        self.lay0.addWidget(self.contactView)
+
         self.btn_chat.clicked.connect(self.chat_view)  # 聊天按钮
         self.btn_contact.clicked.connect(self.contact_view)
         # self.btn_myinfo.clicked.connect(self.myInfo)
@@ -58,7 +52,6 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.last_btn = None
         self.lastView = None
         self.show_avatar()
-
         # 创建右键菜单函数
 
     def create_rightmenu(self):
@@ -82,7 +75,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         avatar = data.get_avator(self.Me.username)
         if not os.path.exists(avatar):
             avatar = './app/data/icons/default_avatar.svg'
-        pixmap = QPixmap(avatar).scaled(80, 80)  # 按指定路径找到图片
+        pixmap = QPixmap(avatar).scaled(60, 60)  # 按指定路径找到图片
         self.myavatar.setPixmap(pixmap)  # 在label上显示图片
 
     def chat_view(self):
@@ -96,7 +89,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
             self.last_btn.setStyleSheet("QPushButton {background-color: rgb(240,240,240);}"
                                         "QPushButton:hover{background-color: rgb(209,209,209);}\n")
         self.last_btn = self.btn_chat
-        self.setviewVisible(self.chatView)
+        self.stackedWidget.setCurrentIndex(0)
         self.chatView.showChat()
 
     def contact_view(self):
@@ -110,7 +103,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
             self.last_btn.setStyleSheet("QPushButton {background-color: rgb(240,240,240);}"
                                         "QPushButton:hover{background-color: rgb(209,209,209);}\n")
         self.last_btn = self.btn_contact
-        self.setviewVisible(self.contactView)
+        self.stackedWidget.setCurrentIndex(1)
         self.contactView.showContact()
 
     def myInfo(self):
@@ -124,7 +117,6 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
             self.last_btn.setStyleSheet("QPushButton {background-color: rgb(240,240,240);}"
                                         "QPushButton:hover{background-color: rgb(209,209,209);}\n")
         self.last_btn = self.now_btn
-        self.setviewVisible(self.myinfoView)
 
     def about(self):
         """
@@ -133,12 +125,3 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         QMessageBox.about(self, "关于",
                           "关于作者\n姓名：周帅康\n邮箱：lc863854@mail.nwpu.edu.cn"
                           )
-
-    def setviewVisible(self, view):
-        """
-        设置窗口可见性
-        """
-        view.setVisible(True)
-        if view != self.lastView and self.lastView:
-            self.lastView.setVisible(False)
-        self.lastView = view

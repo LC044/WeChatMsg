@@ -26,6 +26,9 @@ a = Analysis(
     './app/Ui/contact/userinfo/userinfoUi.py',
     './app/Ui/decrypt/decrypt.py','./app/Ui/decrypt/decryptUi.py',
     './app/Ui/userinfo/userinfo.py','./app/Ui/userinfo/userinfoUi.py',
+    './app/person.py',
+    './app/Ui/ICON.py',
+    './app/Ui/MyComponents/Contact.py'
     ],
     pathex=[],
     binaries=[],
