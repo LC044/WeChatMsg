@@ -258,6 +258,12 @@ class ContactController(QWidget, Ui_Dialog):
         pass
 
     def annual_report(self):
+        QMessageBox.warning(
+            self,
+            "提示",
+            "敬请期待"
+        )
+        return
         self.report = report.ReportController(123)
         self.report.show()
 

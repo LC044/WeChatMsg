@@ -27,7 +27,6 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
     def __init__(self, username, parent=None):
         super(MainWinController, self).__init__(parent)
         self.setupUi(self)
-        self.setWindowTitle('WeChat')
         self.setWindowIcon(Icon.MainWindow)
         self.Me = data.get_myinfo()
         self.setAttribute(Qt.WA_AttributeCount)

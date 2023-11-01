@@ -244,8 +244,12 @@ def sport(username):
                     date.append(t)
         except:
             continue
-    df = pd.DataFrame({'ranks': ranks, 'score': steps, 'date': date}, index=date)
-    months = pd.date_range(date[0], date[-1], freq='M')
+    try:
+        # todo 可能没有运动信息
+        df = pd.DataFrame({'ranks': ranks, 'score': steps, 'date': date}, index=date)
+        months = pd.date_range(date[0], date[-1], freq='M')
+    except:
+        months = []
     tl = Timeline(init_opts=opts.InitOpts(width=f"{charts_width}px", height=f"{charts_height}px"))
     tl.add_schema(is_auto_play=True)
     for i in range(len(months) - 1):

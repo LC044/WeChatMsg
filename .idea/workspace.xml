@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="重构一些class，删除一些不必要的文件">
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="用stackedWidget实现导航栏">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/contact/analysis/charts.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/analysis/charts.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/contact/contact.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/contact.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Ui/mainview.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/mainview.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/mainwindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/mainwindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/mainwindow.ui" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/mainwindow.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.spec" beforeDir="false" afterPath="$PROJECT_DIR$/main.spec" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,15 +57,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Program Files/Python310/Scripts/pyuic5.exe&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.new.ui&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "D:/Program Files/Python310/Scripts/pyuic5.exe",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Project\PythonProject\WeChatMsg\app\Ui" />
@@ -452,7 +451,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698765961025</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="用stackedWidget实现导航栏">
+      <created>1698850498765</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1698850498765</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -508,7 +514,8 @@
     <MESSAGE value="修改部分UI" />
     <MESSAGE value="update readme" />
     <MESSAGE value="重构一些class，删除一些不必要的文件" />
-    <option name="LAST_COMMIT_MESSAGE" value="重构一些class，删除一些不必要的文件" />
+    <MESSAGE value="用stackedWidget实现导航栏" />
+    <option name="LAST_COMMIT_MESSAGE" value="用stackedWidget实现导航栏" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
