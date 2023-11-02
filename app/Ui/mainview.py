@@ -7,7 +7,6 @@
 @Version : Python3.10
 @comment : 主窗口
 """
-import os.path
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -71,9 +70,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.groupBox_menu.popup(QCursor.pos())  # 声明当鼠标在groupBox控件上右击时，在鼠标位置显示右键菜单   ,exec_,popup两个都可以，
 
     def show_avatar(self):
-        avatar = data.get_avator(self.Me.username)
-        if not os.path.exists(avatar):
-            avatar = './app/data/icons/default_avatar.svg'
+        avatar = self.Me.avatar
         pixmap = QPixmap(avatar).scaled(60, 60)  # 按指定路径找到图片
         self.myavatar.setPixmap(pixmap)  # 在label上显示图片
 

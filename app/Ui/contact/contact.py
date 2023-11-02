@@ -48,7 +48,7 @@ class ContactController(QWidget, Ui_Dialog):
         # self.setStyleSheet('''QWidget{background-color:rgb(255, 255, 255);}''')
         self.initui()
         self.Me = Me
-        self.Thread = ChatMsg(self.Me.username, None)
+        self.Thread = ChatMsg(self.Me.wxid, None)
         self.contacts: Dict[str, MyLabel.ContactUi] = {}
         self.last_btn = None
         self.chat_flag = True

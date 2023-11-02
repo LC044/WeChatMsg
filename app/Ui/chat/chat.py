@@ -7,8 +7,8 @@
 @Version : Python3.10
 @comment : 聊天窗口
 """
-import datetime
 import time
+from typing import Dict
 
 import xmltodict
 from PIL import Image
@@ -16,6 +16,8 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
+from app.Ui.MyComponents.Contact import ContactUi
+from app.person import Me
 from .chatUi import *
 from ...DataBase import data
 from ...ImageBox.ui import MainDemo
@@ -27,7 +29,7 @@ class ChatController(QWidget, Ui_Form):
 
     # username = ''
 
-    def __init__(self, Me, parent=None):
+    def __init__(self, me: Me, parent=None):
         super(ChatController, self).__init__(parent)
         self.chatroomFlag = None
         self.ta_avatar = None
@@ -40,13 +42,13 @@ class ChatController(QWidget, Ui_Form):
         self.setWindowTitle('WeChat')
         self.setWindowIcon(QIcon('./app/data/icon.png'))
         self.initui()
-        self.Me = Me
+        self.Me = me
 
-        self.Thread = ChatMsg(self.Me.username, None)
+        self.Thread = ChatMsg(self.Me.wxid, None)
         self.Thread.isSend_signal.connect(self.showMsg)
         self.Thread.okSignal.connect(self.setScrollBarPos)
 
-        self.contacts = {}
+        self.contacts: Dict[str, ContactUi] = {}
         self.last_btn = None
         self.chat_flag = True
         # self.showChat()
@@ -109,7 +111,7 @@ class ChatController(QWidget, Ui_Form):
             rconversation = rconversations[i]
             username = rconversation[1]
             # print('联系人：', i, rconversation)
-            pushButton_2 = Contact(self.scrollAreaWidgetContents, i, rconversation)
+            pushButton_2 = ContactUi(self.scrollAreaWidgetContents, i, rconversation)
             pushButton_2.setGeometry(QtCore.QRect(0, 80 * i, 300, 80))
             pushButton_2.setLayoutDirection(QtCore.Qt.LeftToRight)
             pushButton_2.clicked.connect(pushButton_2.show_msg)
@@ -135,7 +137,7 @@ class ChatController(QWidget, Ui_Form):
             "QPushButton {background-color: rgb(198,198,198);}"
             "QPushButton:hover{background-color: rgb(209,209,209);}\n"
         )
-        conRemark = self.contacts[talkerId].conRemark
+        conRemark = self.contacts[talkerId].contact.conRemark
         self.label_remark.setText(conRemark)
         self.message.clear()
         self.message.append(talkerId)
@@ -144,7 +146,7 @@ class ChatController(QWidget, Ui_Form):
             self.chatroomFlag = True
         else:
             self.chatroomFlag = False
-        self.ta_avatar = self.contacts[talkerId].avatar
+        self.ta_avatar = self.contacts[talkerId].contact.avatar_path
         self.textEdit.setFocus()
         self.Thread.ta_u = talkerId
         self.Thread.msg_id = 0
@@ -372,7 +374,7 @@ class ChatController(QWidget, Ui_Form):
         	</tbody>
         </table>
         </div>
-        ''' % (style, content, self.Me.my_avatar)
+        ''' % (style, content, self.Me.avatar_path)
         # print('总的HTML')
         # print(html)
         self.message.insertHtml(html)
@@ -451,102 +453,6 @@ class ChatController(QWidget, Ui_Form):
     def destroy_me(self):
         """注销账户"""
         pass
-
-
-class Contact(QtWidgets.QPushButton):
-    """
-    联系人类，继承自pyqt的按钮，里面封装了联系人头像等标签
-    """
-    usernameSingal = pyqtSignal(str)
-
-    def __init__(self, Ui, id=None, contact=None):
-        super(Contact, self).__init__(Ui)
-        self.layoutWidget = QtWidgets.QWidget(Ui)
-        self.layoutWidget.setObjectName("layoutWidget")
-        self.gridLayout1 = QtWidgets.QGridLayout(self.layoutWidget)
-        self.gridLayout1.setSizeConstraint(QtWidgets.QLayout.SetMaximumSize)
-        self.gridLayout1.setContentsMargins(10, 10, 10, 10)
-        self.gridLayout1.setSpacing(10)
-        self.gridLayout1.setObjectName("gridLayout1")
-        self.label_time = QtWidgets.QLabel(self.layoutWidget)
-        font = QtGui.QFont()
-        font.setPointSize(8)
-        self.label_time.setFont(font)
-        self.label_time.setLayoutDirection(QtCore.Qt.RightToLeft)
-        self.label_time.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
-        self.label_time.setObjectName("label_time")
-        self.gridLayout1.addWidget(self.label_time, 0, 2, 1, 1)
-        self.label_remark = QtWidgets.QLabel(self.layoutWidget)
-        font = QtGui.QFont()
-        font.setFamily("Adobe 黑体 Std R")
-        font.setPointSize(10)
-        self.label_remark.setFont(font)
-        self.label_remark.setObjectName("label_remark")
-        self.gridLayout1.addWidget(self.label_remark, 0, 1, 1, 1)
-        self.label_msg = QtWidgets.QLabel(self.layoutWidget)
-        font = QtGui.QFont()
-        font.setPointSize(8)
-        self.label_msg.setFont(font)
-        self.label_msg.setObjectName("label_msg")
-        self.gridLayout1.addWidget(self.label_msg, 1, 1, 1, 2)
-        self.label_avatar = QtWidgets.QLabel(self.layoutWidget)
-        self.label_avatar.setMinimumSize(QtCore.QSize(60, 60))
-        self.label_avatar.setMaximumSize(QtCore.QSize(60, 60))
-        self.label_avatar.setLayoutDirection(QtCore.Qt.RightToLeft)
-        self.label_avatar.setAutoFillBackground(False)
-        self.label_avatar.setStyleSheet("background-color: #ffffff;")
-        self.label_avatar.setInputMethodHints(QtCore.Qt.ImhNone)
-        self.label_avatar.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.label_avatar.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.label_avatar.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        self.label_avatar.setObjectName("label_avatar")
-        self.gridLayout1.addWidget(self.label_avatar, 0, 0, 2, 1)
-        self.gridLayout1.setColumnStretch(0, 1)
-        self.gridLayout1.setColumnStretch(1, 6)
-        self.gridLayout1.setRowStretch(0, 5)
-        self.gridLayout1.setRowStretch(1, 3)
-        self.setLayout(self.gridLayout1)
-        self.setStyleSheet(
-            "QPushButton {background-color: rgb(220,220,220);}"
-            "QPushButton:hover{background-color: rgb(208,208,208);}\n"
-        )
-        self.msgCount = contact[0]
-        self.username = contact[1]
-        self.conversationTime = contact[6]
-        self.msgType = contact[7]
-        self.digest = contact[8]
-        hasTrunc = contact[10]
-        attrflag = contact[11]
-        if hasTrunc == 0:
-            if attrflag == 0:
-                self.digest = '[动画表情]'
-            elif attrflag == 67108864:
-                try:
-                    remark = data.get_conRemark(contact[9])
-                    msg = self.digest.split(':')[1].strip('\n').strip()
-                    self.digest = f'{remark}:{msg}'
-                except Exception as e:
-                    # print(self.digest)
-                    # print(e)
-                    pass
-            else:
-                pass
-        self.show_info(id)
-
-    def show_info(self, id):
-        self.avatar = data.get_avator(self.username)
-        # print(avatar)
-        self.conRemark = data.get_conRemark(self.username)
-        time = datetime.datetime.now().strftime("%m-%d %H:%M")
-        msg = '还没说话'
-        pixmap = QPixmap(self.avatar).scaled(60, 60)  # 按指定路径找到图片
-        self.label_avatar.setPixmap(pixmap)  # 在label上显示图片
-        self.label_remark.setText(self.conRemark)
-        self.label_msg.setText(self.digest)
-        self.label_time.setText(data.timestamp2str(self.conversationTime)[2:])
-
-    def show_msg(self):
-        self.usernameSingal.emit(self.username)
 
 
 class ChatMsg(QThread):

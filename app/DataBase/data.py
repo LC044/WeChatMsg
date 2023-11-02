@@ -14,6 +14,8 @@ import time
 
 import requests
 
+from app import person
+
 DB = None
 cursor = None
 
@@ -152,7 +154,7 @@ def get_myinfo():
     sql = 'select * from userinfo where id=2'
     cursor.execute(sql)
     result = cursor.fetchone()
-    me = Me(result[2])
+    me = person.Me(result[2])
     return me
 
 
