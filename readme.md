@@ -19,18 +19,19 @@
 - 显示聊天界面
 - 导出聊天记录成Word文档
 - 分析聊天数据，做成可视化年报
+- 🔥**项目持续更新中**
 - 小伙伴们想要其他功能可以留言哦🏆
 - 有任何问题可以随时联系我(863909694@qq.com)
 
-为了方便大家交流，我新建了一个QQ群：**474379264**
+为了方便大家交流，我新建了一个QQ群💬：**474379264**
 
-大家有任何诉求可以群里反馈给我
+大家有任何诉求或bug可以群里反馈给我
 
 <img src="doc/images/qq.jpg" height=480/>
 
 ## 效果
 
-![image-20230520235113261](doc/images/image-20230520235113261.png)
+<img alt="image-20230520235113261" src="doc/images/image-20230520235113261.png"/>
 
 ![image-20230520235220104](doc/images/image-20230520235220104.png)
 
@@ -61,7 +62,7 @@ python版本3.10
 命令行运行以下代码
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 运行main.py
@@ -94,6 +95,10 @@ python main.py
 
 ![image-20230520235113261](doc/images/image-20230520235113261.png)
 
-## 项目还有很多bug，希望各位大佬能够及时反馈
+## 项目还有很多bug，希望大家能够及时反馈
 
 项目地址：https://github.com/LC044/WeChatMsg
+
+---
+
+> 说明：该项目仅可用于交流学习，禁止任何非法用途，本人不承担任何责任🙄
