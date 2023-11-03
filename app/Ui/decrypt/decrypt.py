@@ -8,7 +8,6 @@
 @comment : ··· 解密数据库，导出原始数据库文件
 """
 import hashlib
-import os
 import time
 import xml.etree.ElementTree as ET
 
@@ -32,11 +31,11 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         self.btn_db.clicked.connect(self.get_db)
         self.btn_xml.clicked.connect(self.get_xml)
         self.pushButton_3.clicked.connect(self.decrypt)
-        self.xml_path = None
-        self.db_path = None
+        self.xml_path: str = None
+        self.db_path: str = None
 
     def db_exist(self):
-        if os.path.exists('./app/DataBase/Msg.db'):
+        if data.is_db_exist():
             self.btnEnterClicked()
             self.close()
 
@@ -52,8 +51,13 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
     def get_db(self):
         self.db_path, _ = QFileDialog.getOpenFileName(self, 'Open file', r'..', "Database files (*.db)")
         if self.db_path:
-            self.label_db.setText('数据库已就绪')
-            return self.db_path
+            if self.db_path.isascii():
+                self.label_db.setText('数据库已就绪')
+                return self.db_path
+            else:
+                self.label_db.setText('数据库未就绪')
+                QMessageBox.critical(self, "错误", "db文件请不要带有中文路径\n可以放在D:\\\\data 目录下")
+                self.db_path = ''
         return False
 
     def decrypt(self):
@@ -107,6 +111,8 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         :return: None
         """
         self.progressBar.setProperty('value', value)
+        if value == '99':
+            QMessageBox.information(self, "温馨提示", "我知道你很急\n但你先别急")
         if value == '100':
             QMessageBox.information(self, "解密成功", "请退出该界面",
                                     QMessageBox.Yes)

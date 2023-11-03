@@ -1,4 +1,5 @@
 .vscode
+.idea
 build
 data
 sqlcipher-3.0.1

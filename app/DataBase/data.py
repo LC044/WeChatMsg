@@ -129,7 +129,7 @@ def decrypt(db, key):
     if not db:
         print('没有数据库文件')
         return False
-    if os.path.exists('./app/DataBase/Msg.db'):
+    if is_db_exist():
         print('/app/DataBase/Msg.db  已经存在')
         return True
     cmd = './sqlcipher-3.0.1/bin/sqlcipher-shell32.exe'
