@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import *
 
 import app.Ui.MyComponents.Contact as MyLabel
 from .analysis import analysis
+from .contactInfo import ContactInfo
 from .contactUi import *
 from .emotion import emotion
 from .report import report
@@ -50,6 +51,7 @@ class ContactController(QWidget, Ui_Dialog):
         self.Me = Me
         self.Thread = ChatMsg(self.Me.wxid, None)
         self.contacts: Dict[str, MyLabel.ContactUi] = {}
+        self.contactInfo: Dict[str, ContactInfo] = {}
         self.last_btn = None
         self.chat_flag = True
         self.show_flag = False
@@ -64,21 +66,13 @@ class ContactController(QWidget, Ui_Dialog):
         self.view_analysis = {}
         self.showContact()
 
-        self.now_btn = self.userinfo
+        # self.now_btn = self.userinfo
+        self.now_btn = None
         self.last_btn = None
 
     def initui(self):
-        # 槽函数连接
-        self.btn_back.clicked.connect(self.back)
-        # self.btn_output.clicked.connect(self.output)
-        self.btn_analysis.clicked.connect(self.analysis)
-        self.btn_emotion.clicked.connect(self.emotionale_Analysis)
-        self.btn_report.clicked.connect(self.annual_report)
-
+        return
         self.lay0 = QVBoxLayout()
-        # self.widget.setLayout(self.lay0)
-        # self.widget.setStyleSheet('''QWidget{background-color:rgb(255, 255, 255);}''')
-        # self.stackedWidget.setStyleSheet('''QWidget{background-color:rgb(240, 240, 240);}''')
         self.stackedWidget.setStyleSheet('''QWidget{background-color:rgb(255, 255, 255);}''')
         self.frame = QtWidgets.QFrame()
         self.frame.setObjectName("frame")
@@ -87,19 +81,6 @@ class ContactController(QWidget, Ui_Dialog):
         self.userinfo.progressBar.setVisible(False)
         self.stackedWidget.addWidget(self.frame)
         # self.lay0.addWidget(self.frame)
-        menu = QMenu(self)
-        self.toDocxAct = QAction(QIcon('app/data/icons/word.svg'), '导出Docx', self)
-        self.toCSVAct = QAction(QIcon('app/data/icons/csv.svg'), '导出CSV', self)
-        self.toHtmlAct = QAction(QIcon('app/data/icons/html.svg'), '导出HTML', self)
-        self.toolButton_output.setPopupMode(QToolButton.MenuButtonPopup)
-        menu.addAction(self.toDocxAct)
-        menu.addAction(self.toCSVAct)
-        menu.addAction(self.toHtmlAct)
-        self.toolButton_output.setMenu(menu)
-        # self.toolButton_output.addSeparator()
-        self.toHtmlAct.triggered.connect(self.output)
-        self.toDocxAct.triggered.connect(self.output)
-        self.toCSVAct.triggered.connect(self.output)
 
     def showContact(self):
         """
@@ -128,6 +109,8 @@ class ContactController(QWidget, Ui_Dialog):
             pushButton_2.clicked.connect(pushButton_2.show_msg)
             pushButton_2.usernameSingal.connect(self.Contact)
             self.contacts[username] = pushButton_2
+            self.contactInfo[username] = ContactInfo(username)
+            self.stackedWidget.addWidget(self.contactInfo[username])
 
     def Contact(self, talkerId):
         """
@@ -137,7 +120,7 @@ class ContactController(QWidget, Ui_Dialog):
         """
         self.now_talkerId = talkerId
         # self.frame.setVisible(True)
-        self.setViewVisible(self.now_talkerId)
+        # self.setViewVisible(self.now_talkerId)
         # 把当前按钮设置为灰色
         if self.last_talkerId and self.last_talkerId != talkerId:
             print('对方账号：', self.last_talkerId)
@@ -150,23 +133,24 @@ class ContactController(QWidget, Ui_Dialog):
             "QPushButton {background-color: rgb(198,198,198);}"
             "QPushButton:hover{background-color: rgb(209,209,209);}\n"
         )
-        # 设置联系人的基本信息
-        conRemark = self.contacts[talkerId].contact.conRemark
-        nickname = self.contacts[talkerId].contact.nickname
-        alias = self.contacts[talkerId].contact.alias
-
-        self.label_remark.setText(conRemark)
-        self.ta_username = talkerId
-        if '@chatroom' in talkerId:
-            self.chatroomFlag = True
-        else:
-            self.chatroomFlag = False
-        self.userinfo.l_remark.setText(conRemark)
-        pixmap = self.contacts[talkerId].contact.avatar
-        self.userinfo.l_avatar.setPixmap(pixmap)
-        self.userinfo.l_nickname.setText(f'昵称：{nickname}')
-        self.userinfo.l_username.setText(f'微信号：{alias}')
-        self.userinfo.lineEdit.setText(conRemark)
+        self.stackedWidget.setCurrentWidget(self.contactInfo[talkerId])
+        # # 设置联系人的基本信息
+        # conRemark = self.contacts[talkerId].contact.conRemark
+        # nickname = self.contacts[talkerId].contact.nickname
+        # alias = self.contacts[talkerId].contact.alias
+        #
+        # self.label_remark.setText(conRemark)
+        # self.ta_username = talkerId
+        # if '@chatroom' in talkerId:
+        #     self.chatroomFlag = True
+        # else:
+        #     self.chatroomFlag = False
+        # self.userinfo.l_remark.setText(conRemark)
+        # pixmap = self.contacts[talkerId].contact.avatar
+        # self.userinfo.l_avatar.setPixmap(pixmap)
+        # self.userinfo.l_nickname.setText(f'昵称：{nickname}')
+        # self.userinfo.l_username.setText(f'微信号：{alias}')
+        # self.userinfo.lineEdit.setText(conRemark)
 
     def output(self):
         """

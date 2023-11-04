@@ -93,10 +93,6 @@ class EmotionController(QWidget, emotionUi.Ui_Dialog):
         # 加载动画
         self.center()
         self.label_01()
-        # 防止卡死，新建线程处理数据
-        self.Thread = LoadData(username)
-        self.Thread.okSignal.connect(self.initUI)
-        self.Thread.start()
 
     def center(self):  # 定义一个函数使得窗口居中显示
         # 获取屏幕坐标系
@@ -141,6 +137,12 @@ class EmotionController(QWidget, emotionUi.Ui_Dialog):
         palette.setBrush(self.backgroundRole(), QBrush(pix))  # 设置背景图片
         # palette.setColor(self.backgroundRole(), QColor(192, 253, 123))  # 设置背景颜色
         self.setPalette(palette)
+
+    def start(self):
+        # 防止卡死，新建线程处理数据
+        self.Thread = LoadData(self.ta_username)
+        self.Thread.okSignal.connect(self.initUI)
+        self.Thread.start()
 
 
 class LoadData(QThread):

@@ -151,81 +151,9 @@
                             </widget>
                         </item>
                         <item>
-                            <widget class="QFrame" name="frame">
-                                <property name="frameShape">
-                                    <enum>QFrame::NoFrame</enum>
-                                </property>
-                                <property name="frameShadow">
-                                    <enum>QFrame::Raised</enum>
-                                </property>
-                                <layout class="QVBoxLayout" name="verticalLayout">
-                                    <item>
-                                        <layout class="QHBoxLayout" name="horizontalLayout_3">
-                                            <property name="spacing">
-                                                <number>0</number>
-                                            </property>
-                                            <item>
-                                                <widget class="QLabel" name="label_remark">
-                                                    <property name="maximumSize">
-                                                        <size>
-                                                            <width>16777215</width>
-                                                            <height>100</height>
-                                                        </size>
-                                                    </property>
-                                                    <property name="font">
-                                                        <font>
-                                                            <pointsize>12</pointsize>
-                                                        </font>
-                                                    </property>
-                                                    <property name="text">
-                                                        <string/>
-                                                    </property>
-                                                </widget>
-                                            </item>
-                                            <item>
-                                                <widget class="QPushButton" name="btn_analysis">
-                                                    <property name="text">
-                                                        <string>统计信息</string>
-                                                    </property>
-                                                </widget>
-                                            </item>
-                                            <item>
-                                                <widget class="QPushButton" name="btn_emotion">
-                                                    <property name="text">
-                                                        <string>情感分析</string>
-                                                    </property>
-                                                </widget>
-                                            </item>
-                                            <item>
-                                                <widget class="QPushButton" name="btn_report">
-                                                    <property name="text">
-                                                        <string>生成年度报告</string>
-                                                    </property>
-                                                </widget>
-                                            </item>
-                                            <item>
-                                                <widget class="QToolButton" name="toolButton_output">
-                                                    <property name="text">
-                                                        <string>导出聊天记录</string>
-                                                    </property>
-                                                </widget>
-                                            </item>
-                                            <item>
-                                                <widget class="QPushButton" name="btn_back">
-                                                    <property name="text">
-                                                        <string>退出</string>
-                                                    </property>
-                                                </widget>
-                                            </item>
-                                        </layout>
-                                    </item>
-                                    <item>
-                                        <widget class="QStackedWidget" name="stackedWidget">
-                                            <widget class="QWidget" name="page_3"/>
-                                            <widget class="QWidget" name="page_4"/>
-                                        </widget>
-                                    </item>
-                                </layout>
+                            <widget class="QStackedWidget" name="stackedWidget">
+                                <widget class="QWidget" name="page"/>
+                                <widget class="QWidget" name="page_2"/>
                             </widget>
                         </item>
                     </layout>

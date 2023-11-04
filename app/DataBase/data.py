@@ -10,6 +10,7 @@
 import hashlib
 import os
 import sqlite3
+import threading
 import time
 
 import requests
@@ -18,7 +19,7 @@ from app import person
 
 DB = None
 cursor = None
-
+lock = threading.Lock()
 Type = {
     1: '文本内容',
     2: '位置信息',
@@ -187,14 +188,29 @@ def timestamp2str(timestamp):
 
 
 def get_conRemark(username):
-    sql = 'select conRemark,nickname from rcontact where username=?'
-    cursor.execute(sql, [username])
-    result = cursor.fetchone()
-    if result:
-        if result[0]:
-            return result[0]
-        else:
-            return result[1]
+    try:
+        lock.acquire(True)
+        sql = 'select conRemark,nickname from rcontact where username=?'
+        cursor.execute(sql, [username])
+        result = cursor.fetchone()
+        if result:
+            if result[0]:
+                return result[0]
+            else:
+                return result[1]
+    except:
+        time.sleep(0.1)
+        sql = 'select conRemark,nickname from rcontact where username=?'
+        cursor.execute(sql, [username])
+        result = cursor.fetchone()
+        if result:
+            if result[0]:
+                return result[0]
+            else:
+                return result[1]
+    finally:
+        lock.release()
+
     return False
 
 

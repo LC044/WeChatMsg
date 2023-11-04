@@ -4,11 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="增加中文路径提示">
-      <change afterPath="$PROJECT_DIR$/doc/解密教程/使用说明.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="update readme">
+      <change afterPath="$PROJECT_DIR$/app/Ui/contact/contactInfo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Ui/contact/contactInfoUi.ui" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Ui/contact/userinfo/userinfo.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/contact/analysis/analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/analysis/analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/contact/contact.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/contact.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/contact/contactUi.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/contactUi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/contact/contactUi.ui" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/contactUi.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/contact/emotion/emotion.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/emotion/emotion.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +77,7 @@
       <recent name="D:\Project\PythonProject\WeChatMsg\app\Ui" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.test">
+  <component name="RunManager" selected="Python.main">
     <configuration name="decrypt" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="WeChatMsg" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -179,8 +185,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.test" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.test" />
         <item itemvalue="Python.decrypt" />
         <item itemvalue="Python.output" />
         <item itemvalue="Python.report" />
@@ -479,7 +485,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699025065814</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="update readme">
+      <created>1699026207401</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1699026207401</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -532,13 +545,13 @@
     <MESSAGE value="支持导出csv格式聊天记录" />
     <MESSAGE value="增加几个图标" />
     <MESSAGE value="修改部分UI" />
-    <MESSAGE value="update readme" />
     <MESSAGE value="重构一些class，删除一些不必要的文件" />
     <MESSAGE value="用stackedWidget实现导航栏" />
     <MESSAGE value="修复部分bug" />
     <MESSAGE value="替换chat里的contact" />
     <MESSAGE value="增加中文路径提示" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加中文路径提示" />
+    <MESSAGE value="update readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="update readme" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

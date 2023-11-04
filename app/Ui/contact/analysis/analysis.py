@@ -23,9 +23,7 @@ class AnalysisController(QWidget):
         self.center()
         self.setAttribute(Qt.WA_AttributeCount)
         self.label_01()
-        self.Thread = LoadData(username)
-        self.Thread.okSignal.connect(self.initUI)
-        self.Thread.start()
+        self.isStart = False
 
     def center(self):  # 定义一个函数使得窗口居中显示
         # 获取屏幕坐标系
@@ -127,6 +125,13 @@ class AnalysisController(QWidget):
         palette.setBrush(self.backgroundRole(), QBrush(pix))  # 设置背景图片
         # palette.setColor(self.backgroundRole(), QColor(192, 253, 123))  # 设置背景颜色
         self.setPalette(palette)
+
+    def start(self):
+        if not self.isStart:
+            self.Thread = LoadData(self.ta_username)
+            self.Thread.okSignal.connect(self.initUI)
+            self.Thread.start()
+            self.isStart = True
 
 
 class LoadData(QThread):
