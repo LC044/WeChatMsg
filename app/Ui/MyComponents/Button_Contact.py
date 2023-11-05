@@ -4,7 +4,7 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtCore import *
 
 import app.DataBase.data as data
-from app.person import Contact
+from app import person
 
 
 class ContactUi(QtWidgets.QPushButton):
@@ -15,7 +15,7 @@ class ContactUi(QtWidgets.QPushButton):
 
     def __init__(self, Ui, id=None, rconversation=None):
         super(ContactUi, self).__init__(Ui)
-        self.contact: Contact = Contact(rconversation[1])
+        self.contact: person.Contact = person.Contact(rconversation[1])
         self.init_ui(Ui)
         self.msgCount = rconversation[0]
         self.username = rconversation[1]

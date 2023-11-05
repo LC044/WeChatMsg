@@ -157,36 +157,8 @@
                 </item>
                 <item>
                     <widget class="QStackedWidget" name="stackedWidget">
-                        <widget class="QWidget" name="page_chat">
-                            <widget class="QPushButton" name="pushButton">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>250</x>
-                                        <y>150</y>
-                                        <width>75</width>
-                                        <height>23</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string>PushButton</string>
-                                </property>
-                            </widget>
-                        </widget>
-                        <widget class="QWidget" name="page_contact">
-                            <widget class="QToolButton" name="toolButton">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>340</x>
-                                        <y>250</y>
-                                        <width>37</width>
-                                        <height>18</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string>...</string>
-                                </property>
-                            </widget>
-                        </widget>
+                        <widget class="QWidget" name="page_chat"/>
+                        <widget class="QWidget" name="page_contact"/>
                         <widget class="QWidget" name="page_myinfo"/>
                         <widget class="QWidget" name="page_2"/>
                     </widget>

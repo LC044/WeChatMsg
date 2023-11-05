@@ -12,6 +12,7 @@ from docx.enum.table import WD_ALIGN_VERTICAL
 from docx.enum.text import WD_COLOR_INDEX, WD_PARAGRAPH_ALIGNMENT
 from docxcompose.composer import Composer
 
+from app.person import Me
 from . import data
 
 
@@ -52,12 +53,12 @@ class Output(QThread):
     DOCX = 1
     HTML = 2
 
-    def __init__(self, Me, ta_u, parent=None, type_=DOCX):
+    def __init__(self, Me: Me, ta_u, parent=None, type_=DOCX):
         super().__init__(parent)
         self.Me = Me
         self.sec = 2  # 默认1000秒
         self.ta_username = ta_u
-        self.my_avatar = self.Me.my_avatar
+        self.my_avatar = self.Me.avatar_path
         self.ta_avatar = data.get_avator(ta_u)
         self.msg_id = 0
         self.output_type = type_
@@ -150,13 +151,13 @@ class ChildThread(QThread):
     DOCX = 1
     HTML = 2
 
-    def __init__(self, Me, ta_u, message, conRemark, num, parent=None, type_=DOCX):
+    def __init__(self, Me: Me, ta_u, message, conRemark, num, parent=None, type_=DOCX):
         super().__init__(parent)
         self.Me = Me
         self.sec = 2  # 默认1000秒
         self.ta_username = ta_u
         self.num = num
-        self.my_avatar = self.Me.my_avatar
+        self.my_avatar = self.Me.avatar_path
         self.ta_avatar = data.get_avator(ta_u)
         self.conRemark = conRemark
         self.message = message

@@ -7,7 +7,6 @@
 @Version : Python3.10
 @comment : ···
 """
-from . import mainview
 # 文件__init__.py
 # from login import login
 from . import mainwindow
@@ -15,4 +14,4 @@ from .ICON import Icon
 from .MyComponents import *
 from .decrypt import decrypt
 
-__all__ = ["decrypt", 'mainview', 'Contact', 'Icon']
+__all__ = ["decrypt", 'mainview', 'contact', 'ICON']

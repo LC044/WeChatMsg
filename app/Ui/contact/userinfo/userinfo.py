@@ -13,3 +13,4 @@ class UserinfoController(QWidget, Ui_Frame):
         self.l_nickname.setText(f'昵称：{contact.nickname}')
         self.l_username.setText(f'微信号：{contact.alias}')
         self.lineEdit.setText(contact.conRemark)
+        self.progressBar.setVisible(False)
