@@ -14,6 +14,21 @@
             <string>Form</string>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="spacing">
+                <number>0</number>
+            </property>
+            <property name="leftMargin">
+                <number>0</number>
+            </property>
+            <property name="topMargin">
+                <number>0</number>
+            </property>
+            <property name="rightMargin">
+                <number>0</number>
+            </property>
+            <property name="bottomMargin">
+                <number>0</number>
+            </property>
             <item>
                 <widget class="QFrame" name="frame">
                     <property name="frameShape">
@@ -23,6 +38,21 @@
                         <enum>QFrame::Raised</enum>
                     </property>
                     <layout class="QVBoxLayout" name="verticalLayout">
+                        <property name="spacing">
+                            <number>0</number>
+                        </property>
+                        <property name="leftMargin">
+                            <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                            <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                            <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                            <number>0</number>
+                        </property>
                         <item>
                             <layout class="QHBoxLayout" name="horizontalLayout_3">
                                 <property name="spacing">
@@ -48,8 +78,20 @@
                                 </item>
                                 <item>
                                     <widget class="QPushButton" name="btn_analysis">
+                                        <property name="styleSheet">
+                                            <string notr="true">QPushButton:hover {
+                                                background-color: rgb(240, 240, 240);
+                                                }
+                                                QPushButton{
+                                                background-color:transparent;
+                                                }
+                                            </string>
+                                        </property>
                                         <property name="text">
                                             <string>统计信息</string>
+                                        </property>
+                                        <property name="flat">
+                                            <bool>true</bool>
                                         </property>
                                     </widget>
                                 </item>
@@ -58,12 +100,28 @@
                                         <property name="text">
                                             <string>情感分析</string>
                                         </property>
+                                        <property name="flat">
+                                            <bool>true</bool>
+                                        </property>
                                     </widget>
                                 </item>
                                 <item>
                                     <widget class="QPushButton" name="btn_report">
                                         <property name="text">
                                             <string>生成年度报告</string>
+                                        </property>
+                                        <property name="flat">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QPushButton" name="btn_back">
+                                        <property name="text">
+                                            <string>退出</string>
+                                        </property>
+                                        <property name="flat">
+                                            <bool>true</bool>
                                         </property>
                                     </widget>
                                 </item>
@@ -72,12 +130,26 @@
                                         <property name="text">
                                             <string>导出聊天记录</string>
                                         </property>
-                                    </widget>
-                                </item>
-                                <item>
-                                    <widget class="QPushButton" name="btn_back">
-                                        <property name="text">
-                                            <string>退出</string>
+                                        <property name="icon">
+                                            <iconset>
+                                                <normaloff>../../data/icons/output.svg</normaloff>
+                                                ../../data/icons/output.svg
+                                            </iconset>
+                                        </property>
+                                        <property name="checkable">
+                                            <bool>false</bool>
+                                        </property>
+                                        <property name="popupMode">
+                                            <enum>QToolButton::MenuButtonPopup</enum>
+                                        </property>
+                                        <property name="toolButtonStyle">
+                                            <enum>Qt::ToolButtonTextBesideIcon</enum>
+                                        </property>
+                                        <property name="autoRaise">
+                                            <bool>true</bool>
+                                        </property>
+                                        <property name="arrowType">
+                                            <enum>Qt::NoArrow</enum>
                                         </property>
                                     </widget>
                                 </item>

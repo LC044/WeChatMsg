@@ -50,7 +50,11 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.last_btn = None
         self.lastView = None
         self.show_avatar()
+        self.init_ui()
         # 创建右键菜单函数
+
+    def init_ui(self):
+        self.menubar.setStyleSheet("background-color: rgb(240, 240, 240);")
 
     def create_rightmenu(self):
         # 菜单对象

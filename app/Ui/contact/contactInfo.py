@@ -8,6 +8,7 @@ from .analysis import analysis
 from .contactInfoUi import Ui_Form
 from .emotion import emotion
 from .userinfo import userinfo
+from .. import Icon
 from ... import person
 
 
@@ -28,9 +29,11 @@ class ContactInfo(QWidget, Ui_Form):
         self.btn_report.clicked.connect(self.annual_report)
         self.btn_back.clicked.connect(self.back)
         self.Me = me
+        # self.
         self.init_ui()
 
     def init_ui(self):
+        self.btn_back.setIcon(Icon.Back)
         self.label_remark.setText(self.contact.conRemark)
         self.stackedWidget.addWidget(self.view_userinfo)
         self.stackedWidget.addWidget(self.view_analysis)
@@ -41,14 +44,19 @@ class ContactInfo(QWidget, Ui_Form):
         self.toCSVAct = QAction(QIcon('app/data/icons/csv.svg'), '导出CSV', self)
         self.toHtmlAct = QAction(QIcon('app/data/icons/html.svg'), '导出HTML', self)
         self.toolButton_output.setPopupMode(QToolButton.MenuButtonPopup)
+        self.toolButton_output.clicked.connect(self.toolButton_show)
         menu.addAction(self.toDocxAct)
         menu.addAction(self.toCSVAct)
         menu.addAction(self.toHtmlAct)
         self.toolButton_output.setMenu(menu)
+        self.toolButton_output.setIcon(Icon.Output)
         # self.toolButton_output.addSeparator()
         self.toHtmlAct.triggered.connect(self.output)
         self.toDocxAct.triggered.connect(self.output)
         self.toCSVAct.triggered.connect(self.output)
+
+    def toolButton_show(self):
+        self.toolButton_output.showMenu()
 
     def analysis(self):
         self.stackedWidget.setCurrentWidget(self.view_analysis)
