@@ -2,8 +2,10 @@ import os.path
 
 from PyQt5.QtGui import QPixmap
 
-import app.DataBase.data as data
-from app.Ui.ICON import Icon
+from app.DataBase import data
+
+
+# from app.Ui.Icon import Icon
 
 
 class Person:
@@ -15,7 +17,8 @@ class Person:
         if os.path.exists(self.avatar_path):
             self.avatar = QPixmap(self.avatar_path).scaled(60, 60)
         else:
-            self.avatar_path = Icon.Default_avatar_path
+            self.avatar_path = './app/data/icons/default_avatar.svg'
+            # self.avatar_path = Icon.Default_avatar_path
             self.avatar = QPixmap(self.avatar_path).scaled(60, 60)
 
 

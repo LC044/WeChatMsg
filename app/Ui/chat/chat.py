@@ -17,7 +17,6 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 from app.Ui.MyComponents.Button_Contact import ContactUi
-from app.person import Me
 from .chatUi import *
 from ...DataBase import data
 from ...ImageBox.ui import MainDemo
@@ -29,7 +28,7 @@ class ChatController(QWidget, Ui_Form):
 
     # username = ''
 
-    def __init__(self, me: Me, parent=None):
+    def __init__(self, me, parent=None):
         super(ChatController, self).__init__(parent)
         self.chatroomFlag = None
         self.ta_avatar = None

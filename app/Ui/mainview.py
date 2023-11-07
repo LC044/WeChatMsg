@@ -12,11 +12,12 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from app.DataBase import data
-from . import mainwindow
-from .ICON import Icon
-from .chat import chat
-from .contact import contact
+from app import person
+from app.DataBase import *
+from app.Ui import mainwindow
+from app.Ui.Icon import Icon
+from app.Ui.chat import chat
+from app.Ui.contact import contact
 
 
 class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
@@ -26,8 +27,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
     def __init__(self, username, parent=None):
         super(MainWinController, self).__init__(parent)
         self.setupUi(self)
-        self.setWindowIcon(Icon.MainWindow)
-        self.Me = data.get_myinfo()
+        self.setWindowIcon(Icon.MainWindow_Icon)
+        self.Me = person.Me(data.get_myinfo())
         self.setAttribute(Qt.WA_AttributeCount)
 
         self.chatView = chat.ChatController(self.Me, parent=None)

@@ -9,14 +9,15 @@
 """
 from typing import Dict
 
+from PyQt5 import QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
 import app.Ui.MyComponents.Button_Contact as MyLabel
-from .contactInfo import ContactInfo
-from .contactUi import *
-from ... import person
-from ...DataBase import data
+from app import person
+from app.DataBase import data
+from app.Ui.contact.contactInfo import ContactInfo
+from app.Ui.contact.contactUi import Ui_Dialog
 
 EMOTION = 1
 ANALYSIS = 2

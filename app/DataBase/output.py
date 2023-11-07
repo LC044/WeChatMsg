@@ -12,8 +12,8 @@ from docx.enum.table import WD_ALIGN_VERTICAL
 from docx.enum.text import WD_COLOR_INDEX, WD_PARAGRAPH_ALIGNMENT
 from docxcompose.composer import Composer
 
-from app.person import Me
-from . import data
+from app import person
+from app.DataBase import data
 
 
 # import data
@@ -53,7 +53,7 @@ class Output(QThread):
     DOCX = 1
     HTML = 2
 
-    def __init__(self, Me: Me, ta_u, parent=None, type_=DOCX):
+    def __init__(self, Me: person.Me, ta_u, parent=None, type_=DOCX):
         super().__init__(parent)
         self.Me = Me
         self.sec = 2  # 默认1000秒
@@ -151,7 +151,7 @@ class ChildThread(QThread):
     DOCX = 1
     HTML = 2
 
-    def __init__(self, Me: Me, ta_u, message, conRemark, num, parent=None, type_=DOCX):
+    def __init__(self, Me: person.Me, ta_u, message, conRemark, num, parent=None, type_=DOCX):
         super().__init__(parent)
         self.Me = Me
         self.sec = 2  # 默认1000秒
@@ -444,6 +444,6 @@ class ChildThread(QThread):
 if __name__ == '__main__':
     # wxid_0o18ef858vnu22
     # wxid_fdkbu92el15h22
-    me = data.Me('wxid_fdkbu92el15h22')
+    me = data.Me_Person('wxid_fdkbu92el15h22')
     t = Output(Me=me, ta_u='wxid_0o18ef858vnu22', type_=Output.CSV)
     t.run()

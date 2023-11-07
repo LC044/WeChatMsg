@@ -2,14 +2,13 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
+from app import person
 from app.DataBase import output
-from app.person import Contact
+from app.Ui.Icon import Icon
 from .analysis import analysis
 from .contactInfoUi import Ui_Form
 from .emotion import emotion
 from .userinfo import userinfo
-from .. import Icon
-from ... import person
 
 
 class ContactInfo(QWidget, Ui_Form):
@@ -20,7 +19,7 @@ class ContactInfo(QWidget, Ui_Form):
     def __init__(self, wxid, me: person.Me, parent=None):
         super(ContactInfo, self).__init__(parent)
         self.setupUi(self)
-        self.contact = Contact(wxid)
+        self.contact = person.Contact(wxid)
         self.view_userinfo = userinfo.UserinfoController(self.contact)
         self.view_analysis = analysis.AnalysisController(wxid)
         self.view_emotion = emotion.EmotionController(wxid)

@@ -15,8 +15,6 @@ import time
 
 import requests
 
-from app import person
-
 DB = None
 cursor = None
 lock = threading.Lock()
@@ -82,16 +80,6 @@ if os.path.exists('./Msg.db'):
     cursor = DB.cursor()
 
 
-class Me:
-    """个人信息"""
-
-    def __init__(self, username):
-        self.username = username  # 自己的用户名
-        self.my_avatar = get_avator(self.username)  # 自己的头像地址
-        self.city = None
-        self.province = None
-
-
 def is_db_exist() -> bool:
     """
     判断数据库是否正常使用
@@ -103,8 +91,10 @@ def is_db_exist() -> bool:
             sql = 'select * from userinfo where id=2'
             cursor.execute(sql)
             result = cursor.fetchone()
-            me = Me(result[2])
-            return True
+            if result[2]:
+                return True
+            else:
+                return False
         except Exception as e:
             return False
     return False
@@ -155,8 +145,7 @@ def get_myinfo():
     sql = 'select * from userinfo where id=2'
     cursor.execute(sql)
     result = cursor.fetchone()
-    me = person.Me(result[2])
-    return me
+    return result[2]
 
 
 def get_contacts():

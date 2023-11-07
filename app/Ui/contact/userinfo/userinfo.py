@@ -1,11 +1,10 @@
 from PyQt5.QtWidgets import *
 
-from app.person import Contact
 from .userinfoUi import Ui_Frame
 
 
 class UserinfoController(QWidget, Ui_Frame):
-    def __init__(self, contact: Contact, parent=None):
+    def __init__(self, contact, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.l_remark.setText(contact.conRemark)
