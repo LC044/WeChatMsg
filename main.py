@@ -1,4 +1,5 @@
 import sys
+import time
 
 from PyQt5.QtWidgets import *
 
@@ -42,12 +43,15 @@ class ViewController:
         :return:
         """
         username = ''
+        start = time.time()
         self.viewMainWIn = mainview.MainWinController(username=username)
         self.viewMainWIn.setWindowTitle("Chat")
         # print(username)
         self.viewMainWIn.username = username
         # self.viewMainWIn.exitSignal.connect(self.loadDecryptView)  # 不需要回到登录界面可以省略
         self.viewMainWIn.show()
+        end = time.time()
+        print('ok', end - start)
         # self.viewMainWIn.signUp()
 
 

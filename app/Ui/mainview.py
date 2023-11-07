@@ -104,7 +104,6 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
                                         "QPushButton:hover{background-color: rgb(209,209,209);}\n")
         self.last_btn = self.btn_contact
         self.stackedWidget.setCurrentIndex(1)
-        self.contactView.showContact()
 
     def myInfo(self):
         """

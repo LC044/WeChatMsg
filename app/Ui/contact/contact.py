@@ -44,37 +44,33 @@ class ContactController(QWidget, Ui_Dialog):
         self.show_flag = False
         self.last_talkerId = None
         self.now_talkerId = None
-        self.showContact()
+        # self.showContact()
+        self.show_thread = ShowContactThread()
+        self.show_thread.showSingal.connect(self.showContact)
+        self.show_thread.heightSingal.connect(self.setScreenAreaHeight)
+        self.show_thread.start()
 
-    def showContact(self):
+    def showContact(self, data_):
         """
+        data:Tuple[rconversation,index:int]
         显示联系人
         :return:
         """
-        print('show')
-        if self.show_flag:
-            return
-        self.show_flag = True
-        rconversations = data.get_rconversation()
-        max_hight = max(len(rconversations) * 80, 680)
-        # 设置滚动区域的高度
-        self.scrollAreaWidgetContents.setGeometry(
-            QtCore.QRect(0, 0, 300, max_hight))
+        rconversation, i = data_
+        username = rconversation[1]
+        # print(username)
+        pushButton_2 = MyLabel.ContactUi(self.scrollAreaWidgetContents, i, rconversation)
+        pushButton_2.setGeometry(QtCore.QRect(0, 80 * i, 300, 80))
+        pushButton_2.setLayoutDirection(QtCore.Qt.LeftToRight)
+        pushButton_2.clicked.connect(pushButton_2.show_msg)
+        pushButton_2.usernameSingal.connect(self.Contact)
+        self.contacts[username] = pushButton_2
+        self.contactInfo[username] = ContactInfo(username, self.Me)
+        self.stackedWidget.addWidget(self.contactInfo[username])
 
-        for i in range(len(rconversations)):
-            rconversation = rconversations[i]
-            username = rconversation[1]
-            # 创建联系人按钮对象
-            # 将实例化对象添加到self.contacts储存起来
-            # pushButton_2 = Contact(self.scrollAreaWidgetContents, i, rconversation)
-            pushButton_2 = MyLabel.ContactUi(self.scrollAreaWidgetContents, i, rconversation)
-            pushButton_2.setGeometry(QtCore.QRect(0, 80 * i, 300, 80))
-            pushButton_2.setLayoutDirection(QtCore.Qt.LeftToRight)
-            pushButton_2.clicked.connect(pushButton_2.show_msg)
-            pushButton_2.usernameSingal.connect(self.Contact)
-            self.contacts[username] = pushButton_2
-            self.contactInfo[username] = ContactInfo(username, self.Me)
-            self.stackedWidget.addWidget(self.contactInfo[username])
+    def setScreenAreaHeight(self, height: int):
+        self.scrollAreaWidgetContents.setGeometry(
+            QtCore.QRect(0, 0, 300, height))
 
     def Contact(self, talkerId):
         """
@@ -101,3 +97,19 @@ class ContactController(QWidget, Ui_Dialog):
             self.chatroomFlag = True
         else:
             self.chatroomFlag = False
+
+
+class ShowContactThread(QThread):
+    showSingal = pyqtSignal(tuple)
+    heightSingal = pyqtSignal(int)
+
+    def __init__(self):
+        super().__init__()
+
+    def run(self) -> None:
+        rconversations = data.get_rconversation()
+        max_height = max(len(rconversations) * 80, 680)
+        # 设置滚动区域的高度
+        self.heightSingal.emit(max_height)
+        for i in range(len(rconversations)):
+            self.showSingal.emit((rconversations[i], i))
