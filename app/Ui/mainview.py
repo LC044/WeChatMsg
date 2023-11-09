@@ -52,6 +52,11 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.lastView = None
         self.show_avatar()
         self.init_ui()
+        # self.state_lable = QLabel(self)
+        # self.state_lable.raise_()
+        # pixmap = QPixmap('./app/data/icons/default_avatar.svg').scaled(32, 32)  # 按指定路径找到图片
+        # self.state_lable.setPixmap(pixmap)
+        # self.state_lable.setText("T")
         # 创建右键菜单函数
 
     def init_ui(self):
@@ -90,6 +95,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
             self.last_btn.setStyleSheet("QPushButton {background-color: rgb(240,240,240);}"
                                         "QPushButton:hover{background-color: rgb(209,209,209);}\n")
         self.last_btn = self.btn_chat
+        # self.state_lable.setGeometry(20, 300, 32, 32)
         self.stackedWidget.setCurrentIndex(0)
         self.chatView.showChat()
 
@@ -104,6 +110,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
             self.last_btn.setStyleSheet("QPushButton {background-color: rgb(240,240,240);}"
                                         "QPushButton:hover{background-color: rgb(209,209,209);}\n")
         self.last_btn = self.btn_contact
+        # geometry = self.btn_chat.geometry()
+        # self.state_lable.setGeometry(geometry)
         self.stackedWidget.setCurrentIndex(1)
 
     def myInfo(self):

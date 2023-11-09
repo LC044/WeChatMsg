@@ -39,12 +39,7 @@ class Ui_Form(object):
         self.label_remark.setObjectName("label_remark")
         self.horizontalLayout_3.addWidget(self.label_remark)
         self.btn_analysis = QtWidgets.QPushButton(self.frame)
-        self.btn_analysis.setStyleSheet("QPushButton:hover {\n"
-                                        "    background-color: rgb(240, 240, 240);\n"
-                                        "}\n"
-                                        "QPushButton{\n"
-                                        "    background-color:transparent;\n"
-                                        "}")
+        self.btn_analysis.setStyleSheet("")
         self.btn_analysis.setFlat(True)
         self.btn_analysis.setObjectName("btn_analysis")
         self.horizontalLayout_3.addWidget(self.btn_analysis)

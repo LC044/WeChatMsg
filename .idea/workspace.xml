@@ -4,23 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="加快打开速度">
-      <change afterPath="$PROJECT_DIR$/app/DataBase/database.py" afterDir="false" />
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="修改导入路径，方便打包成exe">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DataBase/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DataBase/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DataBase/output.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/output.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/ICON.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/Icon.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/chat/chat.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/chat/chat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/contact/contact.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/contact.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ImageBox/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ImageBox/ui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/Icon.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/Icon.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/MyComponents/Button_Contact.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/MyComponents/Button_Contact.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/chat/chatUi.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/chat/chatUi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/chat/chatUi.ui" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/chat/chatUi.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Ui/contact/contactInfo.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/contactInfo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/contact/userinfo/userinfo.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/userinfo/userinfo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/contact/contactUi.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/contactUi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/contact/contactUi.ui" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/contactUi.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Ui/mainview.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/mainview.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/person.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/person.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.spec" beforeDir="false" afterPath="$PROJECT_DIR$/main.spec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/mainwindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/mainwindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/mainwindow.ui" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/mainwindow.ui" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -529,7 +525,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699367814847</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="修改导入路径，方便打包成exe">
+      <created>1699373594568</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1699373594568</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -565,7 +568,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="update1" />
     <MESSAGE value="导出word文档" />
     <MESSAGE value="聊天统计" />
     <MESSAGE value="优化加载页面" />
@@ -590,7 +592,8 @@
     <MESSAGE value="修改联系人视图架构" />
     <MESSAGE value="修改部分UI" />
     <MESSAGE value="加快打开速度" />
-    <option name="LAST_COMMIT_MESSAGE" value="加快打开速度" />
+    <MESSAGE value="修改导入路径，方便打包成exe" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改导入路径，方便打包成exe" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -604,7 +607,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>23</line>
+          <line>22</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>

@@ -23,7 +23,7 @@ class Ui_Form(object):
         self.scrollArea_2.setEnabled(True)
         self.scrollArea_2.setMaximumSize(QtCore.QSize(325, 150000))
         self.scrollArea_2.setAutoFillBackground(False)
-        self.scrollArea_2.setFrameShape(QtWidgets.QFrame.WinPanel)
+        self.scrollArea_2.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.scrollArea_2.setMidLineWidth(0)
         self.scrollArea_2.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
@@ -151,5 +151,7 @@ class Ui_Form(object):
                                            "p, li { white-space: pre-wrap; }\n"
                                            "</style></head><body style=\" font-family:\'SimSun\'; font-size:15pt; font-weight:400; font-style:normal;\">\n"
                                            "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                                        </p>\n"
-                                           "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                                    </p></body></html>"))
+                                           "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                                         </p>\n"
+                                           "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                                         </p>\n"
+                                           "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                                     </p></body></html>"))
         self.btn_sendMsg_2.setText(_translate("Form", "发送"))

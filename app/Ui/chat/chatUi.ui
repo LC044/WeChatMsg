@@ -44,7 +44,7 @@
                         <bool>false</bool>
                     </property>
                     <property name="frameShape">
-                        <enum>QFrame::WinPanel</enum>
+                        <enum>QFrame::NoFrame</enum>
                     </property>
                     <property name="frameShadow">
                         <enum>QFrame::Raised</enum>
@@ -230,6 +230,8 @@
                                         p, li { white-space: pre-wrap; }
                                         &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun';
                                         font-size:15pt; font-weight:400; font-style:normal;&quot;&gt;
+                                        &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px;
+                                        margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; &lt;/p&gt;
                                         &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px;
                                         margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; &lt;/p&gt;
                                         &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px;

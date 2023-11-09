@@ -31,7 +31,7 @@ class ImageBox(QWidget):
         # print(img_size)
         img_size = self.scaled_img.size()
         x = min(500, max((1000 - img_size.width()) // 2, 0))
-        y = min(300, max((600 - img_size.height()) // 2-60, 0))
+        y = min(300, max((600 - img_size.height()) // 2 - 60, 0))
         # print(x,y)
         self.point = QPoint(x, y)
 
@@ -97,7 +97,7 @@ class MainDemo(QWidget):
 
         self.setWindowTitle("Image Viewer")
         self.setFixedSize(1000, 600)
-        self.setWindowIcon(QIcon('./app/data/icon.png'))
+        self.setWindowIcon(QIcon('./app/data/icons/logo.svg'))
         self.zoom_in = QPushButton("")
         self.zoom_in.clicked.connect(self.large_click)
         self.zoom_in.setFixedSize(30, 30)

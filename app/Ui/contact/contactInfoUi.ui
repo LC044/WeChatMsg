@@ -79,13 +79,7 @@
                                 <item>
                                     <widget class="QPushButton" name="btn_analysis">
                                         <property name="styleSheet">
-                                            <string notr="true">QPushButton:hover {
-                                                background-color: rgb(240, 240, 240);
-                                                }
-                                                QPushButton{
-                                                background-color:transparent;
-                                                }
-                                            </string>
+                                            <string notr="true"/>
                                         </property>
                                         <property name="text">
                                             <string>统计信息</string>

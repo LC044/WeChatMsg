@@ -80,7 +80,7 @@
                                     <bool>false</bool>
                                 </property>
                                 <property name="frameShape">
-                                    <enum>QFrame::WinPanel</enum>
+                                    <enum>QFrame::NoFrame</enum>
                                 </property>
                                 <property name="frameShadow">
                                     <enum>QFrame::Raised</enum>

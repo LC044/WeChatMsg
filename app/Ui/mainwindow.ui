@@ -48,10 +48,10 @@
                             <string notr="true">background-color:rgb(240,240,240)</string>
                         </property>
                         <property name="frameShape">
-                            <enum>QFrame::StyledPanel</enum>
+                            <enum>QFrame::NoFrame</enum>
                         </property>
                         <property name="frameShadow">
-                            <enum>QFrame::Sunken</enum>
+                            <enum>QFrame::Plain</enum>
                         </property>
                         <widget class="QWidget" name="verticalLayoutWidget">
                             <property name="geometry">
@@ -74,6 +74,11 @@
                                                 <height>60</height>
                                             </size>
                                         </property>
+                                        <property name="font">
+                                            <font>
+                                                <family>微软雅黑</family>
+                                            </font>
+                                        </property>
                                         <property name="styleSheet">
                                             <string notr="true">QPushButton {background-color: rgb(240,240,240);}
                                                 QPushButton:hover{background-color: rgb(209,209,209);}
@@ -81,6 +86,9 @@
                                         </property>
                                         <property name="text">
                                             <string>聊天</string>
+                                        </property>
+                                        <property name="flat">
+                                            <bool>true</bool>
                                         </property>
                                     </widget>
                                 </item>
@@ -92,6 +100,11 @@
                                                 <height>60</height>
                                             </size>
                                         </property>
+                                        <property name="font">
+                                            <font>
+                                                <family>微软雅黑</family>
+                                            </font>
+                                        </property>
                                         <property name="styleSheet">
                                             <string notr="true">QPushButton {background-color: rgb(240,240,240);}
                                                 QPushButton:hover{background-color: rgb(209,209,209);}
@@ -99,6 +112,9 @@
                                         </property>
                                         <property name="text">
                                             <string>联系人</string>
+                                        </property>
+                                        <property name="flat">
+                                            <bool>true</bool>
                                         </property>
                                     </widget>
                                 </item>
@@ -110,6 +126,11 @@
                                                 <height>60</height>
                                             </size>
                                         </property>
+                                        <property name="font">
+                                            <font>
+                                                <family>微软雅黑</family>
+                                            </font>
+                                        </property>
                                         <property name="styleSheet">
                                             <string notr="true">QPushButton {background-color: rgb(240,240,240);}
                                                 QPushButton:hover{background-color: rgb(209,209,209);}
@@ -117,6 +138,9 @@
                                         </property>
                                         <property name="text">
                                             <string>我的</string>
+                                        </property>
+                                        <property name="flat">
+                                            <bool>true</bool>
                                         </property>
                                     </widget>
                                 </item>
@@ -128,6 +152,11 @@
                                                 <height>60</height>
                                             </size>
                                         </property>
+                                        <property name="font">
+                                            <font>
+                                                <family>微软雅黑</family>
+                                            </font>
+                                        </property>
                                         <property name="styleSheet">
                                             <string notr="true">QPushButton {background-color: rgb(240,240,240);}
                                                 QPushButton:hover{background-color: rgb(209,209,209);}
@@ -135,6 +164,9 @@
                                         </property>
                                         <property name="text">
                                             <string>关于</string>
+                                        </property>
+                                        <property name="flat">
+                                            <bool>true</bool>
                                         </property>
                                     </widget>
                                 </item>
@@ -157,6 +189,13 @@
                 </item>
                 <item>
                     <widget class="QStackedWidget" name="stackedWidget">
+                        <property name="font">
+                            <font>
+                                <family>微软雅黑</family>
+                                <weight>50</weight>
+                                <bold>false</bold>
+                            </font>
+                        </property>
                         <widget class="QWidget" name="page_chat"/>
                         <widget class="QWidget" name="page_contact"/>
                         <widget class="QWidget" name="page_myinfo"/>
@@ -184,6 +223,11 @@
                 <addaction name="action_4"/>
             </widget>
             <widget class="QMenu" name="menu">
+                <property name="font">
+                    <font>
+                        <family>微软雅黑</family>
+                    </font>
+                </property>
                 <property name="title">
                     <string>编辑</string>
                 </property>
@@ -212,6 +256,11 @@
         <action name="action">
             <property name="text">
                 <string>关于</string>
+            </property>
+            <property name="font">
+                <font>
+                    <family>Microsoft YaHei UI</family>
+                </font>
             </property>
         </action>
     </widget>

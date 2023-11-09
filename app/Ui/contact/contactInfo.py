@@ -1,5 +1,4 @@
 from PyQt5.QtCore import *
-from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 from app import person
@@ -39,9 +38,9 @@ class ContactInfo(QWidget, Ui_Form):
         self.stackedWidget.addWidget(self.view_emotion)
         self.stackedWidget.setCurrentWidget(self.view_userinfo)
         menu = QMenu(self)
-        self.toDocxAct = QAction(QIcon('app/data/icons/word.svg'), '导出Docx', self)
-        self.toCSVAct = QAction(QIcon('app/data/icons/csv.svg'), '导出CSV', self)
-        self.toHtmlAct = QAction(QIcon('app/data/icons/html.svg'), '导出HTML', self)
+        self.toDocxAct = QAction(Icon.ToDocx, '导出Docx', self)
+        self.toCSVAct = QAction(Icon.ToCSV, '导出CSV', self)
+        self.toHtmlAct = QAction(Icon.ToHTML, '导出HTML', self)
         self.toolButton_output.setPopupMode(QToolButton.MenuButtonPopup)
         self.toolButton_output.clicked.connect(self.toolButton_show)
         menu.addAction(self.toDocxAct)

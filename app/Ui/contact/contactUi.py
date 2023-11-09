@@ -34,7 +34,7 @@ class Ui_Dialog(object):
         self.scrollArea.setMinimumSize(QtCore.QSize(325, 0))
         self.scrollArea.setMaximumSize(QtCore.QSize(325, 150000))
         self.scrollArea.setAutoFillBackground(False)
-        self.scrollArea.setFrameShape(QtWidgets.QFrame.WinPanel)
+        self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea.setFrameShadow(QtWidgets.QFrame.Raised)
         self.scrollArea.setMidLineWidth(0)
         self.scrollArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
