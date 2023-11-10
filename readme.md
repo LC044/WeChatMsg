@@ -5,6 +5,9 @@
 <a href="https://github.com/LC044/WeChatMsg/stargazers">
     <img src="https://img.shields.io/github/stars/LC044/WeChatMsg.svg" />
 </a>
+<a href="https://github.com/LC044/WeChatMsg/issues">
+      <img alt="Issues" src="https://img.shields.io/github/issues/LC044/WeChatMsg?color=0088ff" />
+    </a>
 <a href="./doc/readme.md">
     <img src="https://img.shields.io/badge/文档-最新-brightgreen.svg" />
 </a>
@@ -102,3 +105,5 @@ python main.py
 ---
 
 > 说明：该项目仅可用于交流学习，禁止任何非法用途，本人不承担任何责任🙄
+
+[![Star History Chart](https://api.star-history.com/svg?repos=LC044/WeChatMsg&type=Date)](https://star-history.com/?utm_source=bestxtools.com#LC044/WeChatMsg&Date)

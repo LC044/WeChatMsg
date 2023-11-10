@@ -278,7 +278,11 @@ class ChatController(QWidget, Ui_Form):
         print('emoji:', imgPath)
         if not imgPath:
             return False
-        image = Image.open(imgPath)
+        try:
+            image = Image.open(imgPath)
+        except Exception as e:
+            print(e)
+            return
         imagePixmap = image.size  # 宽高像素
         # 设置最大宽度
         if imagePixmap[0] < 150:
