@@ -111,7 +111,7 @@
                                             </string>
                                         </property>
                                         <property name="text">
-                                            <string>联系人</string>
+                                            <string>好友</string>
                                         </property>
                                         <property name="flat">
                                             <bool>true</bool>

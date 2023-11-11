@@ -4,26 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="修改部分UI">
-      <change afterPath="$PROJECT_DIR$/app/Ui/contact/report/annual_report.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data/html/0.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data/html/1.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data/html/2.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data/html/3.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data/html/4.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data/html/5.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data/html/6.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data/html/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data/icons/back.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/data/icons/output.svg" afterDir="false" />
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="上传html模板">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DataBase/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/MyComponents/Button_Contact.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/MyComponents/Button_Contact.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/contact/analysis/analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/analysis/analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/Icon.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/Icon.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Ui/contact/contactInfo.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/contactInfo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/contact/report/report.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/report/report.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Ui/mainview.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/mainview.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/mainwindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/mainwindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/mainwindow.ui" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/mainwindow.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/html/1.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/data/html/1.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/html/2.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/data/html/2.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -546,7 +535,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699531863395</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="上传html模板">
+      <created>1699700323644</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1699700323644</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -582,7 +578,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="导出word文档" />
     <MESSAGE value="聊天统计" />
     <MESSAGE value="优化加载页面" />
     <MESSAGE value="新增对话情感分析，增加窗口自适应，新增emotion界面" />
@@ -607,7 +602,8 @@
     <MESSAGE value="加快打开速度" />
     <MESSAGE value="修改导入路径，方便打包成exe" />
     <MESSAGE value="修改部分UI" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改部分UI" />
+    <MESSAGE value="上传html模板" />
+    <option name="LAST_COMMIT_MESSAGE" value="上传html模板" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

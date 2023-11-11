@@ -102,7 +102,7 @@
                                 <item>
                                     <widget class="QPushButton" name="btn_report">
                                         <property name="text">
-                                            <string>生成年度报告</string>
+                                            <string>年度报告</string>
                                         </property>
                                         <property name="flat">
                                             <bool>true</bool>

@@ -46,6 +46,9 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         # self.btn_myinfo.clicked.connect(self.myInfo)
         self.btn_about.clicked.connect(self.about)
         self.now_btn = self.btn_chat
+        self.btn_chat.setIcon(Icon.Chat_Icon)
+        self.btn_contact.setIcon(Icon.Contact_Icon)
+        self.btn_myinfo.setIcon(Icon.MyInfo_Icon)
         self.btn_about.setIcon(Icon.MainWindow_Icon)
         self.btn_about.setContextMenuPolicy(Qt.CustomContextMenu)
         self.btn_about.customContextMenuRequested.connect(self.create_rightmenu)  # 连接到菜单显示函数

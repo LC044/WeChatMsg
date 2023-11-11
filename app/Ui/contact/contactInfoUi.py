@@ -87,6 +87,6 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.btn_analysis.setText(_translate("Form", "统计信息"))
         self.btn_emotion.setText(_translate("Form", "情感分析"))
-        self.btn_report.setText(_translate("Form", "生成年度报告"))
+        self.btn_report.setText(_translate("Form", "年度报告"))
         self.btn_back.setText(_translate("Form", "退出"))
         self.toolButton_output.setText(_translate("Form", "导出聊天记录"))

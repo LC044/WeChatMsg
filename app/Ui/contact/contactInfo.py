@@ -32,6 +32,9 @@ class ContactInfo(QWidget, Ui_Form):
 
     def init_ui(self):
         self.btn_back.setIcon(Icon.Back)
+        self.btn_report.setIcon(Icon.Annual_Report_Icon)
+        self.btn_analysis.setIcon(Icon.Analysis_Icon)
+        self.btn_emotion.setIcon(Icon.Emotion_Icon)
         self.label_remark.setText(self.contact.conRemark)
         self.stackedWidget.addWidget(self.view_userinfo)
         self.stackedWidget.addWidget(self.view_analysis)

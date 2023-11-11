@@ -149,7 +149,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.btn_chat.setText(_translate("MainWindow", "聊天"))
-        self.btn_contact.setText(_translate("MainWindow", "联系人"))
+        self.btn_contact.setText(_translate("MainWindow", "好友"))
         self.btn_myinfo.setText(_translate("MainWindow", "我的"))
         self.btn_about.setText(_translate("MainWindow", "关于"))
         self.myavatar.setText(_translate("MainWindow", "avatar"))
