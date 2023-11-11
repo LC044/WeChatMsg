@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+    <title></title>
+    <!--
+        @time: 2018-08-04
+        @version: 0.0.1
+        @author: Mortal
+        -->
+    <style type="text/css">
+        /*
+         * 说明：
+         * 标注为慎删的属性暂时认定可以删除，即在作者测试的环境下删除暂时没有影响，但不代表所有环境下删除都没有影响
+         * 其他属性一概不可以删除
+         */
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body,
+        ul,
+        li,
+        a,
+        p,
+        div {
+            /*慎删*/
+            padding: 0px;
+            margin: 0px;
+        }
+
+        #wrap {
+            overflow: hidden;
+            width: 100%;
+        }
+
+        #main {
+            top: 0;
+            position: relative;
+        }
+
+        .page {
+            /*谨删*/
+            width: 100%;
+            margin: 0;
+        }
+
+        #pageUl {
+            position: fixed;
+            right: 10px;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+</head>
+
+<body>
+<!--
+    每个全屏页面div的class为page，其中的图片的class为pageImg
+    ul为右侧的导航栏
+    pageUlLi和page的数目必须相等，修改数目时还应修改最下面js鼠标悬停的跳转代码
+    -->
+<div id="wrap">
+    <div id="main">
+        <ul id="pageUl" type="circle">
+            <li id="pageUlLi1" class="pageUlLi" style="color: red;"> </li>
+            <li id="pageUlLi2" class="pageUlLi"> </li>
+            <li id="pageUlLi3" class="pageUlLi"> </li>
+            <li id="pageUlLi4" class="pageUlLi"> </li>
+            <li id="pageUlLi5" class="pageUlLi"> </li>
+            <li id="pageUlLi6" class="pageUlLi"> </li>
+            <li id="pageUlLi7" class="pageUlLi"> </li>
+        </ul>
+        <div id="page1" class="page">
+            <iframe src="0.html" frameborder="0" height="100%"
+                    width="100%"></iframe>
+        </div>
+        <div id="page2" class="page">
+            <iframe src="1.html" frameborder="0" height="100%"
+                    width="100%"></iframe>
+        </div>
+        <div style="background-color: #8a6d3b" id="page3" class="page">
+            <iframe src="2.html" frameborder="0" id="iframe0" height="100%"
+                    width="100%"></iframe>
+        </div>
+        <div style="background-color: #337ab7" id="page4" class="page">
+            <iframe src="3.html" frameborder="0" id="iframe3" height="100%"
+                    width="100%"></iframe>
+        </div>
+        <div style="background-color: #337ab7" id="page5" class="page">
+            <iframe src="4.html" frameborder="0" id="iframe4" height="100%"
+                    width="100%"></iframe>
+        </div>
+        <div style="background-color: #337ab7" id="page6" class="page">
+            <iframe src="5.html" frameborder="0" id="iframe5" height="100%"
+                    width="100%"></iframe>
+        </div>
+        <div style="background-color: #337ab7" id="page7" class="page">
+            <iframe src="6.html" frameborder="0" id="iframe6" height="100%"
+                    width="100%"></iframe>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    //改变窗口大小时调整图片大小
+    window.onload = resizeImages;
+    window.onresize = resizeImages;
+
+    function resizeImages() {
+        $(function (e) {
+            var screenWeight = document.documentElement.clientWidth;
+            var screenHeight = document.documentElement.clientHeight;
+            $("[name=pageImg]").css("width", screenWeight).css("height", screenHeight);
+            $("#pageUl").css("bottom", screenHeight >> 1);
+        });
+    }
+
+    var index = 1;
+    var curIndex = 1;
+    var wrap = document.getElementById("wrap");
+    var main = document.getElementById("main");
+    var hei = document.body.clientHeight;
+    wrap.style.height = hei + "px";
+    var obj = document.getElementsByTagName("div");
+    for (var i = 0; i < obj.length; i++) {
+        if (obj[i].className == 'page') {
+            obj[i].style.height = hei + "px";
+        }
+    }
+    var pageNum = document.querySelectorAll(".page").length;
+    //如果不加时间控制，滚动会过度灵敏，一次翻好几屏
+    var startTime = 0, //翻屏起始时间
+        endTime = 0,
+        now = 0;
+    //浏览器兼容
+    if ((navigator.userAgent.toLowerCase().indexOf("firefox") != -1)) {
+        document.addEventListener("DOMMouseScroll", scrollFun, false);
+    } else if (document.addEventListener) {
+        document.addEventListener("mousewheel", scrollFun, false);
+    } else if (document.attachEvent) {
+        document.attachEvent("onmousewheel", scrollFun);
+    } else {
+        document.onmousewheel = scrollFun;
+    }
+
+    //滚动事件处理函数
+    function scrollFun(event) {
+        startTime = new Date().getTime();
+        var delta = event.detail || (-event.wheelDelta);
+        //mousewheel事件中的 “event.wheelDelta” 属性值：返回的如果是正值说明滚轮是向上滚动
+        //DOMMouseScroll事件中的 “event.detail” 属性值：返回的如果是负值说明滚轮是向上滚动
+        if ((endTime - startTime) < -1000) {
+            if (delta > 0 && parseInt(main.offsetTop) > -(hei * (pageNum - 1))) {
+                //向下滚动
+                index++;
+                toPage(index);
+            }
+            if (delta < 0 && parseInt(main.offsetTop) < 0) {
+                //向上滚动
+                index--;
+                toPage(index);
+            }
+            endTime = new Date().getTime();
+        } else {
+            event.preventDefault();
+        }
+    }
+
+
+     function toPage(idx) {
+        //jquery实现动画效果
+        if(idx!=curIndex){
+            index=idx
+            var delta=idx - curIndex;
+            now = now - delta * hei;
+            $("#main").animate({
+                top: (now + 'px')
+            }, 500);
+            curIndex = idx;
+            //更改列表的选中项
+            $(".pageUlLi").css("color", "black");
+            $("#pageUlLi" + idx).css("color", "red");
+
+        }
+    }
+
+    // //鼠标悬停翻页
+    // document.getElementById("pageUlLi1").onmouseover = function () {
+    //     toPage(1);
+    // }
+    // document.getElementById("pageUlLi2").onmouseover = function () {
+    //     toPage(2);
+    // }
+    // document.getElementById("pageUlLi3").onmouseover = function () {
+    //     toPage(3);
+    // }
+    // document.getElementById("pageUlLi4").onmouseover = function () {
+    //     toPage(4);
+    // }
+    // document.getElementById("pageUlLi5").onmouseover = function () {
+    //     toPage(5);
+    // }
+    //鼠标点击翻页
+    document.getElementById("pageUlLi1").onclick = function () {
+        toPage(1);
+    }
+    document.getElementById("pageUlLi2").onclick = function () {
+        toPage(2);
+    }
+    document.getElementById("pageUlLi3").onclick = function () {
+        toPage(3);
+    }
+    document.getElementById("pageUlLi4").onclick = function () {
+        toPage(4);
+    }
+    document.getElementById("pageUlLi5").onclick = function () {
+        toPage(5);
+    }
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</html>

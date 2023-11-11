@@ -68,6 +68,7 @@ def mkdir(path):
     return True
 
 
+root_path = os.path.abspath('.')
 mkdir(os.path.abspath('.') + '/app/DataBase')
 mkdir(os.path.abspath('.') + '/app/data/emoji')
 if os.path.exists('./app/DataBase/Msg.db'):
@@ -219,17 +220,18 @@ def avatar_md5(wxid):
 
 def get_avator(wxid):
     if wxid == None:
-        return './app/data/icons/default_avatar.svg'
+        return os.path.join(root_path, '/app/data/icons/default_avatar.svg')
     wxid = str(wxid)
     avatar = avatar_md5(wxid)
-    avatar_path = r"./app/data/avatar/"
-    path = avatar_path + avatar[:2] + '/' + avatar[2:4]
+    path = os.path.join(root_path, 'app', 'data', 'avatar', avatar[:2], avatar[2:4])
+    # avatar_path + avatar[:2] + '/' + avatar[2:4]
     for root, dirs, files in os.walk(path):
         for file in files:
             if avatar in file:
                 avatar = file
                 break
-    return f'''{path}/{avatar}'''
+    return os.path.join(path, avatar)
+    # return f'''{path}/{avatar}'''
     # return f'''{path}/user_{avatar}.png'''
 
 

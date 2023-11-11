@@ -46,12 +46,15 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         # self.btn_myinfo.clicked.connect(self.myInfo)
         self.btn_about.clicked.connect(self.about)
         self.now_btn = self.btn_chat
+        self.btn_about.setIcon(Icon.MainWindow_Icon)
         self.btn_about.setContextMenuPolicy(Qt.CustomContextMenu)
         self.btn_about.customContextMenuRequested.connect(self.create_rightmenu)  # 连接到菜单显示函数
         self.last_btn = None
         self.lastView = None
         self.show_avatar()
         self.init_ui()
+        self.menubar.setVisible(False)
+        self.statusbar.setVisible(False)
         # self.state_lable = QLabel(self)
         # self.state_lable.raise_()
         # pixmap = QPixmap('./app/data/icons/default_avatar.svg').scaled(32, 32)  # 按指定路径找到图片

@@ -5,12 +5,17 @@ from PyQt5.QtGui import *
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import *
 
+from app import person
+from app.DataBase import data
+from . import annual_report
+
 
 class ReportController(QWidget):
-    def __init__(self, username, parent=None):
+    def __init__(self, contact: person.Contact, me: person.Me = None, parent=None):
         super().__init__(parent)
-        self.ta_username = username
-
+        self.ta_username = contact.wxid
+        self.contact = contact
+        self.Me = me
         # self.setStyleSheet('''QWidget{background-color:rgb(240, 240, 240);}''')
         # 加载动画
         self.center()
@@ -40,15 +45,15 @@ class ReportController(QWidget):
         movie.start()
 
     def initUI(self):
+        start_time = data.get_msg_start_time(self.contact.wxid)
+        annual_report.create_title_page(self.contact.nickname, start_time, self.contact.avatar_path)
         self.label.setVisible(False)
         # self.setStyleSheet('''QWidget{background-color:rgb(244, 244, 244);}''')
         main_box = QHBoxLayout(self)
         self.browser1 = QWebEngineView()
         self.browser1.load(QUrl('file:///data/AnnualReport/index.html'))
-        # self.browser1.setStyleSheet('''QWidget{background-color:rgb(240, 240, 240);}''')
 
         splitter1 = QSplitter(Qt.Vertical)
-
         splitter1.addWidget(self.browser1)
         main_box.addWidget(splitter1)
         self.setLayout(main_box)

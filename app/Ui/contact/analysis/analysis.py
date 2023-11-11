@@ -72,9 +72,6 @@ class AnalysisController(QWidget):
         self.browser4.resize(800, 600)
         self.browser5 = QWebEngineView()
         self.browser5.load(QUrl('file:///data/聊天统计/chat_session.html'))
-        # self.browser5.adjustSize()
-
-        # self.browser5.resize(800, 600)
         self.browser6 = QWebEngineView()
         self.browser6.load(QUrl('file:///data/聊天统计/sports.html'))
         self.browser7 = QWebEngineView()
@@ -95,23 +92,18 @@ class AnalysisController(QWidget):
 
         scrollAreaContent = QWidget(self.scrollArea)
         scrollAreaContent.setStyleSheet('''QWidget{background-color:rgb(240, 240, 240);}''')
-
         Vlayout2 = QVBoxLayout()
         Vlayout2.setContentsMargins(0, 0, 0, 0)
         Vlayout2.setSpacing(0)
-
         Vlayout2.addWidget(self.browser3)
         Vlayout2.addWidget(self.browser2)
-
         Vlayout2.addWidget(self.browser8)
         Vlayout2.addWidget(self.browser6)
         Vlayout2.addWidget(self.browser5)
         Vlayout2.addWidget(self.browser7)
-
         Vlayout2.addWidget(self.browser9)
         Vlayout2.addWidget(self.browser10)
         scrollAreaContent.setLayout(Vlayout2)
-
         self.scrollArea.setWidget(scrollAreaContent)
         main_box.addWidget(self.scrollArea)
         main_box.setStretch(0, 1)

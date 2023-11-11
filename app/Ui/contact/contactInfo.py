@@ -73,8 +73,8 @@ class ContactInfo(QWidget, Ui_Form):
             "敬请期待"
         )
         return
-        self.report = report.ReportController(123)
-        self.report.show()
+        # self.report = report.ReportController(self.contact)
+        # self.report.show()
 
     def emotionale_Analysis(self):
         self.stackedWidget.setCurrentWidget(self.view_emotion)
