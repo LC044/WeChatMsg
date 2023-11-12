@@ -34,6 +34,8 @@
 
 ## 效果
 
+<details>
+
 <img alt="image-20230520235113261" src="doc/images/image-20230520235113261.png"/>
 
 ![image-20230520235220104](doc/images/image-20230520235220104.png)
@@ -50,7 +52,44 @@
 
 ![image-20230520235431091](doc/images/image-20230520235431091.png)
 
-## 使用
+</details>
+
+# 使用
+
+## 解密PC版微信数据库
+
+<details>
+
+### 1. 安装
+
+```shell
+git clone https://github.com/LC044/WeChatMsg
+cd WeChatMsg
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
+### 2. 使用
+
+1. 登录微信
+2. 运行程序
+   ```shell
+   python decrypt_window.py
+   ```
+3. 点击获取信息
+
+   ![](./doc/images/pc_decrypt_info.png)
+4. 设置微信安装路径
+   可以到微信->设置->文件管理查看
+   ![](./doc/images/setting.png)
+   点击**设置微信路径**按钮，选择该文件夹路径
+5. 获取到密钥和微信路径之后点击开始解密
+6. 解密后的数据库文件保存在./app/DataBase/Msg路径下
+
+</details>
+
+### 使用模拟器
+
+<details>
 
 1. 根据[教程](https://blog.csdn.net/m0_59452630/article/details/124222235?spm=1001.2014.3001.5501)获得两个文件
     - auth_info_key_prefs.xml——解析数据库密码
@@ -98,9 +137,15 @@ python main.py
 
 ![image-20230520235113261](doc/images/image-20230520235113261.png)
 
+</details>
+
 ## 项目还有很多bug，希望大家能够及时反馈
 
 项目地址：https://github.com/LC044/WeChatMsg
+
+# 致谢
+
+* PC微信解密工具:[https://github.com/xaoyaoo/PyWxDump](https://github.com/xaoyaoo/PyWxDump)
 
 ---
 

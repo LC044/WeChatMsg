@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>Dialog</class>
+    <widget class="QDialog" name="Dialog">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>400</width>
+                <height>300</height>
+            </rect>
+        </property>
+        <property name="font">
+            <font>
+                <family>微软雅黑</family>
+            </font>
+        </property>
+        <property name="windowTitle">
+            <string>Dialog</string>
+        </property>
+        <widget class="QLabel" name="label_3">
+            <property name="geometry">
+                <rect>
+                    <x>140</x>
+                    <y>0</y>
+                    <width>221</width>
+                    <height>51</height>
+                </rect>
+            </property>
+            <property name="font">
+                <font>
+                    <family>一纸情书</family>
+                    <pointsize>20</pointsize>
+                </font>
+            </property>
+            <property name="text">
+                <string>解密数据库</string>
+            </property>
+        </widget>
+        <widget class="QProgressBar" name="progressBar">
+            <property name="geometry">
+                <rect>
+                    <x>90</x>
+                    <y>260</y>
+                    <width>271</width>
+                    <height>23</height>
+                </rect>
+            </property>
+            <property name="value">
+                <number>50</number>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="btn_getinfo">
+            <property name="geometry">
+                <rect>
+                    <x>290</x>
+                    <y>60</y>
+                    <width>91</width>
+                    <height>41</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>获取信息</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="btn_db_dir">
+            <property name="geometry">
+                <rect>
+                    <x>20</x>
+                    <y>210</y>
+                    <width>91</width>
+                    <height>41</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>设置微信路径</string>
+            </property>
+        </widget>
+        <widget class="QLabel" name="label_db_dir">
+            <property name="geometry">
+                <rect>
+                    <x>120</x>
+                    <y>220</y>
+                    <width>251</width>
+                    <height>21</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string/>
+            </property>
+        </widget>
+        <widget class="QLabel" name="label_ready">
+            <property name="geometry">
+                <rect>
+                    <x>40</x>
+                    <y>260</y>
+                    <width>41</width>
+                    <height>21</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>未就绪</string>
+            </property>
+        </widget>
+        <widget class="QWidget" name="">
+            <property name="geometry">
+                <rect>
+                    <x>20</x>
+                    <y>50</y>
+                    <width>221</width>
+                    <height>151</height>
+                </rect>
+            </property>
+            <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,10" columnstretch="1,3"
+                    rowminimumheight="0,0,0,0,0,10" columnminimumwidth="1,2">
+                <item row="4" column="1">
+                    <widget class="QLabel" name="label_wxid">
+                        <property name="text">
+                            <string/>
+                        </property>
+                    </widget>
+                </item>
+                <item row="0" column="0">
+                    <widget class="QLabel" name="label">
+                        <property name="text">
+                            <string>PID</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="2" column="0">
+                    <widget class="QLabel" name="label_2">
+                        <property name="text">
+                            <string>手机号</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="3" column="0">
+                    <widget class="QLabel" name="label_5">
+                        <property name="text">
+                            <string>微信昵称</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="4" column="0">
+                    <widget class="QLabel" name="label_4">
+                        <property name="text">
+                            <string>wxid</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="5" column="1">
+                    <widget class="QLabel" name="label_key">
+                        <property name="text">
+                            <string/>
+                        </property>
+                    </widget>
+                </item>
+                <item row="2" column="1">
+                    <widget class="QLabel" name="label_phone">
+                        <property name="text">
+                            <string/>
+                        </property>
+                    </widget>
+                </item>
+                <item row="5" column="0">
+                    <widget class="QLabel" name="label_6">
+                        <property name="text">
+                            <string>密钥</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="0" column="1">
+                    <widget class="QLabel" name="label_pid">
+                        <property name="text">
+                            <string/>
+                        </property>
+                    </widget>
+                </item>
+                <item row="3" column="1">
+                    <widget class="QLabel" name="label_name">
+                        <property name="text">
+                            <string/>
+                        </property>
+                    </widget>
+                </item>
+                <item row="1" column="0">
+                    <widget class="QLabel" name="label_7">
+                        <property name="text">
+                            <string>版本</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="1" column="1">
+                    <widget class="QLabel" name="label_version">
+                        <property name="text">
+                            <string/>
+                        </property>
+                    </widget>
+                </item>
+            </layout>
+        </widget>
+        <widget class="QPushButton" name="pushButton_3">
+            <property name="geometry">
+                <rect>
+                    <x>290</x>
+                    <y>130</y>
+                    <width>91</width>
+                    <height>41</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>开始解密</string>
+            </property>
+        </widget>
+    </widget>
+    <resources/>
+    <connections/>
+</ui>

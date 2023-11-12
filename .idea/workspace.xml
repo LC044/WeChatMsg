@@ -4,14 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="增加几个图标">
-      <change afterPath="$PROJECT_DIR$/app/Ui/MyComponents/prompt_bar.py" afterDir="false" />
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="增加导航按钮效果">
+      <change afterPath="$PROJECT_DIR$/app/DataBase/micro_msg.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Ui/pc_decrypt/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Ui/pc_decrypt/pc_decrypt.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/decrypt/decrypt.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/decrypt/get_wx_info.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/decrypt/version_list.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/decrypt_window.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/images/pc_decrypt_info.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/mainview.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/mainview.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/mainwindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/mainwindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/mainwindow.ui" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/mainwindow.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/database.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/output.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/output.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +80,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/Program Files/Python310/Scripts/pyuic5.exe&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.new.ui&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -77,28 +88,7 @@
       <recent name="D:\Project\PythonProject\WeChatMsg\app\Ui" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
-    <configuration name="annual_report" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="WeChatMsg" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/Ui/contact/report" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/Ui/contact/report/annual_report.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.decrypt_window">
     <configuration name="decrypt" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="WeChatMsg" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -107,11 +97,53 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/Ui/decrypt" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/decrypt" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/Ui/decrypt/decrypt.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/decrypt/decrypt.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="decrypt_window" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="WeChatMsg" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/decrypt_window.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="true" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="get_wx_info" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="WeChatMsg" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/decrypt" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/decrypt/get_wx_info.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -141,7 +173,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="output" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="micro_msg (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="WeChatMsg" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -153,7 +185,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/DataBase/output.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/DataBase/micro_msg.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -162,7 +194,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="pc_decrypt" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="WeChatMsg" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -170,14 +202,14 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/Ui/pc_decrypt" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/Ui/pc_decrypt/pc_decrypt.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="EMULATE_TERMINAL" value="true" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
       <option name="INPUT_FILE" value="" />
@@ -185,11 +217,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
-        <item itemvalue="Python.annual_report" />
-        <item itemvalue="Python.test" />
+        <item itemvalue="Python.decrypt_window" />
         <item itemvalue="Python.decrypt" />
-        <item itemvalue="Python.output" />
+        <item itemvalue="Python.get_wx_info" />
+        <item itemvalue="Python.micro_msg (1)" />
+        <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
   </component>
@@ -204,13 +236,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00001" summary="update">
-      <created>1672911758283</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1672911758283</updated>
     </task>
     <task id="LOCAL-00002" summary="update">
       <created>1673412476080</created>
@@ -548,7 +573,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699702527136</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="增加导航按钮效果">
+      <created>1699766149377</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1699766149377</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -584,7 +616,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="聊天统计" />
     <MESSAGE value="优化加载页面" />
     <MESSAGE value="新增对话情感分析，增加窗口自适应，新增emotion界面" />
     <MESSAGE value="烂了" />
@@ -609,7 +640,8 @@
     <MESSAGE value="修改部分UI" />
     <MESSAGE value="上传html模板" />
     <MESSAGE value="增加几个图标" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加几个图标" />
+    <MESSAGE value="增加导航按钮效果" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加导航按钮效果" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -618,7 +650,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/DataBase/output.py</url>
-          <line>413</line>
+          <line>412</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -627,9 +659,9 @@
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/Ui/mainview.py</url>
-          <line>10</line>
-          <option name="timeStamp" value="12" />
+          <url>file://$PROJECT_DIR$/app/decrypt/decrypt.py</url>
+          <line>103</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
