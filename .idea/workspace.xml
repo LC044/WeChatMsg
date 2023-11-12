@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="新增PC数据库解密">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="main首次加载解密界面">
+      <change afterPath="$PROJECT_DIR$/doc/数据库介绍.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -221,13 +220,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00003" summary="update1">
-      <created>1673413173279</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1673413173279</updated>
     </task>
     <task id="LOCAL-00004" summary="update1">
       <created>1673413541210</created>
@@ -565,7 +557,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699797095509</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="main首次加载解密界面">
+      <created>1699797493106</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1699797493106</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -601,7 +600,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="新增对话情感分析，增加窗口自适应，新增emotion界面" />
     <MESSAGE value="烂了" />
     <MESSAGE value="窗口切换，使用stackedWidget" />
     <MESSAGE value="修复了Webengine横向小的问题" />
@@ -626,7 +624,8 @@
     <MESSAGE value="增加几个图标" />
     <MESSAGE value="增加导航按钮效果" />
     <MESSAGE value="新增PC数据库解密" />
-    <option name="LAST_COMMIT_MESSAGE" value="新增PC数据库解密" />
+    <MESSAGE value="main首次加载解密界面" />
+    <option name="LAST_COMMIT_MESSAGE" value="main首次加载解密界面" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

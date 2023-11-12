@@ -86,6 +86,12 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 5. 获取到密钥和微信路径之后点击开始解密
 6. 解密后的数据库文件保存在./app/DataBase/Msg路径下
 
+### 3. 查看
+
+随便下载一个SQLite数据库查看软件就能打开数据库，例如[DB Browser for SQLite](https://sqlitebrowser.org/dl/)
+
+[数据库功能介绍](./doc/数据库介绍.md)
+
 </details>
 
 ### 使用模拟器
