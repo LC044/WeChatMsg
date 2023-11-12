@@ -12,10 +12,11 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from app import person
+from app import person, config
 from app.DataBase import *
 from app.Ui import mainwindow
 from app.Ui.Icon import Icon
+from app.Ui.MyComponents.prompt_bar import PromptBar
 from app.Ui.chat import chat
 from app.Ui.contact import contact
 
@@ -58,6 +59,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.init_ui()
         self.menubar.setVisible(False)
         self.statusbar.setVisible(False)
+        self.prompt_bar = PromptBar(self)
+        self.chat_view()
         # self.state_lable = QLabel(self)
         # self.state_lable.raise_()
         # pixmap = QPixmap('./app/data/icons/default_avatar.svg').scaled(32, 32)  # 按指定路径找到图片
@@ -96,10 +99,15 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         """
         self.now_btn = self.btn_chat
         self.now_btn.setStyleSheet(
-            "QPushButton {background-color: rgb(198,198,198);}")
+            "QPushButton {background-color: rgb(198,198,198);border:none;}")
         if self.last_btn and self.last_btn != self.now_btn:
-            self.last_btn.setStyleSheet("QPushButton {background-color: rgb(240,240,240);}"
-                                        "QPushButton:hover{background-color: rgb(209,209,209);}\n")
+            self.last_btn.setStyleSheet(
+                "QPushButton {"
+                "background-color: rgb(240,240,240);"
+                "border:none;"
+                "}"
+                "QPushButton:hover{background-color: rgb(209,209,209);}\n"
+            )
         self.last_btn = self.btn_chat
         # self.state_lable.setGeometry(20, 300, 32, 32)
         self.stackedWidget.setCurrentIndex(0)
@@ -111,9 +119,9 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         """
         self.now_btn = self.btn_contact
         self.now_btn.setStyleSheet(
-            "QPushButton {background-color: rgb(198,198,198);}")
+            "QPushButton {background-color: rgb(198,198,198);border:none;}")
         if self.last_btn and self.last_btn != self.now_btn:
-            self.last_btn.setStyleSheet("QPushButton {background-color: rgb(240,240,240);}"
+            self.last_btn.setStyleSheet("QPushButton {background-color: rgb(240,240,240);border:none;}"
                                         "QPushButton:hover{background-color: rgb(209,209,209);}\n")
         self.last_btn = self.btn_contact
         # geometry = self.btn_chat.geometry()
@@ -137,5 +145,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         关于
         """
         QMessageBox.about(self, "关于",
-                          "关于作者\n姓名：周帅康\n邮箱：lc863854@mail.nwpu.edu.cn"
+                          f"版本：{config.version}\n"
+                          f"QQ交流群:{config.contact}\n"
+                          "地址：https://github.com/LC044/WeChatMsg"
                           )

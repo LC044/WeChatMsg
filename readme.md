@@ -28,7 +28,7 @@
 
 为了方便大家交流，我新建了一个QQ群💬：**474379264**
 
-大家有任何诉求或bug可以群里反馈给我
+大家有任何想法、建议或bug可以群里反馈给我
 
 <img src="doc/images/qq.jpg" height=480/>
 
@@ -58,11 +58,11 @@
     - **上面这两个文件就可以**
 2. 安装依赖库
 
-python版本3.10
+python版本>=3.10
 
 **说明:用到了python3.10的match语法，不方便更换python版本的小伙伴可以把match(运行报错的地方)更改为if else**
 
-命令行运行以下代码
+命令行运行以下代码（**建议使用Pycharm打开项目，Pycharm会自动配置好所有东西，直接运行main.py即可**）
 
 ```bash
 pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
@@ -104,6 +104,6 @@ python main.py
 
 ---
 
-> 说明：该项目仅可用于交流学习，禁止任何非法用途，本人不承担任何责任🙄
+> 说明：该项目仅可用于交流学习，禁止任何非法用途，创作者不承担任何责任🙄
 
 [![Star History Chart](https://api.star-history.com/svg?repos=LC044/WeChatMsg&type=Date)](https://star-history.com/?utm_source=bestxtools.com#LC044/WeChatMsg&Date)

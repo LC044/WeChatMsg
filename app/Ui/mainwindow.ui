@@ -13,6 +13,16 @@
         <property name="windowTitle">
             <string>MainWindow</string>
         </property>
+        <property name="styleSheet">
+            <string notr="true">QPushButton {
+                background-color: rgb(240,240,240);
+                border:none;
+                }
+                QPushButton:hover{
+                background-color: rgb(209,209,209);
+                }
+            </string>
+        </property>
         <widget class="QWidget" name="centralwidget">
             <layout class="QHBoxLayout" name="horizontalLayout">
                 <property name="spacing">
@@ -80,15 +90,24 @@
                                             </font>
                                         </property>
                                         <property name="styleSheet">
-                                            <string notr="true">QPushButton {background-color: rgb(240,240,240);}
+                                            <string notr="true">QPushButton {
+                                                background-color: rgb(240,240,240);
+                                                border:none;
+                                                }
                                                 QPushButton:hover{background-color: rgb(209,209,209);}
                                             </string>
                                         </property>
                                         <property name="text">
                                             <string>聊天</string>
                                         </property>
-                                        <property name="flat">
+                                        <property name="autoDefault">
                                             <bool>true</bool>
+                                        </property>
+                                        <property name="default">
+                                            <bool>false</bool>
+                                        </property>
+                                        <property name="flat">
+                                            <bool>false</bool>
                                         </property>
                                     </widget>
                                 </item>
@@ -106,15 +125,23 @@
                                             </font>
                                         </property>
                                         <property name="styleSheet">
-                                            <string notr="true">QPushButton {background-color: rgb(240,240,240);}
-                                                QPushButton:hover{background-color: rgb(209,209,209);}
+                                            <string notr="true">QPushButton {
+                                                background-color: rgb(240,240,240);
+                                                border:none;
+                                                }
+                                                QPushButton:hover{
+                                                background-color: rgb(209,209,209);
+                                                }
                                             </string>
                                         </property>
                                         <property name="text">
                                             <string>好友</string>
                                         </property>
-                                        <property name="flat">
+                                        <property name="default">
                                             <bool>true</bool>
+                                        </property>
+                                        <property name="flat">
+                                            <bool>false</bool>
                                         </property>
                                     </widget>
                                 </item>
@@ -131,16 +158,11 @@
                                                 <family>微软雅黑</family>
                                             </font>
                                         </property>
-                                        <property name="styleSheet">
-                                            <string notr="true">QPushButton {background-color: rgb(240,240,240);}
-                                                QPushButton:hover{background-color: rgb(209,209,209);}
-                                            </string>
-                                        </property>
                                         <property name="text">
                                             <string>我的</string>
                                         </property>
                                         <property name="flat">
-                                            <bool>true</bool>
+                                            <bool>false</bool>
                                         </property>
                                     </widget>
                                 </item>
@@ -166,7 +188,7 @@
                                             <string>关于</string>
                                         </property>
                                         <property name="flat">
-                                            <bool>true</bool>
+                                            <bool>false</bool>
                                         </property>
                                     </widget>
                                 </item>

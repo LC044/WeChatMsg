@@ -15,6 +15,14 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1280, 779)
+        MainWindow.setStyleSheet("QPushButton {\n"
+                                 "background-color: rgb(240,240,240);\n"
+                                 "border:none;\n"
+                                 "}\n"
+                                 "QPushButton:hover{\n"
+                                 "background-color: rgb(209,209,209);\n"
+                                 "}\n"
+                                 "                                            ")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -40,10 +48,15 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         self.btn_chat.setFont(font)
-        self.btn_chat.setStyleSheet("QPushButton {background-color: rgb(240,240,240);}\n"
-                                    "                                                QPushButton:hover{background-color: rgb(209,209,209);}\n"
+        self.btn_chat.setStyleSheet("QPushButton {\n"
+                                    "background-color: rgb(240,240,240);\n"
+                                    "border:none;\n"
+                                    "}\n"
+                                    "QPushButton:hover{background-color: rgb(209,209,209);}\n"
                                     "                                            ")
-        self.btn_chat.setFlat(True)
+        self.btn_chat.setAutoDefault(True)
+        self.btn_chat.setDefault(False)
+        self.btn_chat.setFlat(False)
         self.btn_chat.setObjectName("btn_chat")
         self.verticalLayout_2.addWidget(self.btn_chat)
         self.btn_contact = QtWidgets.QPushButton(self.verticalLayoutWidget)
@@ -51,10 +64,16 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         self.btn_contact.setFont(font)
-        self.btn_contact.setStyleSheet("QPushButton {background-color: rgb(240,240,240);}\n"
-                                       "                                                QPushButton:hover{background-color: rgb(209,209,209);}\n"
+        self.btn_contact.setStyleSheet("QPushButton {\n"
+                                       "background-color: rgb(240,240,240);\n"
+                                       "border:none;\n"
+                                       "}\n"
+                                       "QPushButton:hover{\n"
+                                       "background-color: rgb(209,209,209);\n"
+                                       "}\n"
                                        "                                            ")
-        self.btn_contact.setFlat(True)
+        self.btn_contact.setDefault(True)
+        self.btn_contact.setFlat(False)
         self.btn_contact.setObjectName("btn_contact")
         self.verticalLayout_2.addWidget(self.btn_contact)
         self.btn_myinfo = QtWidgets.QPushButton(self.verticalLayoutWidget)
@@ -62,10 +81,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         self.btn_myinfo.setFont(font)
-        self.btn_myinfo.setStyleSheet("QPushButton {background-color: rgb(240,240,240);}\n"
-                                      "                                                QPushButton:hover{background-color: rgb(209,209,209);}\n"
-                                      "                                            ")
-        self.btn_myinfo.setFlat(True)
+        self.btn_myinfo.setFlat(False)
         self.btn_myinfo.setObjectName("btn_myinfo")
         self.verticalLayout_2.addWidget(self.btn_myinfo)
         self.btn_about = QtWidgets.QPushButton(self.verticalLayoutWidget)
@@ -76,7 +92,7 @@ class Ui_MainWindow(object):
         self.btn_about.setStyleSheet("QPushButton {background-color: rgb(240,240,240);}\n"
                                      "                                                QPushButton:hover{background-color: rgb(209,209,209);}\n"
                                      "                                            ")
-        self.btn_about.setFlat(True)
+        self.btn_about.setFlat(False)
         self.btn_about.setObjectName("btn_about")
         self.verticalLayout_2.addWidget(self.btn_about)
         self.verticalLayout_2.setStretch(0, 1)
