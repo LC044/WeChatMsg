@@ -4,25 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="增加导航按钮效果">
-      <change afterPath="$PROJECT_DIR$/app/DataBase/micro_msg.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Ui/pc_decrypt/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Ui/pc_decrypt/pc_decrypt.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/decrypt/decrypt.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/decrypt/get_wx_info.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/decrypt/version_list.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/decrypt_window.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/images/pc_decrypt_info.png" afterDir="false" />
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="新增PC数据库解密">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DataBase/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DataBase/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DataBase/database.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DataBase/output.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/output.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -236,13 +221,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00002" summary="update">
-      <created>1673412476080</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1673412476080</updated>
     </task>
     <task id="LOCAL-00003" summary="update1">
       <created>1673413173279</created>
@@ -580,7 +558,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699766149377</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="新增PC数据库解密">
+      <created>1699797095509</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1699797095509</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -616,7 +601,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="优化加载页面" />
     <MESSAGE value="新增对话情感分析，增加窗口自适应，新增emotion界面" />
     <MESSAGE value="烂了" />
     <MESSAGE value="窗口切换，使用stackedWidget" />
@@ -641,7 +625,8 @@
     <MESSAGE value="上传html模板" />
     <MESSAGE value="增加几个图标" />
     <MESSAGE value="增加导航按钮效果" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加导航按钮效果" />
+    <MESSAGE value="新增PC数据库解密" />
+    <option name="LAST_COMMIT_MESSAGE" value="新增PC数据库解密" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -650,7 +635,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/DataBase/output.py</url>
-          <line>412</line>
+          <line>413</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">

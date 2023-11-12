@@ -59,7 +59,7 @@ class ViewController:
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     view = ViewController()
-    view.loadPCDecryptView()
-    # view.loadDecryptView()  # 进入登录界面，如果view login不是成员变量，则离开作用域后失效。
+    # view.loadPCDecryptView()
+    view.loadDecryptView()  # 进入登录界面，如果view login不是成员变量，则离开作用域后失效。
     # view.loadMainWinView('102')
     sys.exit(app.exec_())
