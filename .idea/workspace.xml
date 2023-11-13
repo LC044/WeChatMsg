@@ -4,15 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="update readme">
-      <change afterPath="$PROJECT_DIR$/app/log/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/log/logger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/chat/chat.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/chat/chat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/contact/analysis/analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/analysis/analysis.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/contact/analysis/charts.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/analysis/charts.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/获取个人文件/使用说明.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/获取个人文件/使用说明.md" afterDir="false" />
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="增加日志模块">
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -226,13 +219,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00005" summary="update1">
-      <created>1674280781244</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1674280781244</updated>
     </task>
     <task id="LOCAL-00006" summary="导出word文档">
       <created>1674438226232</created>
@@ -570,7 +556,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699797862964</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="增加日志模块">
+      <created>1699883702805</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1699883702806</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -606,7 +599,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="烂了" />
     <MESSAGE value="窗口切换，使用stackedWidget" />
     <MESSAGE value="修复了Webengine横向小的问题" />
     <MESSAGE value="新增聊天报告" />
@@ -631,7 +623,8 @@
     <MESSAGE value="新增PC数据库解密" />
     <MESSAGE value="main首次加载解密界面" />
     <MESSAGE value="update readme" />
-    <option name="LAST_COMMIT_MESSAGE" value="update readme" />
+    <MESSAGE value="增加日志模块" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加日志模块" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -640,7 +633,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/DataBase/output.py</url>
-          <line>413</line>
+          <line>416</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
