@@ -1,7 +1,7 @@
 # 微信聊天记录可视化
 
 <div align="center">
-<img src="https://img.shields.io/badge/WeChat-聊天-blue.svg">
+<img src="https://img.shields.io/badge/WeChat-解密-blue.svg">
 <a href="https://github.com/LC044/WeChatMsg/stargazers">
     <img src="https://img.shields.io/github/stars/LC044/WeChatMsg.svg" />
 </a>
@@ -12,7 +12,7 @@
     <img src="https://img.shields.io/badge/文档-最新-brightgreen.svg" />
 </a>
 <a href="LICENSE">
-    <img src="https://img.shields.io/badge/GPL-3.0-blue.svg" />
+    <img src="https://img.shields.io/github/license/LC044/WeChatMsg" />
 </a>
 </div>
 
