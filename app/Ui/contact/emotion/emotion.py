@@ -3,6 +3,7 @@ import pandas as pd
 from pyecharts import options as opts
 from pyecharts.charts import Line
 
+from app.log import log
 from ....DataBase import data
 
 
@@ -18,6 +19,7 @@ def load_data(wxid):
 import snownlp
 
 
+@log
 def emotion_analysis(wxid):
     dates = []
     emotions = []
@@ -33,6 +35,7 @@ def emotion_analysis(wxid):
     return dates, emotions
 
 
+@log
 def plot_emotion(wxid):
     """
     画图

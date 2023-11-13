@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="main首次加载解密界面">
-      <change afterPath="$PROJECT_DIR$/doc/数据库介绍.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="update readme">
+      <change afterPath="$PROJECT_DIR$/app/log/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/log/logger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/chat/chat.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/chat/chat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/contact/analysis/analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/analysis/analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/contact/analysis/charts.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/analysis/charts.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/获取个人文件/使用说明.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/获取个人文件/使用说明.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +78,7 @@
       <recent name="D:\Project\PythonProject\WeChatMsg\app\Ui" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.decrypt_window">
+  <component name="RunManager" selected="Python.main">
     <configuration name="decrypt" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="WeChatMsg" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -201,11 +207,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.decrypt_window" />
         <item itemvalue="Python.decrypt" />
         <item itemvalue="Python.get_wx_info" />
         <item itemvalue="Python.micro_msg (1)" />
-        <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
   </component>
@@ -220,13 +226,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00004" summary="update1">
-      <created>1673413541210</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1673413541210</updated>
     </task>
     <task id="LOCAL-00005" summary="update1">
       <created>1674280781244</created>
@@ -564,7 +563,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699797493106</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="update readme">
+      <created>1699797862964</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1699797862964</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -614,7 +620,6 @@
     <MESSAGE value="修复部分bug" />
     <MESSAGE value="替换chat里的contact" />
     <MESSAGE value="增加中文路径提示" />
-    <MESSAGE value="update readme" />
     <MESSAGE value="用stackWidget重写contactUI" />
     <MESSAGE value="修改联系人视图架构" />
     <MESSAGE value="加快打开速度" />
@@ -625,7 +630,8 @@
     <MESSAGE value="增加导航按钮效果" />
     <MESSAGE value="新增PC数据库解密" />
     <MESSAGE value="main首次加载解密界面" />
-    <option name="LAST_COMMIT_MESSAGE" value="main首次加载解密界面" />
+    <MESSAGE value="update readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="update readme" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

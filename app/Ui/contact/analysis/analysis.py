@@ -18,8 +18,6 @@ class AnalysisController(QWidget):
 
         # self.setWindowFlag(Qt.FramelessWindowHint)
         self.setStyleSheet('''QWidget{background-color:rgb(255, 255, 255);}''')
-        # self.setBackground()
-        # self.resize(400, 300)
         self.center()
         self.setAttribute(Qt.WA_AttributeCount)
         self.label_01()

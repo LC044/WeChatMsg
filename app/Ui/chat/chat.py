@@ -8,6 +8,7 @@
 @comment : 聊天窗口
 """
 import time
+import traceback
 from typing import Dict
 
 import xmltodict
@@ -17,6 +18,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 from app.Ui.MyComponents.Button_Contact import ContactUi
+from app.log import logger, log
 from .chatUi import *
 from ...DataBase import data
 from ...ImageBox.ui import MainDemo
@@ -68,28 +70,6 @@ class ChatController(QWidget, Ui_Form):
         self.message.setOpenExternalLinks(False)
         # self.message.anchorClicked(self.hyperlink())
         self.message.anchorClicked.connect(self.hyperlink)
-        # self.btn_sendMsg = QtWidgets.QPushButton(self.textEdit)
-        # self.btn_sendMsg.setGeometry(QtCore.QRect(1, 1, 121, 51))
-        # font = QtGui.QFont()
-        # font.setFamily("黑体")
-        # font.setPointSize(15)
-        # font.setBold(False)
-        # font.setWeight(50)
-        # self.btn_sendMsg.setFont(font)
-        # self.btn_sendMsg.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-        # self.btn_sendMsg.setMouseTracking(False)
-        # self.btn_sendMsg.setAutoFillBackground(False)
-        # self.btn_sendMsg.setStyleSheet("QPushButton {background-color: #f0f0f0;\n"
-        #                                "padding: 10px;\n"
-        #                                "color:rgb(5,180,104);}\n"
-        #                                "QPushButton:hover{background-color: rgb(198,198,198)}\n"
-        #                                )
-        # self.btn_sendMsg.setIconSize(QtCore.QSize(40, 40))
-        # self.btn_sendMsg.setCheckable(False)
-        # self.btn_sendMsg.setAutoDefault(True)
-        # self.btn_sendMsg.setObjectName("btn_sendMsg")
-        # _translate = QtCore.QCoreApplication.translate
-        # self.btn_sendMsg.setText(_translate("Dialog", "发送"))
         self.btn_sendMsg_2.setToolTip('按Enter键发送，按Ctrl+Enter键换行')
 
     def showChat(self):
@@ -204,6 +184,7 @@ class ChatController(QWidget, Ui_Form):
             self.last_msg_time = msg_time
             self.message.insertHtml(html)
 
+    @log
     def showMsg(self, message):
         """
         显示聊天消息
@@ -236,6 +217,7 @@ class ChatController(QWidget, Ui_Form):
             self.pat_a_pat(content)
         # self.message.moveCursor(self.message.textCursor().End)
 
+    @log
     def pat_a_pat(self, content):
         try:
             pat_data = xmltodict.parse(content)
@@ -262,6 +244,7 @@ class ChatController(QWidget, Ui_Form):
         </table>''' % template
         self.message.insertHtml(html)
 
+    @log
     def show_recall_information(self, content):
         html = '''
                 <table align="center" style="vertical-align: middle;">
@@ -273,14 +256,15 @@ class ChatController(QWidget, Ui_Form):
             </table>''' % content
         self.message.insertHtml(html)
 
+    @log
     def show_emoji(self, isSend, imagePath, content):
         imgPath = data.get_emoji(imagePath)
-        print('emoji:', imgPath)
         if not imgPath:
             return False
         try:
             image = Image.open(imgPath)
         except Exception as e:
+            logger.error(f"\nshow_emoji is error,here are details:\n{traceback.format_exc()}")
             print(e)
             return
         imagePixmap = image.size  # 宽高像素
@@ -303,6 +287,7 @@ class ChatController(QWidget, Ui_Form):
                 self.chatroom_left(html, username=username, style=style)
             self.left(html, style=style)
 
+    @log
     def show_img(self, isSend, imgPath, content):
         'THUMBNAIL_DIRPATH://th_29cd0f0ca87652943be9ede365aabeaa'
         # imgPath = imgPath.split('th_')[1]
@@ -325,6 +310,7 @@ class ChatController(QWidget, Ui_Form):
             else:
                 self.left(html, style=style)
 
+    @log
     def show_text(self, isSend, content):
         if isSend:
             html = '''

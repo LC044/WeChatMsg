@@ -11,4 +11,5 @@ app/data/image2
 app/data/emoji
 *.db
 *.pyc
+*.log
 test*

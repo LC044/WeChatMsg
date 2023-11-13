@@ -14,6 +14,7 @@ from docxcompose.composer import Composer
 
 from app import person
 from app.DataBase import data
+from app.log import log
 
 
 # import data
@@ -64,6 +65,7 @@ class Output(QThread):
         self.output_type = type_
         self.total_num = 0
 
+    @log
     def merge_docx(self, conRemark, n):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{conRemark}"
         all_file_path = []
@@ -98,6 +100,7 @@ class Output(QThread):
             self.okSignal.emit(1)
         self.progressSignal.emit(self.i)
 
+    @log
     def to_csv(self, conRemark, path):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{conRemark}"
         messages = data.get_all_message(self.ta_username)

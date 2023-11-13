@@ -1,4 +1,5 @@
 import os
+import traceback
 
 import jieba
 import pandas as pd
@@ -6,6 +7,7 @@ import xmltodict
 from pyecharts import options as opts
 from pyecharts.charts import Pie, WordCloud, Calendar, Bar, Line, Timeline, Grid
 
+from app.log import logger, log
 from ....DataBase import data
 
 # from app.DataBase import data
@@ -38,6 +40,7 @@ wordcloud_width = 780
 wordcloud_height = 720
 
 
+@log
 def send_recv_rate(username):
     send_num = data.send_nums(username)
     recv_num = data.recv_nums(username)
@@ -67,6 +70,7 @@ def send_recv_rate(username):
     )
 
 
+@log
 def msg_type_rate(username):
     type_data = data.msg_type_num(username)
     type_data = sorted(type_data, key=lambda x: x[1], reverse=True)
@@ -100,6 +104,7 @@ def msg_type_rate(username):
     )
 
 
+@log
 def message_word_cloud(username):
     text = data.get_text(username)
     total_msg_len = len(text)
@@ -132,6 +137,7 @@ def message_word_cloud(username):
     )
 
 
+@log
 def calendar_chart(username):
     msg_data = data.get_msg_by_days(username, year='2022')
     if not msg_data:
@@ -162,6 +168,7 @@ def calendar_chart(username):
     )
 
 
+@log
 def month_num(username):
     """
     每月聊天条数
@@ -182,6 +189,7 @@ def month_num(username):
     )
 
 
+@log
 def chat_session(username):
     msg_data = data.get_msg_by_hour(username)
     x_axis = list(map(lambda x: x[0], msg_data))
@@ -219,6 +227,7 @@ def chat_session(username):
     )
 
 
+@log
 def sport(username):
     sports = data.get_sport()
     ranks = []
@@ -230,8 +239,8 @@ def sport(username):
             rank_data = xmltodict.parse(content)
             sub_data = rank_data['msg']['appmsg']['hardwareinfo']['messagenodeinfo']
             # print(sub_data)
-            my_rank = sub_data['rankinfo']['rank']['rankdisplay']
-            my_steps = int(sub_data['rankinfo']['score']['scoredisplay'])
+            # my_rank = sub_data['rankinfo']['rank']['rankdisplay']
+            # my_steps = int(sub_data['rankinfo']['score']['scoredisplay'])
             # print(f'rank: {my_rank},steps: {my_steps}')
             rank_view = rank_data['msg']['appmsg']['hardwareinfo']['rankview']['rankinfolist']['rankinfo']
             for userinfo in rank_view:
@@ -243,6 +252,7 @@ def sport(username):
                     steps.append(steps_ta)
                     date.append(t)
         except:
+            logger.error(f"\nsport is error,here are details:\n{traceback.format_exc()}\n")
             continue
     try:
         # todo 可能没有运动信息
@@ -349,6 +359,7 @@ def sport(username):
     }
 
 
+@log
 def chat_start_endTime(username):
     start_time = data.get_msg_start_time(username)
     end_time = data.get_msg_end_time(username)
@@ -431,11 +442,11 @@ setInterval(getRTime, 1000);
 </body>
 </html>
     ''' % (year, month + '-' + day, hour, minute, second, start_time)
-    print(year, month, day, hour, minute, second)
     with open('./data/聊天统计/time.html', 'w', encoding='utf-8') as f:
         f.write(html)
 
 
+@log
 def title(username):
     conRemark = data.get_conRemark(username)
     avatar = data.get_avator(username)
@@ -519,7 +530,6 @@ font-size: 18px;
 </body>
 </html>
     ''' % (avatar, conRemark)
-    print('头像地址', avatar)
     with open('./data/聊天统计/title.html', 'w', encoding='utf-8') as f:
         f.write(html)
 
