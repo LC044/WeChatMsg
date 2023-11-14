@@ -23,22 +23,29 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         self.btn_getinfo.clicked.connect(self.get_info)
         self.btn_db_dir.clicked.connect(self.select_db_dir)
         self.info = {}
+        self.lineEdit.setFocus()
         self.ready = False
         self.wx_dir = None
 
+    # @log
     def get_info(self):
         try:
             result = get_wx_info.get_info()
+            if result == -1:
+                QMessageBox.critical(self, "错误", "请登录微信")
+            elif result == -2:
+                QMessageBox.critical(self, "错误", "微信版本不匹配\n请更新微信版本为:3.9.8.15")
             # print(result)
-            if result:
+            else:
                 self.ready = True
                 self.info = result[0]
                 self.label_key.setText(self.info['key'])
-                self.label_wxid.setText(self.info['wxid'])
+                self.lineEdit.setText(self.info['wxid'])
                 self.label_name.setText(self.info['name'])
                 self.label_phone.setText(self.info['mobile'])
                 self.label_pid.setText(str(self.info['pid']))
                 self.label_version.setText(self.info['version'])
+                self.lineEdit.setFocus()
                 if self.wx_dir and os.path.exists(os.path.join(self.wx_dir, self.info['wxid'])):
                     self.label_ready.setText('已就绪')
         except Exception as e:
@@ -59,14 +66,16 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         if not self.ready:
             QMessageBox.critical(self, "错误", "请先获取密钥")
             return
-
+        if not self.wx_dir:
+            QMessageBox.critical(self, "错误", "请先选择微信安装路径")
+            return
+        if self.lineEdit.text() == 'None':
+            QMessageBox.critical(self, "错误", "请填入wxid")
+            return
         if self.ready:
             if not os.path.exists(os.path.join(self.wx_dir, self.info['wxid'])):
                 QMessageBox.critical(self, "错误", "文件夹选择错误\n一般以WeChat Files结尾")
                 return
-        # self.thread1 = MyThread()
-        # self.thread1.signal.connect(self.progressBar_view)
-        # self.thread1.start()
         db_dir = os.path.join(self.wx_dir, self.info['wxid'], 'Msg')
         self.thread2 = DecryptThread(db_dir, self.info['key'])
         self.thread2.maxNumSignal.connect(self.setProgressBarMaxNum)

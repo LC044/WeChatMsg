@@ -12,6 +12,8 @@ import json
 import psutil
 from win32com.client import Dispatch
 
+from app.log import log
+
 ReadProcessMemory = ctypes.windll.kernel32.ReadProcessMemory
 void_p = ctypes.c_void_p
 
@@ -30,7 +32,7 @@ def get_info_wxid(h_process, address, n_size=32, address_len=8):
     if ReadProcessMemory(h_process, void_p(address), array, address_len, 0) == 0: return "None"
     address = int.from_bytes(array, byteorder='little')  # 逆序转换为int地址（key地址）
     wxid = get_info_without_key(h_process, address, n_size)
-    if not wxid.startswith("wxid_"): wxid = "None"
+    # if not wxid.startswith("wxid_"): wxid = "None"
     return wxid
 
 
@@ -46,6 +48,7 @@ def get_key(h_process, address, address_len=8):
 
 
 # 读取微信信息(account,mobile,name,mail,wxid,key)
+@log
 def read_info(version_list):
     wechat_process = []
     result = []
@@ -55,7 +58,7 @@ def read_info(version_list):
             wechat_process.append(process)
 
     if len(wechat_process) == 0:
-        return "[-] WeChat No Run"
+        return -1
 
     for process in wechat_process:
         tmp_rd = {}
@@ -65,7 +68,7 @@ def read_info(version_list):
 
         bias_list = version_list.get(tmp_rd['version'], None)
         if not isinstance(bias_list, list):
-            return f"[-] WeChat Current Version {tmp_rd['version']} Is Not Supported"
+            return -2
 
         wechat_base_address = 0
         for module in process.memory_maps(grouped=False):
@@ -97,6 +100,7 @@ def read_info(version_list):
     return result
 
 
+@log
 def get_info():
     VERSION_LIST_PATH = "app/decrypt/version_list.json"
 

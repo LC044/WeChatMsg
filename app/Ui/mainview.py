@@ -7,7 +7,6 @@
 @Version : Python3.10
 @comment : 主窗口
 """
-
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -69,6 +68,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         # 创建右键菜单函数
 
     def init_ui(self):
+        # self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.menubar.setStyleSheet("background-color: rgb(240, 240, 240);")
 
     def create_rightmenu(self):
