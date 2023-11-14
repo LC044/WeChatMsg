@@ -85,6 +85,7 @@ class Output(QThread):
             if num != 0:
                 middle_new_docx.append(word_document)
             num = num + 1
+            os.remove(word)
         middle_new_docx.save(origin_docx_path + '/' + filename)
 
     def progress(self, value):

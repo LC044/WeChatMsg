@@ -76,7 +76,7 @@
       <recent name="D:\Project\PythonProject\WeChatMsg\app\Ui" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.decrypt_window">
+  <component name="RunManager" selected="Python.main">
     <configuration name="decrypt" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="WeChatMsg" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -205,8 +205,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.decrypt_window" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.decrypt_window" />
         <item itemvalue="Python.decrypt" />
         <item itemvalue="Python.get_wx_info" />
         <item itemvalue="Python.micro_msg (1)" />
