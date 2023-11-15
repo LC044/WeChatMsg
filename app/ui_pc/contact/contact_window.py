@@ -1,8 +1,10 @@
+from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import QWidget, QMessageBox
 
 from app.DataBase import micro_msg, misc
 from app.components import ContactQListWidgetItem
 from app.person import ContactPC
+from .contactInfo import ContactInfo
 from .contactUi import Ui_Form
 
 # 美化样式表
@@ -45,6 +47,7 @@ HistoryPanel::item:hover {
 class ContactWindow(QWidget, Ui_Form):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.show_thread = None
         self.setupUi(self)
         self.setStyleSheet(Stylesheet)
         self.init_ui()
@@ -60,6 +63,30 @@ class ContactWindow(QWidget, Ui_Form):
         if not micro_msg.is_database_exist():
             QMessageBox.critical(self, "错误", "数据库不存在\n请先解密数据库")
             return
+        self.show_thread = ShowContactThread()
+        self.show_thread.showSingal.connect(self.show_contact)
+        self.show_thread.start()
+
+    def show_contact(self, contact):
+        contact_item = ContactQListWidgetItem(contact.nickName, contact.smallHeadImgUrl, contact.smallHeadImgBLOG)
+        self.listWidget.addItem(contact_item)
+        self.listWidget.setItemWidget(contact_item, contact_item.widget)
+        contact_info_window = ContactInfo(contact)
+        self.stackedWidget.addWidget(contact_info_window)
+
+    def setCurrentIndex(self, row):
+        print(row)
+        self.stackedWidget.setCurrentIndex(row)
+
+
+class ShowContactThread(QThread):
+    showSingal = pyqtSignal(ContactPC)
+
+    # heightSingal = pyqtSignal(int)
+    def __init__(self):
+        super().__init__()
+
+    def run(self) -> None:
         contact_info_lists = micro_msg.get_contact()
         for contact_info_list in contact_info_lists:
             # UserName, Alias,Type,Remark,NickName,PYInitial,RemarkPYInitial,ContactHeadImgUrl.smallHeadImgUrl,ContactHeadImgUrl,bigHeadImgUrl
@@ -73,11 +100,6 @@ class ContactWindow(QWidget, Ui_Form):
             }
             contact = ContactPC(contact_info)
             contact.smallHeadImgBLOG = misc.get_avatar_buffer(contact.wxid)
+            contact.set_avatar(contact.smallHeadImgBLOG)
+            self.showSingal.emit(contact)
             # pprint(contact.__dict__)
-            contact_item = ContactQListWidgetItem(contact.nickName, contact.smallHeadImgUrl, contact.smallHeadImgBLOG)
-            self.listWidget.addItem(contact_item)
-            self.listWidget.setItemWidget(contact_item, contact_item.widget)
-
-    def setCurrentIndex(self, row):
-        print(row)
-        self.stackedWidget.setCurrentIndex(row)

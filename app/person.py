@@ -1,9 +1,11 @@
 import os.path
 from typing import Dict
 
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 
 from app.DataBase import data
+from app.ui_pc.Icon import Icon
 
 
 # from app.Ui.Icon import Icon
@@ -46,6 +48,17 @@ class ContactPC:
         self.nickName = contact_info.get('NickName')
         self.smallHeadImgUrl = contact_info.get('smallHeadImgUrl')
         self.smallHeadImgBLOG = b''
+        self.avatar = QPixmap()
+
+    def set_avatar(self, img_bytes):
+        if not img_bytes:
+            self.avatar.load(Icon.Default_avatar_path)
+            return
+        if img_bytes[:4] == b'\x89PNG':
+            self.avatar.loadFromData(img_bytes, format='PNG')
+        else:
+            self.avatar.loadFromData(img_bytes, format='jfif')
+        self.avatar.scaled(60, 60, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
 
 
 class Group(Person):
