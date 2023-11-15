@@ -51,7 +51,11 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
     def get_db(self):
         self.db_path, _ = QFileDialog.getOpenFileName(self, 'Open file', r'..', "Database files (*.db)")
         if self.db_path:
-            if self.db_path.isascii():
+            if ' ' in self.db_path:
+                self.label_db.setText('数据库未就绪')
+                QMessageBox.critical(self, "错误", "db文件路径请不要带有空格\n可以放在D:\\\\data 目录下")
+                self.db_path = ''
+            elif self.db_path.isascii():
                 self.label_db.setText('数据库已就绪')
                 return self.db_path
             else:

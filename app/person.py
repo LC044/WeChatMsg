@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 
 from app.DataBase import data
-from app.ui_pc.Icon import Icon
+from app.Ui.Icon import Icon
 
 
 # from app.Ui.Icon import Icon

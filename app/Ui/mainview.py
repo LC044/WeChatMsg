@@ -12,11 +12,13 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 from app import config
+from app.DataBase import data
 from app.Ui import mainwindow
 from app.Ui.Icon import Icon
 from app.Ui.chat import chat
 from app.Ui.contact import contact
 from app.components.prompt_bar import PromptBar
+from app.person import Me
 
 
 class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
@@ -29,7 +31,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.setWindowIcon(Icon.MainWindow_Icon)
 
         self.setAttribute(Qt.WA_AttributeCount)
-
+        self.Me = Me(data.get_myinfo())
         self.chatView = chat.ChatController(self.Me, parent=None)
         self.lay = QHBoxLayout()
         self.page_chat.setLayout(self.lay)
