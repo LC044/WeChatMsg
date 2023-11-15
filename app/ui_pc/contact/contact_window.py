@@ -49,6 +49,7 @@ class ContactWindow(QWidget, Ui_Form):
         super().__init__(parent)
         self.show_thread = None
         self.setupUi(self)
+        self.ok_flag = False
         self.setStyleSheet(Stylesheet)
         self.init_ui()
         self.show_contacts()
@@ -60,12 +61,16 @@ class ContactWindow(QWidget, Ui_Form):
         self.stackedWidget.setCurrentIndex(0)
 
     def show_contacts(self):
+        if self.ok_flag:
+            return
+        micro_msg.init_database()
         if not micro_msg.is_database_exist():
             QMessageBox.critical(self, "错误", "数据库不存在\n请先解密数据库")
             return
         self.show_thread = ShowContactThread()
         self.show_thread.showSingal.connect(self.show_contact)
         self.show_thread.start()
+        self.ok_flag = True
 
     def show_contact(self, contact):
         contact_item = ContactQListWidgetItem(contact.nickName, contact.smallHeadImgUrl, contact.smallHeadImgBLOG)

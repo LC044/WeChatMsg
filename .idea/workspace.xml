@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="修复db文件空格路径的bug">
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="修复情感分析数值显示过长的bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/mainview.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/mainview.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +103,7 @@
       <recent name="D:\Project\PythonProject\WeChatMsg\app\Ui" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.decrypt_window">
     <configuration name="CAvatar" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="WeChatMsg" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -230,8 +232,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.decrypt_window" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.misc" />
         <item itemvalue="Python.CAvatar" />
         <item itemvalue="Python.contact_info_ui" />
@@ -249,13 +251,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00015" summary="烂了">
-      <created>1680624068689</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1680624068689</updated>
     </task>
     <task id="LOCAL-00016" summary="窗口切换，使用stackedWidget">
       <created>1680630659802</created>
@@ -593,7 +588,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700063620952</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="修复情感分析数值显示过长的bug">
+      <created>1700064404522</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1700064404522</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -629,7 +631,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="重构一些class，删除一些不必要的文件" />
     <MESSAGE value="用stackedWidget实现导航栏" />
     <MESSAGE value="修复部分bug" />
     <MESSAGE value="替换chat里的contact" />
@@ -654,7 +655,8 @@
     <MESSAGE value="头像支持显示二进制" />
     <MESSAGE value="显示联系人信息" />
     <MESSAGE value="修复db文件空格路径的bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复db文件空格路径的bug" />
+    <MESSAGE value="修复情感分析数值显示过长的bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复情感分析数值显示过长的bug" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

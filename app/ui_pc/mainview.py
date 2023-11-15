@@ -85,8 +85,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         label.setStyleSheet('background: rgb(%d, %d, %d);margin: 50px;' % (
             randint(0, 255), randint(0, 255), randint(0, 255)))
         self.stackedWidget.addWidget(label)
-        contact_window = ContactWindow()
-        self.stackedWidget.addWidget(contact_window)
+        self.contact_window = ContactWindow()
+        self.stackedWidget.addWidget(self.contact_window)
         label = QLabel('我是页面', self)
         label.setAlignment(Qt.AlignCenter)
         # 设置label的背景颜色(这里随机)
@@ -99,7 +99,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.stackedWidget.setCurrentIndex(3)
 
     def setCurrentIndex(self, row):
-        print(row)
+        if row == 1:
+            self.contact_window.show_contacts()
         self.stackedWidget.setCurrentIndex(row)
 
     def about(self):

@@ -10,6 +10,16 @@ if os.path.exists(micromsg_path):
     cursor = DB.cursor()
 
 
+def init_database():
+    global DB
+    global cursor
+    if not DB:
+        if os.path.exists(micromsg_path):
+            DB = sqlite3.connect(micromsg_path, check_same_thread=False)
+            # '''创建游标'''
+            cursor = DB.cursor()
+
+
 def is_database_exist():
     return os.path.exists(micromsg_path)
 
