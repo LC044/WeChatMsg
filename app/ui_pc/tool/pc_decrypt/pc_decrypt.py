@@ -88,7 +88,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         # 中间可以添加处理逻辑
         # QMessageBox.about(self, "解密成功", "数据库文件存储在app/DataBase/Msg文件夹下")
         self.DecryptSignal.emit('ok')
-        self.close()
+        # self.close()
 
     def setProgressBarMaxNum(self, max_val):
         self.progressBar.setRange(0, max_val)

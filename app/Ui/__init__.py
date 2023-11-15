@@ -13,6 +13,5 @@ from app.Ui import mainview
 # 文件__init__.py
 # from login import login
 from app.Ui.decrypt import decrypt
-from app.Ui.pc_decrypt import pc_decrypt
 
-__all__ = ["decrypt", 'mainview', 'chat', 'pc_decrypt']
+__all__ = ["decrypt", 'mainview', 'chat']

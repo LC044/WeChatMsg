@@ -13,7 +13,7 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
-import app.Ui.MyComponents.Button_Contact as MyLabel
+import app.components.Button_Contact as MyLabel
 from app import person
 from app.DataBase import data
 from app.Ui.contact.contactInfo import ContactInfo

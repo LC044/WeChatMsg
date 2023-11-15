@@ -4,10 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="删除多余的Word文件">
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="修复无法查找wxid的bug">
+      <change afterPath="$PROJECT_DIR$/app/ui_pc/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/ui_pc/tool/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/ui_pc/tool/toolUI.ui" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/ui_pc/tool/tool_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/decrypt/get_wx_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/decrypt/get_wx_info.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/log/logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/log/logger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/MyComponents/Button_Contact.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/Button_Contact.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/MyComponents/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/MyComponents/prompt_bar.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/prompt_bar.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/chat/chat.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/chat/chat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/contact/contact.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/contact.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/mainview.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/mainview.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/pc_decrypt/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/pc_decrypt/decryptUi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/pc_decrypt/decryptUi.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Ui/pc_decrypt/pc_decrypt.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/decrypt_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/decrypt_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +43,11 @@
   </component>
   <component name="Git.Settings">
     <option name="PUSH_AUTO_UPDATE" value="true" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="SWAP_SIDES_IN_COMPARE_BRANCHES" value="true" />
   </component>
@@ -38,6 +58,29 @@
 }</component>
   <component name="GitToolBoxStore">
     <option name="projectConfigVersion" value="5" />
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="dev_zsk" />
+                    <option name="lastUsedInstant" value="1700046130" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="master" />
+                    <option name="lastUsedInstant" value="1700046129" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
   </component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
@@ -70,6 +113,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Project\Python\WeChatMsg\app\ui_pc\tool" />
+      <recent name="D:\Project\Python\WeChatMsg\app\" />
       <recent name="D:\Project\PythonProject\WeChatMsg\app\Ui" />
     </key>
   </component>
@@ -221,13 +266,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00009" summary="聊天统计">
-      <created>1675168912759</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1675168912759</updated>
     </task>
     <task id="LOCAL-00010" summary="聊天统计">
       <created>1675169020409</created>
@@ -565,7 +603,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699973865386</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="修复无法查找wxid的bug">
+      <created>1700046106844</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1700046106844</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -601,7 +646,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="新增聊天报告" />
     <MESSAGE value="readme" />
     <MESSAGE value="mainwindows文件修正" />
     <MESSAGE value="match语法说明" />
@@ -626,7 +670,8 @@
     <MESSAGE value="update readme" />
     <MESSAGE value="增加PC端微信解密条件的判断" />
     <MESSAGE value="删除多余的Word文件" />
-    <option name="LAST_COMMIT_MESSAGE" value="删除多余的Word文件" />
+    <MESSAGE value="修复无法查找wxid的bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复无法查找wxid的bug" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

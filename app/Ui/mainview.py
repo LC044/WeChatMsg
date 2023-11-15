@@ -11,13 +11,12 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from app import person, config
-from app.DataBase import *
+from app import config
 from app.Ui import mainwindow
 from app.Ui.Icon import Icon
-from app.Ui.MyComponents.prompt_bar import PromptBar
 from app.Ui.chat import chat
 from app.Ui.contact import contact
+from app.components.prompt_bar import PromptBar
 
 
 class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
@@ -28,7 +27,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         super(MainWinController, self).__init__(parent)
         self.setupUi(self)
         self.setWindowIcon(Icon.MainWindow_Icon)
-        self.Me = person.Me(data.get_myinfo())
+
         self.setAttribute(Qt.WA_AttributeCount)
 
         self.chatView = chat.ChatController(self.Me, parent=None)
@@ -60,12 +59,6 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.statusbar.setVisible(False)
         self.prompt_bar = PromptBar(self)
         self.chat_view()
-        # self.state_lable = QLabel(self)
-        # self.state_lable.raise_()
-        # pixmap = QPixmap('./app/data/icons/default_avatar.svg').scaled(32, 32)  # 按指定路径找到图片
-        # self.state_lable.setPixmap(pixmap)
-        # self.state_lable.setText("T")
-        # 创建右键菜单函数
 
     def init_ui(self):
         # self.setWindowFlags(QtCore.Qt.FramelessWindowHint)

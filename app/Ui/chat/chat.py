@@ -17,7 +17,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from app.Ui.MyComponents.Button_Contact import ContactUi
+from app.components.Button_Contact import ContactUi
 from app.log import logger, log
 from .chatUi import *
 from ...DataBase import data
