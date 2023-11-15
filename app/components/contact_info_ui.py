@@ -9,7 +9,7 @@ from .CAvatar import CAvatar
 
 # 自定义的item 继承自QListWidgetItem
 class ContactQListWidgetItem(QListWidgetItem):
-    def __init__(self, name, url):
+    def __init__(self, name, url, img_bytes=None):
         super().__init__()
         # 自定义item中的widget 用来显示自定义的内容
         self.widget = QWidget()
@@ -18,7 +18,7 @@ class ContactQListWidgetItem(QListWidgetItem):
         self.nameLabel.setText(name)
         # 用来显示avator(图像)
         self.avatorLabel = CAvatar(None, shape=CAvatar.Rectangle, size=QSize(60, 60),
-                                   url=url)
+                                   url=url, img_bytes=img_bytes)
         # 设置布局用来对nameLabel和avatorLabel进行布局
         self.hbox = QHBoxLayout()
         self.hbox.addWidget(self.avatorLabel)

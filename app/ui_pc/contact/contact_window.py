@@ -1,13 +1,9 @@
-from random import randint
+from PyQt5.QtWidgets import QWidget, QMessageBox
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QListWidgetItem, QLabel, QMessageBox
-
-from app.DataBase import micro_msg
+from app.DataBase import micro_msg, misc
 from app.components import ContactQListWidgetItem
 from app.person import ContactPC
 from .contactUi import Ui_Form
-from ...Ui.Icon import Icon
 
 # 美化样式表
 Stylesheet = """
@@ -57,19 +53,6 @@ class ContactWindow(QWidget, Ui_Form):
     def init_ui(self):
         self.listWidget.clear()
         self.listWidget.currentRowChanged.connect(self.setCurrentIndex)
-        chat_item = QListWidgetItem(Icon.Chat_Icon, '解密', self.listWidget)
-        contact_item = QListWidgetItem(Icon.Contact_Icon, 'None', self.listWidget)
-        myinfo_item = QListWidgetItem(Icon.MyInfo_Icon, 'None', self.listWidget)
-        tool_item = QListWidgetItem(Icon.MyInfo_Icon, 'None', self.listWidget)
-        label = QLabel('我是页面', self)
-        label.setAlignment(Qt.AlignCenter)
-        # 设置label的背景颜色(这里随机)
-        # 这里加了一个margin边距(方便区分QStackedWidget和QLabel的颜色)
-        label.setStyleSheet('background: rgb(%d, %d, %d);margin: 50px;' % (
-            randint(0, 255), randint(0, 255), randint(0, 255)))
-        self.stackedWidget.addWidget(label)
-        self.stackedWidget.addWidget(label)
-        self.stackedWidget.addWidget(label)
         self.listWidget.setCurrentRow(0)
         self.stackedWidget.setCurrentIndex(0)
 
@@ -89,8 +72,9 @@ class ContactWindow(QWidget, Ui_Form):
                 'smallHeadImgUrl': contact_info_list[7]
             }
             contact = ContactPC(contact_info)
+            contact.smallHeadImgBLOG = misc.get_avatar_buffer(contact.wxid)
             # pprint(contact.__dict__)
-            contact_item = ContactQListWidgetItem(contact.nickName, contact.smallHeadImgUrl)
+            contact_item = ContactQListWidgetItem(contact.nickName, contact.smallHeadImgUrl, contact.smallHeadImgBLOG)
             self.listWidget.addItem(contact_item)
             self.listWidget.setItemWidget(contact_item, contact_item.widget)
 

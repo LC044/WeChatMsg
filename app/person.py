@@ -45,6 +45,7 @@ class ContactPC:
         self.alias = contact_info.get('Alias')
         self.nickName = contact_info.get('NickName')
         self.smallHeadImgUrl = contact_info.get('smallHeadImgUrl')
+        self.smallHeadImgBLOG = b''
 
 
 class Group(Person):

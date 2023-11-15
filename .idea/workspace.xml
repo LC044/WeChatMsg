@@ -4,17 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="修改UI">
-      <change afterPath="$PROJECT_DIR$/app/components/CAvatar.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/components/contact_info_ui.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/ui_pc/contact/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" afterDir="false" />
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="新增联系人头像组件">
+      <change afterPath="$PROJECT_DIR$/app/DataBase/misc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DataBase/micro_msg.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/micro_msg.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/components/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/CAvatar.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/CAvatar.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/contact_info_ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/contact_info_ui.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/person.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/person.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/contact/form.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/mainview.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/mainview.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,7 +170,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="misc" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="WeChatMsg" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -182,14 +178,14 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/DataBase" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/DataBase/misc.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
       <option name="INPUT_FILE" value="" />
@@ -240,10 +236,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.decrypt_window" />
+        <item itemvalue="Python.misc" />
+        <item itemvalue="Python.CAvatar" />
         <item itemvalue="Python.contact_info_ui" />
         <item itemvalue="Python.test_avatar" />
-        <item itemvalue="Python.CAvatar" />
-        <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
   </component>
@@ -258,13 +254,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00011" summary="优化加载页面">
-      <created>1675268807882</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1675268807882</updated>
     </task>
     <task id="LOCAL-00012" summary="优化加载页面">
       <created>1678034382207</created>
@@ -602,7 +591,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700052873083</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="新增联系人头像组件">
+      <created>1700056651470</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1700056651470</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -638,7 +634,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="mainwindows文件修正" />
     <MESSAGE value="match语法说明" />
     <MESSAGE value="增加群二维码" />
     <MESSAGE value="支持导出csv格式聊天记录" />
@@ -663,7 +658,8 @@
     <MESSAGE value="删除多余的Word文件" />
     <MESSAGE value="修复无法查找wxid的bug" />
     <MESSAGE value="修改UI" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改UI" />
+    <MESSAGE value="新增联系人头像组件" />
+    <option name="LAST_COMMIT_MESSAGE" value="新增联系人头像组件" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
