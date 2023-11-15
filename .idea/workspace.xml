@@ -4,25 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="修复无法查找wxid的bug">
-      <change afterPath="$PROJECT_DIR$/app/ui_pc/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/ui_pc/tool/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/ui_pc/tool/toolUI.ui" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/ui_pc/tool/tool_window.py" afterDir="false" />
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="修改UI">
+      <change afterPath="$PROJECT_DIR$/app/components/CAvatar.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/components/contact_info_ui.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/ui_pc/contact/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/MyComponents/Button_Contact.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/Button_Contact.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/MyComponents/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/MyComponents/prompt_bar.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/prompt_bar.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/chat/chat.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/chat/chat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/contact/contact.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/contact/contact.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/mainview.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/Ui/mainview.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/pc_decrypt/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/pc_decrypt/decryptUi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/pc_decrypt/decryptUi.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Ui/pc_decrypt/pc_decrypt.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/decrypt_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/decrypt_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/micro_msg.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/micro_msg.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/person.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/person.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/contact/form.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/mainview.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/mainview.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +111,7 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.decrypt_window">
-    <configuration name="decrypt" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="CAvatar" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="WeChatMsg" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -127,11 +119,32 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/decrypt" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/components" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/decrypt/decrypt.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/components/CAvatar.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="contact_info_ui" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="WeChatMsg" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/components" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/components/contact_info_ui.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -161,27 +174,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="get_wx_info" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="WeChatMsg" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/decrypt" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/decrypt/get_wx_info.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="WeChatMsg" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -198,27 +190,6 @@
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="true" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="micro_msg (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="WeChatMsg" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/DataBase" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/DataBase/micro_msg.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
       <option name="INPUT_FILE" value="" />
@@ -245,13 +216,34 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="test_avatar" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="WeChatMsg" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/components" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/components/test_avatar.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.decrypt_window" />
+        <item itemvalue="Python.contact_info_ui" />
+        <item itemvalue="Python.test_avatar" />
+        <item itemvalue="Python.CAvatar" />
         <item itemvalue="Python.main" />
-        <item itemvalue="Python.decrypt" />
-        <item itemvalue="Python.get_wx_info" />
-        <item itemvalue="Python.micro_msg (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -266,13 +258,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00010" summary="聊天统计">
-      <created>1675169020409</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1675169020409</updated>
     </task>
     <task id="LOCAL-00011" summary="优化加载页面">
       <created>1675268807882</created>
@@ -610,7 +595,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700046106844</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="修改UI">
+      <created>1700052873083</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1700052873083</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -646,7 +638,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="readme" />
     <MESSAGE value="mainwindows文件修正" />
     <MESSAGE value="match语法说明" />
     <MESSAGE value="增加群二维码" />
@@ -671,7 +662,8 @@
     <MESSAGE value="增加PC端微信解密条件的判断" />
     <MESSAGE value="删除多余的Word文件" />
     <MESSAGE value="修复无法查找wxid的bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复无法查找wxid的bug" />
+    <MESSAGE value="修改UI" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改UI" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

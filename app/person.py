@@ -1,4 +1,5 @@
 import os.path
+from typing import Dict
 
 from PyQt5.QtGui import QPixmap
 
@@ -32,6 +33,18 @@ class Me(Person):
 class Contact(Person):
     def __init__(self, wxid: str):
         super(Contact, self).__init__(wxid)
+        self.smallHeadImgUrl = ''
+        self.bigHeadImgUrl = ''
+
+
+class ContactPC:
+    def __init__(self, contact_info: Dict):
+        self.wxid = contact_info.get('UserName')
+        self.remark = contact_info.get('Remark')
+        # Alias,Type,Remark,NickName,PYInitial,RemarkPYInitial,ContactHeadImgUrl.smallHeadImgUrl,ContactHeadImgUrl,bigHeadImgUrl
+        self.alias = contact_info.get('Alias')
+        self.nickName = contact_info.get('NickName')
+        self.smallHeadImgUrl = contact_info.get('smallHeadImgUrl')
 
 
 class Group(Person):

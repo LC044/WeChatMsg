@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import *
 from app import config
 from app.Ui.Icon import Icon
 from . import mainwindow
+from .contact import ContactWindow
 from .tool import ToolWindow
 
 # 美化样式表
@@ -75,6 +76,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         contact_item = QListWidgetItem(Icon.Contact_Icon, '好友', self.listWidget)
         myinfo_item = QListWidgetItem(Icon.MyInfo_Icon, '我的', self.listWidget)
         tool_item = QListWidgetItem(Icon.MyInfo_Icon, '工具', self.listWidget)
+
         tool_window = ToolWindow()
         label = QLabel('我是页面', self)
         label.setAlignment(Qt.AlignCenter)
@@ -82,15 +84,9 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         # 这里加了一个margin边距(方便区分QStackedWidget和QLabel的颜色)
         label.setStyleSheet('background: rgb(%d, %d, %d);margin: 50px;' % (
             randint(0, 255), randint(0, 255), randint(0, 255)))
-
         self.stackedWidget.addWidget(label)
-        label = QLabel('我是页面', self)
-        label.setAlignment(Qt.AlignCenter)
-        # 设置label的背景颜色(这里随机)
-        # 这里加了一个margin边距(方便区分QStackedWidget和QLabel的颜色)
-        label.setStyleSheet('background: rgb(%d, %d, %d);margin: 50px;' % (
-            randint(0, 255), randint(0, 255), randint(0, 255)))
-        self.stackedWidget.addWidget(label)
+        contact_window = ContactWindow()
+        self.stackedWidget.addWidget(contact_window)
         label = QLabel('我是页面', self)
         label.setAlignment(Qt.AlignCenter)
         # 设置label的背景颜色(这里随机)

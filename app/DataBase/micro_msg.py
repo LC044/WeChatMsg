@@ -1,9 +1,17 @@
+import os.path
 import sqlite3
-from pprint import pprint
 
-DB = sqlite3.connect("./de_MicroMsg.db", check_same_thread=False)
-# '''创建游标'''
-cursor = DB.cursor()
+DB = None
+cursor = None
+micromsg_path = "./app/Database/Msg/MicroMsg.db"
+if os.path.exists(micromsg_path):
+    DB = sqlite3.connect(micromsg_path, check_same_thread=False)
+    # '''创建游标'''
+    cursor = DB.cursor()
+
+
+def is_database_exist():
+    return os.path.exists(micromsg_path)
 
 
 def get_contact():
@@ -14,8 +22,8 @@ def get_contact():
           '''
     cursor.execute(sql)
     result = cursor.fetchall()
-    pprint(result)
-    print(len(result))
+    # pprint(result)
+    # print(len(result))
     return result
 
 
