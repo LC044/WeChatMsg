@@ -32,6 +32,7 @@ def emotion_analysis(wxid):
         emotions.append(s / len(messages))
     emotions = np.array(emotions)
     emotions = np.around(emotions, 3) * 100
+    emotions = np.around(emotions, 1)
     return dates, emotions
 
 
