@@ -16,3 +16,4 @@ class Icon:
     Annual_Report_Icon = QIcon('./app/data/icons/annual_report.svg')
     Analysis_Icon = QIcon('./app/data/icons/analysis.svg')
     Emotion_Icon = QIcon('./app/data/icons/emotion.svg')
+    Search_Icon = QIcon('./app/data/icons/search.svg')

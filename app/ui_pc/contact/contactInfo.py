@@ -2,7 +2,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
 from app import person
-from app.DataBase.output import Output
+from app.DataBase.output_pc import Output
 from app.Ui.Icon import Icon
 from .contactInfoUi import Ui_Form
 from .userinfo import userinfo
@@ -105,13 +105,13 @@ class ContactInfo(QWidget, Ui_Form):
             return
             self.outputThread = Output(self.Me, self.contact.wxid)
         elif self.sender() == self.toCSVAct:
-            QMessageBox.warning(self,
-                                "别急别急",
-                                "马上就实现该功能"
-                                )
-            print('开始导出csv')
-            return
-            self.outputThread = Output(self.Me, self.contact.wxid, type_=Output.CSV)
+            # QMessageBox.warning(self,
+            #                     "别急别急",
+            #                     "马上就实现该功能"
+            #                     )
+            # print('开始导出csv')
+            # return
+            self.outputThread = Output(self.contact, type_=Output.CSV)
             print('导出csv')
         elif self.sender() == self.toHtmlAct:
             print('功能暂未实现')

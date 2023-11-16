@@ -1,11 +1,12 @@
 from PyQt5.QtCore import QThread, pyqtSignal
-from PyQt5.QtWidgets import QWidget, QMessageBox
+from PyQt5.QtWidgets import QWidget, QMessageBox, QAction, QLineEdit
 
 from app.DataBase import micro_msg, misc
 from app.components import ContactQListWidgetItem
 from app.person import ContactPC
 from .contactInfo import ContactInfo
 from .contactUi import Ui_Form
+from ..Icon import Icon
 
 # 美化样式表
 Stylesheet = """
@@ -55,6 +56,9 @@ class ContactWindow(QWidget, Ui_Form):
         self.show_contacts()
 
     def init_ui(self):
+        search_action = QAction(self.lineEdit)
+        search_action.setIcon(Icon.Search_Icon)
+        self.lineEdit.addAction(search_action, QLineEdit.LeadingPosition)
         self.listWidget.clear()
         self.listWidget.currentRowChanged.connect(self.setCurrentIndex)
         self.listWidget.setCurrentRow(0)

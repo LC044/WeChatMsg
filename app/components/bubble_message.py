@@ -1,9 +1,8 @@
-import sys
+from Lib import QtNinePatch2
 
 from PyQt5.QtCore import Qt, QRectF
 from PyQt5.QtGui import QImage, QPainter, QColor, QFont, QPixmap
-from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy
-from Lib import QtNinePatch2
+from PyQt5.QtWidgets import QLabel, QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy
 
 
 class Label(QLabel):
@@ -86,12 +85,3 @@ class MainWindow(QWidget):
         layout.addWidget(bubble_mesage1)
         # layout.setStretch(0, 1)
         self.setLayout(layout)
-
-
-app = QApplication(sys.argv)
-# w = Label()
-w = MainWindow()
-w.resize(400, 200)
-w.show()
-
-sys.exit(app.exec_())
