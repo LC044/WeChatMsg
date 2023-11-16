@@ -13,6 +13,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
 from app import config
+from app.DataBase import msg
 from app.Ui.Icon import Icon
 from . import mainwindow
 from .contact import ContactWindow
@@ -112,3 +113,9 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
                           f"QQ交流群:{config.contact}\n"
                           "地址：https://github.com/LC044/WeChatMsg"
                           )
+
+    def close(self) -> bool:
+        del self.listWidget
+        del self.stackedWidget
+        msg.close()
+        self.contact_window.close()

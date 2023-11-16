@@ -37,5 +37,11 @@ def get_contact():
     return result
 
 
+def close():
+    global DB
+    if DB:
+        DB.close()
+
+
 if __name__ == '__main__':
     get_contact()
