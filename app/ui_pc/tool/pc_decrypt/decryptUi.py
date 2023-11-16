@@ -51,7 +51,9 @@ class Ui_Dialog(object):
         self.label_7.setObjectName("label_7")
         self.gridLayout.addWidget(self.label_7, 1, 0, 1, 1)
         self.lineEdit = QtWidgets.QLineEdit(Dialog)
-        self.lineEdit.setStyleSheet("background:transparent;border-width:0;border-style:outset")
+        self.lineEdit.setStyleSheet("\n"
+                                    "                                                                    background:transparent;border-width:0;border-style:outset\n"
+                                    "                                                                ")
         self.lineEdit.setFrame(False)
         self.lineEdit.setObjectName("lineEdit")
         self.gridLayout.addWidget(self.lineEdit, 4, 1, 1, 1)
@@ -62,6 +64,7 @@ class Ui_Dialog(object):
         self.label_6.setObjectName("label_6")
         self.gridLayout.addWidget(self.label_6, 5, 0, 1, 1)
         self.label_key = QtWidgets.QLabel(Dialog)
+        self.label_key.setMaximumSize(QtCore.QSize(200, 16777215))
         self.label_key.setText("")
         self.label_key.setObjectName("label_key")
         self.gridLayout.addWidget(self.label_key, 5, 1, 1, 1)
@@ -90,6 +93,7 @@ class Ui_Dialog(object):
         self.label_8.setObjectName("label_8")
         self.gridLayout.addWidget(self.label_8, 6, 0, 1, 1)
         self.label_db_dir = QtWidgets.QLabel(Dialog)
+        self.label_db_dir.setMaximumSize(QtCore.QSize(200, 300))
         self.label_db_dir.setText("")
         self.label_db_dir.setObjectName("label_db_dir")
         self.gridLayout.addWidget(self.label_db_dir, 6, 1, 1, 1)

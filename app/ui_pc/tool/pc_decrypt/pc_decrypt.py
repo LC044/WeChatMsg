@@ -46,6 +46,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
                 self.label_pid.setText(str(self.info['pid']))
                 self.label_version.setText(self.info['version'])
                 self.lineEdit.setFocus()
+                self.checkBox.setChecked(True)
                 if self.wx_dir and os.path.exists(os.path.join(self.wx_dir, self.info['wxid'])):
                     self.label_ready.setText('已就绪')
         except Exception as e:
@@ -59,6 +60,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         if directory:
             self.label_db_dir.setText(directory)
             self.wx_dir = directory
+            self.checkBox_2.setChecked(True)
             if self.ready:
                 self.label_ready.setText('已就绪')
 

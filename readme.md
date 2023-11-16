@@ -94,7 +94,8 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 随便下载一个SQLite数据库查看软件就能打开数据库，例如[DB Browser for SQLite](https://sqlitebrowser.org/dl/)
 
-[数据库功能介绍](./doc/数据库介绍.md)
+* [数据库功能介绍](./doc/数据库介绍.md)
+* [更多功能介绍](./doc/电脑端使用教程.md)
 
 </details>
 
