@@ -5,7 +5,7 @@ import time
 from PyQt5.QtWidgets import *
 
 import app.DataBase.data as DB
-from app.Ui import decrypt, mainview, pc_decrypt
+from app.Ui import decrypt, mainview
 
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("WeChatReport")
 
