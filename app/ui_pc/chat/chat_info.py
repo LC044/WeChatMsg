@@ -1,36 +1,40 @@
 from PyQt5.QtCore import QThread, pyqtSignal, Qt
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSpacerItem, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSpacerItem, QSizePolicy, QLabel, QHBoxLayout
 
 from app.DataBase import msg
 from app.components.bubble_message import BubbleMessage, ScrollBar, ScrollArea, ScrollAreaContent
-from .chatInfoUi import Ui_Form
 
 
-class ChatInfo(QWidget, Ui_Form):
+class ChatInfo(QWidget):
     def __init__(self, contact, parent=None):
         super().__init__(parent)
-        self.scrollArea = None
-        self.setupUi(self)
         self.contact = contact
+
         self.init_ui()
         self.show_chats()
 
     def init_ui(self):
+        self.label_reamrk = QLabel(self.contact.remark)
 
-        self.label_reamrk.setText(self.contact.remark)
+        self.hBoxLayout = QHBoxLayout()
+        self.hBoxLayout.addWidget(self.label_reamrk)
+
+        self.vBoxLayout = QVBoxLayout()
+        self.vBoxLayout.setSpacing(0)
+        # self.vBoxLayout.addLayout(self.hBoxLayout)
+
         self.scrollArea = ScrollArea()
-
-        self.verticalLayout_2.addWidget(self.scrollArea, 1)
-
         self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         scrollBar = ScrollBar()
         self.scrollArea.setVerticalScrollBar(scrollBar)
 
         self.scrollAreaWidgetContents = ScrollAreaContent()
-        self.scrollAreaWidgetContents.setMinimumSize(200, 100)
+        self.scrollAreaWidgetContents.setMinimumSize(200, 10000)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
+        self.vBoxLayout.addWidget(self.scrollArea)
         self.scroolAreaLayout = QVBoxLayout()
+        self.scroolAreaLayout.setSpacing(0)
         self.scrollAreaWidgetContents.setLayout(self.scroolAreaLayout)
 
     def show_chats(self):
@@ -42,6 +46,7 @@ class ChatInfo(QWidget, Ui_Form):
     def show_finish(self, ok):
         self.spacerItem = QSpacerItem(10, 10, QSizePolicy.Minimum, QSizePolicy.Expanding)
         self.scroolAreaLayout.addItem(self.spacerItem)
+        self.setLayout(self.vBoxLayout)
 
     def show_chat(self, message):
         try:

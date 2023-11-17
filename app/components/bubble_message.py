@@ -292,6 +292,7 @@ class MyWidget(QWidget):
         bubble_message1 = BubbleMessage("D:\Project\Python\PyQt-master\QLabel\Data\\fg1.png", avatar, Type=3,
                                         is_send=False)
         layout0.addWidget(bubble_message1)
+
         self.spacerItem = QSpacerItem(10, 10, QSizePolicy.Minimum, QSizePolicy.Expanding)
         layout0.addItem(self.spacerItem)
         # layout.setStretch(0, 1)
@@ -302,6 +303,7 @@ class Test(QWidget):
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout()
+        self.resize(500, 600)
         w1 = MyWidget()
         w2 = QLabel("nihao")
         layout.addWidget(w1)

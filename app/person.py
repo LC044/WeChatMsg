@@ -13,6 +13,7 @@ from app.Ui.Icon import Icon
 
 class Person:
     def __init__(self, wxid: str):
+
         self.wxid = wxid
         self.conRemark = data.get_conRemark(wxid)
         self.nickname, self.alias = data.get_nickname(wxid)
@@ -52,7 +53,15 @@ def singleton(cls):
 
 @singleton
 class MePC:
-    def __init__(self, contact_info: Dict):
+    def __init__(self):
+        contact_info = {
+            'UserName': 'contact_info_list[0]',
+            'Alias': 'contact_info_list[1]',
+            'Type': 'contact_info_list[2]',
+            'Remark': 'contact_info_list[3]',
+            'NickName': 'contact_info_list[4]',
+            'smallHeadImgUrl': 'contact_info_list[7]'
+        }
         self.wxid = contact_info.get('UserName')
         self.remark = contact_info.get('Remark')
         # Alias,Type,Remark,NickName,PYInitial,RemarkPYInitial,ContactHeadImgUrl.smallHeadImgUrl,ContactHeadImgUrl,bigHeadImgUrl
@@ -105,4 +114,6 @@ class Group(Person):
 
 
 if __name__ == '__main__':
-    pass
+    p1 = MePC()
+    p2 = MePC()
+    print(p1 == p2)
