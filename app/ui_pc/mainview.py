@@ -10,15 +10,17 @@
 from random import randint
 
 from PyQt5.QtCore import *
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import *
 
 from app import config
-from app.DataBase import msg
+from app.DataBase import msg, misc
 from app.Ui.Icon import Icon
 from . import mainwindow
 from .chat import ChatWindow
 from .contact import ContactWindow
 from .tool import ToolWindow
+from ..person import MePC
 
 # 美化样式表
 Stylesheet = """
@@ -81,6 +83,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         tool_item = QListWidgetItem(Icon.MyInfo_Icon, '工具', self.listWidget)
 
         tool_window = ToolWindow()
+        tool_window.get_info_signal.connect(self.set_my_info)
         self.chat_window = ChatWindow()
         self.stackedWidget.addWidget(self.chat_window)
         self.contact_window = ContactWindow()
@@ -101,6 +104,19 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         if row == 1:
             self.contact_window.show_contacts()
         self.stackedWidget.setCurrentIndex(row)
+
+    def set_my_info(self, wxid):
+        self.avatar = QPixmap()
+        img_bytes = misc.get_avatar_buffer(wxid)
+        if img_bytes[:4] == b'\x89PNG':
+            self.avatar.loadFromData(img_bytes, format='PNG')
+        else:
+            self.avatar.loadFromData(img_bytes, format='jfif')
+        self.avatar.scaled(60, 60)
+        me = MePC()
+        me.set_avatar(img_bytes)
+        self.myavatar.setScaledContents(True)
+        self.myavatar.setPixmap(self.avatar)
 
     def about(self):
         """

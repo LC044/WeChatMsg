@@ -1,6 +1,6 @@
 from random import randint
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import QWidget, QListWidgetItem, QLabel
 
 from .pc_decrypt import DecryptControl
@@ -45,6 +45,8 @@ HistoryPanel::item:hover {
 
 
 class ToolWindow(QWidget, Ui_Dialog):
+    get_info_signal = pyqtSignal(str)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
@@ -58,8 +60,9 @@ class ToolWindow(QWidget, Ui_Dialog):
         contact_item = QListWidgetItem(Icon.Contact_Icon, 'None', self.listWidget)
         myinfo_item = QListWidgetItem(Icon.MyInfo_Icon, 'None', self.listWidget)
         tool_item = QListWidgetItem(Icon.MyInfo_Icon, 'None', self.listWidget)
-        tool_window = DecryptControl()
-        self.stackedWidget.addWidget(tool_window)
+        decrypt_window = DecryptControl()
+        decrypt_window.get_wxidSignal.connect(self.get_info_signal)
+        self.stackedWidget.addWidget(decrypt_window)
         label = QLabel('我是页面', self)
         label.setAlignment(Qt.AlignCenter)
         # 设置label的背景颜色(这里随机)

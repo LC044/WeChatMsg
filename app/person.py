@@ -54,24 +54,7 @@ def singleton(cls):
 @singleton
 class MePC:
     def __init__(self):
-        contact_info = {
-            'UserName': 'contact_info_list[0]',
-            'Alias': 'contact_info_list[1]',
-            'Type': 'contact_info_list[2]',
-            'Remark': 'contact_info_list[3]',
-            'NickName': 'contact_info_list[4]',
-            'smallHeadImgUrl': 'contact_info_list[7]'
-        }
-        self.wxid = contact_info.get('UserName')
-        self.remark = contact_info.get('Remark')
-        # Alias,Type,Remark,NickName,PYInitial,RemarkPYInitial,ContactHeadImgUrl.smallHeadImgUrl,ContactHeadImgUrl,bigHeadImgUrl
-        self.alias = contact_info.get('Alias')
-        self.nickName = contact_info.get('NickName')
-        if not self.remark:
-            self.remark = self.nickName
-        self.smallHeadImgUrl = contact_info.get('smallHeadImgUrl')
-        self.smallHeadImgBLOG = b''
-        self.avatar = QPixmap()
+        self.avatar = QPixmap(Icon.Default_avatar_path)
 
     def set_avatar(self, img_bytes):
         if not img_bytes:
@@ -81,7 +64,7 @@ class MePC:
             self.avatar.loadFromData(img_bytes, format='PNG')
         else:
             self.avatar.loadFromData(img_bytes, format='jfif')
-        self.avatar.scaled(60, 60, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
+        self.avatar = QPixmap()
 
 
 class ContactPC:

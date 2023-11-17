@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSpacerItem, QSizePolicy, QLab
 
 from app.DataBase import msg
 from app.components.bubble_message import BubbleMessage, ScrollBar, ScrollArea, ScrollAreaContent
+from app.person import MePC
 
 
 class ChatInfo(QWidget):
@@ -52,12 +53,13 @@ class ChatInfo(QWidget):
         try:
             type_ = message[2]
             # print(type_, type(type_))
+            is_send = message[4]
+            avatar = MePC().avatar if is_send else self.contact.avatar
             if type_ == 1:
                 str_content = message[7]
-                is_send = message[4]
                 bubble_message = BubbleMessage(
                     str_content,
-                    self.contact.avatar,
+                    avatar,
                     type_,
                     is_send
                 )
