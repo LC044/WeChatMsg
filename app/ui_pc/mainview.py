@@ -16,6 +16,7 @@ from app import config
 from app.DataBase import msg
 from app.Ui.Icon import Icon
 from . import mainwindow
+from .chat import ChatWindow
 from .contact import ContactWindow
 from .tool import ToolWindow
 
@@ -67,6 +68,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.setWindowIcon(Icon.MainWindow_Icon)
         self.setStyleSheet(Stylesheet)
         self.listWidget.clear()
+        self.resize(QSize(800, 600))
         # self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
         self.action_desc.triggered.connect(self.about)
         self.init_ui()
@@ -79,14 +81,10 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         tool_item = QListWidgetItem(Icon.MyInfo_Icon, '工具', self.listWidget)
 
         tool_window = ToolWindow()
-        label = QLabel('我是页面', self)
-        label.setAlignment(Qt.AlignCenter)
-        # 设置label的背景颜色(这里随机)
-        # 这里加了一个margin边距(方便区分QStackedWidget和QLabel的颜色)
-        label.setStyleSheet('background: rgb(%d, %d, %d);margin: 50px;' % (
-            randint(0, 255), randint(0, 255), randint(0, 255)))
-        self.stackedWidget.addWidget(label)
+        self.chat_window = ChatWindow()
+        self.stackedWidget.addWidget(self.chat_window)
         self.contact_window = ContactWindow()
+        # self.contact_window = QWidget()
         self.stackedWidget.addWidget(self.contact_window)
         label = QLabel('我是页面', self)
         label.setAlignment(Qt.AlignCenter)

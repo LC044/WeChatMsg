@@ -1,6 +1,8 @@
 import os.path
 import sqlite3
+import threading
 
+lock = threading.Lock()
 DB = None
 cursor = None
 misc_path = "./app/Database/Msg/Misc.db"
@@ -17,11 +19,15 @@ def get_avatar_buffer(userName):
         from ContactHeadImg1
         where usrName=?;
     '''
-    cursor.execute(sql, [userName])
-    result = cursor.fetchall()
-    # print(result[0][0])
-    if result:
-        return result[0][0]
+    try:
+        lock.acquire(True)
+        cursor.execute(sql, [userName])
+        result = cursor.fetchall()
+        # print(result[0][0])
+        if result:
+            return result[0][0]
+    finally:
+        lock.release()
     return None
 
 

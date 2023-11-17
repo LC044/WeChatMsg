@@ -1,9 +1,9 @@
 from PIL import Image
 from PyQt5 import QtGui
+from PyQt5.QtCore import QSize, pyqtSignal, Qt, QThread
 from PyQt5.QtGui import QPainter, QFont, QColor, QPixmap, QPolygon
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QHBoxLayout, QSizePolicy, QVBoxLayout, QSpacerItem, \
     QScrollArea, QScrollBar
-from PyQt5.QtCore import QSize, pyqtSignal, Qt, QThread
 
 
 class TextMessage(QLabel):
@@ -11,13 +11,14 @@ class TextMessage(QLabel):
 
     def __init__(self, text, is_send=False, parent=None):
         super(TextMessage, self).__init__(text, parent)
-        self.setFont(QFont('SimSun', 15))
+        self.setFont(QFont('微软雅黑', 12))
         self.setWordWrap(True)
         # self.adjustSize()
         self.setMaximumWidth(800)
         self.setMinimumWidth(100)
-        self.setMinimumHeight(10)
+        self.setMinimumHeight(45)
         # self.resize(QSize(100,40))
+
         self.setTextInteractionFlags(Qt.TextSelectableByMouse)
         self.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
         # self.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Minimum)
@@ -44,6 +45,9 @@ class TextMessage(QLabel):
                 border-left: 10px solid #b2e281;
                 '''
             )
+        w = len(text) * 16 + 30
+        if w < self.width():
+            self.setMaximumWidth(w)
 
     def paintEvent(self, a0: QtGui.QPaintEvent) -> None:
         super(TextMessage, self).paintEvent(a0)
@@ -58,7 +62,7 @@ class Triangle(QLabel):
 
     def paintEvent(self, a0: QtGui.QPaintEvent) -> None:
         super(Triangle, self).paintEvent(a0)
-        if self.Type == 3:
+        if self.Type == 1:
             painter = QPainter(self)
             triangle = QPolygon()
             # print(self.width(), self.height())
@@ -90,9 +94,8 @@ class Avatar(QLabel):
             self.setPixmap(QPixmap(avatar).scaled(45, 45))
             self.image_path = avatar
         elif isinstance(avatar, QPixmap):
-            self.setPixmap(avatar)
-        self.setMaximumWidth(45)
-        self.setMaximumHeight(45)
+            self.setPixmap(avatar.scaled(45, 45))
+        self.setFixedSize(QSize(45, 45))
 
 
 class OpenImageThread(QThread):
@@ -108,7 +111,6 @@ class OpenImageThread(QThread):
 class ImageMessage(QLabel):
     def __init__(self, avatar, parent=None):
         super().__init__(parent)
-        self.image_path = './Data/head.jpg'
         self.image = QLabel(self)
         if isinstance(avatar, str):
             self.setPixmap(QPixmap(avatar))
@@ -117,6 +119,7 @@ class ImageMessage(QLabel):
             self.setPixmap(avatar)
         self.setMaximumWidth(480)
         self.setMaximumHeight(720)
+        self.setScaledContents(True)
 
     def mousePressEvent(self, event):
         if event.buttons() == Qt.LeftButton:  # 左键按下
@@ -139,8 +142,9 @@ class BubbleMessage(QWidget):
         layout.setContentsMargins(0, 5, 5, 5)
         self.avatar = Avatar(avatar)
         triangle = Triangle(Type, is_send)
-        if Type == 3:
+        if Type == 1:
             self.message = TextMessage(str_content, is_send)
+            # self.message.setMaximumWidth(int(self.width() * 0.6))
         else:
             self.message = ImageMessage(str_content)
         # skin_aio_friend_bubble_pressed.9
@@ -169,6 +173,11 @@ class BubbleMessage(QWidget):
 class ScrollAreaContent(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        # self.setStyleSheet(
+        #     '''
+        #     background-color:rgb(127,127,127);
+        #     '''
+        # )
 
     def resizeEvent(self, a0: QtGui.QResizeEvent) -> None:
         # print(self.width(),self.height())
@@ -246,8 +255,8 @@ class MyWidget(QWidget):
         super().__init__()
         self.resize(500, 200)
         txt = '''在工具中单击边缘可以添加黑点，单击可以删掉黑点，拖动可以调整黑点长度。勾选等选项可以查看内容、缩放等区域右侧可预览不同拉伸情况下的效果，拖动可以调整预览的拉伸比例'''
-        avatar = 'Data/head.jpg'
-        bubble_message = BubbleMessage(txt, avatar, Type=3, is_send=False)
+        avatar = '../data/icons/default_avatar.svg'
+        bubble_message = BubbleMessage(txt, avatar, Type=1, is_send=False)
         layout = QVBoxLayout()
         layout.setSpacing(0)
 
@@ -265,31 +274,44 @@ class MyWidget(QWidget):
         layout.addWidget(self.scrollArea)
         layout0 = QVBoxLayout()
         layout0.setSpacing(0)
-        self.scrollArea.setLayout(layout0)
+        # self.scrollArea.setLayout(layout0)
         self.scrollAreaWidgetContents.setLayout(layout0)
 
         time = Notice("2023-11-17 15:44")
         layout0.addWidget(time)
         txt = "你说啥"
-        avatar_2 = 'Data/fg1.png'
-        bubble_message1 = BubbleMessage(txt, avatar_2, Type=3, is_send=True)
+        avatar_2 = '../data/icons/default_avatar.svg'
+        bubble_message1 = BubbleMessage(txt, avatar_2, Type=1, is_send=True)
         layout0.addWidget(bubble_message)
         layout0.addWidget(bubble_message1)
 
-        bubble_message2 = BubbleMessage('', avatar_2, Type=3, is_send=True)
+        bubble_message2 = BubbleMessage('', avatar_2, Type=1, is_send=True)
         layout0.addWidget(bubble_message2)
         txt = "我啥都没说"
         avatar0 = 'Data/fg1.png'
-        bubble_message1 = BubbleMessage('Data/fg1.png', avatar, Type=1, is_send=False)
+        bubble_message1 = BubbleMessage("D:\Project\Python\PyQt-master\QLabel\Data\\fg1.png", avatar, Type=3,
+                                        is_send=False)
         layout0.addWidget(bubble_message1)
         self.spacerItem = QSpacerItem(10, 10, QSizePolicy.Minimum, QSizePolicy.Expanding)
         layout0.addItem(self.spacerItem)
-        layout.setStretch(0, 1)
+        # layout.setStretch(0, 1)
+        self.setLayout(layout)
+
+
+class Test(QWidget):
+    def __init__(self):
+        super().__init__()
+        layout = QVBoxLayout()
+        w1 = MyWidget()
+        w2 = QLabel("nihao")
+        layout.addWidget(w1)
+        layout.addWidget(w2)
         self.setLayout(layout)
 
 
 if __name__ == '__main__':
     app = QApplication([])
-    widget = MyWidget()
+    widget = Test()
+    # widget = MyWidget()
     widget.show()
     app.exec_()
