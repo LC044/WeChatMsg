@@ -62,7 +62,7 @@ def get_message_by_num(username_, n):
             from MSG
             where StrTalker=?
             order by CreateTime
-            limit 10
+            limit 100
         '''
     result = []
     try:

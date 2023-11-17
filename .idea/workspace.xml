@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="修复聊天气泡不能更改大小的bug">
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="更改头像显示">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/micro_msg.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/micro_msg.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/msg.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/msg.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/person.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/person.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/ui_pc/mainview.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/mainview.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/pc_decrypt.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/pc_decrypt.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/tool_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/tool_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -275,13 +277,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00021" summary="readme">
-      <created>1684598440645</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1684598440645</updated>
     </task>
     <task id="LOCAL-00022" summary="readme">
       <created>1684599002132</created>
@@ -619,7 +614,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700232296923</updated>
     </task>
-    <option name="localTasksCounter" value="70" />
+    <task id="LOCAL-00070" summary="更改头像显示">
+      <created>1700233361985</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1700233361985</updated>
+    </task>
+    <option name="localTasksCounter" value="71" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -655,7 +657,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="用stackWidget重写contactUI" />
     <MESSAGE value="修改联系人视图架构" />
     <MESSAGE value="加快打开速度" />
     <MESSAGE value="修改导入路径，方便打包成exe" />
@@ -680,7 +681,8 @@
     <MESSAGE value="update readme" />
     <MESSAGE value="数据库加锁避免多线程访问报错" />
     <MESSAGE value="修复聊天气泡不能更改大小的bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复聊天气泡不能更改大小的bug" />
+    <MESSAGE value="更改头像显示" />
+    <option name="LAST_COMMIT_MESSAGE" value="更改头像显示" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -704,17 +706,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/person.py</url>
-          <line>101</line>
+          <line>100</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/person.py</url>
-          <line>99</line>
+          <line>98</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/person.py</url>
-          <line>100</line>
+          <line>99</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>

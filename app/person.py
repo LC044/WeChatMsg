@@ -64,7 +64,6 @@ class MePC:
             self.avatar.loadFromData(img_bytes, format='PNG')
         else:
             self.avatar.loadFromData(img_bytes, format='jfif')
-        self.avatar = QPixmap()
 
 
 class ContactPC:

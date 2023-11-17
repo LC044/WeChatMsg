@@ -7,6 +7,7 @@
 @Version : Python3.10
 @comment : 主窗口
 """
+import json
 from random import randint
 
 from PyQt5.QtCore import *
@@ -73,37 +74,65 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.resize(QSize(800, 600))
         # self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
         self.action_desc.triggered.connect(self.about)
+        self.load_data()
         self.init_ui()
+        self.load_num = 0
+
+    def load_data(self):
+        with open('./app/data/info.json', 'r', encoding='utf-8') as f:
+            dic = json.loads(f.read())
+            wxid = dic.get('wxid')
+            if wxid:
+                me = MePC()
+                self.set_my_info(wxid)
 
     def init_ui(self):
+        # self.movie = QMovie("./app/data/loading.gif")
+        self.label = QLabel(self)
+        self.label.setGeometry(0, 0, self.width(), self.height())
+        # self.label.setMovie(self.movie)
+        # self.movie.start()
         self.listWidget.currentRowChanged.connect(self.setCurrentIndex)
+        tool_item = QListWidgetItem(Icon.MyInfo_Icon, '工具', self.listWidget)
         chat_item = QListWidgetItem(Icon.Chat_Icon, '聊天', self.listWidget)
         contact_item = QListWidgetItem(Icon.Contact_Icon, '好友', self.listWidget)
         myinfo_item = QListWidgetItem(Icon.MyInfo_Icon, '我的', self.listWidget)
-        tool_item = QListWidgetItem(Icon.MyInfo_Icon, '工具', self.listWidget)
 
         tool_window = ToolWindow()
         tool_window.get_info_signal.connect(self.set_my_info)
-        self.chat_window = ChatWindow()
-        self.stackedWidget.addWidget(self.chat_window)
-        self.contact_window = ContactWindow()
-        # self.contact_window = QWidget()
-        self.stackedWidget.addWidget(self.contact_window)
-        label = QLabel('我是页面', self)
+        tool_window.load_finish_signal.connect(self.loading)
+        self.stackedWidget.addWidget(tool_window)
+        self.listWidget.setCurrentRow(0)
+        self.stackedWidget.setCurrentIndex(0)
+        chat_window = ChatWindow()
+        self.stackedWidget.addWidget(chat_window)
+        contact_window = ContactWindow()
+        self.stackedWidget.addWidget(contact_window)
+        label = QLabel('我是页面')
         label.setAlignment(Qt.AlignCenter)
         # 设置label的背景颜色(这里随机)
         # 这里加了一个margin边距(方便区分QStackedWidget和QLabel的颜色)
         label.setStyleSheet('background: rgb(%d, %d, %d);margin: 50px;' % (
             randint(0, 255), randint(0, 255), randint(0, 255)))
         self.stackedWidget.addWidget(label)
-        self.stackedWidget.addWidget(tool_window)
-        self.listWidget.setCurrentRow(3)
-        self.stackedWidget.setCurrentIndex(3)
+        tool_window.load_finish_signal.connect(self.loading)
+        contact_window.load_finish_signal.connect(self.loading)
+        chat_window.load_finish_signal.connect(self.loading)
+        # self.load_window_thread = LoadWindowThread(self.stackedWidget)
+        # self.load_window_thread.okSignal.connect(self.stop_loading)
+        # self.load_window_thread.start()
 
     def setCurrentIndex(self, row):
-        if row == 1:
-            self.contact_window.show_contacts()
         self.stackedWidget.setCurrentIndex(row)
+        if row == 2:
+            self.stackedWidget.currentWidget().show_contacts()
+
+    def setWindow(self, window):
+        try:
+            window.load_finish_signal.connect(self.loading)
+        except:
+            pass
+        self.stackedWidget.addWidget(window)
 
     def set_my_info(self, wxid):
         self.avatar = QPixmap()
@@ -115,8 +144,23 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.avatar.scaled(60, 60)
         me = MePC()
         me.set_avatar(img_bytes)
+        dic = {
+            'wxid': wxid
+        }
+        with open('./app/data/info.json', 'w', encoding='utf-8') as f:
+            f.write(json.dumps(dic))
         self.myavatar.setScaledContents(True)
         self.myavatar.setPixmap(self.avatar)
+
+    def stop_loading(self, a0):
+        self.label.setVisible(False)
+
+    def loading(self, a0):
+        self.load_num += 1
+        print('加载一个了')
+        if self.load_num == 2:
+            print('ok了')
+            self.label.setVisible(False)
 
     def about(self):
         """
@@ -133,3 +177,26 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         del self.stackedWidget
         msg.close()
         self.contact_window.close()
+
+
+class LoadWindowThread(QThread):
+    windowSignal = pyqtSignal(QWidget)
+    okSignal = pyqtSignal(bool)
+
+    def __init__(self, stackedWidget):
+        super().__init__()
+        self.stackedWidget = stackedWidget
+
+    def run(self):
+        chat_window = ChatWindow()
+        self.stackedWidget.addWidget(chat_window)
+        contact_window = ContactWindow()
+        self.stackedWidget.addWidget(contact_window)
+        label = QLabel('我是页面')
+        label.setAlignment(Qt.AlignCenter)
+        # 设置label的背景颜色(这里随机)
+        # 这里加了一个margin边距(方便区分QStackedWidget和QLabel的颜色)
+        label.setStyleSheet('background: rgb(%d, %d, %d);margin: 50px;' % (
+            randint(0, 255), randint(0, 255), randint(0, 255)))
+        self.stackedWidget.addWidget(label)
+        self.okSignal.emit(True)

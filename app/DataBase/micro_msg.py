@@ -31,7 +31,6 @@ def get_contact():
               from Contact inner join ContactHeadImgUrl on Contact.UserName = ContactHeadImgUrl.usrName
               where  Type=3 and Alias is not null 
               order by PYInitial
-              limit 30
               '''
         cursor.execute(sql)
         result = cursor.fetchall()

@@ -46,6 +46,8 @@ HistoryPanel::item:hover {
 
 
 class ChatWindow(QWidget, Ui_Form):
+    load_finish_signal = pyqtSignal(bool)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.show_thread = None
@@ -56,6 +58,7 @@ class ChatWindow(QWidget, Ui_Form):
         self.show_chats()
 
     def init_ui(self):
+
         search_action = QAction(self.lineEdit)
         search_action.setIcon(Icon.Search_Icon)
         self.lineEdit.addAction(search_action, QLineEdit.LeadingPosition)
@@ -74,6 +77,7 @@ class ChatWindow(QWidget, Ui_Form):
             return
         self.show_thread = ShowContactThread()
         self.show_thread.showSingal.connect(self.show_chat)
+        self.show_thread.load_finish_signal.connect(self.stop_loading)
         self.show_thread.start()
         self.ok_flag = True
 
@@ -88,9 +92,14 @@ class ChatWindow(QWidget, Ui_Form):
         print(row)
         self.stackedWidget.setCurrentIndex(row)
 
+    def stop_loading(self, a0):
+        # self.label.setVisible(False)
+        self.load_finish_signal.emit(True)
+
 
 class ShowContactThread(QThread):
     showSingal = pyqtSignal(ContactPC)
+    load_finish_signal = pyqtSignal(bool)
 
     # heightSingal = pyqtSignal(int)
     def __init__(self):
@@ -113,3 +122,4 @@ class ShowContactThread(QThread):
             contact.set_avatar(contact.smallHeadImgBLOG)
             self.showSingal.emit(contact)
             # pprint(contact.__dict__)
+        self.load_finish_signal.emit(True)
