@@ -61,7 +61,7 @@ def get_message_by_num(username_, n):
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime
             from MSG
             where StrTalker=?
-            order by CreateTime
+            order by CreateTime desc
             limit 100
         '''
     result = []
@@ -71,6 +71,7 @@ def get_message_by_num(username_, n):
             cur = cursor[-1]
             cur.execute(sql, [username_])
             result_ = cur.fetchall()
+            result_.reverse()
             result += result_
             return result_
     finally:
