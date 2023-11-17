@@ -10,14 +10,17 @@
 from random import randint
 
 from PyQt5.QtCore import *
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import *
 
 from app import config
-from app.DataBase import msg
+from app.DataBase import msg, misc
 from app.Ui.Icon import Icon
 from . import mainwindow
+from .chat import ChatWindow
 from .contact import ContactWindow
 from .tool import ToolWindow
+from ..person import MePC
 
 # 美化样式表
 Stylesheet = """
@@ -67,6 +70,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.setWindowIcon(Icon.MainWindow_Icon)
         self.setStyleSheet(Stylesheet)
         self.listWidget.clear()
+        self.resize(QSize(800, 600))
         # self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
         self.action_desc.triggered.connect(self.about)
         self.init_ui()
@@ -79,14 +83,11 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         tool_item = QListWidgetItem(Icon.MyInfo_Icon, '工具', self.listWidget)
 
         tool_window = ToolWindow()
-        label = QLabel('我是页面', self)
-        label.setAlignment(Qt.AlignCenter)
-        # 设置label的背景颜色(这里随机)
-        # 这里加了一个margin边距(方便区分QStackedWidget和QLabel的颜色)
-        label.setStyleSheet('background: rgb(%d, %d, %d);margin: 50px;' % (
-            randint(0, 255), randint(0, 255), randint(0, 255)))
-        self.stackedWidget.addWidget(label)
+        tool_window.get_info_signal.connect(self.set_my_info)
+        self.chat_window = ChatWindow()
+        self.stackedWidget.addWidget(self.chat_window)
         self.contact_window = ContactWindow()
+        # self.contact_window = QWidget()
         self.stackedWidget.addWidget(self.contact_window)
         label = QLabel('我是页面', self)
         label.setAlignment(Qt.AlignCenter)
@@ -103,6 +104,19 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         if row == 1:
             self.contact_window.show_contacts()
         self.stackedWidget.setCurrentIndex(row)
+
+    def set_my_info(self, wxid):
+        self.avatar = QPixmap()
+        img_bytes = misc.get_avatar_buffer(wxid)
+        if img_bytes[:4] == b'\x89PNG':
+            self.avatar.loadFromData(img_bytes, format='PNG')
+        else:
+            self.avatar.loadFromData(img_bytes, format='jfif')
+        self.avatar.scaled(60, 60)
+        me = MePC()
+        me.set_avatar(img_bytes)
+        self.myavatar.setScaledContents(True)
+        self.myavatar.setPixmap(self.avatar)
 
     def about(self):
         """

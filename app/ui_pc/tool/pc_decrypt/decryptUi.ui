@@ -117,6 +117,12 @@
                                                     </item>
                                                     <item row="5" column="1">
                                                         <widget class="QLabel" name="label_key">
+                                                            <property name="maximumSize">
+                                                                <size>
+                                                                    <width>200</width>
+                                                                    <height>16777215</height>
+                                                                </size>
+                                                            </property>
                                                             <property name="text">
                                                                 <string/>
                                                             </property>
@@ -173,6 +179,12 @@
                                                     </item>
                                                     <item row="6" column="1">
                                                         <widget class="QLabel" name="label_db_dir">
+                                                            <property name="maximumSize">
+                                                                <size>
+                                                                    <width>200</width>
+                                                                    <height>300</height>
+                                                                </size>
+                                                            </property>
                                                             <property name="text">
                                                                 <string/>
                                                             </property>
