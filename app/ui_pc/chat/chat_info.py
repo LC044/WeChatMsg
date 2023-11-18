@@ -2,13 +2,14 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
 from app.DataBase import msg
-from app.components.bubble_message import BubbleMessage, ChatWidget
+from app.components.bubble_message import BubbleMessage, ChatWidget, Notice
 from app.person import MePC
 
 
 class ChatInfo(QWidget):
     def __init__(self, contact, parent=None):
         super().__init__(parent)
+        self.last_timestamp = 0
         self.last_pos = 0
         self.contact = contact
 
@@ -28,17 +29,15 @@ class ChatInfo(QWidget):
         self.chat_window = ChatWidget()
         self.chat_window.scrollArea.verticalScrollBar().valueChanged.connect(self.verticalScrollBar)
         self.vBoxLayout.addWidget(self.chat_window)
+        self.setLayout(self.vBoxLayout)
 
     def show_chats(self):
         self.show_chat_thread = ShowChatThread(self.contact)
-        self.show_chat_thread.showSingal.connect(self.show_chat)
+        self.show_chat_thread.showSingal.connect(self.add_message)
         self.show_chat_thread.finishSingal.connect(self.show_finish)
         self.show_chat_thread.start()
 
     def show_finish(self, ok):
-        # self.spacerItem = QSpacerItem(10, 10, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        # self.scroolAreaLayout.addItem(self.spacerItem)
-        self.setLayout(self.vBoxLayout)
         self.setScrollBarPos()
 
     def verticalScrollBar(self, pos):
@@ -50,8 +49,12 @@ class ChatInfo(QWidget):
         # print(pos)
         if pos > 0:
             return
+
+        # 记录当前滚动条最大值
         self.last_pos = self.chat_window.verticalScrollBar().maximum()
-        print('记录当前滚动条位置:', self.last_pos)
+        self.update_history_messages()
+
+    def update_history_messages(self):
         self.show_chat_thread.start()
 
     def setScrollBarPos(self):
@@ -60,23 +63,32 @@ class ChatInfo(QWidget):
         :param pos:
         :return:
         """
-        print('上次滚动条位置', self.last_pos)
+        self.chat_window.update()
+        self.chat_window.show()
         pos = self.chat_window.verticalScrollBar().maximum() - self.last_pos
-
-        print('当前滚动条位置:', pos)
         self.chat_window.set_scroll_bar_value(pos)
 
-    def show_chat(self, message):
+    def is_5_min(self, timestamp):
+        if abs(timestamp - self.last_timestamp) > 300:
+            self.last_timestamp = timestamp
+            return True
+        return False
+
+    def add_message(self, message):
         try:
             type_ = message[2]
+            str_content = message[7]
+            str_time = message[8]
             # print(type_, type(type_))
             is_send = message[4]
             avatar = MePC().avatar if is_send else self.contact.avatar
+            timestamp = message[5]
             if type_ == 1:
-                str_content = message[7]
-                str_time = message[8]
+                if self.is_5_min(timestamp):
+                    time_message = Notice(str_time)
+                    self.chat_window.add_message_item(time_message, 0)
                 bubble_message = BubbleMessage(
-                    str_time + ' ' + str_content,
+                    str_content,
                     avatar,
                     type_,
                     is_send

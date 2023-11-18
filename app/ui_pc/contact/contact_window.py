@@ -87,7 +87,7 @@ class ContactWindow(QWidget, Ui_Form):
         self.stackedWidget.addWidget(contact_info_window)
 
     def setCurrentIndex(self, row):
-        print(row)
+        # print(row)
         self.stackedWidget.setCurrentIndex(row)
 
 
