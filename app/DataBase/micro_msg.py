@@ -31,7 +31,7 @@ def get_contact():
         lock.acquire(True)
         sql = '''select UserName,Alias,Type,Remark,NickName,PYInitial,RemarkPYInitial,ContactHeadImgUrl.smallHeadImgUrl,ContactHeadImgUrl.bigHeadImgUrl
               from Contact inner join ContactHeadImgUrl on Contact.UserName = ContactHeadImgUrl.usrName
-              where  Type=3 and Alias is not null 
+              where  Type%2=1 and Alias is not null 
               order by PYInitial
               '''
         cursor.execute(sql)

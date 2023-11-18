@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="聊天消息自适应">
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="新版本更新">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/components/bubble_message.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/bubble_message.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/mainview.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/mainview.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/micro_msg.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/micro_msg.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -276,13 +272,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00026" summary="readme">
-      <created>1684600882947</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1684600882947</updated>
     </task>
     <task id="LOCAL-00027" summary="mainwindows文件修正">
       <created>1684726034556</created>
@@ -620,7 +609,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700285158430</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="新版本更新">
+      <created>1700289701717</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1700289701718</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -656,7 +652,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="上传html模板" />
     <MESSAGE value="增加几个图标" />
     <MESSAGE value="增加导航按钮效果" />
     <MESSAGE value="新增PC数据库解密" />
@@ -681,7 +676,8 @@
     <MESSAGE value="修改聊天记录显示顺序" />
     <MESSAGE value="聊天记录从后往前显示" />
     <MESSAGE value="聊天消息自适应" />
-    <option name="LAST_COMMIT_MESSAGE" value="聊天消息自适应" />
+    <MESSAGE value="新版本更新" />
+    <option name="LAST_COMMIT_MESSAGE" value="新版本更新" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
