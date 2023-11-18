@@ -40,6 +40,8 @@
 
 <details>
 
+<img alt="聊天界面" src="doc/images/chat_.png"/>
+
 <img alt="image-20230520235113261" src="doc/images/image-20230520235113261.png"/>
 
 ![image-20230520235220104](doc/images/image-20230520235220104.png)
@@ -96,6 +98,9 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 * [数据库功能介绍](./doc/数据库介绍.md)
 * [更多功能介绍](./doc/电脑端使用教程.md)
+
+显示效果
+<img alt="聊天界面" src="doc/images/chat_.png"/>
 
 </details>
 
