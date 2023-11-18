@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="新版本更新">
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="update readme">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DataBase/micro_msg.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/micro_msg.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -272,27 +271,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00027" summary="mainwindows文件修正">
-      <created>1684726034556</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1684726034556</updated>
-    </task>
-    <task id="LOCAL-00028" summary="mainwindows文件修正">
-      <created>1684726338618</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1684726338618</updated>
-    </task>
-    <task id="LOCAL-00029" summary="match语法说明">
-      <created>1692427491271</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1692427491271</updated>
     </task>
     <task id="LOCAL-00030" summary="update readme">
       <created>1698248435600</created>
@@ -616,7 +594,28 @@
       <option name="project" value="LOCAL" />
       <updated>1700289701718</updated>
     </task>
-    <option name="localTasksCounter" value="76" />
+    <task id="LOCAL-00076" summary="update readme">
+      <created>1700290543397</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1700290543397</updated>
+    </task>
+    <task id="LOCAL-00077" summary="update readme">
+      <created>1700290549743</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1700290549743</updated>
+    </task>
+    <task id="LOCAL-00078" summary="update readme">
+      <created>1700290555508</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1700290555508</updated>
+    </task>
+    <option name="localTasksCounter" value="79" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -668,7 +667,6 @@
     <MESSAGE value="修复情感分析数值显示过长的bug" />
     <MESSAGE value="新增聊天记录导出csv格式" />
     <MESSAGE value="导出所有数据库的聊天记录" />
-    <MESSAGE value="update readme" />
     <MESSAGE value="数据库加锁避免多线程访问报错" />
     <MESSAGE value="修复聊天气泡不能更改大小的bug" />
     <MESSAGE value="更改头像显示" />
@@ -677,7 +675,8 @@
     <MESSAGE value="聊天记录从后往前显示" />
     <MESSAGE value="聊天消息自适应" />
     <MESSAGE value="新版本更新" />
-    <option name="LAST_COMMIT_MESSAGE" value="新版本更新" />
+    <MESSAGE value="update readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="update readme" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
