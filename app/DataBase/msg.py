@@ -2,6 +2,7 @@ import os.path
 import re
 import sqlite3
 import threading
+from pprint import pprint
 
 DB = []
 cursor = []
@@ -56,22 +57,21 @@ def get_messages(username_):
     return result
 
 
-def get_message_by_num(username_, n):
+def get_message_by_num(username_, local_id):
     sql = '''
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime
             from MSG
-            where StrTalker=?
-            order by CreateTime desc
-            limit 100
+            where StrTalker = ? and localId < ?
+            order by CreateTime desc 
+            limit 30 
         '''
     result = []
     try:
         lock.acquire(True)
         for cur in cursor:
             cur = cursor[-1]
-            cur.execute(sql, [username_])
+            cur.execute(sql, [username_, local_id])
             result_ = cur.fetchall()
-            result_.reverse()
             result += result_
             return result_
     finally:
@@ -93,5 +93,8 @@ if __name__ == '__main__':
     # result = get_messages(username)
     # pprint(result)
     # pprint(len(result))
-    result = get_message_by_num('wxid_0o18ef858vnu22', 0)
+    result = get_message_by_num('wxid_0o18ef858vnu22', 9999999)
     print(result)
+    print(result[-1][0])
+    local_id = result[-1][0]
+    pprint(get_message_by_num('wxid_0o18ef858vnu22', local_id))

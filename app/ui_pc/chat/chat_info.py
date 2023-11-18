@@ -1,14 +1,15 @@
-from PyQt5.QtCore import QThread, pyqtSignal, Qt
+from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
 from app.DataBase import msg
-from app.components.bubble_message import BubbleMessage, ScrollBar, ScrollArea, ScrollAreaContent, ChatWidget
+from app.components.bubble_message import BubbleMessage, ChatWidget
 from app.person import MePC
 
 
 class ChatInfo(QWidget):
     def __init__(self, contact, parent=None):
         super().__init__(parent)
+        self.last_pos = 0
         self.contact = contact
 
         self.init_ui()
@@ -25,22 +26,8 @@ class ChatInfo(QWidget):
         self.vBoxLayout.addLayout(self.hBoxLayout)
 
         self.chat_window = ChatWidget()
+        self.chat_window.scrollArea.verticalScrollBar().valueChanged.connect(self.verticalScrollBar)
         self.vBoxLayout.addWidget(self.chat_window)
-        return
-
-        self.scrollArea = ScrollArea()
-        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        scrollBar = ScrollBar()
-        self.scrollArea.setVerticalScrollBar(scrollBar)
-
-        self.scrollAreaWidgetContents = ScrollAreaContent()
-        self.scrollAreaWidgetContents.setMinimumSize(200, 400)
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-
-        self.vBoxLayout.addWidget(self.scrollArea)
-        self.scroolAreaLayout = QVBoxLayout()
-        self.scroolAreaLayout.setSpacing(0)
-        self.scrollAreaWidgetContents.setLayout(self.scroolAreaLayout)
 
     def show_chats(self):
         self.show_chat_thread = ShowChatThread(self.contact)
@@ -52,7 +39,32 @@ class ChatInfo(QWidget):
         # self.spacerItem = QSpacerItem(10, 10, QSizePolicy.Minimum, QSizePolicy.Expanding)
         # self.scroolAreaLayout.addItem(self.spacerItem)
         self.setLayout(self.vBoxLayout)
-        self.chat_window.set_scroll_bar_last()
+        self.setScrollBarPos()
+
+    def verticalScrollBar(self, pos):
+        """
+        滚动条到0之后自动更新聊天记录
+        :param pos:
+        :return:
+        """
+        # print(pos)
+        if pos > 0:
+            return
+        self.last_pos = self.chat_window.verticalScrollBar().maximum()
+        print('记录当前滚动条位置:', self.last_pos)
+        self.show_chat_thread.start()
+
+    def setScrollBarPos(self):
+        """
+        将滚动条位置设置为上次看到的地方
+        :param pos:
+        :return:
+        """
+        print('上次滚动条位置', self.last_pos)
+        pos = self.chat_window.verticalScrollBar().maximum() - self.last_pos
+
+        print('当前滚动条位置:', pos)
+        self.chat_window.set_scroll_bar_value(pos)
 
     def show_chat(self, message):
         try:
@@ -62,15 +74,16 @@ class ChatInfo(QWidget):
             avatar = MePC().avatar if is_send else self.contact.avatar
             if type_ == 1:
                 str_content = message[7]
+                str_time = message[8]
                 bubble_message = BubbleMessage(
-                    str_content,
+                    str_time + ' ' + str_content,
                     avatar,
                     type_,
                     is_send
                 )
                 # print(str_content)
                 # self.scroolAreaLayout.addWidget(bubble_message)
-                self.chat_window.add_message_item(bubble_message)
+                self.chat_window.add_message_item(bubble_message, 0)
         except:
             print(message)
 
@@ -78,14 +91,19 @@ class ChatInfo(QWidget):
 class ShowChatThread(QThread):
     showSingal = pyqtSignal(tuple)
     finishSingal = pyqtSignal(int)
+    msg_id = 0
 
     # heightSingal = pyqtSignal(int)
     def __init__(self, contact):
         super().__init__()
+        self.last_message_id = 9999999
         self.wxid = contact.wxid
 
     def run(self) -> None:
-        messages = msg.get_message_by_num(self.wxid, 0)
+        messages = msg.get_message_by_num(self.wxid, self.last_message_id)
+        if messages:
+            self.last_message_id = messages[-1][0]
         for message in messages:
             self.showSingal.emit(message)
+        self.msg_id += 1
         self.finishSingal.emit(1)
