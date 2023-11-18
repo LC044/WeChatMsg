@@ -46,6 +46,8 @@ HistoryPanel::item:hover {
 
 
 class ContactWindow(QWidget, Ui_Form):
+    load_finish_signal = pyqtSignal(bool)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.show_thread = None
@@ -73,23 +75,25 @@ class ContactWindow(QWidget, Ui_Form):
             return
         self.show_thread = ShowContactThread()
         self.show_thread.showSingal.connect(self.show_contact)
+        self.show_thread.load_finish_signal.connect(self.load_finish_signal)
         self.show_thread.start()
         self.ok_flag = True
 
     def show_contact(self, contact):
-        contact_item = ContactQListWidgetItem(contact.nickName, contact.smallHeadImgUrl, contact.smallHeadImgBLOG)
+        contact_item = ContactQListWidgetItem(contact.remark, contact.smallHeadImgUrl, contact.smallHeadImgBLOG)
         self.listWidget.addItem(contact_item)
         self.listWidget.setItemWidget(contact_item, contact_item.widget)
         contact_info_window = ContactInfo(contact)
         self.stackedWidget.addWidget(contact_info_window)
 
     def setCurrentIndex(self, row):
-        print(row)
+        # print(row)
         self.stackedWidget.setCurrentIndex(row)
 
 
 class ShowContactThread(QThread):
     showSingal = pyqtSignal(ContactPC)
+    load_finish_signal = pyqtSignal(bool)
 
     # heightSingal = pyqtSignal(int)
     def __init__(self):
@@ -112,3 +116,4 @@ class ShowContactThread(QThread):
             contact.set_avatar(contact.smallHeadImgBLOG)
             self.showSingal.emit(contact)
             # pprint(contact.__dict__)
+        self.load_finish_signal.emit(True)

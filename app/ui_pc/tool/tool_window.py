@@ -46,12 +46,14 @@ HistoryPanel::item:hover {
 
 class ToolWindow(QWidget, Ui_Dialog):
     get_info_signal = pyqtSignal(str)
+    load_finish_signal = pyqtSignal(bool)
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.setStyleSheet(Stylesheet)
         self.init_ui()
+        self.load_finish_signal.emit(True)
 
     def init_ui(self):
         self.listWidget.clear()

@@ -1,6 +1,6 @@
 from PIL import Image
 from PyQt5 import QtGui
-from PyQt5.QtCore import QSize, pyqtSignal, Qt, QThread
+from PyQt5.QtCore import QSize, pyqtSignal, Qt, QThread, QTimer
 from PyQt5.QtGui import QPainter, QFont, QColor, QPixmap, QPolygon
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QHBoxLayout, QSizePolicy, QVBoxLayout, QSpacerItem, \
     QScrollArea, QScrollBar
@@ -140,6 +140,7 @@ class BubbleMessage(QWidget):
         layout = QHBoxLayout()
         layout.setSpacing(0)
         layout.setContentsMargins(0, 5, 5, 5)
+        # self.resize(QSize(200, 50))
         self.avatar = Avatar(avatar)
         triangle = Triangle(Type, is_send)
         if Type == 1:
@@ -173,35 +174,20 @@ class BubbleMessage(QWidget):
 class ScrollAreaContent(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        # self.setStyleSheet(
-        #     '''
-        #     background-color:rgb(127,127,127);
-        #     '''
-        # )
-
-    def resizeEvent(self, a0: QtGui.QResizeEvent) -> None:
-        # print(self.width(),self.height())
-        self.setMinimumSize(self.width(), self.height())
+        self.adjustSize()
 
 
 class ScrollArea(QScrollArea):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWidgetResizable(True)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setStyleSheet(
             '''
             border:none;
             '''
         )
 
-    def resizeEvent(self, a0: QtGui.QResizeEvent) -> None:
-        # return
-        self.widget().setMinimumSize(self.width(), self.widget().height())
-        self.widget().setMaximumSize(self.width(), self.widget().height())
-        self.widget().resize(QSize(self.width(), self.widget().height()))
-
-
-#
 
 class ScrollBar(QScrollBar):
     def __init__(self):
@@ -250,53 +236,54 @@ class ScrollBar(QScrollBar):
         )
 
 
-class MyWidget(QWidget):
+class ChatWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.resize(500, 200)
-        txt = '''在工具中单击边缘可以添加黑点，单击可以删掉黑点，拖动可以调整黑点长度。勾选等选项可以查看内容、缩放等区域右侧可预览不同拉伸情况下的效果，拖动可以调整预览的拉伸比例'''
-        avatar = '../data/icons/default_avatar.svg'
-        bubble_message = BubbleMessage(txt, avatar, Type=1, is_send=False)
+
         layout = QVBoxLayout()
         layout.setSpacing(0)
-
+        self.adjustSize()
         # 生成滚动区域
-        self.scrollArea = ScrollArea()
-        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scrollArea = ScrollArea(self)
         scrollBar = ScrollBar()
         self.scrollArea.setVerticalScrollBar(scrollBar)
         # self.scrollArea.setGeometry(QRect(9, 9, 261, 211))
         # 生成滚动区域的内容部署层部件
-        self.scrollAreaWidgetContents = ScrollAreaContent()
+        self.scrollAreaWidgetContents = ScrollAreaContent(self.scrollArea)
         self.scrollAreaWidgetContents.setMinimumSize(50, 100)
         # 设置滚动区域的内容部署部件为前面生成的内容部署层部件
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         layout.addWidget(self.scrollArea)
-        layout0 = QVBoxLayout()
-        layout0.setSpacing(0)
-        # self.scrollArea.setLayout(layout0)
-        self.scrollAreaWidgetContents.setLayout(layout0)
-
-        time = Notice("2023-11-17 15:44")
-        layout0.addWidget(time)
-        txt = "你说啥"
-        avatar_2 = '../data/icons/default_avatar.svg'
-        bubble_message1 = BubbleMessage(txt, avatar_2, Type=1, is_send=True)
-        layout0.addWidget(bubble_message)
-        layout0.addWidget(bubble_message1)
-
-        bubble_message2 = BubbleMessage('', avatar_2, Type=1, is_send=True)
-        layout0.addWidget(bubble_message2)
-        txt = "我啥都没说"
-        avatar0 = 'Data/fg1.png'
-        bubble_message1 = BubbleMessage("D:\Project\Python\PyQt-master\QLabel\Data\\fg1.png", avatar, Type=3,
-                                        is_send=False)
-        layout0.addWidget(bubble_message1)
-
-        self.spacerItem = QSpacerItem(10, 10, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        layout0.addItem(self.spacerItem)
-        # layout.setStretch(0, 1)
+        self.layout0 = QVBoxLayout()
+        self.layout0.setSpacing(0)
+        self.scrollAreaWidgetContents.setLayout(self.layout0)
         self.setLayout(layout)
+
+    def add_message_item(self, bubble_message, index=1):
+        if index:
+            self.layout0.addWidget(bubble_message)
+        else:
+            self.layout0.insertWidget(0, bubble_message)
+        # self.set_scroll_bar_last()
+
+    def set_scroll_bar_last(self):
+        self.scrollArea.verticalScrollBar().setValue(
+            self.scrollArea.verticalScrollBar().maximum()
+        )
+
+    def set_scroll_bar_value(self, val):
+        self.verticalScrollBar().setValue(val)
+
+    def verticalScrollBar(self):
+        return self.scrollArea.verticalScrollBar()
+
+    def update(self) -> None:
+        super().update()
+        self.scrollAreaWidgetContents.adjustSize()
+        self.scrollArea.update()
+        # self.scrollArea.repaint()
+        # self.verticalScrollBar().setMaximum(self.scrollAreaWidgetContents.height())
 
 
 class Test(QWidget):
@@ -304,16 +291,48 @@ class Test(QWidget):
         super().__init__()
         layout = QVBoxLayout()
         self.resize(500, 600)
-        w1 = MyWidget()
+        self.w1 = ChatWidget()
+        bm1 = BubbleMessage(
+            '你好啊噜啦噜啦嘞绿噜啦噜啦嘞绿绿噜啦噜啦嘞绿绿绿噜啦噜啦嘞绿绿绿绿',
+            "D:\Project\Python\PyQt-master\QLabel\Data\\fg1.png",
+            Type=1,
+        )
+        self.w1.add_message_item(bm1)
+        self.w1.verticalScrollBar().valueChanged.connect(self.value)
+        for i in range(10):
+            txt = '''在工具中单击边缘可以添加黑点，单击可以删掉黑点，拖动可以调整黑点长度。勾选等选项可以查看内容、缩放等区域右侧可预览不同拉伸情况下的效果，拖动可以调整预览的拉伸比例'''
+            avatar = '../data/icons/default_avatar.svg'
+            bubble_message = BubbleMessage(txt, avatar, Type=1, is_send=False)
+            # print(bubble_message.height(), '高度')
+            self.w1.add_message_item(bubble_message, 0)
+            print('滚动条最大值', self.w1.verticalScrollBar().maximum())
         w2 = QLabel("nihao")
-        layout.addWidget(w1)
+        layout.addWidget(self.w1)
         layout.addWidget(w2)
         self.setLayout(layout)
+        # 使用 QTimer 延迟更新滚动条
+        QTimer.singleShot(0, lambda: self.w1.update())
+
+        print('滚动条最大值001', self.w1.verticalScrollBar().value())
+        self.w1.verticalScrollBar().setValue(100)
+        # self.w1.update()
+
+    def value(self, val):
+        print('pos:', val)
+        print('滚动条最大值', self.w1.verticalScrollBar().maximum())
 
 
 if __name__ == '__main__':
     app = QApplication([])
     widget = Test()
+    widget.w1.update()
     # widget = MyWidget()
+    widget.w1.verticalScrollBar().setValue(200)
+    print('滚动条最大值002', widget.w1.verticalScrollBar().maximum())
     widget.show()
+    # QThread.sleep(2)
+    widget.w1.verticalScrollBar().setValue(200)
+    # widget.w1.verticalScrollBar().setValue(200)
+    # widget.w1.verticalScrollBar().setValue(200)
+
     app.exec_()
