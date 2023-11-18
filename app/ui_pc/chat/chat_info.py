@@ -1,8 +1,8 @@
 from PyQt5.QtCore import QThread, pyqtSignal, Qt
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSpacerItem, QSizePolicy, QLabel, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
 from app.DataBase import msg
-from app.components.bubble_message import BubbleMessage, ScrollBar, ScrollArea, ScrollAreaContent
+from app.components.bubble_message import BubbleMessage, ScrollBar, ScrollArea, ScrollAreaContent, ChatWidget
 from app.person import MePC
 
 
@@ -22,7 +22,11 @@ class ChatInfo(QWidget):
 
         self.vBoxLayout = QVBoxLayout()
         self.vBoxLayout.setSpacing(0)
-        # self.vBoxLayout.addLayout(self.hBoxLayout)
+        self.vBoxLayout.addLayout(self.hBoxLayout)
+
+        self.chat_window = ChatWidget()
+        self.vBoxLayout.addWidget(self.chat_window)
+        return
 
         self.scrollArea = ScrollArea()
         self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
@@ -30,7 +34,7 @@ class ChatInfo(QWidget):
         self.scrollArea.setVerticalScrollBar(scrollBar)
 
         self.scrollAreaWidgetContents = ScrollAreaContent()
-        self.scrollAreaWidgetContents.setMinimumSize(200, 10000)
+        self.scrollAreaWidgetContents.setMinimumSize(200, 400)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
         self.vBoxLayout.addWidget(self.scrollArea)
@@ -45,9 +49,10 @@ class ChatInfo(QWidget):
         self.show_chat_thread.start()
 
     def show_finish(self, ok):
-        self.spacerItem = QSpacerItem(10, 10, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        self.scroolAreaLayout.addItem(self.spacerItem)
+        # self.spacerItem = QSpacerItem(10, 10, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        # self.scroolAreaLayout.addItem(self.spacerItem)
         self.setLayout(self.vBoxLayout)
+        self.chat_window.set_scroll_bar_last()
 
     def show_chat(self, message):
         try:
@@ -64,7 +69,8 @@ class ChatInfo(QWidget):
                     is_send
                 )
                 # print(str_content)
-                self.scroolAreaLayout.addWidget(bubble_message)
+                # self.scroolAreaLayout.addWidget(bubble_message)
+                self.chat_window.add_message_item(bubble_message)
         except:
             print(message)
 

@@ -58,7 +58,6 @@ class ChatWindow(QWidget, Ui_Form):
         self.show_chats()
 
     def init_ui(self):
-
         search_action = QAction(self.lineEdit)
         search_action.setIcon(Icon.Search_Icon)
         self.lineEdit.addAction(search_action, QLineEdit.LeadingPosition)
@@ -82,7 +81,7 @@ class ChatWindow(QWidget, Ui_Form):
         self.ok_flag = True
 
     def show_chat(self, contact):
-        contact_item = ContactQListWidgetItem(contact.nickName, contact.smallHeadImgUrl, contact.smallHeadImgBLOG)
+        contact_item = ContactQListWidgetItem(contact.remark, contact.smallHeadImgUrl, contact.smallHeadImgBLOG)
         self.listWidget.addItem(contact_item)
         self.listWidget.setItemWidget(contact_item, contact_item.widget)
         chat_info_window = ChatInfo(contact)

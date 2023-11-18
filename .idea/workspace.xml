@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="将自己的wxid设置为配置文件">
-      <change beforePath="$PROJECT_DIR$/app/DataBase/msg.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/msg.py" afterDir="false" />
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="修改聊天记录显示顺序">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/micro_msg.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/micro_msg.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/bubble_message.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/bubble_message.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -252,8 +257,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main_pc" />
-        <item itemvalue="Python.person" />
         <item itemvalue="Python.bubble_message" />
+        <item itemvalue="Python.person" />
         <item itemvalue="Python.chat_info" />
         <item itemvalue="Python.msg" />
       </list>
@@ -270,13 +275,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00023" summary="readme">
-      <created>1684599566617</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1684599566617</updated>
     </task>
     <task id="LOCAL-00024" summary="readme">
       <created>1684599688133</created>
@@ -614,7 +612,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700236486745</updated>
     </task>
-    <option name="localTasksCounter" value="72" />
+    <task id="LOCAL-00072" summary="修改聊天记录显示顺序">
+      <created>1700236795662</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1700236795662</updated>
+    </task>
+    <option name="localTasksCounter" value="73" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -650,7 +655,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="加快打开速度" />
     <MESSAGE value="修改导入路径，方便打包成exe" />
     <MESSAGE value="修改部分UI" />
     <MESSAGE value="上传html模板" />
@@ -675,7 +679,8 @@
     <MESSAGE value="修复聊天气泡不能更改大小的bug" />
     <MESSAGE value="更改头像显示" />
     <MESSAGE value="将自己的wxid设置为配置文件" />
-    <option name="LAST_COMMIT_MESSAGE" value="将自己的wxid设置为配置文件" />
+    <MESSAGE value="修改聊天记录显示顺序" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改聊天记录显示顺序" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

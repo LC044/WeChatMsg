@@ -250,12 +250,12 @@ class ScrollBar(QScrollBar):
         )
 
 
-class MyWidget(QWidget):
+class ChatWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.resize(500, 200)
         txt = '''在工具中单击边缘可以添加黑点，单击可以删掉黑点，拖动可以调整黑点长度。勾选等选项可以查看内容、缩放等区域右侧可预览不同拉伸情况下的效果，拖动可以调整预览的拉伸比例'''
-        avatar = '../data/icons/default_avatar.svg'
+        avatar = './app/data/icons/default_avatar.svg'
         bubble_message = BubbleMessage(txt, avatar, Type=1, is_send=False)
         layout = QVBoxLayout()
         layout.setSpacing(0)
@@ -272,31 +272,38 @@ class MyWidget(QWidget):
         # 设置滚动区域的内容部署部件为前面生成的内容部署层部件
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         layout.addWidget(self.scrollArea)
-        layout0 = QVBoxLayout()
-        layout0.setSpacing(0)
+        self.layout0 = QVBoxLayout()
+        self.layout0.setSpacing(0)
+        # self.layout0.addWidget(bubble_message)
         # self.scrollArea.setLayout(layout0)
-        self.scrollAreaWidgetContents.setLayout(layout0)
+        self.scrollAreaWidgetContents.setLayout(self.layout0)
 
         time = Notice("2023-11-17 15:44")
-        layout0.addWidget(time)
-        txt = "你说啥"
-        avatar_2 = '../data/icons/default_avatar.svg'
-        bubble_message1 = BubbleMessage(txt, avatar_2, Type=1, is_send=True)
-        layout0.addWidget(bubble_message)
-        layout0.addWidget(bubble_message1)
-
-        bubble_message2 = BubbleMessage('', avatar_2, Type=1, is_send=True)
-        layout0.addWidget(bubble_message2)
-        txt = "我啥都没说"
-        avatar0 = 'Data/fg1.png'
+        # self.layout0.addWidget(time)
+        # txt = "你说啥"
+        # avatar_2 = '../data/icons/default_avatar.svg'
+        # bubble_message1 = BubbleMessage(txt, avatar_2, Type=1, is_send=True)
+        #
+        # self.layout0.addWidget(bubble_message1)
+        #
+        # bubble_message2 = BubbleMessage('', avatar_2, Type=1, is_send=True)
+        # self.layout0.addWidget(bubble_message2)
+        # txt = "我啥都没说"
+        # avatar0 = 'Data/fg1.png'
         bubble_message1 = BubbleMessage("D:\Project\Python\PyQt-master\QLabel\Data\\fg1.png", avatar, Type=3,
                                         is_send=False)
-        layout0.addWidget(bubble_message1)
+        self.layout0.addWidget(bubble_message1)
 
         self.spacerItem = QSpacerItem(10, 10, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        layout0.addItem(self.spacerItem)
+        self.layout0.addItem(self.spacerItem)
         # layout.setStretch(0, 1)
         self.setLayout(layout)
+
+    def add_message_item(self, bubble_message):
+        self.layout0.addWidget(bubble_message)
+
+    def set_scroll_bar_last(self):
+        self.scrollArea.verticalScrollBar().setValue(self.scrollArea.widget().height())
 
 
 class Test(QWidget):
@@ -304,7 +311,13 @@ class Test(QWidget):
         super().__init__()
         layout = QVBoxLayout()
         self.resize(500, 600)
-        w1 = MyWidget()
+        w1 = ChatWidget()
+        bm1 = BubbleMessage(
+            '你好啊噜啦噜啦嘞绿噜啦噜啦嘞绿绿噜啦噜啦嘞绿绿绿噜啦噜啦嘞绿绿绿绿',
+            "D:\Project\Python\PyQt-master\QLabel\Data\\fg1.png",
+            Type=1,
+        )
+        w1.add_message_item(bm1)
         w2 = QLabel("nihao")
         layout.addWidget(w1)
         layout.addWidget(w2)

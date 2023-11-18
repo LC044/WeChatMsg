@@ -80,7 +80,7 @@ class ContactWindow(QWidget, Ui_Form):
         self.ok_flag = True
 
     def show_contact(self, contact):
-        contact_item = ContactQListWidgetItem(contact.nickName, contact.smallHeadImgUrl, contact.smallHeadImgBLOG)
+        contact_item = ContactQListWidgetItem(contact.remark, contact.smallHeadImgUrl, contact.smallHeadImgBLOG)
         self.listWidget.addItem(contact_item)
         self.listWidget.setItemWidget(contact_item, contact_item.widget)
         contact_info_window = ContactInfo(contact)
