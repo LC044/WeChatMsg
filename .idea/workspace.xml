@@ -4,18 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="修复第一次启动的显示问题">
-      <change afterPath="$PROJECT_DIR$/app/util/search.py" afterDir="false" />
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="支持查找功能">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TEST/mainwindow.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chatUi.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chatUi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chatUi.ui" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chatUi.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/contact/contactUi.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/contact/contactUi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/contact/contactUi.ui" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/contact/contactUi.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/images/chat_.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/images/chat_.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/bubble_message.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/bubble_message.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/pc_decrypt.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/pc_decrypt.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -280,13 +273,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00032" summary="支持导出csv格式聊天记录">
-      <created>1698331547560</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1698331547560</updated>
     </task>
     <task id="LOCAL-00033" summary="增加几个图标">
       <created>1698331665669</created>
@@ -624,7 +610,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700373695942</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="支持查找功能">
+      <created>1700407657926</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1700407657926</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -660,7 +653,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="新增PC数据库解密" />
     <MESSAGE value="main首次加载解密界面" />
     <MESSAGE value="增加日志模块" />
     <MESSAGE value="增加PC端微信解密条件的判断" />
@@ -685,7 +677,8 @@
     <MESSAGE value="update readme" />
     <MESSAGE value="修复时间插入位置" />
     <MESSAGE value="修复第一次启动的显示问题" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复第一次启动的显示问题" />
+    <MESSAGE value="支持查找功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="支持查找功能" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

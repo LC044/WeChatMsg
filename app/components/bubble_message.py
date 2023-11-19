@@ -11,7 +11,7 @@ class TextMessage(QLabel):
 
     def __init__(self, text, is_send=False, parent=None):
         super(TextMessage, self).__init__(text, parent)
-        self.setFont(QFont('微软雅黑', 12))
+        self.setFont(QFont('Microsoft YaHei UI', 12))
         self.setWordWrap(True)
         # self.adjustSize()
         self.setMaximumWidth(800)
@@ -81,7 +81,7 @@ class Notice(QLabel):
     def __init__(self, text, type_=3, parent=None):
         super().__init__(text, parent)
         self.type_ = type_
-        self.setFont(QFont('微软雅黑', 12))
+        self.setFont(QFont('Microsoft YaHei UI', 12))
         self.setWordWrap(True)
         self.setTextInteractionFlags(Qt.TextSelectableByMouse)
         self.setAlignment(Qt.AlignCenter)

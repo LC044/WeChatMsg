@@ -51,8 +51,16 @@ class Ui_Dialog(object):
         self.label_7.setObjectName("label_7")
         self.gridLayout.addWidget(self.label_7, 1, 0, 1, 1)
         self.lineEdit = QtWidgets.QLineEdit(Dialog)
-        self.lineEdit.setStyleSheet("\n"
-                                    "                                                                    background:transparent;border-width:0;border-style:outset\n"
+        self.lineEdit.setStyleSheet("background:transparent;\n"
+                                    "\n"
+                                    "border-radius:5px;\n"
+                                    "border-top: 0px solid #b2e281;\n"
+                                    "border-bottom: 2px solid black;\n"
+                                    "border-right: 0px solid #b2e281;\n"
+                                    "border-left: 0px solid #b2e281;\n"
+                                    "\n"
+                                    "                                               \n"
+                                    "border-style:outset\n"
                                     "                                                                ")
         self.lineEdit.setFrame(False)
         self.lineEdit.setObjectName("lineEdit")

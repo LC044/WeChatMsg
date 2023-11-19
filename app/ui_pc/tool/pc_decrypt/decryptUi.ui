@@ -92,8 +92,16 @@
                                                     <item row="4" column="1">
                                                         <widget class="QLineEdit" name="lineEdit">
                                                             <property name="styleSheet">
-                                                                <string notr="true">
-                                                                    background:transparent;border-width:0;border-style:outset
+                                                                <string notr="true">background:transparent;
+
+                                                                    border-radius:5px;
+                                                                    border-top: 0px solid #b2e281;
+                                                                    border-bottom: 2px solid black;
+                                                                    border-right: 0px solid #b2e281;
+                                                                    border-left: 0px solid #b2e281;
+
+
+                                                                    border-style:outset
                                                                 </string>
                                                             </property>
                                                             <property name="frame">
