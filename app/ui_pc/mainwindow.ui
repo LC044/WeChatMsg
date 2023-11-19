@@ -99,19 +99,19 @@
                                 <rect>
                                     <x>0</x>
                                     <y>230</y>
-                                    <width>80</width>
+                                    <width>120</width>
                                     <height>331</height>
                                 </rect>
                             </property>
                             <property name="minimumSize">
                                 <size>
-                                    <width>80</width>
+                                    <width>120</width>
                                     <height>0</height>
                                 </size>
                             </property>
                             <property name="maximumSize">
                                 <size>
-                                    <width>80</width>
+                                    <width>120</width>
                                     <height>16777215</height>
                                 </size>
                             </property>
@@ -205,10 +205,16 @@
                 </property>
                 <addaction name="action_desc"/>
             </widget>
+            <widget class="QMenu" name="menu_3">
+                <property name="title">
+                    <string>不显示或者显示异常请重启应用</string>
+                </property>
+            </widget>
             <addaction name="menu_F"/>
             <addaction name="menu"/>
             <addaction name="menu_2"/>
             <addaction name="menu_about"/>
+            <addaction name="menu_3"/>
         </widget>
         <widget class="QStatusBar" name="statusbar"/>
         <action name="action_3">

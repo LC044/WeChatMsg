@@ -13,6 +13,16 @@ if os.path.exists(misc_path):
     cursor = DB.cursor()
 
 
+def init_database():
+    global DB
+    global cursor
+    if not DB:
+        if os.path.exists(misc_path):
+            DB = sqlite3.connect(misc_path, check_same_thread=False)
+            # '''创建游标'''
+            cursor = DB.cursor()
+
+
 def get_avatar_buffer(userName):
     sql = '''
         select smallHeadBuf
@@ -21,7 +31,12 @@ def get_avatar_buffer(userName):
     '''
     try:
         lock.acquire(True)
-        cursor.execute(sql, [userName])
+        try:
+            cursor.execute(sql, [userName])
+        except AttributeError:
+            init_database()
+        finally:
+            cursor.execute(sql, [userName])
         result = cursor.fetchall()
         # print(result[0][0])
         if result:
