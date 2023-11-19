@@ -84,7 +84,7 @@ class ChatInfo(QWidget):
             is_send = message[4]
             avatar = MePC().avatar if is_send else self.contact.avatar
             timestamp = message[5]
-            if type_ == 1:
+            if type_ == 1 or type_ == 3:
                 if self.is_5_min(timestamp):
                     time_message = Notice(self.last_str_time)
                     self.last_str_time = str_time

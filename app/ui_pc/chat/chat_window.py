@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QWidget, QMessageBox, QAction, QLineEdit
 from app.DataBase import micro_msg, misc
 from app.components import ContactQListWidgetItem
 from app.person import ContactPC
+from app.util import search
 from .chatUi import Ui_Form
 from .chat_info import ChatInfo
 from ..Icon import Icon
@@ -54,6 +55,7 @@ class ChatWindow(QWidget, Ui_Form):
         self.setupUi(self)
         self.ok_flag = False
         self.setStyleSheet(Stylesheet)
+        self.contacts = [[], []]
         self.init_ui()
         self.show_chats()
 
@@ -61,6 +63,7 @@ class ChatWindow(QWidget, Ui_Form):
         search_action = QAction(self.lineEdit)
         search_action.setIcon(Icon.Search_Icon)
         self.lineEdit.addAction(search_action, QLineEdit.LeadingPosition)
+        self.lineEdit.returnPressed.connect(self.search_contact)
         self.listWidget.clear()
         self.listWidget.currentRowChanged.connect(self.setCurrentIndex)
         self.listWidget.setCurrentRow(0)
@@ -80,7 +83,23 @@ class ChatWindow(QWidget, Ui_Form):
         self.show_thread.start()
         self.ok_flag = True
 
+    def search_contact(self):
+        content = self.lineEdit.text()
+        if not content:
+            return
+        index = self.search_contact_index(content)
+        self.select_contact_by_index(index)
+
+    def search_contact_index(self, content: str) -> int:
+        return search.search_by_content(content, self.contacts)
+
+    def select_contact_by_index(self, index):
+        self.stackedWidget.setCurrentIndex(index)
+        self.listWidget.setCurrentRow(index)
+
     def show_chat(self, contact):
+        self.contacts[0].append(contact.remark)
+        self.contacts[1].append(contact.nickName)
         contact_item = ContactQListWidgetItem(contact.remark, contact.smallHeadImgUrl, contact.smallHeadImgBLOG)
         self.listWidget.addItem(contact_item)
         self.listWidget.setItemWidget(contact_item, contact_item.widget)

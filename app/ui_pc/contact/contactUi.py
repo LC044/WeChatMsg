@@ -19,7 +19,7 @@ class Ui_Form(object):
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_2.setSpacing(0)
+        self.verticalLayout_2.setSpacing(6)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
@@ -33,13 +33,20 @@ class Ui_Form(object):
         self.lineEdit.setMinimumSize(QtCore.QSize(200, 30))
         self.lineEdit.setMaximumSize(QtCore.QSize(200, 16777215))
         self.lineEdit.setStyleSheet("background:transparent;\n"
-                                    "border-width:0;\n"
+                                    "border-radius:5px;\n"
+                                    "border-top: 0px solid #b2e281;\n"
+                                    "border-bottom: 0px solid #b2e281;\n"
+                                    "border-right: 0px solid #b2e281;\n"
+                                    "border-left: 0px solid #b2e281;\n"
                                     "border-style:outset;\n"
-                                    "background-color:rgb(226,226,226);")
+                                    "background-color:rgb(226,226,226);\n"
+                                    "                                                ")
         self.lineEdit.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
         self.lineEdit.setObjectName("lineEdit")
         self.horizontalLayout.addWidget(self.lineEdit)
         self.label_2 = QtWidgets.QLabel(Form)
+        self.label_2.setMinimumSize(QtCore.QSize(30, 0))
+        self.label_2.setMaximumSize(QtCore.QSize(30, 16777215))
         self.label_2.setText("")
         self.label_2.setObjectName("label_2")
         self.horizontalLayout.addWidget(self.label_2)

@@ -17,10 +17,13 @@
             <string notr="true">background: rgb(240, 240, 240);</string>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1">
+            <property name="spacing">
+                <number>6</number>
+            </property>
             <item>
                 <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1">
                     <property name="spacing">
-                        <number>0</number>
+                        <number>6</number>
                     </property>
                     <item>
                         <layout class="QVBoxLayout" name="verticalLayout">
@@ -49,7 +52,11 @@
                                             </property>
                                             <property name="styleSheet">
                                                 <string notr="true">background:transparent;
-                                                    border-width:0;
+                                                    border-radius:5px;
+                                                    border-top: 0px solid #b2e281;
+                                                    border-bottom: 0px solid #b2e281;
+                                                    border-right: 0px solid #b2e281;
+                                                    border-left: 0px solid #b2e281;
                                                     border-style:outset;
                                                     background-color:rgb(226,226,226);
                                                 </string>
@@ -61,6 +68,12 @@
                                     </item>
                                     <item>
                                         <widget class="QLabel" name="label_2">
+                                            <property name="minimumSize">
+                                                <size>
+                                                    <width>30</width>
+                                                    <height>0</height>
+                                                </size>
+                                            </property>
                                             <property name="text">
                                                 <string/>
                                             </property>

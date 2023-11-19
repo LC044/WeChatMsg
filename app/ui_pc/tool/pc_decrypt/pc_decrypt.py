@@ -22,6 +22,8 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         self.pushButton_3.clicked.connect(self.decrypt)
         self.btn_getinfo.clicked.connect(self.get_info)
         self.btn_db_dir.clicked.connect(self.select_db_dir)
+        self.lineEdit.returnPressed.connect(self.set_wxid)
+        self.lineEdit.textChanged.connect(self.set_wxid_)
         self.info = {}
         self.lineEdit.setFocus()
         self.ready = False
@@ -53,6 +55,13 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         except Exception as e:
             print(e)
             QMessageBox.critical(self, "错误", "请登录微信")
+
+    def set_wxid_(self):
+        self.info['wxid'] = self.lineEdit.text()
+
+    def set_wxid(self):
+        self.info['wxid'] = self.lineEdit.text()
+        QMessageBox.information(self, "ok", f"wxid修改成功{self.info['wxid']}")
 
     def select_db_dir(self):
         directory = QtWidgets.QFileDialog.getExistingDirectory(
