@@ -8,6 +8,7 @@
 @comment : 主窗口
 """
 import json
+import os.path
 from random import randint
 
 from PyQt5.QtCore import *
@@ -72,24 +73,31 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.setStyleSheet(Stylesheet)
         self.listWidget.clear()
         self.resize(QSize(800, 600))
-        # self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
         self.action_desc.triggered.connect(self.about)
         self.load_data()
         self.init_ui()
         self.load_num = 0
 
     def load_data(self):
-        with open('./app/data/info.json', 'r', encoding='utf-8') as f:
-            dic = json.loads(f.read())
-            wxid = dic.get('wxid')
-            if wxid:
-                me = MePC()
-                self.set_my_info(wxid)
+        if os.path.exists('./app/data/info.json'):
+            with open('./app/data/info.json', 'r', encoding='utf-8') as f:
+                dic = json.loads(f.read())
+                wxid = dic.get('wxid')
+                if wxid:
+                    me = MePC()
+                    self.set_my_info(wxid)
+        else:
+            QMessageBox.information(
+                self,
+                '温馨提示',
+                '点击 工具->获取信息 重启后可以显示本人头像哦'
+            )
 
     def init_ui(self):
         # self.movie = QMovie("./app/data/loading.gif")
         self.label = QLabel(self)
         self.label.setGeometry(0, 0, self.width(), self.height())
+        self.label.setVisible(False)
         # self.label.setMovie(self.movie)
         # self.movie.start()
         self.listWidget.currentRowChanged.connect(self.setCurrentIndex)
@@ -105,6 +113,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.listWidget.setCurrentRow(0)
         self.stackedWidget.setCurrentIndex(0)
         chat_window = ChatWindow()
+        # chat_window = QWidget()
         self.stackedWidget.addWidget(chat_window)
         contact_window = ContactWindow()
         self.stackedWidget.addWidget(contact_window)
@@ -117,7 +126,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.stackedWidget.addWidget(label)
         tool_window.load_finish_signal.connect(self.loading)
         contact_window.load_finish_signal.connect(self.loading)
-        chat_window.load_finish_signal.connect(self.loading)
+        # chat_window.load_finish_signal.connect(self.loading)
         # self.load_window_thread = LoadWindowThread(self.stackedWidget)
         # self.load_window_thread.okSignal.connect(self.stop_loading)
         # self.load_window_thread.start()
@@ -126,6 +135,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.stackedWidget.setCurrentIndex(row)
         if row == 2:
             self.stackedWidget.currentWidget().show_contacts()
+        if row == 1:
+            self.stackedWidget.currentWidget().show_chats()
 
     def setWindow(self, window):
         try:
@@ -136,7 +147,10 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
 
     def set_my_info(self, wxid):
         self.avatar = QPixmap()
-        img_bytes = misc.get_avatar_buffer(wxid)
+        try:
+            img_bytes = misc.get_avatar_buffer(wxid)
+        except AttributeError:
+            return
         if img_bytes[:4] == b'\x89PNG':
             self.avatar.loadFromData(img_bytes, format='PNG')
         else:
@@ -157,6 +171,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
 
     def loading(self, a0):
         self.load_num += 1
+        self.label.setVisible(False)
         # print('加载一个了')
         if self.load_num == 2:
             # print('ok了')

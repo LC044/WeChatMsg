@@ -34,7 +34,7 @@
 
 大家有任何想法、建议或bug可以群里反馈给我
 
-<img src="doc/images/qq.jpg" height=480/>
+[//]: # (<img src="doc/images/qq.jpg" height=480/>)
 
 ## 效果
 

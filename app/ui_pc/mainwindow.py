@@ -16,30 +16,31 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1280, 779)
         MainWindow.setStyleSheet("\n"
-                                 "/*去掉item虚线边框*/\n"
-                                 "QListWidget, QListView, QTreeWidget, QTreeView {\n"
-                                 "    outline: 0px;\n"
-                                 "}\n"
-                                 "/*设置左侧选项的最小最大宽度,文字颜色和背景颜色*/\n"
-                                 "QListWidget {\n"
-                                 "    min-width: 120px;\n"
-                                 "    max-width: 120px;\n"
-                                 "    color: black;\n"
-                                 "    background: white;\n"
-                                 "    border:none;\n"
-                                 "}\n"
-                                 "QListWidget::item{\n"
-                                 "    height:80;\n"
-                                 "}\n"
-                                 "/*被选中时的背景颜色和左边框颜色*/\n"
-                                 "QListWidget::item:selected {\n"
-                                 "    background: rgb(204, 204, 204);\n"
-                                 "    border-left: 4px solid rgb(9, 187, 7);\n"
-                                 "}\n"
-                                 "/*鼠标悬停颜色*/\n"
-                                 "HistoryPanel::item:hover {\n"
-                                 "    background: rgb(52, 52, 52);\n"
-                                 "}")
+                                 "                /*去掉item虚线边框*/\n"
+                                 "                QListWidget, QListView, QTreeWidget, QTreeView {\n"
+                                 "                outline: 0px;\n"
+                                 "                }\n"
+                                 "                /*设置左侧选项的最小最大宽度,文字颜色和背景颜色*/\n"
+                                 "                QListWidget {\n"
+                                 "                min-width: 120px;\n"
+                                 "                max-width: 120px;\n"
+                                 "                color: black;\n"
+                                 "                background: white;\n"
+                                 "                border:none;\n"
+                                 "                }\n"
+                                 "                QListWidget::item{\n"
+                                 "                height:80;\n"
+                                 "                }\n"
+                                 "                /*被选中时的背景颜色和左边框颜色*/\n"
+                                 "                QListWidget::item:selected {\n"
+                                 "                background: rgb(204, 204, 204);\n"
+                                 "                border-left: 4px solid rgb(9, 187, 7);\n"
+                                 "                }\n"
+                                 "                /*鼠标悬停颜色*/\n"
+                                 "                HistoryPanel::item:hover {\n"
+                                 "                background: rgb(52, 52, 52);\n"
+                                 "                }\n"
+                                 "            ")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -58,6 +59,11 @@ class Ui_MainWindow(object):
         self.myavatar.setObjectName("myavatar")
         self.listWidget = QtWidgets.QListWidget(self.frame_info)
         self.listWidget.setGeometry(QtCore.QRect(0, 230, 120, 331))
+        self.listWidget.setMinimumSize(QtCore.QSize(120, 0))
+        self.listWidget.setMaximumSize(QtCore.QSize(120, 16777215))
+        self.listWidget.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.listWidget.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.listWidget.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustIgnored)
         self.listWidget.setObjectName("listWidget")
         item = QtWidgets.QListWidgetItem()
         self.listWidget.addItem(item)
@@ -93,6 +99,8 @@ class Ui_MainWindow(object):
         self.menu_2.setObjectName("menu_2")
         self.menu_about = QtWidgets.QMenu(self.menubar)
         self.menu_about.setObjectName("menu_about")
+        self.menu_3 = QtWidgets.QMenu(self.menubar)
+        self.menu_3.setObjectName("menu_3")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -118,6 +126,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menu.menuAction())
         self.menubar.addAction(self.menu_2.menuAction())
         self.menubar.addAction(self.menu_about.menuAction())
+        self.menubar.addAction(self.menu_3.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -143,6 +152,7 @@ class Ui_MainWindow(object):
         self.menu.setTitle(_translate("MainWindow", "编辑"))
         self.menu_2.setTitle(_translate("MainWindow", "帮助"))
         self.menu_about.setTitle(_translate("MainWindow", "关于"))
+        self.menu_3.setTitle(_translate("MainWindow", "不显示或者显示异常请重启应用"))
         self.action_3.setText(_translate("MainWindow", "保存"))
         self.action_4.setText(_translate("MainWindow", "退出"))
         self.action.setText(_translate("MainWindow", "关于"))

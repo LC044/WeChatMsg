@@ -10,9 +10,9 @@ class ChatInfo(QWidget):
     def __init__(self, contact, parent=None):
         super().__init__(parent)
         self.last_timestamp = 0
+        self.last_str_time = ''
         self.last_pos = 0
         self.contact = contact
-
         self.init_ui()
         self.show_chats()
 
@@ -71,6 +71,7 @@ class ChatInfo(QWidget):
     def is_5_min(self, timestamp):
         if abs(timestamp - self.last_timestamp) > 300:
             self.last_timestamp = timestamp
+
             return True
         return False
 
@@ -85,7 +86,8 @@ class ChatInfo(QWidget):
             timestamp = message[5]
             if type_ == 1:
                 if self.is_5_min(timestamp):
-                    time_message = Notice(str_time)
+                    time_message = Notice(self.last_str_time)
+                    self.last_str_time = str_time
                     self.chat_window.add_message_item(time_message, 0)
                 bubble_message = BubbleMessage(
                     str_content,
@@ -96,6 +98,7 @@ class ChatInfo(QWidget):
                 # print(str_content)
                 # self.scroolAreaLayout.addWidget(bubble_message)
                 self.chat_window.add_message_item(bubble_message, 0)
+
         except:
             print(message)
 
