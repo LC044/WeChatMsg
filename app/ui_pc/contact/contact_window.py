@@ -7,6 +7,7 @@ from app.person import ContactPC
 from .contactInfo import ContactInfo
 from .contactUi import Ui_Form
 from ..Icon import Icon
+from ...util import search
 
 # 美化样式表
 Stylesheet = """
@@ -55,12 +56,14 @@ class ContactWindow(QWidget, Ui_Form):
         self.ok_flag = False
         self.setStyleSheet(Stylesheet)
         self.init_ui()
+        self.contacts = [[], []]
         self.show_contacts()
 
     def init_ui(self):
         search_action = QAction(self.lineEdit)
         search_action.setIcon(Icon.Search_Icon)
         self.lineEdit.addAction(search_action, QLineEdit.LeadingPosition)
+        self.lineEdit.returnPressed.connect(self.search_contact)
         self.listWidget.clear()
         self.listWidget.currentRowChanged.connect(self.setCurrentIndex)
         self.listWidget.setCurrentRow(0)
@@ -79,7 +82,16 @@ class ContactWindow(QWidget, Ui_Form):
         self.show_thread.start()
         self.ok_flag = True
 
-    def show_contact(self, contact):
+    def search_contact(self):
+        keyword = self.lineEdit.text()
+        if keyword:
+            index = search.search_by_content(keyword, self.contacts)
+            self.listWidget.setCurrentRow(index)
+            self.stackedWidget.setCurrentIndex(index)
+
+    def show_contact(self, contact: ContactPC):
+        self.contacts[0].append(contact.remark)
+        self.contacts[1].append(contact.nickName)
         contact_item = ContactQListWidgetItem(contact.remark, contact.smallHeadImgUrl, contact.smallHeadImgBLOG)
         self.listWidget.addItem(contact_item)
         self.listWidget.setItemWidget(contact_item, contact_item.widget)
