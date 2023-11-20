@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QSizePolicy, QVBoxLayo
 
 class MessageType:
     Text = 1
-    Image = 2
+    Image = 3
 
 
 class TextMessage(QLabel):
@@ -104,20 +104,28 @@ class OpenImageThread(QThread):
 
 
 class ImageMessage(QLabel):
-    def __init__(self, avatar, parent=None):
+    def __init__(self, image, image_link='', max_width=480, max_height=720, parent=None):
+        """
+        param:image 图像路径或者QPixmap对象
+        param:image_link='' 点击图像打开的文件路径
+        """
         super().__init__(parent)
         self.image = QLabel(self)
-        if isinstance(avatar, str):
-            self.setPixmap(QPixmap(avatar))
-            self.image_path = avatar
-        elif isinstance(avatar, QPixmap):
-            self.setPixmap(avatar)
-        self.setMaximumWidth(480)
-        self.setMaximumHeight(720)
-        self.setScaledContents(True)
+
+        if isinstance(image, str):
+            self.setPixmap(QPixmap(image))
+            self.image_path = image
+        elif isinstance(image, QPixmap):
+            self.setPixmap(image)
+        if image_link:
+            self.image_path = image_link
+        self.setMaximumWidth(max_width)
+        self.setMaximumHeight(max_height)
+        # self.setScaledContents(True)
 
     def mousePressEvent(self, event):
         if event.buttons() == Qt.LeftButton:  # 左键按下
+            print('打开图像', self.image_path)
             self.open_image_thread = OpenImageThread(self.image_path)
             self.open_image_thread.start()
 

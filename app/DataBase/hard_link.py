@@ -8,7 +8,7 @@ lock = threading.Lock()
 DB = None
 cursor = None
 db_path = "./app/Database/Msg/HardLinkImage.db"
-root_path = '/MsgAttach/'
+root_path = 'FileStorage/MsgAttach/'
 if os.path.exists(db_path):
     DB = sqlite3.connect(db_path, check_same_thread=False)
     # '''创建游标'''
@@ -47,16 +47,16 @@ def get_md5_from_xml(content):
     root = ET.fromstring(content)
     # 提取md5的值
     md5_value = root.find(".//img").get("md5")
-    print(md5_value)
+    # print(md5_value)
     return md5_value
 
 
-def get_image(content, thumb=True):
+def get_image(content, thumb=False):
     md5 = get_md5_from_xml(content)
     # md5 = 'bc37a58c32cb203ee9ac587b068e5853'
     result = get_image_by_md5(binascii.unhexlify(md5))
     if result:
-        print(result)
+        # print(result)
         dir1 = result[3]
         dir2 = result[4]
         data_image = result[2]

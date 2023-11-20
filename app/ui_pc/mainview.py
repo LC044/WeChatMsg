@@ -89,7 +89,6 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
                     me.name = dic.get('name')
                     me.mobile = dic.get('mobile')
                     me.wx_dir = dic.get('wx_dir')
-                    
                     self.set_my_info(wxid)
         else:
             QMessageBox.information(
