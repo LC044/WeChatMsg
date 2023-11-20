@@ -1,9 +1,14 @@
 from PIL import Image
 from PyQt5 import QtGui
-from PyQt5.QtCore import QSize, pyqtSignal, Qt, QThread, QTimer
-from PyQt5.QtGui import QPainter, QFont, QColor, QPixmap, QPolygon
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QHBoxLayout, QSizePolicy, QVBoxLayout, QSpacerItem, \
+from PyQt5.QtCore import QSize, pyqtSignal, Qt, QThread
+from PyQt5.QtGui import QPainter, QFont, QColor, QPixmap, QPolygon, QFontMetrics
+from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QSizePolicy, QVBoxLayout, QSpacerItem, \
     QScrollArea, QScrollBar
+
+
+class MessageType:
+    Text = 1
+    Image = 2
 
 
 class TextMessage(QLabel):
@@ -11,43 +16,34 @@ class TextMessage(QLabel):
 
     def __init__(self, text, is_send=False, parent=None):
         super(TextMessage, self).__init__(text, parent)
-        self.setFont(QFont('Microsoft YaHei UI', 12))
+        font = QFont('微软雅黑', 12)
+        self.setFont(font)
         self.setWordWrap(True)
-        # self.adjustSize()
         self.setMaximumWidth(800)
         self.setMinimumWidth(100)
         self.setMinimumHeight(45)
-        # self.resize(QSize(100,40))
-
         self.setTextInteractionFlags(Qt.TextSelectableByMouse)
         self.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-        # self.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Minimum)
         if is_send:
             self.setAlignment(Qt.AlignCenter | Qt.AlignRight)
             self.setStyleSheet(
                 '''
-                background-color:white;
+                background-color:#b2e281;
                 border-radius:10px;
-                border-top: 10px solid white;
-                border-bottom: 10px solid white;
-                border-right: 10px solid white;
-                border-left: 10px solid white;
+                padding:10px;
                 '''
             )
         else:
             self.setStyleSheet(
                 '''
-                background-color:#b2e281;
+                background-color:white;
                 border-radius:10px;
-                border-top: 10px solid #b2e281;
-                border-bottom: 10px solid #b2e281;
-                border-right: 10px solid #b2e281;
-                border-left: 10px solid #b2e281;
+                padding:10px;
                 '''
             )
-        w = len(text) * 16 + 30
-        if w < self.width():
-            self.setMaximumWidth(w)
+        font_metrics = QFontMetrics(font)
+        rect = font_metrics.boundingRect(text)
+        self.setMaximumWidth(rect.width() + 30)
 
     def paintEvent(self, a0: QtGui.QPaintEvent) -> None:
         super(TextMessage, self).paintEvent(a0)
@@ -62,18 +58,17 @@ class Triangle(QLabel):
 
     def paintEvent(self, a0: QtGui.QPaintEvent) -> None:
         super(Triangle, self).paintEvent(a0)
-        if self.Type == 1:
+        if self.Type == MessageType.Text:
             painter = QPainter(self)
             triangle = QPolygon()
-            # print(self.width(), self.height())
             if self.is_send:
-                painter.setPen(QColor('white'))
-                painter.setBrush(QColor('white'))
-                triangle.setPoints(0, 20, 0, 35, 6, 25)
-            else:
                 painter.setPen(QColor('#b2e281'))
                 painter.setBrush(QColor('#b2e281'))
-                triangle.setPoints(0, 25, 6, 20, 6, 35)
+                triangle.setPoints(0, 20, 0, 34, 6, 27)
+            else:
+                painter.setPen(QColor('white'))
+                painter.setBrush(QColor('white'))
+                triangle.setPoints(0, 27, 6, 20, 6, 34)
             painter.drawPolygon(triangle)
 
 
@@ -81,7 +76,7 @@ class Notice(QLabel):
     def __init__(self, text, type_=3, parent=None):
         super().__init__(text, parent)
         self.type_ = type_
-        self.setFont(QFont('Microsoft YaHei UI', 12))
+        self.setFont(QFont('微软雅黑', 12))
         self.setWordWrap(True)
         self.setTextInteractionFlags(Qt.TextSelectableByMouse)
         self.setAlignment(Qt.AlignCenter)
@@ -143,20 +138,14 @@ class BubbleMessage(QWidget):
         # self.resize(QSize(200, 50))
         self.avatar = Avatar(avatar)
         triangle = Triangle(Type, is_send)
-        if Type == 1:
+        if Type == MessageType.Text:
             self.message = TextMessage(str_content, is_send)
             # self.message.setMaximumWidth(int(self.width() * 0.6))
-        else:
+        elif Type == MessageType.Image:
             self.message = ImageMessage(str_content)
-        # skin_aio_friend_bubble_pressed.9
-        '''
-        border-image:url(./Data/截图222.png) 20 20 20 20;
-        border-top: 5px transparent;
-        border-bottom: 5px transparent;
-        border-right: 5px transparent;
-        border-left: 5px transparent;
-        border-radius:10px;
-        '''
+        else:
+            raise ValueError("未知的消息类型")
+
         self.spacerItem = QSpacerItem(45 + 6, 45, QSizePolicy.Expanding, QSizePolicy.Minimum)
         if is_send:
             layout.addItem(self.spacerItem)
@@ -284,55 +273,3 @@ class ChatWidget(QWidget):
         self.scrollArea.update()
         # self.scrollArea.repaint()
         # self.verticalScrollBar().setMaximum(self.scrollAreaWidgetContents.height())
-
-
-class Test(QWidget):
-    def __init__(self):
-        super().__init__()
-        layout = QVBoxLayout()
-        self.resize(500, 600)
-        self.w1 = ChatWidget()
-        bm1 = BubbleMessage(
-            '你好啊噜啦噜啦嘞绿噜啦噜啦嘞绿绿噜啦噜啦嘞绿绿绿噜啦噜啦嘞绿绿绿绿',
-            "D:\Project\Python\PyQt-master\QLabel\Data\\fg1.png",
-            Type=1,
-        )
-        self.w1.add_message_item(bm1)
-        self.w1.verticalScrollBar().valueChanged.connect(self.value)
-        for i in range(10):
-            txt = '''在工具中单击边缘可以添加黑点，单击可以删掉黑点，拖动可以调整黑点长度。勾选等选项可以查看内容、缩放等区域右侧可预览不同拉伸情况下的效果，拖动可以调整预览的拉伸比例'''
-            avatar = '../data/icons/default_avatar.svg'
-            bubble_message = BubbleMessage(txt, avatar, Type=1, is_send=False)
-            # print(bubble_message.height(), '高度')
-            self.w1.add_message_item(bubble_message, 0)
-            print('滚动条最大值', self.w1.verticalScrollBar().maximum())
-        w2 = QLabel("nihao")
-        layout.addWidget(self.w1)
-        layout.addWidget(w2)
-        self.setLayout(layout)
-        # 使用 QTimer 延迟更新滚动条
-        QTimer.singleShot(0, lambda: self.w1.update())
-
-        print('滚动条最大值001', self.w1.verticalScrollBar().value())
-        self.w1.verticalScrollBar().setValue(100)
-        # self.w1.update()
-
-    def value(self, val):
-        print('pos:', val)
-        print('滚动条最大值', self.w1.verticalScrollBar().maximum())
-
-
-if __name__ == '__main__':
-    app = QApplication([])
-    widget = Test()
-    widget.w1.update()
-    # widget = MyWidget()
-    widget.w1.verticalScrollBar().setValue(200)
-    print('滚动条最大值002', widget.w1.verticalScrollBar().maximum())
-    widget.show()
-    # QThread.sleep(2)
-    widget.w1.verticalScrollBar().setValue(200)
-    # widget.w1.verticalScrollBar().setValue(200)
-    # widget.w1.verticalScrollBar().setValue(200)
-
-    app.exec_()

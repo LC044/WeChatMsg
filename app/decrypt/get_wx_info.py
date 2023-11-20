@@ -19,6 +19,7 @@ void_p = ctypes.c_void_p
 
 
 # 读取内存中的字符串(非key部分)
+@log
 def get_info_without_key(h_process, address, n_size=64):
     array = ctypes.create_string_buffer(n_size)
     if ReadProcessMemory(h_process, void_p(address), array, n_size, 0) == 0: return "None"
@@ -27,6 +28,7 @@ def get_info_without_key(h_process, address, n_size=64):
     return text.strip() if text.strip() != "" else "None"
 
 
+@log
 def get_info_wxid(h_process, n_size=64):
     pm = pymem.Pymem("WeChat.exe")
     addrs = pymem.pattern.pattern_scan_all(pm.process_handle, b'wxid_', return_multiple=True)
@@ -39,6 +41,7 @@ def get_info_wxid(h_process, n_size=64):
 
 
 # 读取内存中的key
+@log
 def get_key(h_process, address, address_len=8):
     array = ctypes.create_string_buffer(address_len)
     if ReadProcessMemory(h_process, void_p(address), array, address_len, 0) == 0: return "None"
@@ -50,6 +53,7 @@ def get_key(h_process, address, address_len=8):
 
 
 # 读取微信信息(account,mobile,name,mail,wxid,key)
+@log
 def read_info(version_list, is_logging=False):
     wechat_process = []
     result = []

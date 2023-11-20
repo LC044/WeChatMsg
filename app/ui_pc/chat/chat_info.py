@@ -95,10 +95,7 @@ class ChatInfo(QWidget):
                     type_,
                     is_send
                 )
-                # print(str_content)
-                # self.scroolAreaLayout.addWidget(bubble_message)
                 self.chat_window.add_message_item(bubble_message, 0)
-
         except:
             print(message)
 
