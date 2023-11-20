@@ -55,6 +55,10 @@ def singleton(cls):
 class MePC:
     def __init__(self):
         self.avatar = QPixmap(Icon.Default_avatar_path)
+        self.wxid = ''
+        self.wx_dir = ''
+        self.name = ''
+        self.mobile = ''
 
     def set_avatar(self, img_bytes):
         if not img_bytes:

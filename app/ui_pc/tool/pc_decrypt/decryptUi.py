@@ -53,14 +53,14 @@ class Ui_Dialog(object):
         self.lineEdit = QtWidgets.QLineEdit(Dialog)
         self.lineEdit.setStyleSheet("background:transparent;\n"
                                     "\n"
-                                    "border-radius:5px;\n"
-                                    "border-top: 0px solid #b2e281;\n"
-                                    "border-bottom: 2px solid black;\n"
-                                    "border-right: 0px solid #b2e281;\n"
-                                    "border-left: 0px solid #b2e281;\n"
+                                    "                                                                    border-radius:5px;\n"
+                                    "                                                                    border-top: 0px solid #b2e281;\n"
+                                    "                                                                    border-bottom: 2px solid black;\n"
+                                    "                                                                    border-right: 0px solid #b2e281;\n"
+                                    "                                                                    border-left: 0px solid #b2e281;\n"
                                     "\n"
-                                    "                                               \n"
-                                    "border-style:outset\n"
+                                    "\n"
+                                    "                                                                    border-style:outset\n"
                                     "                                                                ")
         self.lineEdit.setFrame(False)
         self.lineEdit.setObjectName("lineEdit")
@@ -72,7 +72,7 @@ class Ui_Dialog(object):
         self.label_6.setObjectName("label_6")
         self.gridLayout.addWidget(self.label_6, 5, 0, 1, 1)
         self.label_key = QtWidgets.QLabel(Dialog)
-        self.label_key.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.label_key.setMaximumSize(QtCore.QSize(400, 16777215))
         self.label_key.setText("")
         self.label_key.setObjectName("label_key")
         self.gridLayout.addWidget(self.label_key, 5, 1, 1, 1)
@@ -101,7 +101,7 @@ class Ui_Dialog(object):
         self.label_8.setObjectName("label_8")
         self.gridLayout.addWidget(self.label_8, 6, 0, 1, 1)
         self.label_db_dir = QtWidgets.QLabel(Dialog)
-        self.label_db_dir.setMaximumSize(QtCore.QSize(200, 300))
+        self.label_db_dir.setMaximumSize(QtCore.QSize(400, 300))
         self.label_db_dir.setText("")
         self.label_db_dir.setObjectName("label_db_dir")
         self.gridLayout.addWidget(self.label_db_dir, 6, 1, 1, 1)

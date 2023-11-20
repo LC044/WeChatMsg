@@ -65,7 +65,7 @@ def read_info(version_list, is_logging=False):
     if len(wechat_process) == 0:
         error = "[-] WeChat No Run"
         if is_logging: print(error)
-        return error
+        return -1
 
     for process in wechat_process:
         tmp_rd = {}
@@ -76,8 +76,9 @@ def read_info(version_list, is_logging=False):
         bias_list = version_list.get(tmp_rd['version'], None)
         if not isinstance(bias_list, list):
             error = f"[-] WeChat Current Version {tmp_rd['version']} Is Not Supported"
-            if is_logging: print(error)
-            return error
+            if is_logging:
+                print(error)
+            return -2
 
         wechat_base_address = 0
         for module in process.memory_maps(grouped=False):
@@ -86,8 +87,9 @@ def read_info(version_list, is_logging=False):
                 break
         if wechat_base_address == 0:
             error = f"[-] WeChat WeChatWin.dll Not Found"
-            if is_logging: print(error)
-            return error
+            if is_logging:
+                print(error)
+            return -3
 
         Handle = ctypes.windll.kernel32.OpenProcess(0x1F0FFF, False, process.pid)
 
@@ -128,7 +130,7 @@ def get_info():
     with open(VERSION_LIST_PATH, "r", encoding="utf-8") as f:
         VERSION_LIST = json.load(f)
 
-    result = read_info(VERSION_LIST)  # 读取微信信息
+    result = read_info(VERSION_LIST, True)  # 读取微信信息
     return result
 
 
