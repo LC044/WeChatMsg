@@ -5,6 +5,8 @@ from typing import Union, List
 
 from Cryptodome.Cipher import AES
 
+from app.log import log
+
 # from Crypto.Cipher import AES # 如果上面的导入失败，可以尝试使用这个
 
 SQLITE_FILE_HEADER = "SQLite format 3\x00"  # SQLite文件头
@@ -15,6 +17,7 @@ DEFAULT_ITER = 64000
 
 
 # 通过密钥解密数据库
+@log
 def decrypt(key: str, db_path, out_path):
     if not os.path.exists(db_path):
         return f"[-] db_path:'{db_path}' File not found!"
@@ -55,6 +58,7 @@ def decrypt(key: str, db_path, out_path):
     return [True, db_path, out_path, key]
 
 
+@log
 def batch_decrypt(key: str, db_path: Union[str, List[str]], out_path: str):
     if not isinstance(key, str) or not isinstance(out_path, str) or not os.path.exists(out_path) or len(key) != 64:
         return f"[-] (key:'{key}' or out_path:'{out_path}') Error!"

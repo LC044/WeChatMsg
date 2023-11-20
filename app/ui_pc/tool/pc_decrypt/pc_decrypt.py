@@ -1,5 +1,6 @@
 import os.path
 import time
+import traceback
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import *
@@ -7,6 +8,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 from app.decrypt import get_wx_info, decrypt
+from app.log import logger
 from . import decryptUi
 
 
@@ -55,6 +57,8 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         except Exception as e:
             print(e)
             QMessageBox.critical(self, "错误", "请登录微信")
+            logger.error(traceback.format_exc())
+            traceback.print_exc()
 
     def set_wxid_(self):
         self.info['wxid'] = self.lineEdit.text()
