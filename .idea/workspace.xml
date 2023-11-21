@@ -4,19 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="支持显示聊天图片">
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="支持导出HTML">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/DataBase/msg.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/msg.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/DataBase/output_pc.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/output_pc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/data/html/0.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/data/html/1.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/data/html/2.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/data/html/3.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/data/html/4.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/data/html/5.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/data/html/6.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/data/html/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/person.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/person.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/ui_pc/contact/contactInfo.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/contact/contactInfo.py" afterDir="false" />
     </list>
@@ -288,13 +279,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00038" summary="修复部分bug">
-      <created>1698853140384</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1698853140384</updated>
     </task>
     <task id="LOCAL-00039" summary="替换chat里的contact">
       <created>1698940208580</created>
@@ -632,7 +616,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700574536724</updated>
     </task>
-    <option name="localTasksCounter" value="87" />
+    <task id="LOCAL-00087" summary="支持导出HTML">
+      <created>1700576604990</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1700576604990</updated>
+    </task>
+    <option name="localTasksCounter" value="88" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -668,7 +659,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="修改UI" />
     <MESSAGE value="新增联系人头像组件" />
     <MESSAGE value="头像支持显示二进制" />
     <MESSAGE value="显示联系人信息" />
@@ -693,7 +683,8 @@
     <MESSAGE value="更新wx选择的路径" />
     <MESSAGE value="显示聊天图片" />
     <MESSAGE value="支持显示聊天图片" />
-    <option name="LAST_COMMIT_MESSAGE" value="支持显示聊天图片" />
+    <MESSAGE value="支持导出HTML" />
+    <option name="LAST_COMMIT_MESSAGE" value="支持导出HTML" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

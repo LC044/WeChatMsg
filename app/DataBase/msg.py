@@ -67,7 +67,7 @@ def get_message_by_num(username_, local_id):
             from MSG
             where StrTalker = ? and localId < ?
             order by CreateTime desc 
-            limit 30 
+            limit 10 
         '''
     result = []
     try:
