@@ -4,12 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="显示聊天图片">
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="支持显示聊天图片">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/components/bubble_message.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/bubble_message.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/decrypt/dat2pic.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/decrypt/dat2pic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/pc_decrypt.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/pc_decrypt.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/util/path.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/path.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/msg.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/msg.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/output_pc.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/output_pc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/html/0.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/html/1.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/html/2.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/html/3.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/html/4.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/html/5.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/html/6.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/html/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/person.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/person.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/contact/contactInfo.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/contact/contactInfo.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +29,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Freeze Requirements File" />
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -279,13 +288,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00037" summary="用stackedWidget实现导航栏">
-      <created>1698850498765</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1698850498765</updated>
     </task>
     <task id="LOCAL-00038" summary="修复部分bug">
       <created>1698853140384</created>
@@ -623,7 +625,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700492891759</updated>
     </task>
-    <option name="localTasksCounter" value="86" />
+    <task id="LOCAL-00086" summary="支持显示聊天图片">
+      <created>1700574536723</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1700574536724</updated>
+    </task>
+    <option name="localTasksCounter" value="87" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -659,7 +668,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="修复无法查找wxid的bug" />
     <MESSAGE value="修改UI" />
     <MESSAGE value="新增联系人头像组件" />
     <MESSAGE value="头像支持显示二进制" />
@@ -684,7 +692,8 @@
     <MESSAGE value="文字消息设置圆角" />
     <MESSAGE value="更新wx选择的路径" />
     <MESSAGE value="显示聊天图片" />
-    <option name="LAST_COMMIT_MESSAGE" value="显示聊天图片" />
+    <MESSAGE value="支持显示聊天图片" />
+    <option name="LAST_COMMIT_MESSAGE" value="支持显示聊天图片" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -708,17 +717,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/person.py</url>
-          <line>100</line>
+          <line>103</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/person.py</url>
-          <line>98</line>
+          <line>101</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/person.py</url>
-          <line>99</line>
+          <line>102</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
