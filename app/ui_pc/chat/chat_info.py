@@ -1,9 +1,12 @@
+import traceback
+
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
-from app.DataBase import msg
+from app.DataBase import msg, hard_link
 from app.components.bubble_message import BubbleMessage, ChatWidget, Notice
 from app.person import MePC
+from app.util import get_abs_path
 
 
 class ChatInfo(QWidget):
@@ -84,7 +87,7 @@ class ChatInfo(QWidget):
             is_send = message[4]
             avatar = MePC().avatar if is_send else self.contact.avatar
             timestamp = message[5]
-            if type_ == 1 or type_ == 3:
+            if type_ == 1:
                 if self.is_5_min(timestamp):
                     time_message = Notice(self.last_str_time)
                     self.last_str_time = str_time
@@ -96,8 +99,23 @@ class ChatInfo(QWidget):
                     is_send
                 )
                 self.chat_window.add_message_item(bubble_message, 0)
+            elif type_ == 3:
+                if self.is_5_min(timestamp):
+                    time_message = Notice(self.last_str_time)
+                    self.last_str_time = str_time
+                    self.chat_window.add_message_item(time_message, 0)
+                image_path = hard_link.get_image(content=str_content, thumb=False)
+                image_path = get_abs_path(image_path)
+                bubble_message = BubbleMessage(
+                    image_path,
+                    avatar,
+                    type_,
+                    is_send
+                )
+                self.chat_window.add_message_item(bubble_message, 0)
         except:
             print(message)
+            traceback.print_exc()
 
 
 class ShowChatThread(QThread):

@@ -1,3 +1,4 @@
+import json
 import os.path
 import time
 import traceback
@@ -35,11 +36,13 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
     def get_info(self):
         try:
             result = get_wx_info.get_info()
+            print(result)
             if result == -1:
                 QMessageBox.critical(self, "错误", "请登录微信")
             elif result == -2:
                 QMessageBox.critical(self, "错误", "微信版本不匹配\n请更新微信版本为:3.9.8.15")
-            # print(result)
+            elif result == -3:
+                QMessageBox.critical(self, "错误", "WeChat WeChatWin.dll Not Found")
             else:
                 self.ready = True
                 self.info = result[0]
@@ -52,7 +55,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
                 self.lineEdit.setFocus()
                 self.checkBox.setChecked(True)
                 self.get_wxidSignal.emit(self.info['wxid'])
-                if self.wx_dir and os.path.exists(os.path.join(self.wx_dir, self.info['wxid'])):
+                if self.wx_dir and os.path.exists(os.path.join(self.wx_dir)):
                     self.label_ready.setText('已就绪')
         except Exception as e:
             print(e)
@@ -71,12 +74,16 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         directory = QtWidgets.QFileDialog.getExistingDirectory(
             self, "选取微信安装目录——能看到All Users文件夹",
             "C:/")  # 起始路径
-        if directory:
-            self.label_db_dir.setText(directory)
-            self.wx_dir = directory
-            self.checkBox_2.setChecked(True)
-            if self.ready:
-                self.label_ready.setText('已就绪')
+        db_dir = os.path.join(directory, 'Msg')
+        if not os.path.exists(db_dir):
+            QMessageBox.critical(self, "错误", "文件夹选择错误\n一般以wxid_xxx结尾")
+            return
+
+        self.label_db_dir.setText(directory)
+        self.wx_dir = directory
+        self.checkBox_2.setChecked(True)
+        if self.ready:
+            self.label_ready.setText('已就绪')
 
     def decrypt(self):
         if not self.ready:
@@ -88,11 +95,12 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         if self.lineEdit.text() == 'None':
             QMessageBox.critical(self, "错误", "请填入wxid")
             return
+        db_dir = os.path.join(self.wx_dir, 'Msg')
         if self.ready:
-            if not os.path.exists(os.path.join(self.wx_dir, self.info['wxid'])):
-                QMessageBox.critical(self, "错误", "文件夹选择错误\n一般以WeChat Files结尾")
+            if not os.path.exists(db_dir):
+                QMessageBox.critical(self, "错误", "文件夹选择错误\n一般以wxid_xxx结尾")
                 return
-        db_dir = os.path.join(self.wx_dir, self.info['wxid'], 'Msg')
+
         self.thread2 = DecryptThread(db_dir, self.info['key'])
         self.thread2.maxNumSignal.connect(self.setProgressBarMaxNum)
         self.thread2.signal.connect(self.progressBar_view)
@@ -103,6 +111,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         # print("enter clicked")
         # 中间可以添加处理逻辑
         # QMessageBox.about(self, "解密成功", "数据库文件存储在app/DataBase/Msg文件夹下")
+
         self.DecryptSignal.emit('ok')
         # self.close()
 
@@ -121,6 +130,14 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
 
     def btnExitClicked(self):
         # print("Exit clicked")
+        dic = {
+            'wxid': self.info['wxid'],
+            'wx_dir': self.wx_dir,
+            'name': self.info['name'],
+            'mobile': self.info['mobile']
+        }
+        with open('./app/data/info.json', 'w', encoding='utf-8') as f:
+            f.write(json.dumps(dic))
         self.DecryptSignal.emit('ok')
         self.close()
 

@@ -88,7 +88,9 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
    可以到微信->设置->文件管理查看
    ![](./doc/images/setting.png)
 
-   点击**设置微信路径**按钮，选择该文件夹路径
+   点击**设置微信路径**按钮，选择该文件夹路径下的带有wxid_xxx的路径
+   ![](./doc/images/path_select.png)
+
 5. 获取到密钥和微信路径之后点击开始解密
 6. 解密后的数据库文件保存在./app/DataBase/Msg路径下
 

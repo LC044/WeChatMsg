@@ -9,6 +9,7 @@ TEST
 app/data/avatar
 app/data/image2
 app/data/emoji
+app/DataBase/Msg/*
 *.db
 *.pyc
 *.log

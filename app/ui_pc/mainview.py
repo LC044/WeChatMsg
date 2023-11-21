@@ -85,6 +85,10 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
                 wxid = dic.get('wxid')
                 if wxid:
                     me = MePC()
+                    me.wxid = dic.get('wxid')
+                    me.name = dic.get('name')
+                    me.mobile = dic.get('mobile')
+                    me.wx_dir = dic.get('wx_dir')
                     self.set_my_info(wxid)
         else:
             QMessageBox.information(
@@ -158,11 +162,6 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.avatar.scaled(60, 60)
         me = MePC()
         me.set_avatar(img_bytes)
-        dic = {
-            'wxid': wxid
-        }
-        with open('./app/data/info.json', 'w', encoding='utf-8') as f:
-            f.write(json.dumps(dic))
         self.myavatar.setScaledContents(True)
         self.myavatar.setPixmap(self.avatar)
 

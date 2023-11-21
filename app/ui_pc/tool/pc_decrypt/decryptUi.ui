@@ -127,7 +127,7 @@
                                                         <widget class="QLabel" name="label_key">
                                                             <property name="maximumSize">
                                                                 <size>
-                                                                    <width>200</width>
+                                                                    <width>400</width>
                                                                     <height>16777215</height>
                                                                 </size>
                                                             </property>
@@ -189,7 +189,7 @@
                                                         <widget class="QLabel" name="label_db_dir">
                                                             <property name="maximumSize">
                                                                 <size>
-                                                                    <width>200</width>
+                                                                    <width>400</width>
                                                                     <height>300</height>
                                                                 </size>
                                                             </property>
