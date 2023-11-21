@@ -104,24 +104,34 @@ class OpenImageThread(QThread):
 
 
 class ImageMessage(QLabel):
-    def __init__(self, image, image_link='', max_width=480, max_height=720, parent=None):
+    def __init__(self, image, image_link='', max_width=480, max_height=240, parent=None):
         """
         param:image 图像路径或者QPixmap对象
         param:image_link='' 点击图像打开的文件路径
         """
         super().__init__(parent)
         self.image = QLabel(self)
-
+        self.max_width = max_width
+        self.max_height = max_height
         if isinstance(image, str):
-            self.setPixmap(QPixmap(image))
+            pixmap = QPixmap(image)
             self.image_path = image
         elif isinstance(image, QPixmap):
-            self.setPixmap(image)
+            pixmap = image
+        self.set_image(pixmap)
         if image_link:
             self.image_path = image_link
-        self.setMaximumWidth(max_width)
-        self.setMaximumHeight(max_height)
+        self.setMaximumWidth(self.max_width)
+        self.setMaximumHeight(self.max_height)
         # self.setScaledContents(True)
+
+    def set_image(self, pixmap):
+        # 计算调整后的大小
+        adjusted_width = min(pixmap.width(), self.max_width)
+        adjusted_height = min(pixmap.height(), self.max_height)
+        self.setPixmap(pixmap.scaled(adjusted_width, adjusted_height, Qt.KeepAspectRatio))
+        # 调整QLabel的大小以适应图片的宽高，但不超过最大宽高
+        self.setFixedSize(adjusted_width, adjusted_height)
 
     def mousePressEvent(self, event):
         if event.buttons() == Qt.LeftButton:  # 左键按下
