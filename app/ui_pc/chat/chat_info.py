@@ -74,7 +74,6 @@ class ChatInfo(QWidget):
     def is_5_min(self, timestamp):
         if abs(timestamp - self.last_timestamp) > 300:
             self.last_timestamp = timestamp
-
             return True
         return False
 

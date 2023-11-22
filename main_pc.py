@@ -2,7 +2,7 @@ import ctypes
 import sys
 import time
 
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QMovie
 from PyQt5.QtWidgets import *
 
 from app.ui_pc import mainview
@@ -16,8 +16,13 @@ class ViewController(QWidget):
         super().__init__()
         self.setWindowTitle('解密')
         self.setWindowIcon(QIcon('./app/data/icons/logo.svg'))
-        self.viewMainWIn = None
+        self.viewMainWIndow = None
         self.viewDecrypt = None
+        # 创建加载动画
+        loading_label = QLabel()
+        movie = QMovie("./app/data/loading.gif")  # 替换为你的加载动画文件路径
+        loading_label.setMovie(movie)
+        movie.start()
 
     def loadPCDecryptView(self):
         """
@@ -36,14 +41,16 @@ class ViewController(QWidget):
         """
         username = ''
         start = time.time()
-        self.viewMainWIn = mainview.MainWinController(username=username)
-        self.viewMainWIn.setWindowTitle("Chat")
+        self.viewMainWIndow = mainview.MainWinController(username=username)
+        self.viewMainWIndow.setWindowTitle("Chat")
         # print(username)
-        self.viewMainWIn.username = username
+        self.viewMainWIndow.username = username
         # self.viewMainWIn.exitSignal.connect(self.loadDecryptView)  # 不需要回到登录界面可以省略
-        self.viewMainWIn.show()
+        
+        self.viewMainWIndow.show()
         end = time.time()
         print('ok', end - start)
+        self.viewMainWIndow.init_ui()
 
     def show_success(self):
         QMessageBox.about(self, "解密成功", "数据库文件存储在\napp/DataBase/Msg\n文件夹下")
@@ -54,5 +61,6 @@ if __name__ == '__main__':
     view = ViewController()
     # view.loadPCDecryptView()
     view.loadMainWinView()
+    # view.show()
     # view.show_success()
     sys.exit(app.exec_())

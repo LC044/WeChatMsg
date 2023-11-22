@@ -63,7 +63,8 @@ HistoryPanel::item:hover {
 
 
 class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
-    exitSignal = pyqtSignal()
+    exitSignal = pyqtSignal(bool)
+    okSignal = pyqtSignal(bool)
 
     # username = ''
     def __init__(self, username, parent=None):
@@ -75,8 +76,10 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.resize(QSize(800, 600))
         self.action_desc.triggered.connect(self.about)
         self.load_data()
-        self.init_ui()
         self.load_num = 0
+        self.label = QLabel(self)
+        self.label.setGeometry((self.width() - 300) // 2, (self.height() - 100) // 2, 300, 100)
+        self.label.setPixmap(QPixmap('./app/data/icons/loading.svg'))
 
     def load_data(self):
         if os.path.exists('./app/data/info.json'):
@@ -98,12 +101,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
             )
 
     def init_ui(self):
-        # self.movie = QMovie("./app/data/loading.gif")
-        self.label = QLabel(self)
-        self.label.setGeometry(0, 0, self.width(), self.height())
-        self.label.setVisible(False)
-        # self.label.setMovie(self.movie)
-        # self.movie.start()
+        self.listWidget.setVisible(False)
+        self.stackedWidget.setVisible(False)
         self.listWidget.currentRowChanged.connect(self.setCurrentIndex)
         tool_item = QListWidgetItem(Icon.MyInfo_Icon, '工具', self.listWidget)
         chat_item = QListWidgetItem(Icon.Chat_Icon, '聊天', self.listWidget)
@@ -116,11 +115,11 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.stackedWidget.addWidget(tool_window)
         self.listWidget.setCurrentRow(0)
         self.stackedWidget.setCurrentIndex(0)
-        chat_window = ChatWindow()
+        self.chat_window = ChatWindow()
         # chat_window = QWidget()
-        self.stackedWidget.addWidget(chat_window)
-        contact_window = ContactWindow()
-        self.stackedWidget.addWidget(contact_window)
+        self.stackedWidget.addWidget(self.chat_window)
+        self.contact_window = ContactWindow()
+        self.stackedWidget.addWidget(self.contact_window)
         label = QLabel('我是页面')
         label.setAlignment(Qt.AlignCenter)
         # 设置label的背景颜色(这里随机)
@@ -129,11 +128,11 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
             randint(0, 255), randint(0, 255), randint(0, 255)))
         self.stackedWidget.addWidget(label)
         tool_window.load_finish_signal.connect(self.loading)
-        contact_window.load_finish_signal.connect(self.loading)
-        # chat_window.load_finish_signal.connect(self.loading)
-        # self.load_window_thread = LoadWindowThread(self.stackedWidget)
-        # self.load_window_thread.okSignal.connect(self.stop_loading)
-        # self.load_window_thread.start()
+        self.contact_window.load_finish_signal.connect(self.loading)
+        self.chat_window.load_finish_signal.connect(self.loading)
+        # self.load_thread = LoadWindowThread()
+        # self.load_thread.okSignal.connect(self.load_window)
+        # self.load_thread.start()
 
     def setCurrentIndex(self, row):
         self.stackedWidget.setCurrentIndex(row)
@@ -170,11 +169,15 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
 
     def loading(self, a0):
         self.load_num += 1
-        self.label.setVisible(False)
-        # print('加载一个了')
+        # self.label.setVisible(False)
+        print('加载一个了')
         if self.load_num == 2:
-            # print('ok了')
-            self.label.setVisible(False)
+            print('ok了')
+            self.label.clear()
+            self.label.hide()
+            self.okSignal.emit(True)
+            self.listWidget.setVisible(True)
+            self.stackedWidget.setVisible(True)
 
     def about(self):
         """
@@ -198,20 +201,20 @@ class LoadWindowThread(QThread):
     windowSignal = pyqtSignal(QWidget)
     okSignal = pyqtSignal(bool)
 
-    def __init__(self, stackedWidget):
+    def __init__(self):
         super().__init__()
-        self.stackedWidget = stackedWidget
+        self.num = 0
+
+    def loading(self):
+        self.num += 1
+        print('加载一个了')
+        if self.num == 2:
+            self.okSignal.emit(True)
 
     def run(self):
-        chat_window = ChatWindow()
-        self.stackedWidget.addWidget(chat_window)
-        contact_window = ContactWindow()
-        self.stackedWidget.addWidget(contact_window)
-        label = QLabel('我是页面')
-        label.setAlignment(Qt.AlignCenter)
-        # 设置label的背景颜色(这里随机)
-        # 这里加了一个margin边距(方便区分QStackedWidget和QLabel的颜色)
-        label.setStyleSheet('background: rgb(%d, %d, %d);margin: 50px;' % (
-            randint(0, 255), randint(0, 255), randint(0, 255)))
-        self.stackedWidget.addWidget(label)
+        self.chat_window = ChatWindow()
+        self.contact_window = ContactWindow()
+        self.contact_window.load_finish_signal.connect(self.loading)
+        self.chat_window.load_finish_signal.connect(self.loading)
+        print('加载完成')
         self.okSignal.emit(True)

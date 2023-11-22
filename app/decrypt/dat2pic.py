@@ -57,6 +57,8 @@ def decode_dat(file_path, out_path):
     else:
         pic_name = file_path[:-4] + ".jpg"
     file_outpath = os.path.join(out_path, pic_name)
+    if os.path.exists(file_outpath):
+        return file_outpath
     with open(file_path, 'rb') as file_in:
         data = file_in.read()
     # 对数据进行异或加密/解密
