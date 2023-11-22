@@ -114,12 +114,8 @@ class ContactInfo(QWidget, Ui_Form):
             self.outputThread = Output(self.contact, type_=Output.CSV)
             print('导出csv')
         elif self.sender() == self.toHtmlAct:
-            print('功能暂未实现')
-            QMessageBox.warning(self,
-                                "别急别急",
-                                "马上就实现该功能"
-                                )
-            return
+            self.outputThread = Output(self.contact, type_=Output.HTML)
+
         self.outputThread.progressSignal.connect(self.output_progress)
         self.outputThread.rangeSignal.connect(self.set_progressBar_range)
         self.outputThread.okSignal.connect(self.hide_progress_bar)
@@ -139,5 +135,6 @@ class ContactInfo(QWidget, Ui_Form):
         self.view_userinfo.progressBar.setProperty('value', value)
 
     def set_progressBar_range(self, value):
+        print('进度条范围', value)
         self.view_userinfo.progressBar.setVisible(True)
         self.view_userinfo.progressBar.setRange(0, value)

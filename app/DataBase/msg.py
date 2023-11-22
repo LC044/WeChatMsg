@@ -49,10 +49,14 @@ def get_messages(username_):
     '''
     result = []
     for cur in cursor:
-        cur.execute(sql, [username_])
-        result_ = cur.fetchall()
-        # print(len(result))
-        result += result_
+        try:
+            lock.acquire(True)
+            cur.execute(sql, [username_])
+            result_ = cur.fetchall()
+            # print(len(result))
+            result += result_
+        finally:
+            lock.release()
     result.sort(key=lambda x: x[5])
     return result
 
@@ -63,7 +67,7 @@ def get_message_by_num(username_, local_id):
             from MSG
             where StrTalker = ? and localId < ?
             order by CreateTime desc 
-            limit 30 
+            limit 10 
         '''
     result = []
     try:

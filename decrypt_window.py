@@ -1,8 +1,7 @@
 import ctypes
 import sys
 
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QApplication, QMessageBox, QWidget
 
 from app.ui_pc.tool.pc_decrypt import pc_decrypt
 
@@ -12,8 +11,7 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("WeChatReport")
 class ViewController(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle('解密')
-        self.setWindowIcon(QIcon('./app/data/icons/logo.svg'))
+
         self.viewMainWIn = None
         self.viewDecrypt = None
 

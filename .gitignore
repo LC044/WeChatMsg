@@ -13,4 +13,5 @@ app/DataBase/Msg/*
 *.db
 *.pyc
 *.log
+*.spec
 test*

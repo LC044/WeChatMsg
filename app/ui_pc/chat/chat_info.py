@@ -74,7 +74,6 @@ class ChatInfo(QWidget):
     def is_5_min(self, timestamp):
         if abs(timestamp - self.last_timestamp) > 300:
             self.last_timestamp = timestamp
-
             return True
         return False
 
@@ -100,6 +99,7 @@ class ChatInfo(QWidget):
                 )
                 self.chat_window.add_message_item(bubble_message, 0)
             elif type_ == 3:
+                # return
                 if self.is_5_min(timestamp):
                     time_message = Notice(self.last_str_time)
                     self.last_str_time = str_time
