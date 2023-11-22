@@ -3,8 +3,8 @@ import os.path
 import time
 import traceback
 
-from PyQt5.QtCore import pyqtSignal, QThread
-from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import pyqtSignal, QThread, QUrl
+from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QWidget, QMessageBox, QFileDialog
 
 from app.decrypt import get_wx_info, decrypt
@@ -19,17 +19,24 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
     def __init__(self, parent=None):
         super(DecryptControl, self).__init__(parent)
         self.setupUi(self)
-        self.setWindowTitle('解密')
-        self.setWindowIcon(QIcon(':/icons/logo.svg'))
+
         self.pushButton_3.clicked.connect(self.decrypt)
         self.btn_getinfo.clicked.connect(self.get_info)
         self.btn_db_dir.clicked.connect(self.select_db_dir)
         self.lineEdit.returnPressed.connect(self.set_wxid)
         self.lineEdit.textChanged.connect(self.set_wxid_)
+        self.btn_help.clicked.connect(self.show_help)
         self.info = {}
         self.lineEdit.setFocus()
         self.ready = False
         self.wx_dir = None
+
+    def show_help(self):
+        # 定义网页链接
+        url = QUrl("http://8.146.206.114/post/4")
+
+        # 使用QDesktopServices打开网页
+        QDesktopServices.openUrl(url)
 
     # @log
     def get_info(self):
