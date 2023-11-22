@@ -9,10 +9,9 @@
 """
 import json
 import os.path
-from random import randint
 
 from PyQt5.QtCore import *
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtWidgets import *
 
 from app import config
@@ -21,7 +20,7 @@ from app.Ui.Icon import Icon
 from . import mainwindow
 from .chat import ChatWindow
 from .contact import ContactWindow
-from .tool import ToolWindow
+from .tool.tool_window import ToolWindow
 from ..person import MePC
 
 # 美化样式表
@@ -78,6 +77,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.load_data()
         self.load_num = 0
         self.label = QLabel(self)
+
         self.label.setGeometry((self.width() - 300) // 2, (self.height() - 100) // 2, 300, 100)
         self.label.setPixmap(QPixmap('./app/data/icons/loading.svg'))
 
@@ -120,19 +120,13 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.stackedWidget.addWidget(self.chat_window)
         self.contact_window = ContactWindow()
         self.stackedWidget.addWidget(self.contact_window)
-        label = QLabel('我是页面')
+        label = QLabel('该功能暂不支持哦')
+        label.setFont(QFont("微软雅黑", 50))
         label.setAlignment(Qt.AlignCenter)
-        # 设置label的背景颜色(这里随机)
-        # 这里加了一个margin边距(方便区分QStackedWidget和QLabel的颜色)
-        label.setStyleSheet('background: rgb(%d, %d, %d);margin: 50px;' % (
-            randint(0, 255), randint(0, 255), randint(0, 255)))
         self.stackedWidget.addWidget(label)
         tool_window.load_finish_signal.connect(self.loading)
         self.contact_window.load_finish_signal.connect(self.loading)
         self.chat_window.load_finish_signal.connect(self.loading)
-        # self.load_thread = LoadWindowThread()
-        # self.load_thread.okSignal.connect(self.load_window)
-        # self.load_thread.start()
 
     def setCurrentIndex(self, row):
         self.stackedWidget.setCurrentIndex(row)

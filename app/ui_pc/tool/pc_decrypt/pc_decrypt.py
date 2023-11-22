@@ -3,10 +3,9 @@ import os.path
 import time
 import traceback
 
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt5.QtCore import pyqtSignal, QThread
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QWidget, QMessageBox, QFileDialog
 
 from app.decrypt import get_wx_info, decrypt
 from app.log import logger
@@ -21,7 +20,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         super(DecryptControl, self).__init__(parent)
         self.setupUi(self)
         self.setWindowTitle('解密')
-        self.setWindowIcon(QIcon('./app/data/icons/logo.svg'))
+        self.setWindowIcon(QIcon(':/icons/logo.svg'))
         self.pushButton_3.clicked.connect(self.decrypt)
         self.btn_getinfo.clicked.connect(self.get_info)
         self.btn_db_dir.clicked.connect(self.select_db_dir)
@@ -71,7 +70,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         QMessageBox.information(self, "ok", f"wxid修改成功{self.info['wxid']}")
 
     def select_db_dir(self):
-        directory = QtWidgets.QFileDialog.getExistingDirectory(
+        directory = QFileDialog.getExistingDirectory(
             self, "选取微信安装目录——能看到Msg文件夹",
             "C:/")  # 起始路径
         db_dir = os.path.join(directory, 'Msg')
@@ -136,8 +135,12 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
             'name': self.info['name'],
             'mobile': self.info['mobile']
         }
-        with open('./app/data/info.json', 'w', encoding='utf-8') as f:
-            f.write(json.dumps(dic))
+        try:
+            with open('./app/data/info.json', 'w', encoding='utf-8') as f:
+                f.write(json.dumps(dic))
+        except:
+            with open('./info.json', 'w', encoding='utf-8') as f:
+                f.write(json.dumps(dic))
         self.DecryptSignal.emit('ok')
         self.close()
 
@@ -159,8 +162,13 @@ class DecryptThread(QThread):
     def run(self):
         # data.decrypt(self.db_path, self.key)
         output_dir = 'app/DataBase/Msg'
-        if not os.path.exists(output_dir):
-            os.mkdir(output_dir)
+        try:
+            if not os.path.exists(output_dir):
+                os.mkdir(output_dir)
+        except:
+            os.mkdir('app')
+            os.mkdir('app/DataBase')
+            os.mkdir('app/DataBase/Msg')
         tasks = []
         if os.path.exists(self.db_path):
             for root, dirs, files in os.walk(self.db_path):

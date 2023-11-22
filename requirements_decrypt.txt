@@ -1,0 +1,9 @@
+PyQt5
+psutil
+pycryptodomex
+pywin32
+pymem
+silk-python
+pyaudio
+fuzzywuzzy
+python-Levenshtein
