@@ -5,7 +5,7 @@ from PyQt5.QtCore import pyqtSignal, QThread
 
 from . import msg
 from ..log import log
-from ..person import MePC
+from ..person_pc import MePC
 
 if not os.path.exists('./data/聊天记录'):
     os.mkdir('./data/聊天记录')

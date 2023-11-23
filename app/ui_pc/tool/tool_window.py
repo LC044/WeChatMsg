@@ -3,9 +3,9 @@ from random import randint
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import QWidget, QListWidgetItem, QLabel
 
+from app.ui_pc.Icon import Icon
 from .pc_decrypt import DecryptControl
 from .toolUI import Ui_Dialog
-from ...Ui.Icon import Icon
 
 # 美化样式表
 Stylesheet = """

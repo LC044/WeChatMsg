@@ -3,7 +3,7 @@ import os.path
 import time
 import traceback
 
-from PyQt5.QtCore import pyqtSignal, QThread, QUrl
+from PyQt5.QtCore import pyqtSignal, QThread, QUrl, QFile, QIODevice, QTextStream
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QWidget, QMessageBox, QFileDialog
 
@@ -41,7 +41,15 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
     # @log
     def get_info(self):
         try:
-            result = get_wx_info.get_info()
+            file = QFile(':/data/version_list.json')
+            if file.open(QIODevice.ReadOnly | QIODevice.Text):
+                stream = QTextStream(file)
+                content = stream.readAll()
+                file.close()
+                VERSION_LIST = json.loads(content)
+            else:
+                return
+            result = get_wx_info.get_info(VERSION_LIST)
             print(result)
             if result == -1:
                 QMessageBox.critical(self, "错误", "请登录微信")

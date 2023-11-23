@@ -1,43 +1,9 @@
-import os.path
 from typing import Dict
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 
-from app.DataBase import data
 from app.ui_pc.Icon import Icon
-
-
-# from app.Ui.Icon import Icon
-
-
-class Person:
-    def __init__(self, wxid: str):
-
-        self.wxid = wxid
-        self.conRemark = data.get_conRemark(wxid)
-        self.nickname, self.alias = data.get_nickname(wxid)
-        self.avatar_path = data.get_avator(wxid)
-        if os.path.exists(self.avatar_path):
-            self.avatar = QPixmap(self.avatar_path).scaled(60, 60)
-        else:
-            self.avatar_path = './app/data/icons/default_avatar.svg'
-            # self.avatar_path = Icon.Default_avatar_path
-            self.avatar = QPixmap(self.avatar_path).scaled(60, 60)
-
-
-class Me(Person):
-    def __init__(self, wxid: str):
-        super(Me, self).__init__(wxid)
-        self.city = None
-        self.province = None
-
-
-class Contact(Person):
-    def __init__(self, wxid: str):
-        super(Contact, self).__init__(wxid)
-        self.smallHeadImgUrl = ''
-        self.bigHeadImgUrl = ''
 
 
 def singleton(cls):
@@ -95,11 +61,6 @@ class ContactPC:
             self.avatar.loadFromData(img_bytes, format='jfif')
 
         self.avatar.scaled(60, 60, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
-
-
-class Group(Person):
-    def __init__(self, wxid: str):
-        super(Group, self).__init__(wxid)
 
 
 if __name__ == '__main__':

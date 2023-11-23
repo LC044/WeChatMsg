@@ -1,9 +1,8 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
-from app import person
 from app.DataBase.output_pc import Output
-from app.Ui.Icon import Icon
+from app.ui_pc.Icon import Icon
 from .contactInfoUi import Ui_Form
 from .userinfo import userinfo
 
@@ -13,18 +12,12 @@ class ContactInfo(QWidget, Ui_Form):
     urlSignal = pyqtSignal(QUrl)
 
     # username = ''
-    def __init__(self, contact, me: person.Me = None, parent=None):
+    def __init__(self, contact, parent=None):
         super(ContactInfo, self).__init__(parent)
         self.setupUi(self)
         self.contact = contact
         self.view_userinfo = userinfo.UserinfoController(self.contact)
-
-        # self.btn_analysis.clicked.connect(self.analysis)
-        # self.btn_emotion.clicked.connect(self.emotionale_Analysis)
-        # self.btn_report.clicked.connect(self.annual_report)
         self.btn_back.clicked.connect(self.back)
-        self.Me = me
-        # self.
         self.init_ui()
 
     def init_ui(self):
@@ -105,14 +98,7 @@ class ContactInfo(QWidget, Ui_Form):
             return
             self.outputThread = Output(self.Me, self.contact.wxid)
         elif self.sender() == self.toCSVAct:
-            # QMessageBox.warning(self,
-            #                     "别急别急",
-            #                     "马上就实现该功能"
-            #                     )
-            # print('开始导出csv')
-            # return
             self.outputThread = Output(self.contact, type_=Output.CSV)
-            print('导出csv')
         elif self.sender() == self.toHtmlAct:
             self.outputThread = Output(self.contact, type_=Output.HTML)
 

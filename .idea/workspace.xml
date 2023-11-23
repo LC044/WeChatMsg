@@ -5,10 +5,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="更新wx选择的路径">
+      <change afterPath="$PROJECT_DIR$/app/person_pc.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/resources/resource.qrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/resources/version_list.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/WeChatMsg.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WeChatMsg.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/decryptUi.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/decryptUi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/decryptUi.ui" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/decryptUi.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/output_pc.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/output_pc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/icons/404.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/icons/analysis.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/icons/annual_report.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/icons/back.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/icons/chat.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/icons/contact.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/icons/csv.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/icons/default_avatar.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/icons/emotion.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/icons/html.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/icons/loading.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/icons/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/icons/myinfo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/icons/output.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/icons/search.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data/icons/word.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/decrypt/get_wx_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/decrypt/get_wx_info.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/person.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/person.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/Icon.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/Icon.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/contact/contactInfo.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/contact/contactInfo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/mainview.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/mainview.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/mainwindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/mainwindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/mainwindow.ui" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/mainwindow.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/pc_decrypt.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/pc_decrypt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/tool_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/tool_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/util/path.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/path.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/decrypt_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/decrypt_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -102,23 +132,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Program Files/Python310/Scripts/pyuic5.exe&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "D:/Project/Python/WeChatMsg/app/resources",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Project\Python\WeChatMsg\app\resources" />
+      <recent name="D:\Project\Python\WeChatMsg\resource" />
       <recent name="D:\Project\Python\WeChatMsg\app\ui_pc\tool" />
       <recent name="D:\Project\Python\WeChatMsg\app\" />
       <recent name="D:\Project\PythonProject\WeChatMsg\app\Ui" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.decrypt_window">
+  <component name="RunManager" selected="Python.main_pc">
     <configuration name="decrypt_window" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="WeChatMsg" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -247,8 +279,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.decrypt_window" />
         <item itemvalue="Python.main_pc" />
+        <item itemvalue="Python.decrypt_window" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.hard_link" />
         <item itemvalue="Python.main" />

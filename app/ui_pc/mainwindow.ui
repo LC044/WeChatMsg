@@ -197,7 +197,9 @@
                 <property name="title">
                     <string>帮助</string>
                 </property>
-                <addaction name="action"/>
+                <addaction name="action_help_decrypt"/>
+                <addaction name="action_help_chat"/>
+                <addaction name="action_help_contact"/>
             </widget>
             <widget class="QMenu" name="menu_about">
                 <property name="title">
@@ -227,9 +229,9 @@
                 <string>退出</string>
             </property>
         </action>
-        <action name="action">
+        <action name="action_help_decrypt">
             <property name="text">
-                <string>关于</string>
+                <string>解密教程</string>
             </property>
             <property name="font">
                 <font>
@@ -240,6 +242,16 @@
         <action name="action_desc">
             <property name="text">
                 <string>说明</string>
+            </property>
+        </action>
+        <action name="action_help_chat">
+            <property name="text">
+                <string>聊天相关</string>
+            </property>
+        </action>
+        <action name="action_help_contact">
+            <property name="text">
+                <string>好友相关</string>
             </property>
         </action>
     </widget>

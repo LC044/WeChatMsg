@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>icons/404.png</file>
+        <file>icons/analysis.svg</file>
+        <file>icons/annual_report.svg</file>
+        <file>icons/back.svg</file>
+        <file>icons/chat.svg</file>
+        <file>icons/contact.svg</file>
+        <file>icons/csv.svg</file>
+        <file>icons/default_avatar.svg</file>
+        <file>icons/emotion.svg</file>
+        <file>icons/html.svg</file>
+        <file>icons/loading.svg</file>
+        <file>icons/logo.svg</file>
+        <file>icons/myinfo.svg</file>
+        <file>icons/output.svg</file>
+        <file>icons/search.svg</file>
+        <file>icons/word.svg</file>
+        <file>version_list.json</file>
+    </qresource>
+    <qresource prefix="/data">
+        <file>version_list.json</file>
+    </qresource>
+</RCC>

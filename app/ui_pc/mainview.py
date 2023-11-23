@@ -11,17 +11,17 @@ import json
 import os.path
 
 from PyQt5.QtCore import *
-from PyQt5.QtGui import QPixmap, QFont
+from PyQt5.QtGui import QPixmap, QFont, QDesktopServices
 from PyQt5.QtWidgets import *
 
 from app import config
 from app.DataBase import msg, misc
-from app.Ui.Icon import Icon
+from app.ui_pc.Icon import Icon
 from . import mainwindow
 from .chat import ChatWindow
 from .contact import ContactWindow
 from .tool.tool_window import ToolWindow
-from ..person import MePC
+from ..person_pc import MePC
 
 # 美化样式表
 Stylesheet = """
@@ -77,9 +77,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.load_data()
         self.load_num = 0
         self.label = QLabel(self)
-
         self.label.setGeometry((self.width() - 300) // 2, (self.height() - 100) // 2, 300, 100)
-        self.label.setPixmap(QPixmap('./app/data/icons/loading.svg'))
+        self.label.setPixmap(QPixmap(':/icons/icons/loading.svg'))
 
     def load_data(self):
         if os.path.exists('./app/data/info.json'):
@@ -92,6 +91,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
                     me.name = dic.get('name')
                     me.mobile = dic.get('mobile')
                     me.wx_dir = dic.get('wx_dir')
+                    print('wx_dir', me.wx_dir)
                     self.set_my_info(wxid)
         else:
             QMessageBox.information(
@@ -101,6 +101,12 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
             )
 
     def init_ui(self):
+        self.action_help_contact.triggered.connect(
+            lambda: QDesktopServices.openUrl(QUrl("http://8.146.206.114/post/4")))
+        self.action_help_chat.triggered.connect(
+            lambda: QDesktopServices.openUrl(QUrl("http://8.146.206.114/post/4")))
+        self.action_help_decrypt.triggered.connect(
+            lambda: QDesktopServices.openUrl(QUrl("http://8.146.206.114/post/4")))
         self.listWidget.setVisible(False)
         self.stackedWidget.setVisible(False)
         self.listWidget.currentRowChanged.connect(self.setCurrentIndex)

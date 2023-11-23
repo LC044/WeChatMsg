@@ -3,10 +3,10 @@ from PyQt5.QtWidgets import QWidget, QMessageBox, QAction, QLineEdit
 
 from app.DataBase import micro_msg, misc
 from app.components import ContactQListWidgetItem
-from app.person import ContactPC
+from app.person_pc import ContactPC
+from app.ui_pc.Icon import Icon
 from .contactInfo import ContactInfo
 from .contactUi import Ui_Form
-from ..Icon import Icon
 from ...util import search
 
 # 美化样式表
