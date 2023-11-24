@@ -75,7 +75,10 @@ class ContactWindow(QWidget, Ui_Form):
         micro_msg.init_database()
         if not micro_msg.is_database_exist():
             QMessageBox.critical(self, "错误", "数据库不存在\n请先解密数据库")
-            self.load_finish_signal.emit(True)
+            self.show_thread = ShowThread()
+            self.show_thread.showSingal.connect(self.show_contact)
+            self.show_thread.load_finish_signal.connect(self.load_finish_signal)
+            self.show_thread.start()
             return
         self.show_thread = ShowContactThread()
         self.show_thread.showSingal.connect(self.show_contact)
@@ -129,4 +132,17 @@ class ShowContactThread(QThread):
             contact.set_avatar(contact.smallHeadImgBLOG)
             self.showSingal.emit(contact)
             # pprint(contact.__dict__)
+        self.load_finish_signal.emit(True)
+
+
+class ShowThread(QThread):
+    showSingal = pyqtSignal(ContactPC)
+    load_finish_signal = pyqtSignal(bool)
+
+    # heightSingal = pyqtSignal(int)
+    def __init__(self):
+        super().__init__()
+
+    def run(self) -> None:
+        QThread.sleep(1)
         self.load_finish_signal.emit(True)

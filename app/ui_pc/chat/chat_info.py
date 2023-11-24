@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
 from app.DataBase import msg, hard_link
 from app.components.bubble_message import BubbleMessage, ChatWidget, Notice
-from app.person import MePC
+from app.person_pc import MePC
 from app.util import get_abs_path
 from app.util.emoji import get_emoji
 

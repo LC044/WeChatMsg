@@ -80,7 +80,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.label.setGeometry((self.width() - 300) // 2, (self.height() - 100) // 2, 300, 100)
         self.label.setPixmap(QPixmap(':/icons/icons/loading.svg'))
 
-    def load_data(self):
+    def load_data(self, flag=True):
         if os.path.exists('./app/data/info.json'):
             with open('./app/data/info.json', 'r', encoding='utf-8') as f:
                 dic = json.loads(f.read())
@@ -117,6 +117,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
 
         tool_window = ToolWindow()
         tool_window.get_info_signal.connect(self.set_my_info)
+        tool_window.decrypt_success_signal.connect(self.load_data)
         tool_window.load_finish_signal.connect(self.loading)
         self.stackedWidget.addWidget(tool_window)
         self.listWidget.setCurrentRow(0)

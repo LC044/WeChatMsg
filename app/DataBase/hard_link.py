@@ -35,7 +35,12 @@ def get_image_by_md5(md5: bytes):
         '''
     try:
         lock.acquire(True)
-        cursor.execute(sql, [md5, ])
+        try:
+            cursor.execute(sql, [md5])
+        except AttributeError:
+            init_database()
+        finally:
+            cursor.execute(sql, [md5])
         result = cursor.fetchone()
         return result
     finally:

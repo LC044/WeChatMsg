@@ -4,16 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="修改文本消息宽度">
-      <change afterPath="$PROJECT_DIR$/app/util/emoji.py" afterDir="false" />
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="支持显示表情包">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DataBase/hard_link.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/hard_link.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/components/bubble_message.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/bubble_message.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/decrypt/dat2pic.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/dat2pic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/decrypt/decrypt.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/decrypt/decrypt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/msg.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/msg.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/mainview.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/mainview.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/pc_decrypt.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/pc_decrypt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/tool_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/tool_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/util/path.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/path.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_pc.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_pc.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -272,13 +272,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00038" summary="修复部分bug">
-      <created>1698853140384</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1698853140384</updated>
     </task>
     <task id="LOCAL-00039" summary="替换chat里的contact">
       <created>1698940208580</created>
@@ -616,7 +609,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700828162843</updated>
     </task>
-    <option name="localTasksCounter" value="87" />
+    <task id="LOCAL-00087" summary="支持显示表情包">
+      <created>1700840978590</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1700840978590</updated>
+    </task>
+    <option name="localTasksCounter" value="88" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -652,7 +652,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="修改UI" />
     <MESSAGE value="新增联系人头像组件" />
     <MESSAGE value="头像支持显示二进制" />
     <MESSAGE value="显示联系人信息" />
@@ -677,7 +676,8 @@
     <MESSAGE value="更新wx选择的路径" />
     <MESSAGE value="添加资源文件" />
     <MESSAGE value="修改文本消息宽度" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改文本消息宽度" />
+    <MESSAGE value="支持显示表情包" />
+    <option name="LAST_COMMIT_MESSAGE" value="支持显示表情包" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

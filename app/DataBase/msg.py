@@ -8,6 +8,7 @@ DB = []
 cursor = []
 msg_root_path = "./app/Database/Msg/"
 lock = threading.Lock()
+
 # misc_path = './Msg/Misc.db'
 if os.path.exists(msg_root_path):
     for root, dirs, files in os.walk(msg_root_path):
@@ -22,9 +23,14 @@ if os.path.exists(msg_root_path):
                 cursor.append(cursor0)
 
 
+def is_database_exist():
+    return os.path.exists(msg_root_path + 'MSG0.db')
+
+
 def init_database():
     global DB
     global cursor
+    print(DB)
     if not DB:
         if os.path.exists(msg_root_path):
             for root, dirs, files in os.walk(msg_root_path):

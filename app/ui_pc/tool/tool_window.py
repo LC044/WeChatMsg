@@ -46,6 +46,7 @@ HistoryPanel::item:hover {
 
 class ToolWindow(QWidget, Ui_Dialog):
     get_info_signal = pyqtSignal(str)
+    decrypt_success_signal = pyqtSignal(bool)
     load_finish_signal = pyqtSignal(bool)
 
     def __init__(self, parent=None):
@@ -64,6 +65,7 @@ class ToolWindow(QWidget, Ui_Dialog):
         tool_item = QListWidgetItem(Icon.MyInfo_Icon, 'None', self.listWidget)
         decrypt_window = DecryptControl()
         decrypt_window.get_wxidSignal.connect(self.get_info_signal)
+        decrypt_window.DecryptSignal.connect(self.decrypt_success_signal)
         self.stackedWidget.addWidget(decrypt_window)
         label = QLabel('我是页面', self)
         label.setAlignment(Qt.AlignCenter)

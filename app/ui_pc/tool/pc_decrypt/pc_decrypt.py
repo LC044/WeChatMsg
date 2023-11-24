@@ -13,7 +13,7 @@ from . import decryptUi
 
 
 class DecryptControl(QWidget, decryptUi.Ui_Dialog):
-    DecryptSignal = pyqtSignal(str)
+    DecryptSignal = pyqtSignal(bool)
     get_wxidSignal = pyqtSignal(str)
 
     def __init__(self, parent=None):
@@ -126,7 +126,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         # 中间可以添加处理逻辑
         # QMessageBox.about(self, "解密成功", "数据库文件存储在app/DataBase/Msg文件夹下")
 
-        self.DecryptSignal.emit('ok')
+        self.DecryptSignal.emit(True)
         # self.close()
 
     def setProgressBarMaxNum(self, max_val):
@@ -156,7 +156,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         except:
             with open('./info.json', 'w', encoding='utf-8') as f:
                 f.write(json.dumps(dic))
-        self.DecryptSignal.emit('ok')
+        self.DecryptSignal.emit(True)
         self.close()
 
 
