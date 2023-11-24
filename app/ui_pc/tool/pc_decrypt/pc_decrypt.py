@@ -151,6 +151,8 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
             'mobile': self.info['mobile']
         }
         try:
+            if not os.path.exists('./app/data'):
+                os.mkdir('./app/data')
             with open('./app/data/info.json', 'w', encoding='utf-8') as f:
                 f.write(json.dumps(dic))
         except:

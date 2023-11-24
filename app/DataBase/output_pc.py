@@ -1,6 +1,6 @@
+import csv
 import os
 
-import pandas as pd
 from PyQt5.QtCore import pyqtSignal, QThread
 
 from . import msg
@@ -36,21 +36,7 @@ class Output(QThread):
 
     @log
     def to_csv(self, conRemark, path):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-        if not os.path.exists(origin_docx_path):
-            os.mkdir(origin_docx_path)
-        filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}.csv"
-        # columns = ["用户名", "消息内容", "发送时间", "发送状态", "消息类型", "isSend", "msgId"]
-        columns = ['localId', 'TalkerId', 'Type', 'SubType',
-                   'IsSender', 'CreateTime', 'Status', 'StrContent',
-                   'StrTime']
-        messages = msg.get_messages(self.contact.wxid)
-        # print()
-        df = pd.DataFrame(
-            data=messages,
-            columns=columns,
-        )
-        df.to_csv(filename, encoding='utf-8')
+
         self.okSignal.emit('ok')
 
     def to_html(self):
@@ -72,7 +58,11 @@ class Output(QThread):
             return
         elif self.output_type == self.CSV:
             # print("线程导出csv")
-            self.to_csv(self.ta_username, "path")
+            self.Child0 = ChildThread(self.contact, type_=ChildThread.CSV)
+            self.Child0.progressSignal.connect(self.progress)
+            self.Child0.rangeSignal.connect(self.rangeSignal)
+            self.Child0.okSignal.connect(self.okSignal)
+            self.Child0.run()
         elif self.output_type == self.HTML:
             # self.to_html()
             self.Child0 = ChildThread(self.contact, type_=ChildThread.HTML)
@@ -133,6 +123,24 @@ class ChildThread(QThread):
 
     def video(self, doc, isSend, content, status, img_path):
         return
+
+    def to_csv(self):
+        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        if not os.path.exists(origin_docx_path):
+            os.mkdir(origin_docx_path)
+        filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}.csv"
+        # columns = ["用户名", "消息内容", "发送时间", "发送状态", "消息类型", "isSend", "msgId"]
+        columns = ['localId', 'TalkerId', 'Type', 'SubType',
+                   'IsSender', 'CreateTime', 'Status', 'StrContent',
+                   'StrTime']
+        messages = msg.get_messages(self.contact.wxid)
+        # 写入CSV文件
+        with open(filename, mode='w', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerow(columns)
+            # 写入数据
+            writer.writerows(messages)
+        self.okSignal.emit('ok')
 
     def to_html(self):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
@@ -729,6 +737,6 @@ const chatMessages = [
         if self.output_type == self.DOCX:
             return
         elif self.output_type == self.CSV:
-            return
+            self.to_csv()
         elif self.output_type == self.HTML:
             self.to_html_()
