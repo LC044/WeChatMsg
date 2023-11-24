@@ -17,8 +17,8 @@ def get_code(file_path):
     """
     if os.path.isdir(file_path):
         return -1, -1
-    if file_path[-4:] != ".dat":
-        return -1, -1
+    # if file_path[-4:] != ".dat":
+    #     return -1, -1
     dat_file = open(file_path, "rb")
     dat_read = dat_file.read(2)
     # print(dat_read)
@@ -29,9 +29,9 @@ def get_code(file_path):
         code = dat_read[0] ^ pic_head[head_index]
         idf_code = dat_read[1] ^ code
         head_index = head_index + 1
-        if idf_code == pic_head[head_index]:
-            dat_file.close()
-            return head_index, code
+        # if idf_code == pic_head[head_index]:
+        #     dat_file.close()
+        return head_index, code
         head_index = head_index + 1
     dat_file.close()
     print("not jpg, png, gif")
@@ -82,7 +82,7 @@ def find_datfile(dir_path, out_path):
 
 
 if __name__ == "__main__":
-    path = r"D:\download\wechat\WeChat Files\wxid_0o18ef858vnu22\FileStorage\MsgAttach\febd8caf62dd403a7212aef63fd55910\Thumb\2023-11"
+    path = "E:\86390\Documents\WeChat Files\wxid_27hqbq7vx5hf22\FileStorage\CustomEmotion\\71\\"
     outpath = "D:\\test"
     if not os.path.exists(outpath):
         os.mkdir(outpath)

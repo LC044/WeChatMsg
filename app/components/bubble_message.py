@@ -20,7 +20,7 @@ class TextMessage(QLabel):
         self.setFont(font)
         self.setWordWrap(True)
         self.setMaximumWidth(800)
-        self.setMinimumWidth(100)
+        # self.setMinimumWidth(100)
         self.setMinimumHeight(45)
         self.setTextInteractionFlags(Qt.TextSelectableByMouse)
         self.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
@@ -43,7 +43,8 @@ class TextMessage(QLabel):
             )
         font_metrics = QFontMetrics(font)
         rect = font_metrics.boundingRect(text)
-        self.setMaximumWidth(rect.width() + 30)
+        # rect = font_metrics
+        self.setMaximumWidth(rect.width() + 40)
 
     def paintEvent(self, a0: QtGui.QPaintEvent) -> None:
         super(TextMessage, self).paintEvent(a0)

@@ -75,6 +75,7 @@ class ContactWindow(QWidget, Ui_Form):
         micro_msg.init_database()
         if not micro_msg.is_database_exist():
             QMessageBox.critical(self, "错误", "数据库不存在\n请先解密数据库")
+            self.load_finish_signal.emit(True)
             return
         self.show_thread = ShowContactThread()
         self.show_thread.showSingal.connect(self.show_contact)
