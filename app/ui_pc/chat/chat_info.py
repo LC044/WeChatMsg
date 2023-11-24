@@ -7,6 +7,7 @@ from app.DataBase import msg, hard_link
 from app.components.bubble_message import BubbleMessage, ChatWidget, Notice
 from app.person import MePC
 from app.util import get_abs_path
+from app.util.emoji import get_emoji
 
 
 class ChatInfo(QWidget):
@@ -110,6 +111,20 @@ class ChatInfo(QWidget):
                     image_path,
                     avatar,
                     type_,
+                    is_send
+                )
+                self.chat_window.add_message_item(bubble_message, 0)
+            elif type_ == 47:
+                # return
+                if self.is_5_min(timestamp):
+                    time_message = Notice(self.last_str_time)
+                    self.last_str_time = str_time
+                    self.chat_window.add_message_item(time_message, 0)
+                image_path = get_emoji(str_content, thumb=True)
+                bubble_message = BubbleMessage(
+                    image_path,
+                    avatar,
+                    3,
                     is_send
                 )
                 self.chat_window.add_message_item(bubble_message, 0)

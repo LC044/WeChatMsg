@@ -15,7 +15,7 @@ class ViewController(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('解密')
-        self.setWindowIcon(QIcon('./app/data/icons/logo.svg'))
+        self.setWindowIcon(QIcon(':/icons/icons/logo.svg'))
         self.viewMainWIndow = None
         self.viewDecrypt = None
         # 创建加载动画
@@ -46,7 +46,7 @@ class ViewController(QWidget):
         # print(username)
         self.viewMainWIndow.username = username
         # self.viewMainWIn.exitSignal.connect(self.loadDecryptView)  # 不需要回到登录界面可以省略
-        
+
         self.viewMainWIndow.show()
         end = time.time()
         print('ok', end - start)

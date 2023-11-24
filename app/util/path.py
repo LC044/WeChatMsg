@@ -1,7 +1,7 @@
 import os
 
-from app.decrypt import dat2pic
 from app.person_pc import MePC
+from app.util import dat2pic
 
 if not os.path.exists('./data/image'):
     os.mkdir('./data/image')

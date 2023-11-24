@@ -4,13 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="添加资源文件">
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="修改文本消息宽度">
+      <change afterPath="$PROJECT_DIR$/app/util/emoji.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/DataBase/hard_link.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/hard_link.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/components/bubble_message.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/bubble_message.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/decrypt/dat2pic.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/decrypt/dat2pic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/decrypt/dat2pic.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/dat2pic.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/decrypt/decrypt.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/decrypt/decrypt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/util/path.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/path.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_pc.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_pc.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,21 +111,21 @@
     "DefaultHtmlFileTemplate": "HTML File",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "D:/Project/Python/WeChatMsg/app/resources",
+    "last_opened_file_path": "D:/Project/Python/WeChatMsg/app/util",
     "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Project\Python\WeChatMsg\app\util" />
       <recent name="D:\Project\Python\WeChatMsg\app\resources" />
       <recent name="D:\Project\Python\WeChatMsg\resource" />
       <recent name="D:\Project\Python\WeChatMsg\app\ui_pc\tool" />
       <recent name="D:\Project\Python\WeChatMsg\app\" />
-      <recent name="D:\Project\PythonProject\WeChatMsg\app\Ui" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.dat2pic">
-    <configuration name="dat2pic" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.main_pc">
+    <configuration name="decrypt" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="WeChatMsg" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -134,7 +137,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/decrypt/dat2pic.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/decrypt/decrypt.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -156,6 +159,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/decrypt_window.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="emoji" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="WeChatMsg" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/util" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/util/emoji.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -200,7 +224,7 @@
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main_pc.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="EMULATE_TERMINAL" value="true" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
       <option name="INPUT_FILE" value="" />
@@ -227,34 +251,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="WeChatMsg" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.dat2pic" />
-        <item itemvalue="Python.hard_link" />
         <item itemvalue="Python.main_pc" />
+        <item itemvalue="Python.hard_link" />
+        <item itemvalue="Python.emoji" />
         <item itemvalue="Python.decrypt_window" />
-        <item itemvalue="Python.test" />
+        <item itemvalue="Python.decrypt" />
       </list>
     </recent_temporary>
   </component>
@@ -269,13 +272,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00037" summary="用stackedWidget实现导航栏">
-      <created>1698850498765</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1698850498765</updated>
     </task>
     <task id="LOCAL-00038" summary="修复部分bug">
       <created>1698853140384</created>
@@ -613,7 +609,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700751510245</updated>
     </task>
-    <option name="localTasksCounter" value="86" />
+    <task id="LOCAL-00086" summary="修改文本消息宽度">
+      <created>1700828162843</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1700828162843</updated>
+    </task>
+    <option name="localTasksCounter" value="87" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -649,7 +652,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="修复无法查找wxid的bug" />
     <MESSAGE value="修改UI" />
     <MESSAGE value="新增联系人头像组件" />
     <MESSAGE value="头像支持显示二进制" />
@@ -674,7 +676,8 @@
     <MESSAGE value="文字消息设置圆角" />
     <MESSAGE value="更新wx选择的路径" />
     <MESSAGE value="添加资源文件" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加资源文件" />
+    <MESSAGE value="修改文本消息宽度" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改文本消息宽度" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

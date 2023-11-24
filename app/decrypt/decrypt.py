@@ -119,11 +119,6 @@ def batch_decrypt(key: str, db_path: Union[str, List[str]], out_path: str):
 if __name__ == '__main__':
     # 调用 decrypt 函数，并传入参数
     key = "2aafab10af7940328bb92ac9d2a8ab5fc07a685646b14f2e9ae6948a7060c0fc"
-    db_path = "D:\Project\Python\PyWxDump\pywxdump\decrypted"
-    out_path = "test"
-    result = batch_decrypt(key, db_path, out_path)
-    for i in result:
-        if isinstance(i, str):
-            print(i)
-        else:
-            print(f'[+] "{i[1]}" -> "{i[2]}"')
+    db_path = "E:\86390\Documents\WeChat Files\wxid_27hqbq7vx5hf22\FileStorage\CustomEmotion\\71\\71CE49ED3CE9E57E43E07F802983BF45"
+    out_path = "./test/1.png"
+    print(decrypt(key, db_path, out_path))

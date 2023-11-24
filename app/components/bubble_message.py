@@ -105,7 +105,7 @@ class OpenImageThread(QThread):
 
 
 class ImageMessage(QLabel):
-    def __init__(self, image, image_link='', max_width=480, max_height=240, parent=None):
+    def __init__(self, image, is_send, image_link='', max_width=480, max_height=240, parent=None):
         """
         param:image 图像路径或者QPixmap对象
         param:image_link='' 点击图像打开的文件路径
@@ -124,6 +124,8 @@ class ImageMessage(QLabel):
             self.image_path = image_link
         self.setMaximumWidth(self.max_width)
         self.setMaximumHeight(self.max_height)
+        if is_send:
+            self.setAlignment(Qt.AlignCenter | Qt.AlignRight)
         # self.setScaledContents(True)
 
     def set_image(self, pixmap):
@@ -161,7 +163,7 @@ class BubbleMessage(QWidget):
             self.message = TextMessage(str_content, is_send)
             # self.message.setMaximumWidth(int(self.width() * 0.6))
         elif Type == MessageType.Image:
-            self.message = ImageMessage(str_content)
+            self.message = ImageMessage(str_content, is_send)
         else:
             raise ValueError("未知的消息类型")
 
