@@ -15,7 +15,7 @@ class ViewController(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('解密')
-        self.setWindowIcon(QIcon(':/icons/icons/logo.svg'))
+        self.setWindowIcon(QIcon(':/icons/icons/logo.png'))
         self.viewMainWIndow = None
         self.viewDecrypt = None
         # 创建加载动画

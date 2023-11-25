@@ -39,6 +39,7 @@ def parser_xml(xml_string):
     encrypturl = emoji.get('encrypturl')
     thumburl = emoji.get('thumburl')
     externurl = emoji.get('externurl')
+    androidmd5 = emoji.get('androidmd5')
     width = emoji.get('width')
     height = emoji.get('height')
     return {
@@ -46,7 +47,7 @@ def parser_xml(xml_string):
         'height': height,
         'cdnurl': cdnurl,
         'thumburl': thumburl if thumburl else cdnurl,
-        'md5': md5
+        'md5': md5 if md5 else androidmd5,
     }
 
 

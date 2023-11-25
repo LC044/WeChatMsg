@@ -1,5 +1,4 @@
-# 微信聊天记录可视化
-
+<h1 align="center">我的数据我做主</h1>
 <div align="center">
 <img src="https://img.shields.io/badge/WeChat-解密-blue.svg">
 <a href="https://github.com/LC044/WeChatMsg/stargazers">
@@ -15,7 +14,10 @@
     <img src="https://img.shields.io/github/license/LC044/WeChatMsg" />
 </a>
 </div>
+<div align="center">
 
+<a><img src="./doc/images/logo.png" height="240"/></a>
+</div>
 ## 功能
 
 - 破解📱手机微信数据库
