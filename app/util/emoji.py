@@ -52,6 +52,8 @@ def parser_xml(xml_string):
 
 
 def download(url, output_dir, name, thumb=False):
+    if not url:
+        return ':/icons/icons/404.png'
     resp = requests.get(url)
     byte = resp.content
     image_format = get_image_format(byte[:8])

@@ -4,7 +4,6 @@ import os
 from PyQt5.QtCore import pyqtSignal, QThread
 
 from . import msg
-from ..log import log
 from ..person_pc import MePC
 
 if not os.path.exists('./data/聊天记录'):
@@ -22,55 +21,55 @@ class Output(QThread):
     CSV = 0
     DOCX = 1
     HTML = 2
+    CSV_ALL = 3
 
     def __init__(self, contact, parent=None, type_=DOCX):
         super().__init__(parent)
+        self.Child0 = None
         self.last_timestamp = 0
         self.sec = 2  # 默认1000秒
         self.contact = contact
-        self.ta_username = contact.wxid
+        self.ta_username = contact.wxid if contact else ''
         self.msg_id = 0
         self.output_type = type_
         self.total_num = 0
         self.num = 0
 
-    @log
-    def to_csv(self, conRemark, path):
-
-        self.okSignal.emit('ok')
-
-    def to_html(self):
-
-        self.okSignal.emit('ok')
-
-    def is_5_min(self, timestamp):
-        if abs(timestamp - self.last_timestamp) > 300:
-            self.last_timestamp = timestamp
-
-            return True
-        return False
-
     def progress(self, value):
         self.progressSignal.emit(value)
+
+    def to_csv_all(self):
+        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/"
+        if not os.path.exists(origin_docx_path):
+            os.mkdir(origin_docx_path)
+        filename = f"{os.path.abspath('.')}/data/聊天记录/messages.csv"
+        # columns = ["用户名", "消息内容", "发送时间", "发送状态", "消息类型", "isSend", "msgId"]
+        columns = ['localId', 'TalkerId', 'Type', 'SubType',
+                   'IsSender', 'CreateTime', 'Status', 'StrContent',
+                   'StrTime']
+        messages = msg.get_messages_all()
+        # 写入CSV文件
+        with open(filename, mode='w', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerow(columns)
+            # 写入数据
+            writer.writerows(messages)
+        self.okSignal.emit(1)
 
     def run(self):
         if self.output_type == self.DOCX:
             return
-        elif self.output_type == self.CSV:
-            # print("线程导出csv")
-            self.Child0 = ChildThread(self.contact, type_=ChildThread.CSV)
+        elif self.output_type == self.CSV_ALL:
+            self.to_csv_all()
+        else:
+            self.Child0 = ChildThread(self.contact, type_=self.output_type)
             self.Child0.progressSignal.connect(self.progress)
             self.Child0.rangeSignal.connect(self.rangeSignal)
             self.Child0.okSignal.connect(self.okSignal)
-            self.Child0.run()
-        elif self.output_type == self.HTML:
-            # self.to_html()
-            self.Child0 = ChildThread(self.contact, type_=ChildThread.HTML)
-            self.Child0.progressSignal.connect(self.progress)
-            self.Child0.rangeSignal.connect(self.rangeSignal)
-            self.Child0.okSignal.connect(self.okSignal)
-            self.Child0.run()
-            # self.okSignal.emit(1)
+            self.Child0.start()
+
+    def cancel(self):
+        self.requestInterruption()
 
 
 class ChildThread(QThread):
@@ -96,7 +95,6 @@ class ChildThread(QThread):
     def is_5_min(self, timestamp):
         if abs(timestamp - self.last_timestamp) > 300:
             self.last_timestamp = timestamp
-
             return True
         return False
 
@@ -141,6 +139,24 @@ class ChildThread(QThread):
             # 写入数据
             writer.writerows(messages)
         self.okSignal.emit('ok')
+
+    def to_csv_all(self):
+        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/"
+        if not os.path.exists(origin_docx_path):
+            os.mkdir(origin_docx_path)
+        filename = f"{os.path.abspath('.')}/data/聊天记录/messages.csv"
+        # columns = ["用户名", "消息内容", "发送时间", "发送状态", "消息类型", "isSend", "msgId"]
+        columns = ['localId', 'TalkerId', 'Type', 'SubType',
+                   'IsSender', 'CreateTime', 'Status', 'StrContent',
+                   'StrTime']
+        messages = msg.get_messages_all()
+        # 写入CSV文件
+        with open(filename, mode='w', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerow(columns)
+            # 写入数据
+            writer.writerows(messages)
+        self.okSignal.emit(1)
 
     def to_html(self):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
@@ -734,9 +750,14 @@ const chatMessages = [
         self.okSignal.emit(1)
 
     def run(self):
-        if self.output_type == self.DOCX:
+        if self.output_type == Output.DOCX:
             return
-        elif self.output_type == self.CSV:
+        elif self.output_type == Output.CSV:
             self.to_csv()
-        elif self.output_type == self.HTML:
+        elif self.output_type == Output.HTML:
             self.to_html_()
+        elif self.output_type == Output.CSV_ALL:
+            self.to_csv_all()
+
+    def cancel(self):
+        self.requestInterruption()

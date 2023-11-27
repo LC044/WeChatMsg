@@ -67,6 +67,26 @@ def get_messages(username_):
     return result
 
 
+def get_messages_all():
+    sql = '''
+        select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime
+        from MSG
+        order by CreateTime
+    '''
+    result = []
+    for cur in cursor:
+        try:
+            lock.acquire(True)
+            cur.execute(sql)
+            result_ = cur.fetchall()
+            # print(len(result))
+            result += result_
+        finally:
+            lock.release()
+    result.sort(key=lambda x: x[5])
+    return result
+
+
 def get_message_by_num(username_, local_id):
     sql = '''
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime

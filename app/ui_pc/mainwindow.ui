@@ -183,15 +183,22 @@
                 <addaction name="action_3"/>
                 <addaction name="action_4"/>
             </widget>
-            <widget class="QMenu" name="menu">
+            <widget class="QMenu" name="menu_data">
                 <property name="font">
                     <font>
                         <family>微软雅黑</family>
                     </font>
                 </property>
                 <property name="title">
-                    <string>编辑</string>
+                    <string>数据</string>
                 </property>
+                <widget class="QMenu" name="menu_output">
+                    <property name="title">
+                        <string>导出聊天记录(全部)</string>
+                    </property>
+                    <addaction name="action_output_CSV"/>
+                </widget>
+                <addaction name="menu_output"/>
             </widget>
             <widget class="QMenu" name="menu_2">
                 <property name="title">
@@ -213,7 +220,7 @@
                 </property>
             </widget>
             <addaction name="menu_F"/>
-            <addaction name="menu"/>
+            <addaction name="menu_data"/>
             <addaction name="menu_2"/>
             <addaction name="menu_about"/>
             <addaction name="menu_3"/>
@@ -252,6 +259,11 @@
         <action name="action_help_contact">
             <property name="text">
                 <string>好友相关</string>
+            </property>
+        </action>
+        <action name="action_output_CSV">
+            <property name="text">
+                <string>CSV</string>
             </property>
         </action>
     </widget>

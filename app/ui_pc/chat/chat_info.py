@@ -43,6 +43,7 @@ class ChatInfo(QWidget):
 
     def show_finish(self, ok):
         self.setScrollBarPos()
+        self.show_chat_thread.quit()
 
     def verticalScrollBar(self, pos):
         """

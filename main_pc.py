@@ -2,7 +2,7 @@ import ctypes
 import sys
 import time
 
-from PyQt5.QtGui import QIcon, QMovie
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import *
 
 from app.ui_pc import mainview
@@ -18,11 +18,6 @@ class ViewController(QWidget):
         self.setWindowIcon(QIcon(':/icons/icons/logo.png'))
         self.viewMainWIndow = None
         self.viewDecrypt = None
-        # 创建加载动画
-        loading_label = QLabel()
-        movie = QMovie("./app/data/loading.gif")  # 替换为你的加载动画文件路径
-        loading_label.setMovie(movie)
-        movie.start()
 
     def loadPCDecryptView(self):
         """

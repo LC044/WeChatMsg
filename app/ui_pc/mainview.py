@@ -21,6 +21,7 @@ from . import mainwindow
 from .chat import ChatWindow
 from .contact import ContactWindow
 from .tool.tool_window import ToolWindow
+from ..DataBase.output_pc import Output
 from ..person_pc import MePC
 
 # 美化样式表
@@ -68,6 +69,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
     # username = ''
     def __init__(self, username, parent=None):
         super(MainWinController, self).__init__(parent)
+        self.outputThread0 = None
+        self.outputThread = None
         self.setupUi(self)
         self.setWindowIcon(Icon.MainWindow_Icon)
         self.setStyleSheet(Stylesheet)
@@ -101,12 +104,15 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
             )
 
     def init_ui(self):
+        self.menu_output.setIcon(Icon.Output)
+        self.action_output_CSV.setIcon(Icon.ToCSV)
+        self.action_output_CSV.triggered.connect(self.output)
         self.action_help_contact.triggered.connect(
-            lambda: QDesktopServices.openUrl(QUrl("http://8.146.206.114/post/4")))
+            lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/4")))
         self.action_help_chat.triggered.connect(
-            lambda: QDesktopServices.openUrl(QUrl("http://8.146.206.114/post/4")))
+            lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/4")))
         self.action_help_decrypt.triggered.connect(
-            lambda: QDesktopServices.openUrl(QUrl("http://8.146.206.114/post/4")))
+            lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/4")))
         self.listWidget.setVisible(False)
         self.stackedWidget.setVisible(False)
         self.listWidget.currentRowChanged.connect(self.setCurrentIndex)
@@ -179,6 +185,16 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
             self.okSignal.emit(True)
             self.listWidget.setVisible(True)
             self.stackedWidget.setVisible(True)
+
+    def output(self):
+        if self.sender() == self.action_output_CSV:
+            self.outputThread = Output(None, type_=Output.CSV_ALL)
+            self.outputThread.okSignal.connect(
+                lambda x: self.message('聊天记录导出成功\n./data/聊天记录/messages.csv'))
+            self.outputThread.start()
+
+    def message(self, msg):
+        QMessageBox.about(self, "提醒", msg)
 
     def about(self):
         """
