@@ -33,8 +33,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
 
     def show_help(self):
         # 定义网页链接
-        url = QUrl("http://8.146.206.114/post/4")
-
+        url = QUrl("https://blog.lc044.love/post/4")
         # 使用QDesktopServices打开网页
         QDesktopServices.openUrl(url)
 
