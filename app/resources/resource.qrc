@@ -17,6 +17,8 @@
         <file>icons/search.svg</file>
         <file>icons/word.svg</file>
         <file>version_list.json</file>
+        <file>icons/logo.ico</file>
+        <file>icons/logo.png</file>
     </qresource>
     <qresource prefix="/data">
         <file>version_list.json</file>
