@@ -108,9 +108,9 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.action_output_CSV.setIcon(Icon.ToCSV)
         self.action_output_CSV.triggered.connect(self.output)
         self.action_help_contact.triggered.connect(
-            lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/4")))
+            lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/5")))
         self.action_help_chat.triggered.connect(
-            lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/4")))
+            lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/5")))
         self.action_help_decrypt.triggered.connect(
             lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/4")))
         self.listWidget.setVisible(False)
