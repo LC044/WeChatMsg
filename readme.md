@@ -27,8 +27,9 @@
 - 还原微信聊天界面
     - 文本
     - 图片
+    - 表情包
 - 导出聊天记录
-    - HTML(文本)
+    - HTML(文本、图片)
     - Word文档
     - CSV文档
 - 分析聊天数据，做成可视化年报
@@ -67,6 +68,10 @@
 </details>
 
 # 使用
+
+不会编程或者不太会编程的可以先点个star(项目不断更新中),然后去旁边Realease下载打包好的exe可执行文件，双击即可运行
+
+**！！！注意：若出现闪退情况请右击选择用管理员身份运行exe程序，该程序不存在任何病毒，若杀毒软件提示有风险选择略过即可**
 
 ## 解密PC版微信数据库
 
@@ -112,9 +117,11 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 </details>
 
-### 使用模拟器
+## 使用模拟器（支持可视化分析）
 
 <details>
+
+**不推荐使用，PC端微信可视化功能马上实现**
 
 1. 根据[教程](https://blog.csdn.net/m0_59452630/article/details/124222235?spm=1001.2014.3001.5501)获得两个文件
     - auth_info_key_prefs.xml——解析数据库密码
@@ -177,3 +184,18 @@ python main.py
 > 说明：该项目仅可用于交流学习，禁止任何非法用途，创作者不承担任何责任🙄
 
 [![Star History Chart](https://api.star-history.com/svg?repos=LC044/WeChatMsg&type=Date)](https://star-history.com/?utm_source=bestxtools.com#LC044/WeChatMsg&Date)
+
+# 温馨提示
+
+如果您在使用该软件的过程中
+
+* 发现新的bug
+* 有新的功能诉求
+* 操作比较繁琐
+* 觉得UI不够美观
+* 等其他给您造成困扰的地方
+
+请提起[issue](https://github.com/LC044/WeChatMsg/issues)或者添加QQ群:[**474379264**](doc/images/qq.jpg)，我将尽快为您解决问题
+
+如果您是一名开发者，有新的想法或建议，欢迎[fork](https://github.com/LC044/WeChatMsg/forks)
+该项目并发起[PR](https://github.com/LC044/WeChatMsg/pulls)，我将把您的名字写入贡献者名单中
