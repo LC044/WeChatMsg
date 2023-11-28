@@ -5,10 +5,10 @@ import os
 from PyQt5.QtCore import pyqtSignal, QThread
 
 from . import msg
-from ..person_pc import MePC
-
 from ..DataBase import hard_link
+from ..person_pc import MePC
 from ..util import get_abs_path
+
 if not os.path.exists('./data/聊天记录'):
     os.mkdir('./data/聊天记录')
 
@@ -718,13 +718,8 @@ const chatMessages = [
             avatar = 'myhead.png' if is_send else 'tahead.png'
             timestamp = message[5]
             self.progressSignal.emit(index)
-
             if type_ == 1:
-                str_content = str_content.replace('"', '\\"').replace('{', '\\{').replace('}', '\\}').replace('\n',
-                                                                                                          '\\n').replace(
-                "'", "\\'")
-            str_content = escape_js_and_html(str_content)
-            if type_ == 1:
+                str_content = escape_js_and_html(str_content)
                 if self.is_5_min(timestamp):
                     f.write(
                         f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''

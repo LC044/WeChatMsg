@@ -4,6 +4,8 @@ import sqlite3
 import threading
 import xml.etree.ElementTree as ET
 
+from app.log import log
+
 lock = threading.Lock()
 DB = None
 cursor = None
@@ -56,10 +58,9 @@ def get_md5_from_xml(content):
     return md5_value
 
 
+@log
 def get_image(content, thumb=False):
     md5 = get_md5_from_xml(content)
-    # md5 = 'bc37a58c32cb203ee9ac587b068e5853'
-    # md5 = '41895664fc5a77878e2155fc96209a19'
     result = get_image_by_md5(binascii.unhexlify(md5))
     if result:
         # print(result)

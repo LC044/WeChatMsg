@@ -44,6 +44,8 @@ def decode_dat(file_path, out_path):
     :param file_path: dat文件路径
     :return: 无
     """
+    if not os.path.exists(file_path):
+        return None
     file_type, decode_code = get_code(file_path)
 
     if decode_code == -1:

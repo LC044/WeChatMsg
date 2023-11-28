@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="修复str_content转义问题">
-      <change afterPath="$PROJECT_DIR$/app/web_ui/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/web_ui/web.py" afterDir="false" />
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="add web">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/resource.qrc" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/resource.qrc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/hard_link.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/hard_link.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/output_pc.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/output_pc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/util/dat2pic.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/dat2pic.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/util/path.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/path.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -268,13 +269,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00045" summary="加快打开速度">
-      <created>1699367814847</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1699367814847</updated>
     </task>
     <task id="LOCAL-00046" summary="修改导入路径，方便打包成exe">
       <created>1699373594568</created>
@@ -612,7 +606,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701178257665</updated>
     </task>
-    <option name="localTasksCounter" value="94" />
+    <task id="LOCAL-00094" summary="add web">
+      <created>1701178346464</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1701178346464</updated>
+    </task>
+    <option name="localTasksCounter" value="95" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -648,7 +649,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="新增聊天记录导出csv格式" />
     <MESSAGE value="导出所有数据库的聊天记录" />
     <MESSAGE value="数据库加锁避免多线程访问报错" />
     <MESSAGE value="修复聊天气泡不能更改大小的bug" />
@@ -673,7 +673,8 @@
     <MESSAGE value="更新帮助链接" />
     <MESSAGE value="新增导出所有聊天记录到CSV" />
     <MESSAGE value="修复str_content转义问题" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复str_content转义问题" />
+    <MESSAGE value="add web" />
+    <option name="LAST_COMMIT_MESSAGE" value="add web" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
