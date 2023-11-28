@@ -16,6 +16,8 @@ def get_abs_path(path):
         # print(path, os.path.join(MePC().wx_dir, path), MePC().wx_dir)
         output_path = dat2pic.decode_dat(os.path.join(MePC().wx_dir, path), './data/image')
 
+        base_path = os.getcwd() + "/data/image"
+        output_path = dat2pic.decode_dat(os.path.join(MePC().wx_dir, path), base_path) #'./data/image')
         return output_path
     else:
         return ':/icons/icons/404.png'

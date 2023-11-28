@@ -7,6 +7,8 @@ from PyQt5.QtCore import pyqtSignal, QThread
 from . import msg
 from ..person_pc import MePC
 
+from ..DataBase import hard_link
+from ..util import get_abs_path
 if not os.path.exists('./data/聊天记录'):
     os.mkdir('./data/聊天记录')
 
@@ -544,6 +546,12 @@ class ChildThread(QThread):
       user-select:none;
   }
 
+  .chat-image img{
+    margin-right: 18px;
+    margin-left: 18px;
+    max-width: 300px;
+    max-height: auto;
+  }
   .avatar img{
       width: 42px;
       height: 42px;
@@ -600,6 +608,56 @@ class ChildThread(QThread):
       -webkit-box-shadow:inset006pxrgba(0,0,0,0.5);
   }
 
+  .pagination-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  margin-top: 20px;
+  margin-left: 20px; /* 新增的左边距 */
+}
+
+.button-row,
+.jump-row,
+#paginationInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 25px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 14px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+input {
+  padding: 8px;
+  width: 120px;
+  box-sizing: border-box;
+  margin-right: 0px;
+  margin-left: 15px;
+}
+
+button,
+input {
+  font-size: 14px;
+}
+
+#paginationInfo {
+  color: #555;
+  font-size: 14px;
+}
+
   </style>
 </head>
 <body>
@@ -629,13 +687,16 @@ class ChildThread(QThread):
 
 </div>
 <div></div>
-<div>
+<div class="pagination-container">
+  <div class="button-row">
     <button onclick="prevPage()">上一页</button>
-    <div id = "paginationInfo"></div>
     <button onclick="nextPage()">下一页</button>
-    <div></div>
+  </div>
+  <div class="jump-row">
     <input type="number" id="gotoPageInput" placeholder="跳转到第几页">
     <button onclick="gotoPage()">跳转</button>
+  </div>
+  <div id="paginationInfo"></div>
 </div>
 <script>
 const chatContainer = document.getElementById('chat-container');
@@ -657,6 +718,11 @@ const chatMessages = [
             avatar = 'myhead.png' if is_send else 'tahead.png'
             timestamp = message[5]
             self.progressSignal.emit(index)
+
+            if type_ == 1:
+                str_content = str_content.replace('"', '\\"').replace('{', '\\{').replace('}', '\\}').replace('\n',
+                                                                                                          '\\n').replace(
+                "'", "\\'")
             str_content = escape_js_and_html(str_content)
             if type_ == 1:
                 if self.is_5_min(timestamp):
@@ -665,6 +731,28 @@ const chatMessages = [
                     )
                 f.write(
                     f'''{{ type:{type_}, text: '{str_content}',is_send:{is_send},avatar_path:'{avatar}'}},'''
+                )
+            elif type_ == 3:
+                import re
+                pattern1 = r'<msg><img length="\d+" hdlength="0" /><commenturl></commenturl></msg>'
+                pattern2 = r'<msg><img /></msg>'
+                match = re.search(pattern1, str_content)
+                if match:
+                    continue
+                match = re.search(pattern2, str_content)
+                if match:
+                    continue
+
+                image_path = hard_link.get_image(content=str_content, thumb=False)
+                image_path = get_abs_path(image_path)
+                image_path = image_path.replace('\\', '/')
+                # print(f"tohtml:---{image_path}")
+                if self.is_5_min(timestamp):
+                    f.write(
+                        f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                    )
+                f.write(
+                    f'''{{ type:{type_}, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
                 )
         html_end = '''
 ];
@@ -684,6 +772,16 @@ const chatMessages = [
             else if(message.type == 0){
                 messageElement.className = "item item-center";
                 messageElement.innerHTML = `<span>${message.text}</span>`
+            }
+            else if (message.type == 3){
+                if (message.is_send == 1){
+                messageElement.className = "item item-right";
+                messageElement.innerHTML = `<div class='chat-image'><img src="${message.text}" /></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
+            }
+            else if(message.is_send==0){
+                messageElement.className = "item item-left";
+                messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='chat-image'><img src="${message.text}" /></div>`
+            }
             }
             chatContainer.appendChild(messageElement);
         }
@@ -718,6 +816,16 @@ const chatMessages = [
             else if(message.type == 0){
                 messageElement.className = "item item-center";
                 messageElement.innerHTML = `<span>${message.text}</span>`
+            }
+            else if (message.type == 3){
+                if (message.is_send == 1){
+                messageElement.className = "item item-right";
+                messageElement.innerHTML = `<div class='chat-image'><img src="${message.text}" /></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
+            }
+            else if(message.is_send==0){
+                messageElement.className = "item item-left";
+                messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='chat-image'><img src="${message.text}" /></div>`
+            }
             }
             chatContainer.appendChild(messageElement);
     }
