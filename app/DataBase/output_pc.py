@@ -1,4 +1,5 @@
 import csv
+import html
 import os
 
 from PyQt5.QtCore import pyqtSignal, QThread
@@ -8,6 +9,24 @@ from ..person_pc import MePC
 
 if not os.path.exists('./data/聊天记录'):
     os.mkdir('./data/聊天记录')
+
+
+def escape_js_and_html(input_str):
+    # 转义HTML特殊字符
+    html_escaped = html.escape(input_str, quote=False)
+
+    # 手动处理JavaScript转义字符
+    js_escaped = (
+        html_escaped
+        .replace("\\", "\\\\")
+        .replace("'", r"\'")
+        .replace('"', r'\"')
+        .replace("\n", r'\n')
+        .replace("\r", r'\r')
+        .replace("\t", r'\t')
+    )
+
+    return js_escaped
 
 
 class Output(QThread):
@@ -638,9 +657,7 @@ const chatMessages = [
             avatar = 'myhead.png' if is_send else 'tahead.png'
             timestamp = message[5]
             self.progressSignal.emit(index)
-            str_content = str_content.replace('"', '\\"').replace('{', '\\{').replace('}', '\\}').replace('\n',
-                                                                                                          '\\n').replace(
-                "'", "\\'")
+            str_content = escape_js_and_html(str_content)
             if type_ == 1:
                 if self.is_5_min(timestamp):
                     f.write(
