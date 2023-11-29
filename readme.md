@@ -19,19 +19,19 @@
 <a><img src="./doc/images/logo.png" height="240"/></a>
 </div>
 
-## 功能
+## 🍉功能
 
 - 破解📱手机微信数据库
 - 安卓 or 苹果都可以哦
 - 破解💻PC端微信数据库
 - 还原微信聊天界面
-    - 文本
-    - 图片
-    - 表情包
+    - 🗨文本✅
+    - 🏝图片✅
+    - 🐻‍❄️表情包✅
 - 导出聊天记录
-    - HTML(文本、图片)
-    - Word文档
-    - CSV文档
+    - HTML(文本、图片)✅
+    - Word文档✅
+    - CSV文档✅
 - 分析聊天数据，做成可视化年报
 - 🔥**项目持续更新中**
 - 小伙伴们想要其他功能可以留言哦🏆
@@ -39,11 +39,11 @@
 
 为了方便大家交流，我新建了一个QQ群💬：**474379264**
 
-大家有任何想法、建议或bug可以群里反馈给我
+大家有任何想法💡、建议或bug可以群里反馈给我
 
 [//]: # (<img src="doc/images/qq.jpg" height=480/>)
 
-## 效果
+## 🥤效果
 
 <details>
 
@@ -67,11 +67,12 @@
 
 </details>
 
-# 使用
+# ⌛使用
 
-不会编程或者不太会编程的可以先点个star(项目不断更新中),然后去旁边Realease下载打包好的exe可执行文件，双击即可运行
+小白可以先点个star⭐(💘项目不断更新中),然后去旁边[Release](https://github.com/LC044/WeChatMsg/releases/tag/v0.2.4)
+下载打包好的exe可执行文件，双击即可运行
 
-**！！！注意：若出现闪退情况请右击选择用管理员身份运行exe程序，该程序不存在任何病毒，若杀毒软件提示有风险选择略过即可**
+**⚠️注意：若出现闪退情况请右击选择用管理员身份运行exe程序，该程序不存在任何病毒，若杀毒软件提示有风险选择略过即可**
 
 ## 解密PC版微信数据库
 
@@ -175,7 +176,7 @@ python main.py
 
 项目地址：https://github.com/LC044/WeChatMsg
 
-# 致谢
+# 🏆致谢
 
 * PC微信解密工具:[https://github.com/xaoyaoo/PyWxDump](https://github.com/xaoyaoo/PyWxDump)
 
@@ -185,7 +186,7 @@ python main.py
 
 [![Star History Chart](https://api.star-history.com/svg?repos=LC044/WeChatMsg&type=Date)](https://star-history.com/?utm_source=bestxtools.com#LC044/WeChatMsg&Date)
 
-# 温馨提示
+# 🎄温馨提示
 
 如果您在使用该软件的过程中
 
