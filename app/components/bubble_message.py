@@ -1,3 +1,5 @@
+import os.path
+
 from PIL import Image
 from PyQt5 import QtGui
 from PyQt5.QtCore import QSize, pyqtSignal, Qt, QThread
@@ -100,8 +102,9 @@ class OpenImageThread(QThread):
         self.image_path = image_path
 
     def run(self) -> None:
-        image = Image.open(self.image_path)
-        image.show()
+        if os.path.exists(self.image_path):
+            image = Image.open(self.image_path)
+            image.show()
 
 
 class ImageMessage(QLabel):

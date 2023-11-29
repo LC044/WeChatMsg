@@ -137,6 +137,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         label.setAlignment(Qt.AlignCenter)
         self.stackedWidget.addWidget(label)
         tool_window.load_finish_signal.connect(self.loading)
+        self.statusbar.showMessage('聊天窗口上划到顶部会加载新的聊天记录\n一次不行那就多来几次')
         self.contact_window.load_finish_signal.connect(self.loading)
         self.chat_window.load_finish_signal.connect(self.loading)
 

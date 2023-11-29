@@ -86,8 +86,9 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
 
     def select_db_dir(self):
         directory = QFileDialog.getExistingDirectory(
-            self, "选取微信安装目录——能看到Msg文件夹",
-            "C:/")  # 起始路径
+            self, "选取微信文件保存目录——能看到Msg文件夹",
+            os.path.expanduser('~\Documents')
+        )  # 起始路径
         db_dir = os.path.join(directory, 'Msg')
         if not os.path.exists(db_dir):
             QMessageBox.critical(self, "错误", "文件夹选择错误\n一般以wxid_xxx结尾")
