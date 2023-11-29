@@ -81,18 +81,14 @@ def get_message_by_num(username_, local_id):
 
 
 def close():
-    for db in DB:
-        db.close()
+    global DB
+    if DB:
+        DB.close()
 
 
 if __name__ == '__main__':
     msg_root_path = './Msg/'
     init_database()
-
-    # username = 'wxid_0o18ef858vnu22'
-    # result = get_messages(username)
-    # pprint(result)
-    # pprint(len(result))
     result = get_message_by_num('wxid_0o18ef858vnu22', 9999999)
     print(result)
     print(result[-1][0])

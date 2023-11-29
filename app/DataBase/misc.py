@@ -1,6 +1,7 @@
 import os.path
 import sqlite3
 import threading
+import time
 
 lock = threading.Lock()
 DB = None
@@ -33,7 +34,8 @@ def get_avatar_buffer(userName):
         lock.acquire(True)
         try:
             cursor.execute(sql, [userName])
-        except AttributeError:
+        except:
+            time.sleep(0.5)
             init_database()
         finally:
             cursor.execute(sql, [userName])
@@ -44,6 +46,12 @@ def get_avatar_buffer(userName):
     finally:
         lock.release()
     return None
+
+
+def close():
+    global DB
+    if DB:
+        DB.close()
 
 
 if __name__ == '__main__':

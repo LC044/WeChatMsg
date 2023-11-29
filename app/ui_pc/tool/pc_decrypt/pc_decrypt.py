@@ -7,9 +7,11 @@ from PyQt5.QtCore import pyqtSignal, QThread, QUrl, QFile, QIODevice, QTextStrea
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QWidget, QMessageBox, QFileDialog
 
+from app.DataBase import msg, micro_msg, misc, hard_link
 from app.DataBase.merge import merge_databases
 from app.decrypt import get_wx_info, decrypt
 from app.log import logger
+from app.util import path
 from . import decryptUi
 
 
@@ -69,6 +71,14 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
                 self.lineEdit.setFocus()
                 self.checkBox.setChecked(True)
                 self.get_wxidSignal.emit(self.info['wxid'])
+                directory = os.path.join(path.wx_path(), self.info['wxid'])
+                if os.path.exists(directory):
+                    self.label_db_dir.setText(directory)
+                    self.wx_dir = directory
+                    self.checkBox_2.setChecked(True)
+                    self.ready = True
+                if self.ready:
+                    self.label_ready.setText('已就绪')
                 if self.wx_dir and os.path.exists(os.path.join(self.wx_dir)):
                     self.label_ready.setText('已就绪')
         except Exception as e:
@@ -87,7 +97,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
     def select_db_dir(self):
         directory = QFileDialog.getExistingDirectory(
             self, "选取微信文件保存目录——能看到Msg文件夹",
-            os.path.expanduser('~\Documents')
+            path.wx_path()
         )  # 起始路径
         db_dir = os.path.join(directory, 'Msg')
         if not os.path.exists(db_dir):
@@ -186,6 +196,11 @@ class DecryptThread(QThread):
         pass
 
     def run(self):
+        misc.close()
+        msg.close()
+        micro_msg.close()
+        hard_link.close()
+        QThread.sleep(1)
         # data.decrypt(self.db_path, self.key)
         output_dir = 'app/DataBase/Msg'
         try:
@@ -207,7 +222,7 @@ class DecryptThread(QThread):
         self.maxNumSignal.emit(len(tasks))
         for i, task in enumerate(tasks):
             decrypt.decrypt(*task)
-            self.signal.emit(str(i + 1))
+            self.signal.emit(str(i))
         # print(self.db_path)
         self.okSignal.emit('ok')
         # self.signal.emit('100')

@@ -72,6 +72,11 @@ def get_image(content, thumb=False):
         return dat_image
 
 
+def close():
+    if DB:
+        DB.close()
+
+
 # 6b02292eecea118f06be3a5b20075afc_t
 
 if __name__ == '__main__':

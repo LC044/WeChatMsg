@@ -15,7 +15,7 @@ from PyQt5.QtGui import QPixmap, QFont, QDesktopServices
 from PyQt5.QtWidgets import *
 
 from app import config
-from app.DataBase import msg, misc
+from app.DataBase import msg, misc, micro_msg, hard_link
 from app.ui_pc.Icon import Icon
 from . import mainwindow
 from .chat import ChatWindow
@@ -216,7 +216,10 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
     def close(self) -> bool:
         del self.listWidget
         del self.stackedWidget
+        misc.close()
         msg.close()
+        micro_msg.close()
+        hard_link.close()
         self.contact_window.close()
 
 
