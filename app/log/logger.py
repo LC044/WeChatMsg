@@ -30,6 +30,7 @@ def log(func):
         try:
             return func(*args, **kwargs)
         except Exception as e:
-            logger.error(f"\n{func.__qualname__} is error,here are details:\n{traceback.format_exc()}")
+            logger.error(
+                f"\n{func.__qualname__} is error,params:{(args, kwargs)},here are details:\n{traceback.format_exc()}")
 
     return log_

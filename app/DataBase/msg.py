@@ -1,49 +1,32 @@
 import os.path
-import re
 import sqlite3
 import threading
 from pprint import pprint
 
-DB = []
-cursor = []
-msg_root_path = "./app/Database/Msg/"
+DB = None
+cursor = None
+db_path = "./app/Database/Msg/MSG.db"
 lock = threading.Lock()
 
 # misc_path = './Msg/Misc.db'
-if os.path.exists(msg_root_path):
-    for root, dirs, files in os.walk(msg_root_path):
-        for file in files:
-            if re.match('^MSG[0-9]+\.db$', file):
-                # print('ok', file)
-                msg_path = os.path.join(msg_root_path, file)
-                DB0 = sqlite3.connect(msg_path, check_same_thread=False)
-                # '''创建游标'''
-                cursor0 = DB0.cursor()
-                DB.append(DB0)
-                cursor.append(cursor0)
+if os.path.exists(db_path):
+    DB = sqlite3.connect(db_path, check_same_thread=False)
+    # '''创建游标'''
+    cursor = DB.cursor()
 
 
 def is_database_exist():
-    return os.path.exists(msg_root_path + 'MSG0.db')
+    return os.path.exists(db_path)
 
 
 def init_database():
     global DB
     global cursor
-    print(DB)
     if not DB:
-        if os.path.exists(msg_root_path):
-            for root, dirs, files in os.walk(msg_root_path):
-                for file in files:
-                    # print(file)
-                    if re.match('^MSG[0-9]+\.db$', file):
-                        print('ok', file)
-                        msg_path = os.path.join(msg_root_path, file)
-                        DB0 = sqlite3.connect(msg_path, check_same_thread=False)
-                        # '''创建游标'''
-                        cursor0 = DB0.cursor()
-                        DB.append(DB0)
-                        cursor.append(cursor0)
+        if os.path.exists(db_path):
+            DB = sqlite3.connect(db_path, check_same_thread=False)
+            # '''创建游标'''
+            cursor = DB.cursor()
 
 
 def get_messages(username_):
@@ -53,16 +36,12 @@ def get_messages(username_):
         where StrTalker=?
         order by CreateTime
     '''
-    result = []
-    for cur in cursor:
-        try:
-            lock.acquire(True)
-            cur.execute(sql, [username_])
-            result_ = cur.fetchall()
-            # print(len(result))
-            result += result_
-        finally:
-            lock.release()
+    try:
+        lock.acquire(True)
+        cursor.execute(sql, [username_])
+        result = cursor.fetchall()
+    finally:
+        lock.release()
     result.sort(key=lambda x: x[5])
     return result
 
@@ -73,16 +52,12 @@ def get_messages_all():
         from MSG
         order by CreateTime
     '''
-    result = []
-    for cur in cursor:
-        try:
-            lock.acquire(True)
-            cur.execute(sql)
-            result_ = cur.fetchall()
-            # print(len(result))
-            result += result_
-        finally:
-            lock.release()
+    try:
+        lock.acquire(True)
+        cursor.execute(sql)
+        result = cursor.fetchall()
+    finally:
+        lock.release()
     result.sort(key=lambda x: x[5])
     return result
 
@@ -95,18 +70,13 @@ def get_message_by_num(username_, local_id):
             order by CreateTime desc 
             limit 10 
         '''
-    result = []
     try:
         lock.acquire(True)
-        for cur in cursor:
-            cur = cursor[-1]
-            cur.execute(sql, [username_, local_id])
-            result_ = cur.fetchall()
-            result += result_
-            return result_
+        cursor.execute(sql, [username_, local_id])
+        result = cursor.fetchall()
     finally:
         lock.release()
-    result.sort(key=lambda x: x[5])
+    # result.sort(key=lambda x: x[5])
     return result
 
 

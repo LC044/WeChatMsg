@@ -5,10 +5,10 @@ import threading
 lock = threading.Lock()
 DB = None
 cursor = None
-misc_path = "./app/Database/Msg/Misc.db"
+db_path = "./app/Database/Msg/Misc.db"
 # misc_path = './Msg/Misc.db'
-if os.path.exists(misc_path):
-    DB = sqlite3.connect(misc_path, check_same_thread=False)
+if os.path.exists(db_path):
+    DB = sqlite3.connect(db_path, check_same_thread=False)
     # '''创建游标'''
     cursor = DB.cursor()
 
@@ -17,8 +17,8 @@ def init_database():
     global DB
     global cursor
     if not DB:
-        if os.path.exists(misc_path):
-            DB = sqlite3.connect(misc_path, check_same_thread=False)
+        if os.path.exists(db_path):
+            DB = sqlite3.connect(db_path, check_same_thread=False)
             # '''创建游标'''
             cursor = DB.cursor()
 

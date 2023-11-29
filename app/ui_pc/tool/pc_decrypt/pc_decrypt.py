@@ -7,6 +7,7 @@ from PyQt5.QtCore import pyqtSignal, QThread, QUrl, QFile, QIODevice, QTextStrea
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QWidget, QMessageBox, QFileDialog
 
+from app.DataBase.merge import merge_databases
 from app.decrypt import get_wx_info, decrypt
 from app.log import logger
 from . import decryptUi
@@ -157,6 +158,14 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         except:
             with open('./info.json', 'w', encoding='utf-8') as f:
                 f.write(json.dumps(dic))
+            # 目标数据库文件
+        target_database = "app/DataBase/Msg/MSG.db"
+        # 源数据库文件列表
+        source_databases = [f"app/DataBase/Msg/MSG{i}.db" for i in range(20)]
+        import shutil
+        shutil.copy("app/DataBase/Msg/MSG0.db", target_database)  # 使用一个数据库文件作为模板
+        # 合并数据库
+        merge_databases(source_databases, target_database)
         self.DecryptSignal.emit(True)
         self.close()
 
