@@ -5,6 +5,8 @@ data
 sqlcipher-3.0.1
 dist
 venv
+venv_decrypt
+venv_main_pc
 TEST
 app/data/avatar
 app/data/image2

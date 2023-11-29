@@ -15,14 +15,17 @@ def merge_databases(source_paths, target_path):
             db = sqlite3.connect(source_path)
             cursor = db.cursor()
             sql = '''
-            SELECT TalkerId,MsgsvrID,Type,SubType,IsSender,CreateTime,Sequence,StrTalker,StrContent,DisplayContent 
+            SELECT TalkerId,MsgsvrID,Type,SubType,IsSender,CreateTime,Sequence,StrTalker,StrContent,DisplayContent,BytesExtra
             FROM MSG;
             '''
             cursor.execute(sql)
             result = cursor.fetchall()
             # 附加源数据库
             target_cursor.executemany(
-                "INSERT INTO MSG (TalkerId,MsgsvrID,Type,SubType,IsSender,CreateTime,Sequence,StrTalker,StrContent,DisplayContent) VALUES(?,?,?,?,?,?,?,?,?,?)",
+                "INSERT INTO MSG "
+                "(TalkerId,MsgsvrID,Type,SubType,IsSender,CreateTime,Sequence,StrTalker,StrContent,DisplayContent,"
+                "BytesExtra)"
+                "VALUES(?,?,?,?,?,?,?,?,?,?,?)",
                 result)
             cursor.close()
             db.close()

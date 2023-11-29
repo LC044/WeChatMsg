@@ -77,6 +77,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.listWidget.clear()
         self.resize(QSize(800, 600))
         self.action_desc.triggered.connect(self.about)
+        self.load_flag = False
         self.load_data()
         self.load_num = 0
         self.label = QLabel(self)
@@ -96,6 +97,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
                     me.wx_dir = dic.get('wx_dir')
                     print('wx_dir', me.wx_dir)
                     self.set_my_info(wxid)
+                    self.load_flag = True
         else:
             QMessageBox.information(
                 self,
@@ -120,14 +122,11 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         chat_item = QListWidgetItem(Icon.Chat_Icon, '聊天', self.listWidget)
         contact_item = QListWidgetItem(Icon.Contact_Icon, '好友', self.listWidget)
         myinfo_item = QListWidgetItem(Icon.MyInfo_Icon, '我的', self.listWidget)
-
         tool_window = ToolWindow()
         tool_window.get_info_signal.connect(self.set_my_info)
         tool_window.decrypt_success_signal.connect(self.load_data)
         tool_window.load_finish_signal.connect(self.loading)
         self.stackedWidget.addWidget(tool_window)
-        self.listWidget.setCurrentRow(0)
-        self.stackedWidget.setCurrentIndex(0)
         self.chat_window = ChatWindow()
         # chat_window = QWidget()
         self.stackedWidget.addWidget(self.chat_window)
@@ -185,6 +184,12 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
             self.okSignal.emit(True)
             self.listWidget.setVisible(True)
             self.stackedWidget.setVisible(True)
+            if self.load_flag:
+                self.listWidget.setCurrentRow(1)
+                self.stackedWidget.setCurrentIndex(1)
+            else:
+                self.listWidget.setCurrentRow(0)
+                self.stackedWidget.setCurrentIndex(0)
 
     def output(self):
         if self.sender() == self.action_output_CSV:
