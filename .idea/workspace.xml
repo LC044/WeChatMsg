@@ -4,12 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="add web">
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="修复再次解密数据库时显示msg.db占用问题">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DataBase/hard_link.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/hard_link.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/DataBase/output_pc.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/output_pc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/util/dat2pic.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/dat2pic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/util/path.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/path.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/resource.qrc" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/resource.qrc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/resource_rc.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/resource_rc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/Icon.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/Icon.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/mainview.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/mainview.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/decryptUi.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/decryptUi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/decryptUi.ui" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/decryptUi.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/toolUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/toolUI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/toolUI.ui" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/toolUI.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/tool_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/tool_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,8 +27,8 @@
       <list>
         <option value="Freeze Requirements File" />
         <option value="Blank Requirements File" />
-        <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -68,7 +74,7 @@
                 <list>
                   <RecentBranch>
                     <option name="branchName" value="master" />
-                    <option name="lastUsedInstant" value="1700478623" />
+                    <option name="lastUsedInstant" value="1701179528" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="dev_zsk" />
@@ -122,27 +128,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.main_pc">
-    <configuration name="emoji" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="WeChatMsg" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/util" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/util/emoji.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="hard_link" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="WeChatMsg" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -180,6 +165,27 @@
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="true" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="merge" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="WeChatMsg" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/DataBase" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/DataBase/merge.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
       <option name="INPUT_FILE" value="" />
@@ -252,9 +258,9 @@
       <list>
         <item itemvalue="Python.main_pc" />
         <item itemvalue="Python.test" />
+        <item itemvalue="Python.merge" />
         <item itemvalue="Python.web" />
         <item itemvalue="Python.hard_link" />
-        <item itemvalue="Python.emoji" />
       </list>
     </recent_temporary>
   </component>
@@ -269,55 +275,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00046" summary="修改导入路径，方便打包成exe">
-      <created>1699373594568</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1699373594568</updated>
-    </task>
-    <task id="LOCAL-00047" summary="修改部分UI">
-      <created>1699531863395</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1699531863395</updated>
-    </task>
-    <task id="LOCAL-00048" summary="上传html模板">
-      <created>1699700323644</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1699700323644</updated>
-    </task>
-    <task id="LOCAL-00049" summary="增加几个图标">
-      <created>1699702527136</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1699702527136</updated>
-    </task>
-    <task id="LOCAL-00050" summary="增加导航按钮效果">
-      <created>1699766149377</created>
-      <option name="number" value="00050" />
-      <option name="presentableId" value="LOCAL-00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1699766149377</updated>
-    </task>
-    <task id="LOCAL-00051" summary="新增PC数据库解密">
-      <created>1699797095509</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1699797095509</updated>
-    </task>
-    <task id="LOCAL-00052" summary="main首次加载解密界面">
-      <created>1699797493106</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1699797493106</updated>
     </task>
     <task id="LOCAL-00053" summary="update readme">
       <created>1699797862964</created>
@@ -613,7 +570,56 @@
       <option name="project" value="LOCAL" />
       <updated>1701178346464</updated>
     </task>
-    <option name="localTasksCounter" value="95" />
+    <task id="LOCAL-00095" summary="update readme">
+      <created>1701180610357</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1701180610357</updated>
+    </task>
+    <task id="LOCAL-00096" summary="update version">
+      <created>1701180958841</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1701180958841</updated>
+    </task>
+    <task id="LOCAL-00097" summary="update readme">
+      <created>1701253824370</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1701253824370</updated>
+    </task>
+    <task id="LOCAL-00098" summary="合并msg数据库">
+      <created>1701264226625</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1701264226625</updated>
+    </task>
+    <task id="LOCAL-00099" summary="修改初始加载显示页面">
+      <created>1701265181600</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1701265181600</updated>
+    </task>
+    <task id="LOCAL-00100" summary="修改打开路径的初始位置，修复打开404图片闪退问题">
+      <created>1701269880600</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1701269880600</updated>
+    </task>
+    <task id="LOCAL-00101" summary="修复再次解密数据库时显示msg.db占用问题">
+      <created>1701272464442</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1701272464442</updated>
+    </task>
+    <option name="localTasksCounter" value="102" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -649,11 +655,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="导出所有数据库的聊天记录" />
-    <MESSAGE value="数据库加锁避免多线程访问报错" />
-    <MESSAGE value="修复聊天气泡不能更改大小的bug" />
-    <MESSAGE value="更改头像显示" />
-    <MESSAGE value="将自己的wxid设置为配置文件" />
     <MESSAGE value="修改聊天记录显示顺序" />
     <MESSAGE value="聊天记录从后往前显示" />
     <MESSAGE value="聊天消息自适应" />
@@ -669,12 +670,17 @@
     <MESSAGE value="支持显示表情包" />
     <MESSAGE value="修复第一次启动的问题" />
     <MESSAGE value="移除pandas" />
-    <MESSAGE value="update readme" />
     <MESSAGE value="更新帮助链接" />
     <MESSAGE value="新增导出所有聊天记录到CSV" />
     <MESSAGE value="修复str_content转义问题" />
     <MESSAGE value="add web" />
-    <option name="LAST_COMMIT_MESSAGE" value="add web" />
+    <MESSAGE value="update version" />
+    <MESSAGE value="update readme" />
+    <MESSAGE value="合并msg数据库" />
+    <MESSAGE value="修改初始加载显示页面" />
+    <MESSAGE value="修改打开路径的初始位置，修复打开404图片闪退问题" />
+    <MESSAGE value="修复再次解密数据库时显示msg.db占用问题" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复再次解密数据库时显示msg.db占用问题" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

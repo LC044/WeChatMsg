@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(630, 633)
+        Dialog.resize(630, 547)
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         Dialog.setFont(font)
@@ -26,6 +26,7 @@ class Ui_Dialog(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setMaximumSize(QtCore.QSize(80, 80))
+        self.label.setText("")
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
         self.listWidget = QtWidgets.QListWidget(Dialog)
@@ -51,6 +52,7 @@ class Ui_Dialog(object):
         self.horizontalLayout.addWidget(self.listWidget)
         self.label_2 = QtWidgets.QLabel(Dialog)
         self.label_2.setMaximumSize(QtCore.QSize(80, 80))
+        self.label_2.setText("")
         self.label_2.setObjectName("label_2")
         self.horizontalLayout.addWidget(self.label_2)
         self.verticalLayout.addLayout(self.horizontalLayout)
@@ -66,7 +68,6 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.label.setText(_translate("Dialog", "TextLabel"))
         __sortingEnabled = self.listWidget.isSortingEnabled()
         self.listWidget.setSortingEnabled(False)
         item = self.listWidget.item(0)
@@ -80,4 +81,3 @@ class Ui_Dialog(object):
         item = self.listWidget.item(4)
         item.setText(_translate("Dialog", "新建项目"))
         self.listWidget.setSortingEnabled(__sortingEnabled)
-        self.label_2.setText(_translate("Dialog", "TextLabel"))

@@ -28,13 +28,21 @@
     - 🗨文本✅
     - 🏝图片✅
     - 🐻‍❄️表情包✅
+    - 语音❎
+    - 视频❎
+    - 文件❎
+    - 回复❎
+    - 拍一拍❎
 - 导出聊天记录
     - HTML(文本、图片)✅
     - Word文档✅
     - CSV文档✅
 - 分析聊天数据，做成可视化年报
 - 🔥**项目持续更新中**
-- 小伙伴们想要其他功能可以留言哦🏆
+    - 导出全部表情包❎
+    - 合并多个备份数据❎
+
+- 小伙伴们想要其他功能可以留言哦📬
 - 有任何问题可以随时联系我(863909694@qq.com)
 
 为了方便大家交流，我新建了一个QQ群💬：**474379264**
@@ -196,7 +204,8 @@ python main.py
 * 觉得UI不够美观
 * 等其他给您造成困扰的地方
 
-请提起[issue](https://github.com/LC044/WeChatMsg/issues)或者添加QQ群:[**474379264**](doc/images/qq.jpg)，我将尽快为您解决问题
+请提起[issue](https://github.com/LC044/WeChatMsg/issues)或者添加QQ群(进群前先点个⭐哦):[**474379264**](doc/images/qq.jpg)
+，我将尽快为您解决问题
 
 如果您是一名开发者，有新的想法或建议，欢迎[fork](https://github.com/LC044/WeChatMsg/forks)
 该项目并发起[PR](https://github.com/LC044/WeChatMsg/pulls)，我将把您的名字写入贡献者名单中

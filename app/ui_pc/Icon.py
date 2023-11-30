@@ -22,3 +22,6 @@ class Icon:
     Analysis_Icon = QIcon(':/icons/icons/analysis.svg')
     Emotion_Icon = QIcon(':/icons/icons/emotion.svg')
     Search_Icon = QIcon(':/icons/icons/search.svg')
+    Tool_Icon = QIcon(':/icons/icons/tool.svg')
+    Home_Icon = QIcon(':/icons/icons/home.svg')
+    Help_Icon = QIcon(':/icons/icons/help.svg')

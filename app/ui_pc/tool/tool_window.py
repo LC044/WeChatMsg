@@ -1,6 +1,5 @@
-from random import randint
-
 from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QWidget, QListWidgetItem, QLabel
 
 from app.ui_pc.Icon import Icon
@@ -60,19 +59,20 @@ class ToolWindow(QWidget, Ui_Dialog):
         self.listWidget.clear()
         self.listWidget.currentRowChanged.connect(self.setCurrentIndex)
         chat_item = QListWidgetItem(Icon.Chat_Icon, '解密', self.listWidget)
-        contact_item = QListWidgetItem(Icon.Contact_Icon, 'None', self.listWidget)
-        myinfo_item = QListWidgetItem(Icon.MyInfo_Icon, 'None', self.listWidget)
-        tool_item = QListWidgetItem(Icon.MyInfo_Icon, 'None', self.listWidget)
+        contact_item = QListWidgetItem(Icon.Contact_Icon, '别点', self.listWidget)
+        myinfo_item = QListWidgetItem(Icon.MyInfo_Icon, '别点', self.listWidget)
+        tool_item = QListWidgetItem(Icon.MyInfo_Icon, '别点', self.listWidget)
         decrypt_window = DecryptControl()
         decrypt_window.get_wxidSignal.connect(self.get_info_signal)
         decrypt_window.DecryptSignal.connect(self.decrypt_success_signal)
         self.stackedWidget.addWidget(decrypt_window)
-        label = QLabel('我是页面', self)
+        label = QLabel('都说了不让你点', self)
+        label.setFont(QFont("微软雅黑", 50))
         label.setAlignment(Qt.AlignCenter)
         # 设置label的背景颜色(这里随机)
         # 这里加了一个margin边距(方便区分QStackedWidget和QLabel的颜色)
-        label.setStyleSheet('background: rgb(%d, %d, %d);margin: 50px;' % (
-            randint(0, 255), randint(0, 255), randint(0, 255)))
+        # label.setStyleSheet('background: rgb(%d, %d, %d);margin: 50px;' % (
+        #     randint(0, 255), randint(0, 255), randint(0, 255)))
         self.stackedWidget.addWidget(label)
         self.stackedWidget.addWidget(label)
         self.stackedWidget.addWidget(label)

@@ -26,13 +26,7 @@ from ..person_pc import MePC
 
 # 美化样式表
 Stylesheet = """
-QPushButton {
-    background-color: rgb(240,240,240);
-    border:none;
-}
-QPushButton:hover{
-    background-color: rgb(209,209,209);
-}
+
 /*去掉item虚线边框*/
 QListWidget, QListView, QTreeWidget, QTreeView {
     outline: 0px;
@@ -109,6 +103,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.menu_output.setIcon(Icon.Output)
         self.action_output_CSV.setIcon(Icon.ToCSV)
         self.action_output_CSV.triggered.connect(self.output)
+        self.action_desc.setIcon(Icon.Help_Icon)
         self.action_help_contact.triggered.connect(
             lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/5")))
         self.action_help_chat.triggered.connect(
@@ -118,10 +113,10 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.listWidget.setVisible(False)
         self.stackedWidget.setVisible(False)
         self.listWidget.currentRowChanged.connect(self.setCurrentIndex)
-        tool_item = QListWidgetItem(Icon.MyInfo_Icon, '工具', self.listWidget)
+        tool_item = QListWidgetItem(Icon.Tool_Icon, '工具', self.listWidget)
         chat_item = QListWidgetItem(Icon.Chat_Icon, '聊天', self.listWidget)
         contact_item = QListWidgetItem(Icon.Contact_Icon, '好友', self.listWidget)
-        myinfo_item = QListWidgetItem(Icon.MyInfo_Icon, '我的', self.listWidget)
+        myinfo_item = QListWidgetItem(Icon.Home_Icon, '我的', self.listWidget)
         tool_window = ToolWindow()
         tool_window.get_info_signal.connect(self.set_my_info)
         tool_window.decrypt_success_signal.connect(self.load_data)
@@ -207,10 +202,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         关于
         """
         QMessageBox.about(self, "关于",
-                          f"版本：{config.version}\n"
-                          f"QQ交流群:{config.contact}\n"
-                          "地址：https://github.com/LC044/WeChatMsg\n"
-                          f"新特性:\n{''.join(['*' + i for i in config.description])}"
+                          f'''版本：{config.version}<br>QQ交流群:{config.contact}<br>地址：<a href='https://github.com/LC044/WeChatMsg'>https://github.com/LC044/WeChatMsg</a><br>新特性:<br>{''.join(['' + i for i in config.description])}
+                            '''
                           )
 
     def close(self) -> bool:
