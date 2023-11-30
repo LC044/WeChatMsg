@@ -89,9 +89,10 @@
 ### 1. 安装
 
 ```shell
+# Python>=3.10
 git clone https://github.com/LC044/WeChatMsg
 cd WeChatMsg
-pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install -r requirements_pc.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ### 2. 使用
@@ -99,16 +100,16 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 1. 登录微信
 2. 运行程序
    ```shell
-   python decrypt_window.py
+   python main_pc.py
    ```
 3. 点击获取信息
 
    ![](./doc/images/pc_decrypt_info.png)
-4. 设置微信安装路径
+4. 设置微信安装路径(如果自动设置好了就不用管了)
    可以到微信->设置->文件管理查看
    ![](./doc/images/setting.png)
 
-   点击**设置微信路径**按钮，选择该文件夹路径下的带有wxid_xxx的路径
+   点击**设置微信路径**按钮，选择该文件夹路径下的带有wxid_xxx的路径(没有wxid的话先选择其中一个文件夹不对的话换其他文件夹)
    ![](./doc/images/path_select.png)
 
 5. 获取到密钥和微信路径之后点击开始解密

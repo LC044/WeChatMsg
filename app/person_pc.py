@@ -21,7 +21,7 @@ def singleton(cls):
 class MePC:
     def __init__(self):
         self.avatar = QPixmap(Icon.Default_avatar_path)
-        self.avatar_path = 'D:\Project\Python\WeChatMsg\\app\data\icons\default_avatar.svg'
+        self.avatar_path = ':/icons/icons/default_avatar.svg'
         self.wxid = ''
         self.wx_dir = ''
         self.name = ''
@@ -49,7 +49,7 @@ class ContactPC:
         self.smallHeadImgUrl = contact_info.get('smallHeadImgUrl')
         self.smallHeadImgBLOG = b''
         self.avatar = QPixmap()
-        self.avatar_path = 'D:\Project\Python\WeChatMsg\\app\data\icons\default_avatar.svg'
+        self.avatar_path = ':/icons/icons/default_avatar.svg'
 
     def set_avatar(self, img_bytes):
         if not img_bytes:
