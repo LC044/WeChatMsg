@@ -17,6 +17,9 @@ from app.log import log
 ReadProcessMemory = ctypes.windll.kernel32.ReadProcessMemory
 void_p = ctypes.c_void_p
 
+ReadProcessMemory = ctypes.windll.kernel32.ReadProcessMemory
+void_p = ctypes.c_void_p
+
 
 # 读取内存中的字符串(非key部分)
 @log
@@ -29,15 +32,72 @@ def get_info_without_key(h_process, address, n_size=64):
 
 
 @log
-def get_info_wxid(h_process, n_size=64):
-    pm = pymem.Pymem("WeChat.exe")
-    addrs = pymem.pattern.pattern_scan_all(pm.process_handle, b'wxid_', return_multiple=True)
+def pattern_scan_all(handle, pattern, *, return_multiple=False, find_num=100):
+    next_region = 0
+    found = []
+    user_space_limit = 0x7FFFFFFF0000 if sys.maxsize > 2 ** 32 else 0x7fff0000
+    while next_region < user_space_limit:
+        try:
+            next_region, page_found = pymem.pattern.scan_pattern_page(
+                handle,
+                next_region,
+                pattern,
+                return_multiple=return_multiple
+            )
+        except Exception as e:
+            print(e)
+            break
+        if not return_multiple and page_found:
+            return page_found
+        if page_found:
+            found += page_found
+        if len(found) > find_num:
+            break
+    return found
+
+
+@log
+def get_info_wxid(h_process):
+    find_num = 100
+    addrs = pattern_scan_all(h_process, br'\\FileStorage', return_multiple=True, find_num=find_num)
+    wxids = []
     for addr in addrs:
-        wxidtmp = get_info_without_key(h_process, addr, n_size)
-        if r'\FileStorage\MsgAttach' in wxidtmp:
-            wxid = wxidtmp.split(r'\FileStorage\MsgAttach')[0]
-            return wxid
-    return "None"
+        array = ctypes.create_string_buffer(33)
+        if ReadProcessMemory(h_process, void_p(addr - 21), array, 33, 0) == 0: return "None"
+        array = bytes(array)  # .decode('utf-8', errors='ignore')
+        array = array.split(br'\FileStorage')[0]
+        for part in [b'}', b'\x7f', b'\\']:
+            if part in array:
+                array = array.split(part)[1]
+                wxids.append(array.decode('utf-8', errors='ignore'))
+                break
+    wxid = max(wxids, key=wxids.count) if wxids else "None"
+    return wxid
+
+
+@log
+def get_info_filePath(wxid="all"):
+    if not wxid:
+        return "None"
+    try:
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Tencent\WeChat", 0, winreg.KEY_READ)
+        value, _ = winreg.QueryValueEx(key, "FileSavePath")
+        winreg.CloseKey(key)
+        w_dir = value
+    except Exception as e:
+        w_dir = "MyDocument:"
+
+    if w_dir == "MyDocument:":
+        profile = os.path.expanduser("~")
+        msg_dir = os.path.join(profile, "Documents", "WeChat Files")
+    else:
+        msg_dir = os.path.join(w_dir, "WeChat Files")
+
+    if wxid == "all" and os.path.exists(msg_dir):
+        return msg_dir
+
+    filePath = os.path.join(msg_dir, wxid)
+    return filePath if os.path.exists(filePath) else "None"
 
 
 # 读取内存中的key
@@ -65,7 +125,7 @@ def read_info(version_list, is_logging=False):
     if len(wechat_process) == 0:
         error = "[-] WeChat No Run"
         if is_logging: print(error)
-        return -1
+        return error
 
     for process in wechat_process:
         tmp_rd = {}
@@ -76,9 +136,8 @@ def read_info(version_list, is_logging=False):
         bias_list = version_list.get(tmp_rd['version'], None)
         if not isinstance(bias_list, list):
             error = f"[-] WeChat Current Version {tmp_rd['version']} Is Not Supported"
-            if is_logging:
-                print(error)
-            return -2
+            if is_logging: print(error)
+            return error
 
         wechat_base_address = 0
         for module in process.memory_maps(grouped=False):
@@ -87,9 +146,8 @@ def read_info(version_list, is_logging=False):
                 break
         if wechat_base_address == 0:
             error = f"[-] WeChat WeChatWin.dll Not Found"
-            if is_logging:
-                print(error)
-            return -3
+            if is_logging: print(error)
+            return error
 
         Handle = ctypes.windll.kernel32.OpenProcess(0x1F0FFF, False, process.pid)
 
@@ -105,7 +163,8 @@ def read_info(version_list, is_logging=False):
         tmp_rd['mobile'] = get_info_without_key(Handle, mobile_baseaddr, 64) if bias_list[2] != 0 else "None"
         tmp_rd['name'] = get_info_without_key(Handle, name_baseaddr, 64) if bias_list[0] != 0 else "None"
         tmp_rd['mail'] = get_info_without_key(Handle, mail_baseaddr, 64) if bias_list[3] != 0 else "None"
-        tmp_rd['wxid'] = get_info_wxid(Handle, 64)
+        tmp_rd['wxid'] = get_info_wxid(Handle)
+        tmp_rd['filePath'] = get_info_filePath(tmp_rd['wxid'])
         tmp_rd['key'] = get_key(Handle, key_baseaddr, addrLen) if bias_list[4] != 0 else "None"
         result.append(tmp_rd)
 
@@ -116,7 +175,7 @@ def read_info(version_list, is_logging=False):
         else:  # 输出结果
             for i, rlt in enumerate(result):
                 for k, v in rlt.items():
-                    print(f"[+] {k:>7}: {v}")
+                    print(f"[+] {k:>8}: {v}")
                 print(end="-" * 32 + "\n" if i != len(result) - 1 else "")
         print("=" * 32)
 
