@@ -15,7 +15,7 @@ from PyQt5.QtGui import QPixmap, QFont, QDesktopServices
 from PyQt5.QtWidgets import *
 
 from app import config
-from app.DataBase import msg, misc, micro_msg, hard_link
+from app.DataBase import msg_db, misc_db, micro_msg_db, hard_link_db
 from app.ui_pc.Icon import Icon
 from . import mainwindow
 from .chat import ChatWindow
@@ -119,7 +119,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         myinfo_item = QListWidgetItem(Icon.Home_Icon, '我的', self.listWidget)
         tool_window = ToolWindow()
         tool_window.get_info_signal.connect(self.set_my_info)
-        tool_window.decrypt_success_signal.connect(self.load_data)
+        tool_window.decrypt_success_signal.connect(self.decrypt_success)
         tool_window.load_finish_signal.connect(self.loading)
         self.stackedWidget.addWidget(tool_window)
         self.chat_window = ChatWindow()
@@ -153,8 +153,10 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
     def set_my_info(self, wxid):
         self.avatar = QPixmap()
         try:
-            img_bytes = misc.get_avatar_buffer(wxid)
+            img_bytes = misc_db.get_avatar_buffer(wxid)
         except AttributeError:
+            return
+        if not img_bytes:
             return
         if img_bytes[:4] == b'\x89PNG':
             self.avatar.loadFromData(img_bytes, format='PNG')
@@ -206,14 +208,18 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
                             '''
                           )
 
+    def decrypt_success(self):
+        QMessageBox.about(self, "解密成功", "请重新启动")
+        self.close()
+
     def close(self) -> bool:
-        del self.listWidget
-        del self.stackedWidget
-        misc.close()
-        msg.close()
-        micro_msg.close()
-        hard_link.close()
+        super().close()
+        misc_db.close()
+        msg_db.close()
+        micro_msg_db.close()
+        hard_link_db.close()
         self.contact_window.close()
+        self.exitSignal.emit(True)
 
 
 class LoadWindowThread(QThread):

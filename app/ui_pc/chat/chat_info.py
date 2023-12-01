@@ -3,7 +3,7 @@ import traceback
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
-from app.DataBase import msg, hard_link
+from app.DataBase import msg_db, hard_link_db
 from app.components.bubble_message import BubbleMessage, ChatWidget, Notice
 from app.person_pc import MePC
 from app.util import get_abs_path
@@ -106,7 +106,7 @@ class ChatInfo(QWidget):
                     time_message = Notice(self.last_str_time)
                     self.last_str_time = str_time
                     self.chat_window.add_message_item(time_message, 0)
-                image_path = hard_link.get_image(content=str_content, thumb=False)
+                image_path = hard_link_db.get_image(content=str_content, thumb=False)
                 image_path = get_abs_path(image_path)
                 bubble_message = BubbleMessage(
                     image_path,
@@ -146,7 +146,7 @@ class ShowChatThread(QThread):
         self.wxid = contact.wxid
 
     def run(self) -> None:
-        messages = msg.get_message_by_num(self.wxid, self.last_message_id)
+        messages = msg_db.get_message_by_num(self.wxid, self.last_message_id)
         if messages:
             self.last_message_id = messages[-1][0]
         for message in messages:

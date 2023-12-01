@@ -4,8 +4,8 @@ import os
 
 from PyQt5.QtCore import pyqtSignal, QThread
 
-from . import msg
-from ..DataBase import hard_link
+from . import msg_db
+from ..DataBase import hard_link_db
 from ..person_pc import MePC
 from ..util import get_abs_path
 
@@ -152,7 +152,7 @@ class ChildThread(QThread):
         columns = ['localId', 'TalkerId', 'Type', 'SubType',
                    'IsSender', 'CreateTime', 'Status', 'StrContent',
                    'StrTime']
-        messages = msg.get_messages(self.contact.wxid)
+        messages = msg_db.get_messages(self.contact.wxid)
         # 写入CSV文件
         with open(filename, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
@@ -170,7 +170,7 @@ class ChildThread(QThread):
         columns = ['localId', 'TalkerId', 'Type', 'SubType',
                    'IsSender', 'CreateTime', 'Status', 'StrContent',
                    'StrTime']
-        messages = msg.get_messages_all()
+        messages = msg_db.get_messages_all()
         # 写入CSV文件
         with open(filename, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
@@ -183,7 +183,7 @@ class ChildThread(QThread):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         if not os.path.exists(origin_docx_path):
             os.mkdir(origin_docx_path)
-        messages = msg.get_messages(self.contact.wxid)
+        messages = msg_db.get_messages(self.contact.wxid)
         filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}.html"
         f = open(filename, 'w', encoding='utf-8')
         html_head = '''
@@ -441,7 +441,7 @@ class ChildThread(QThread):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         if not os.path.exists(origin_docx_path):
             os.mkdir(origin_docx_path)
-        messages = msg.get_messages(self.contact.wxid)
+        messages = msg_db.get_messages(self.contact.wxid)
         filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}.html"
         f = open(filename, 'w', encoding='utf-8')
         html_head = '''
@@ -738,7 +738,7 @@ const chatMessages = [
                 if match:
                     continue
 
-                image_path = hard_link.get_image(content=str_content, thumb=False)
+                image_path = hard_link_db.get_image(content=str_content, thumb=False)
                 image_path = get_abs_path(image_path)
                 image_path = image_path.replace('\\', '/')
                 # print(f"tohtml:---{image_path}")

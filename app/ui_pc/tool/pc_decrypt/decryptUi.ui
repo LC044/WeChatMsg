@@ -320,6 +320,13 @@
                                                 </widget>
                                             </item>
                                             <item>
+                                                <widget class="QLabel" name="label_tip">
+                                                    <property name="text">
+                                                        <string>TextLabel</string>
+                                                    </property>
+                                                </widget>
+                                            </item>
+                                            <item>
                                                 <spacer name="horizontalSpacer_2">
                                                     <property name="orientation">
                                                         <enum>Qt::Horizontal</enum>

@@ -4,18 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="修复再次解密数据库时显示msg.db占用问题">
+    <list default="true" id="84e65474-7da9-466d-baf3-cc88dde3ffdd" name="变更" comment="update readme.md">
+      <change beforePath="$PROJECT_DIR$/.idea/WeChatMsg.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WeChatMsg.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/resource.qrc" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/resource.qrc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/resource_rc.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/resource_rc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/Icon.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/Icon.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/hard_link.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/hard_link.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/micro_msg.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/micro_msg.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/misc.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/misc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/msg.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/msg.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/DataBase/output_pc.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/DataBase/output_pc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_info.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/chat/chat_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/chat/chat_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/contact/contact_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/ui_pc/mainview.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/mainview.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/decryptUi.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/decryptUi.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/decryptUi.ui" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/decryptUi.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/toolUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/toolUI.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/toolUI.ui" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/toolUI.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/tool_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/tool_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/pc_decrypt.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/pc_decrypt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/util/path.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/path.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_pc.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_pc.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,8 +33,8 @@
       <list>
         <option value="Freeze Requirements File" />
         <option value="Blank Requirements File" />
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -170,7 +176,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="merge" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="misc" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="WeChatMsg" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -182,7 +188,28 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/DataBase/merge.py" />
+      <option name="SCRIPT_NAME" value="D:\Project\Python\WeChatMsg\app\DataBase\misc.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="msg" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="WeChatMsg" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/DataBase" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/DataBase/msg.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -233,34 +260,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="web" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="WeChatMsg" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/web_ui" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/web_ui/web.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main_pc" />
-        <item itemvalue="Python.test" />
-        <item itemvalue="Python.merge" />
-        <item itemvalue="Python.web" />
         <item itemvalue="Python.hard_link" />
+        <item itemvalue="Python.msg" />
+        <item itemvalue="Python.misc_db" />
+        <item itemvalue="Python.test" />
       </list>
     </recent_temporary>
   </component>
@@ -275,27 +281,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672848140146</updated>
-    </task>
-    <task id="LOCAL-00053" summary="update readme">
-      <created>1699797862964</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1699797862964</updated>
-    </task>
-    <task id="LOCAL-00054" summary="增加日志模块">
-      <created>1699883702805</created>
-      <option name="number" value="00054" />
-      <option name="presentableId" value="LOCAL-00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1699883702806</updated>
-    </task>
-    <task id="LOCAL-00055" summary="update readme">
-      <created>1699884085863</created>
-      <option name="number" value="00055" />
-      <option name="presentableId" value="LOCAL-00055" />
-      <option name="project" value="LOCAL" />
-      <updated>1699884085863</updated>
     </task>
     <task id="LOCAL-00056" summary="增加PC端微信解密条件的判断">
       <created>1699973547832</created>
@@ -619,7 +604,28 @@
       <option name="project" value="LOCAL" />
       <updated>1701272464442</updated>
     </task>
-    <option name="localTasksCounter" value="102" />
+    <task id="LOCAL-00102" summary="修改部分UI">
+      <created>1701353500149</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1701353500149</updated>
+    </task>
+    <task id="LOCAL-00103" summary="优化wxid获取方式">
+      <created>1701354905621</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1701354905621</updated>
+    </task>
+    <task id="LOCAL-00104" summary="update readme.md">
+      <created>1701361381301</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1701361381302</updated>
+    </task>
+    <option name="localTasksCounter" value="105" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -655,9 +661,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="修改聊天记录显示顺序" />
-    <MESSAGE value="聊天记录从后往前显示" />
-    <MESSAGE value="聊天消息自适应" />
     <MESSAGE value="新版本更新" />
     <MESSAGE value="修复时间插入位置" />
     <MESSAGE value="修复第一次启动的显示问题" />
@@ -680,7 +683,10 @@
     <MESSAGE value="修改初始加载显示页面" />
     <MESSAGE value="修改打开路径的初始位置，修复打开404图片闪退问题" />
     <MESSAGE value="修复再次解密数据库时显示msg.db占用问题" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复再次解密数据库时显示msg.db占用问题" />
+    <MESSAGE value="修改部分UI" />
+    <MESSAGE value="优化wxid获取方式" />
+    <MESSAGE value="update readme.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="update readme.md" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -701,6 +707,21 @@
           <url>file://$PROJECT_DIR$/app/decrypt/decrypt.py</url>
           <line>103</line>
           <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/DataBase/msg.py</url>
+          <line>104</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/DataBase/misc.py</url>
+          <line>64</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/ui_pc/tool/pc_decrypt/pc_decrypt.py</url>
+          <line>201</line>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

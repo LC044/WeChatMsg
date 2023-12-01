@@ -7,7 +7,7 @@ from PyQt5.QtCore import pyqtSignal, QThread, QUrl, QFile, QIODevice, QTextStrea
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QWidget, QMessageBox, QFileDialog
 
-from app.DataBase import msg, micro_msg, misc, hard_link
+from app.DataBase import msg_db, misc_db
 from app.DataBase.merge import merge_databases
 from app.decrypt import get_wx_info, decrypt
 from app.log import logger
@@ -29,6 +29,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         self.lineEdit.returnPressed.connect(self.set_wxid)
         self.lineEdit.textChanged.connect(self.set_wxid_)
         self.btn_help.clicked.connect(self.show_help)
+        self.label_tip.setVisible(False)
         self.info = {}
         self.lineEdit.setFocus()
         self.ready = False
@@ -125,7 +126,8 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
             if not os.path.exists(db_dir):
                 QMessageBox.critical(self, "错误", "文件夹选择错误\n一般以wxid_xxx结尾")
                 return
-
+        self.label_tip.setVisible(True)
+        self.label_tip.setText('点我之后没有反应那就多等儿吧,不要再点了')
         self.thread2 = DecryptThread(db_dir, self.info['key'])
         self.thread2.maxNumSignal.connect(self.setProgressBarMaxNum)
         self.thread2.signal.connect(self.progressBar_view)
@@ -196,12 +198,10 @@ class DecryptThread(QThread):
         pass
 
     def run(self):
-        misc.close()
-        msg.close()
-        micro_msg.close()
-        hard_link.close()
-        QThread.sleep(1)
-        # data.decrypt(self.db_path, self.key)
+        misc_db.close()
+        msg_db.close()
+        # micro_msg_db.close()
+        # hard_link_db.close()
         output_dir = 'app/DataBase/Msg'
         try:
             if not os.path.exists(output_dir):

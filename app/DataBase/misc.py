@@ -1,58 +1,79 @@
 import os.path
 import sqlite3
 import threading
-import time
 
 lock = threading.Lock()
 DB = None
 cursor = None
 db_path = "./app/Database/Msg/Misc.db"
-# misc_path = './Msg/Misc.db'
-if os.path.exists(db_path):
-    DB = sqlite3.connect(db_path, check_same_thread=False)
-    # '''创建游标'''
-    cursor = DB.cursor()
 
 
-def init_database():
-    global DB
-    global cursor
-    if not DB:
-        if os.path.exists(db_path):
-            DB = sqlite3.connect(db_path, check_same_thread=False)
-            # '''创建游标'''
-            cursor = DB.cursor()
+# db_path = './Msg/Misc.db'
 
 
-def get_avatar_buffer(userName):
-    sql = '''
-        select smallHeadBuf
-        from ContactHeadImg1
-        where usrName=?;
-    '''
-    try:
-        lock.acquire(True)
+def singleton(cls):
+    _instance = {}
+
+    def inner():
+        if cls not in _instance:
+            _instance[cls] = cls()
+        return _instance[cls]
+
+    return inner
+
+
+@singleton
+class Misc:
+    def __init__(self):
+        self.DB = None
+        self.cursor = None
+        self.open_flag = False
+        self.init_database()
+
+    def init_database(self):
+        if not self.open_flag:
+            if os.path.exists(db_path):
+                self.DB = sqlite3.connect(db_path, check_same_thread=False)
+                # '''创建游标'''
+                self.cursor = self.DB.cursor()
+                self.open_flag = True
+                if lock.locked():
+                    lock.release()
+
+    def get_avatar_buffer(self, userName):
+        if not self.open_flag:
+            return None
+        sql = '''
+            select smallHeadBuf
+            from ContactHeadImg1
+            where usrName=?;
+        '''
+        if not self.open_flag:
+            self.init_database()
         try:
-            cursor.execute(sql, [userName])
-        except:
-            time.sleep(0.5)
-            init_database()
+            lock.acquire(True)
+            self.cursor.execute(sql, [userName])
+            result = self.cursor.fetchall()
+            # print(result[0][0])
+            if result:
+                return result[0][0]
         finally:
-            cursor.execute(sql, [userName])
-        result = cursor.fetchall()
-        # print(result[0][0])
-        if result:
-            return result[0][0]
-    finally:
-        lock.release()
-    return None
+            lock.release()
+        return None
 
+    def close(self):
+        if self.open_flag:
+            try:
+                lock.acquire(True)
+                self.open_flag = False
+                self.DB.close()
+            finally:
+                lock.release()
 
-def close():
-    global DB
-    if DB:
-        DB.close()
+    def __del__(self):
+        self.close()
 
 
 if __name__ == '__main__':
-    get_avatar_buffer('wxid_al2oan01b6fn11')
+    Misc()
+    print(Misc().get_avatar_buffer('wxid_al2oan01b6fn11'))

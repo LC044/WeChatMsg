@@ -24,7 +24,7 @@ def wx_path():
     ## 获取当前用户名
     users = os.path.expandvars('$HOMEPATH')
     ## 找到3ebffe94.ini配置文件
-    f = open(r'C:' + users + '\\AppData\\Roaming\\Tencent\\WeChat\\All Users\\config\\3ebffe94.ini')
+    f = open(r'C:' + users + '\\AppData\\Roaming\\Tencent\\WeChat\\All Users\\config\\3ebffe94.ini', encoding='utf-8')
     txt = f.read()
     f.close()
     # 打开Windows注册表

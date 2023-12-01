@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import QWidget, QMessageBox, QAction, QLineEdit
 
-from app.DataBase import micro_msg, misc, msg
+from app.DataBase import micro_msg_db, misc_db, msg_db
 from app.components import ContactQListWidgetItem
 from app.person_pc import ContactPC
 from app.ui_pc.Icon import Icon
@@ -72,9 +72,9 @@ class ChatWindow(QWidget, Ui_Form):
     def show_chats(self):
         if self.ok_flag:
             return
-        msg.init_database()
-        micro_msg.init_database()
-        if not msg.is_database_exist():
+        msg_db.init_database()
+        micro_msg_db.init_database()
+        if not msg_db.open_flag:
             QMessageBox.critical(self, "错误", "数据库不存在\n请先解密数据库")
             self.show_thread = ShowThread()
             self.show_thread.load_finish_signal.connect(self.load_finish_signal)
@@ -127,7 +127,7 @@ class ShowContactThread(QThread):
         super().__init__()
 
     def run(self) -> None:
-        contact_info_lists = micro_msg.get_contact()
+        contact_info_lists = micro_msg_db.get_contact()
         for contact_info_list in contact_info_lists:
             # UserName, Alias,Type,Remark,NickName,PYInitial,RemarkPYInitial,ContactHeadImgUrl.smallHeadImgUrl,ContactHeadImgUrl,bigHeadImgUrl
             contact_info = {
@@ -139,7 +139,7 @@ class ShowContactThread(QThread):
                 'smallHeadImgUrl': contact_info_list[7]
             }
             contact = ContactPC(contact_info)
-            contact.smallHeadImgBLOG = misc.get_avatar_buffer(contact.wxid)
+            contact.smallHeadImgBLOG = misc_db.get_avatar_buffer(contact.wxid)
             contact.set_avatar(contact.smallHeadImgBLOG)
             self.showSingal.emit(contact)
             # pprint(contact.__dict__)
