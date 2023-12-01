@@ -75,31 +75,6 @@ def get_info_wxid(h_process):
     return wxid
 
 
-@log
-def get_info_filePath(wxid="all"):
-    if not wxid:
-        return "None"
-    try:
-        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Tencent\WeChat", 0, winreg.KEY_READ)
-        value, _ = winreg.QueryValueEx(key, "FileSavePath")
-        winreg.CloseKey(key)
-        w_dir = value
-    except Exception as e:
-        w_dir = "MyDocument:"
-
-    if w_dir == "MyDocument:":
-        profile = os.path.expanduser("~")
-        msg_dir = os.path.join(profile, "Documents", "WeChat Files")
-    else:
-        msg_dir = os.path.join(w_dir, "WeChat Files")
-
-    if wxid == "all" and os.path.exists(msg_dir):
-        return msg_dir
-
-    filePath = os.path.join(msg_dir, wxid)
-    return filePath if os.path.exists(filePath) else "None"
-
-
 # 读取内存中的key
 @log
 def get_key(h_process, address, address_len=8):
@@ -125,7 +100,7 @@ def read_info(version_list, is_logging=False):
     if len(wechat_process) == 0:
         error = "[-] WeChat No Run"
         if is_logging: print(error)
-        return error
+        return -1
 
     for process in wechat_process:
         tmp_rd = {}
@@ -137,7 +112,7 @@ def read_info(version_list, is_logging=False):
         if not isinstance(bias_list, list):
             error = f"[-] WeChat Current Version {tmp_rd['version']} Is Not Supported"
             if is_logging: print(error)
-            return error
+            return -2
 
         wechat_base_address = 0
         for module in process.memory_maps(grouped=False):
@@ -147,7 +122,7 @@ def read_info(version_list, is_logging=False):
         if wechat_base_address == 0:
             error = f"[-] WeChat WeChatWin.dll Not Found"
             if is_logging: print(error)
-            return error
+            return -1
 
         Handle = ctypes.windll.kernel32.OpenProcess(0x1F0FFF, False, process.pid)
 
@@ -164,7 +139,6 @@ def read_info(version_list, is_logging=False):
         tmp_rd['name'] = get_info_without_key(Handle, name_baseaddr, 64) if bias_list[0] != 0 else "None"
         tmp_rd['mail'] = get_info_without_key(Handle, mail_baseaddr, 64) if bias_list[3] != 0 else "None"
         tmp_rd['wxid'] = get_info_wxid(Handle)
-        tmp_rd['filePath'] = get_info_filePath(tmp_rd['wxid'])
         tmp_rd['key'] = get_key(Handle, key_baseaddr, addrLen) if bias_list[4] != 0 else "None"
         result.append(tmp_rd)
 
