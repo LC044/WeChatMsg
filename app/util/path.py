@@ -22,9 +22,9 @@ def get_abs_path(path):
 
 def wx_path():
     ## 获取当前用户名
-    users = os.path.expandvars('$HOMEPATH')
+    user_home = os.environ.get("USERPROFILE")
     ## 找到3ebffe94.ini配置文件
-    f = open(r'C:' + users + '\\AppData\\Roaming\\Tencent\\WeChat\\All Users\\config\\3ebffe94.ini', encoding='utf-8')
+    f = open(user_home + '\\AppData\\Roaming\\Tencent\\WeChat\\All Users\\config\\3ebffe94.ini', encoding='utf-8')
     txt = f.read()
     f.close()
     # 打开Windows注册表
