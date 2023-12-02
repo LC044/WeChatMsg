@@ -1,6 +1,6 @@
 <h1 align="center">我的数据我做主</h1>
 <div align="center">
-<img src="https://img.shields.io/badge/WeChat-解密-blue.svg">
+<img src="https://img.shields.io/badge/WeChat-留痕-blue.svg">
 <a href="https://github.com/LC044/WeChatMsg/stargazers">
     <img src="https://img.shields.io/github/stars/LC044/WeChatMsg.svg" />
 </a>
@@ -35,9 +35,9 @@
 
 ## 🍉功能
 
-- 破解📱手机微信数据库
+- 恢复📱手机微信数据库
 - 安卓 or 苹果都可以哦
-- 破解💻PC端微信数据库
+- 恢复💻PC端微信数据库
 - 还原微信聊天界面
     - 🗨文本✅
     - 🏝图片✅
@@ -48,6 +48,7 @@
     - 回复❎
     - 拍一拍❎
 - 导出聊天记录
+    - sqlite数据库✅
     - HTML(文本、图片)✅
     - Word文档✅
     - CSV文档✅
