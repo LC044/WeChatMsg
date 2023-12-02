@@ -68,7 +68,7 @@ class Output(QThread):
         columns = ['localId', 'TalkerId', 'Type', 'SubType',
                    'IsSender', 'CreateTime', 'Status', 'StrContent',
                    'StrTime']
-        messages = msg.get_messages_all()
+        messages = msg_db.get_messages_all()
         # 写入CSV文件
         with open(filename, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)

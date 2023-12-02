@@ -41,7 +41,7 @@ class ViewController(QWidget):
         self.viewMainWIndow = mainview.MainWinController(username=username)
         self.viewMainWIndow.exitSignal.connect(self.close)
         try:
-            self.viewMainWIndow.setWindowTitle("Chat")
+            self.viewMainWIndow.setWindowTitle("留痕")
             self.viewMainWIndow.show()
             end = time.time()
             print('ok', end - start)
