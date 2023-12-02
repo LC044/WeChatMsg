@@ -92,12 +92,14 @@
 
 # ⌛使用
 
-小白可以先点个star⭐(💘项目不断更新中),然后去旁边[Release](https://github.com/LC044/WeChatMsg/releases/tag/v0.2.4)
+小白可以先点个star⭐(💘项目不断更新中),然后去旁边[Release](https://github.com/LC044/WeChatMsg/releases)
 下载打包好的exe可执行文件，双击即可运行
 
 **⚠️注意：若出现闪退情况请右击选择用管理员身份运行exe程序，该程序不存在任何病毒，若杀毒软件提示有风险选择略过即可**
 
-## 解密PC版微信数据库
+**不懂编程的请移步[Release](https://github.com/LC044/WeChatMsg/releases)，下面的东西对你来说是天书**
+
+## PC版微信
 
 <details>
 
@@ -113,26 +115,35 @@ pip install -r requirements_pc.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ### 2. 使用
 
 1. 登录微信
+
+手机端使用聊天记录迁移功能将聊天数据迁移到电脑上
+
+操作步骤：我->设置->聊天->聊天记录迁移与备份->迁移->迁移到电脑微信
+
 2. 运行程序
-   ```shell
-   python main_pc.py
-   ```
+
+```shell
+python main_pc.py
+```
+
 3. 点击获取信息
 
-   ![](./doc/images/pc_decrypt_info.png)
-4. 设置微信安装路径(如果自动设置好了就不用管了)
-   可以到微信->设置->文件管理查看
-   ![](./doc/images/setting.png)
+![](./doc/images/pc_decrypt_info.png)
 
-   点击**设置微信路径**按钮，选择该文件夹路径下的带有wxid_xxx的路径(没有wxid的话先选择其中一个文件夹不对的话换其他文件夹)
-   ![](./doc/images/path_select.png)
+4. 设置微信安装路径(如果自动设置好了就**不用管**了)
+
+可以到微信->设置->文件管理查看
+![](./doc/images/setting.png)
+
+点击**设置微信路径**按钮，选择该文件夹路径下的带有wxid_xxx的路径(没有wxid的话先选择其中一个文件夹不对的话换其他文件夹)
+![](./doc/images/path_select.png)
 
 5. 获取到密钥和微信路径之后点击开始解密
 6. 解密后的数据库文件保存在./app/DataBase/Msg路径下
 
 ### 3. 查看
 
-随便下载一个SQLite数据库查看软件就能打开数据库，例如[DB Browser for SQLite](https://sqlitebrowser.org/dl/)
+随便下载一个SQLite数据库查看软件就能打开数据库，例如[DB Browser for SQLite](https://sqlitebrowser.org/dl/)（不懂SQL的就别折腾了）
 
 * [数据库功能介绍](./doc/数据库介绍.md)
 * [更多功能介绍](./doc/电脑端使用教程.md)
