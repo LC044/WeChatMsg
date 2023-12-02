@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
-<map>
-    <boolean name="auth_info_prefs_use_new_ecdh" value="true" />
-    <int name="_auth_uin" value="-1564169371" />
-    <boolean name="key_auth_info_prefs_created" value="true" />
-    <int name="key_auth_update_version" value="671096663" />
-    <string name="server_id">2503180200000000220b96fd91b700</string>
-    <string name="_auth_key">0a240820122089653ee1b7b77b1a53891bdeb13e3ebebd8c3f973cc8139973199b7549b4286212b80108b20112b20108994e12a601e6a7999e231ed0b9871fa0f9cb11835fb140ab40f308aaf1c81ca2e18619725c6875c908c1cfd43a890f91b772aaf8678e4daebc8f2979f6f3c003b9ded9da0b3e58ad33df24389b572aebe468059dfbb40a28fc5cb0af4c5bcc8b072759e7409cf2069595c90cdc1752163b43c2d576751d26e018a5895e2a9716d99c7bbe590af31e91e41b69bf67c1ad1f3c0d6c68fc770d90362913ecf7101d3de12e3aba0095cf98dafc18afadf79f0a</string>
-</map>

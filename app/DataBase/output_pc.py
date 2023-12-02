@@ -83,11 +83,11 @@ class Output(QThread):
         elif self.output_type == self.CSV_ALL:
             self.to_csv_all()
         else:
-            self.Child0 = ChildThread(self.contact, type_=self.output_type)
-            self.Child0.progressSignal.connect(self.progress)
-            self.Child0.rangeSignal.connect(self.rangeSignal)
-            self.Child0.okSignal.connect(self.okSignal)
-            self.Child0.start()
+            self.Child = ChildThread(self.contact, type_=self.output_type)
+            self.Child.progressSignal.connect(self.progress)
+            self.Child.rangeSignal.connect(self.rangeSignal)
+            self.Child.okSignal.connect(self.okSignal)
+            self.Child.start()
 
     def cancel(self):
         self.requestInterruption()
