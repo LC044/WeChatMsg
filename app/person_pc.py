@@ -49,7 +49,7 @@ class ContactPC:
         self.smallHeadImgUrl = contact_info.get('smallHeadImgUrl')
         self.smallHeadImgBLOG = b''
         self.avatar = QPixmap()
-        self.avatar_path = ':/icons/icons/default_avatar.svg'
+        self.avatar_path = Icon.Default_avatar_path
 
     def set_avatar(self, img_bytes):
         if not img_bytes:
@@ -59,7 +59,6 @@ class ContactPC:
             self.avatar.loadFromData(img_bytes, format='PNG')
         else:
             self.avatar.loadFromData(img_bytes, format='jfif')
-
         self.avatar.scaled(60, 60, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
 
 

@@ -187,6 +187,6 @@ class Ui_Dialog(object):
         self.label_8.setText(_translate("Dialog", "微信路径"))
         self.btn_getinfo.setText(_translate("Dialog", "获取信息"))
         self.btn_db_dir.setText(_translate("Dialog", "设置微信路径"))
-        self.pushButton_3.setText(_translate("Dialog", "开始解密"))
+        self.pushButton_3.setText(_translate("Dialog", "开始启动"))
         self.label_tip.setText(_translate("Dialog", "TextLabel"))
         self.label_ready.setText(_translate("Dialog", "未就绪"))

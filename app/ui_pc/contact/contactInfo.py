@@ -1,5 +1,5 @@
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
+from PyQt5.QtCore import pyqtSignal, QUrl
+from PyQt5.QtWidgets import QWidget, QMenu, QAction, QToolButton, QMessageBox
 
 from app.DataBase.output_pc import Output
 from app.ui_pc.Icon import Icon
@@ -25,6 +25,9 @@ class ContactInfo(QWidget, Ui_Form):
         self.btn_report.setIcon(Icon.Annual_Report_Icon)
         self.btn_analysis.setIcon(Icon.Analysis_Icon)
         self.btn_emotion.setIcon(Icon.Emotion_Icon)
+        self.btn_report.clicked.connect(self.annual_report)
+        self.btn_analysis.clicked.connect(self.analysis)
+        self.btn_emotion.clicked.connect(self.emotionale_Analysis)
         self.label_remark.setText(self.contact.remark)
         self.stackedWidget.addWidget(self.view_userinfo)
         self.stackedWidget.setCurrentWidget(self.view_userinfo)
@@ -48,6 +51,11 @@ class ContactInfo(QWidget, Ui_Form):
         self.toolButton_output.showMenu()
 
     def analysis(self):
+        QMessageBox.warning(self,
+                            "别急别急",
+                            "马上就实现该功能"
+                            )
+        return
         self.stackedWidget.setCurrentWidget(self.view_analysis)
         if 'room' in self.contact.wxid:
             QMessageBox.warning(
@@ -68,6 +76,11 @@ class ContactInfo(QWidget, Ui_Form):
         # self.report.show()
 
     def emotionale_Analysis(self):
+        QMessageBox.warning(self,
+                            "别急别急",
+                            "马上就实现该功能"
+                            )
+        return
         self.stackedWidget.setCurrentWidget(self.view_emotion)
         if 'room' in self.contact.wxid:
             QMessageBox.warning(
@@ -121,6 +134,5 @@ class ContactInfo(QWidget, Ui_Form):
         self.view_userinfo.progressBar.setProperty('value', value)
 
     def set_progressBar_range(self, value):
-        print('进度条范围', value)
         self.view_userinfo.progressBar.setVisible(True)
         self.view_userinfo.progressBar.setRange(0, value)

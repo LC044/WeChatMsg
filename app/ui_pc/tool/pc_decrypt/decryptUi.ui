@@ -315,7 +315,7 @@
                                                         </size>
                                                     </property>
                                                     <property name="text">
-                                                        <string>开始解密</string>
+                                                        <string>开始启动</string>
                                                     </property>
                                                 </widget>
                                             </item>
