@@ -83,10 +83,8 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
                 if self.wx_dir and os.path.exists(os.path.join(self.wx_dir)):
                     self.label_ready.setText('已就绪')
         except Exception as e:
-            print(e)
-            QMessageBox.critical(self, "错误", "请登录微信")
+            QMessageBox.critical(self, "未知错误", "请收集报错信息，发起issue解决问题")
             logger.error(traceback.format_exc())
-            traceback.print_exc()
 
     def set_wxid_(self):
         self.info['wxid'] = self.lineEdit.text()
@@ -164,8 +162,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
             'mobile': self.info['mobile']
         }
         try:
-            if not os.path.exists('./app/data'):
-                os.mkdir('./app/data')
+            os.makedirs('./app/data', exist_ok=True)
             with open('./app/data/info.json', 'w', encoding='utf-8') as f:
                 f.write(json.dumps(dic))
         except:
@@ -203,13 +200,7 @@ class DecryptThread(QThread):
         # micro_msg_db.close()
         # hard_link_db.close()
         output_dir = 'app/DataBase/Msg'
-        try:
-            if not os.path.exists(output_dir):
-                os.mkdir(output_dir)
-        except:
-            os.mkdir('app')
-            os.mkdir('app/DataBase')
-            os.mkdir('app/DataBase/Msg')
+        os.makedirs(output_dir, exist_ok=True)
         tasks = []
         if os.path.exists(self.db_path):
             for root, dirs, files in os.walk(self.db_path):

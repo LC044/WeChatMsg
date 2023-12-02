@@ -4,10 +4,7 @@ import winreg
 from app.person_pc import MePC
 from app.util import dat2pic
 
-if not os.path.exists('./data/'):
-    os.mkdir('./data/')
-if not os.path.exists('./data/image'):
-    os.mkdir('./data/image')
+os.makedirs('./data/image', exist_ok=True)
 
 
 def get_abs_path(path):
@@ -18,6 +15,11 @@ def get_abs_path(path):
         return output_path if output_path else ':/icons/icons/404.png'
     else:
         return ':/icons/icons/404.png'
+
+
+def mkdir(path):
+    if not os.path.exists(path):
+        os.mkdir(path)
 
 
 def wx_path():
