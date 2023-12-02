@@ -149,10 +149,84 @@ python main_pc.py
 * [更多功能介绍](./doc/电脑端使用教程.md)
 
 显示效果
+
 <img alt="聊天界面" src="doc/images/chat_.png"/>
+
+### 4. pc端功能展示
+恭喜你解密成功，来看看效果吧~
+
+#### 4.1 最上方导航栏
+
+可以点击获取教程，相关信息，导出全部信息的csv文件。
+
+![image-20231201003914318.png](https://blog.lc044.love/static/img/01f1f9eacb6063b980595ef769bbc183.image-20231201003914318.webp)
+
+#### 4.2 聊天界面
+
+点击**左侧导航栏——>聊天**，会随机跳转到某一个好友的界面，滚轮滚动，可以向上翻看更早的聊天记录（温馨提示：可能在翻的时候会有卡顿的现象，是因为数据加载需要时间，后期我们会继续优化嗷~）。目前聊天记录中文字、图片、表情包基本可以正常显示~
+
+![image-20231130221954512.png](https://blog.lc044.love/static/img/da1103c0d40eac06e07a46a23fb0a138.image-20231130221954512.webp)
+
+当你想要查找某一位好友的信息时，可以在图中红框输入信息，点击Enter回车键，进行检索
+
+![image-20231130223621017.png](https://blog.lc044.love/static/img/17746c59d1015164438e539abec6094e.image-20231130223621017.webp)
+
+#### 4.3 好友界面
+
+点击**左侧导航栏——>好友**，会跳转到好友的界面，同样可以选择好友，右上方导航栏中有（1）统计信息（2）情感分析（3）年度报告（4）退出（5）导出聊天记录：可选择导出为word、csv、html格式。
+
+
+![image-20231130224357480.png](https://blog.lc044.love/static/img/80958f575ec8f2822af15ce1634029da.image-20231130224357480.webp)
+
+
+**功能部分未集成或开发，请您耐心等待呀~**
 
 </details>
 
+## PC端破解过程中部分问题解决（可参考）
+<details>
+    
+#### 🤔如果您在pc端使用的时候出现问题，可以先参考以下方面，如果仍未解决，可以在群里交流~
+
+如果您遇到下图所示的问题，是由于没有在电脑端登录微信
+
+![image-20231130231701520.png](https://blog.lc044.love/static/img/db8e39b27d369851c73298b247b79c2f.image-20231130231701520.webp)
+
+如果您遇到下图所示的问题，需要先运行`decrypt_window`的可执行文件或者源代码文件
+
+```
+python decrypt_window.py
+```
+
+![image-20231130231503340.png](https://blog.lc044.love/static/img/a3ea30edd2e63187283dcc55e344a095.image-20231130231503340.webp)
+
+
+如果您在运行可执行程序的时候出现闪退的现象，请右击软件使用管理员权限运行。
+
+![image-20231130233120492.png](https://blog.lc044.love/static/img/f18737d5a006aa5e7354b74f6e036d47.image-20231130233120492.webp)
+
+
+如果您在获取信息的时候，`wxid`显示none，但是密钥是存在的，需要在微信文件保存的路径中选择该文件夹路径下的带有wxid_xxx的名字，填到wxid位置并继续点击`开始解密`
+
+
+![image-20231130234120644.png](https://blog.lc044.love/static/img/5c3c53cb34701fb74283e01e52a2df04.image-20231130234120644.webp)
+
+如果出现如图所示的报错信息，将`app/database/msg`文件夹删除，重新运行`main_pc.py`。
+
+
+![image-20231130235155121.png](https://blog.lc044.love/static/img/884d8f930518b9b31bfa9df7fd5a53f8.image-20231130235155121.webp)
+
+导出数据成功之后，该文件位置与exe文件位置相同（或者在源码.data文件下）
+
+
+![image-20231201000202980.png](https://blog.lc044.love/static/img/1748d98033903dede564ce3d7e835bdf.image-20231201000202980.webp)
+
+#### 🤔注意
+
+解密一个微信数据库之后，登录新的微信并不会实时更改
+
+</details>
+        
 ## 使用模拟器（支持可视化分析）
 
 <details>
