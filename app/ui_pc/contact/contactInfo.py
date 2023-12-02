@@ -111,7 +111,7 @@ class ContactInfo(QWidget, Ui_Form):
         reply = QMessageBox(self)
         reply.setIcon(QMessageBox.Information)
         reply.setWindowTitle('OK')
-        reply.setText(f"导出聊天记录成功\n在.\\data\\目录下")
+        reply.setText(f"导出聊天记录成功\n在./data/目录下(跟exe文件在一起)")
         reply.addButton("确认", QMessageBox.AcceptRole)
         reply.addButton("取消", QMessageBox.RejectRole)
         api = reply.exec_()

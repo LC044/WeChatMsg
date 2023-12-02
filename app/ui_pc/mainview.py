@@ -10,9 +10,9 @@
 import json
 import os.path
 
-from PyQt5.QtCore import *
+from PyQt5.QtCore import pyqtSignal, QUrl, Qt, QThread, QSize
 from PyQt5.QtGui import QPixmap, QFont, QDesktopServices
-from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QMainWindow, QLabel, QListWidgetItem, QMessageBox
 
 from app import config
 from app.DataBase import msg_db, misc_db, micro_msg_db, hard_link_db
@@ -223,7 +223,6 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
 
 
 class LoadWindowThread(QThread):
-    windowSignal = pyqtSignal(QWidget)
     okSignal = pyqtSignal(bool)
 
     def __init__(self):

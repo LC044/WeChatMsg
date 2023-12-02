@@ -216,7 +216,7 @@
             </widget>
             <widget class="QMenu" name="menu_3">
                 <property name="title">
-                    <string>不显示或者显示异常请重启应用</string>
+                    <string>不显示或者显示异常请重启应用、没反应那就多等一会儿</string>
                 </property>
             </widget>
             <addaction name="menu_F"/>

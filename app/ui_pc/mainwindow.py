@@ -165,7 +165,7 @@ class Ui_MainWindow(object):
         self.menu_output.setTitle(_translate("MainWindow", "导出聊天记录(全部)"))
         self.menu_2.setTitle(_translate("MainWindow", "帮助"))
         self.menu_about.setTitle(_translate("MainWindow", "关于"))
-        self.menu_3.setTitle(_translate("MainWindow", "不显示或者显示异常请重启应用"))
+        self.menu_3.setTitle(_translate("MainWindow", "不显示或者显示异常请重启应用、没反应那就多等一会儿"))
         self.action_3.setText(_translate("MainWindow", "保存"))
         self.action_4.setText(_translate("MainWindow", "退出"))
         self.action_help_decrypt.setText(_translate("MainWindow", "解密教程"))
