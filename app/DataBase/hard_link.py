@@ -7,8 +7,7 @@ import xml.etree.ElementTree as ET
 from app.log import log
 
 lock = threading.Lock()
-DB = None
-cursor = None
+
 db_path = "./app/Database/Msg/HardLinkImage.db"
 root_path = 'FileStorage/MsgAttach/'
 
