@@ -1,4 +1,5 @@
 import os.path
+import random
 import sqlite3
 import threading
 import traceback
@@ -27,7 +28,12 @@ def singleton(cls):
     return inner
 
 
-@singleton
+class MsgType:
+    TEXT = 1
+    IMAGE = 3
+    EMOJI = 47
+
+
 class Msg:
     def __init__(self):
         self.DB = None
@@ -35,8 +41,11 @@ class Msg:
         self.open_flag = False
         self.init_database()
 
-    def init_database(self):
+    def init_database(self, path=None):
+        global db_path
         if not self.open_flag:
+            if path:
+                db_path = path
             if os.path.exists(db_path):
                 self.DB = sqlite3.connect(db_path, check_same_thread=False)
                 # '''创建游标'''
@@ -102,6 +111,67 @@ class Msg:
         # result.sort(key=lambda x: x[5])
         return result
 
+    def get_messages_by_type(self, username_, type_):
+        if not self.open_flag:
+            return None
+        sql = '''
+            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID
+            from MSG
+            where StrTalker=? and Type=?
+            order by CreateTime
+        '''
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql, [username_, type_])
+            result = self.cursor.fetchall()
+        finally:
+            lock.release()
+        return result
+
+    def get_messages_by_keyword(self, username_, keyword, num=5):
+        if not self.open_flag:
+            return None
+        sql = '''
+            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID
+            from MSG
+            where StrTalker=? and Type=1 and StrContent like ?
+            order by CreateTime desc
+        '''
+        temp = []
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql, [username_, f'%{keyword}%'])
+            messages = self.cursor.fetchall()
+        finally:
+            lock.release()
+        if len(messages) > 5:
+            messages = random.sample(messages, num)
+        try:
+            lock.acquire(True)
+            for msg in messages:
+                local_id = msg[0]
+                is_send = msg[4]
+                sql = '''
+                    select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID
+                    from MSG
+                    where localId > ? and StrTalker=? and Type=1 and IsSender=?
+                    limit 1
+                '''
+                self.cursor.execute(sql, [local_id, username_, 1 - is_send])
+                temp.append((msg, self.cursor.fetchone()))
+        finally:
+            lock.release()
+        res = []
+        for dialog in temp:
+            msg1 = dialog[0]
+            msg2 = dialog[1]
+            res.append((
+                (msg1[4], msg1[5], msg1[7].split(keyword), msg1[8]),
+                (msg2[4], msg2[5], msg2[7], msg2[8])
+            ))
+
+        return res
+
     def close(self):
         if self.open_flag:
             try:
@@ -123,4 +193,7 @@ if __name__ == '__main__':
     print(result)
     print(result[-1][0])
     local_id = result[-1][0]
+    wxid = 'wxid_0o18ef858vnu22'
     pprint(msg.get_message_by_num('wxid_0o18ef858vnu22', local_id))
+    print(msg.get_messages_by_keyword(wxid, '干嘛'))
+    pprint(msg.get_messages_by_keyword(wxid, '干嘛')[0])

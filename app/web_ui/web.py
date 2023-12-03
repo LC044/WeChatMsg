@@ -1,7 +1,12 @@
+import json
+
 from flask import Flask, render_template
 from pyecharts import options as opts
 from pyecharts.charts import Bar
 from pyecharts.globals import ThemeType
+
+from app.DataBase import msg_db
+from app.analysis import analysis
 
 app = Flask(__name__)
 
@@ -25,7 +30,7 @@ def index():
 
 @app.route("/index")
 def index0():
-    return render_template("index.html")
+    return render_template("index1.html")
 
 
 @app.route('/home')
@@ -41,7 +46,26 @@ def home():
 
 @app.route('/message_num')
 def one():
-    return "1hello world"
+    msg_db.init_database(path='../DataBase/Msg/MSG.db')
+    wxid = 'wxid_0o18ef858vnu22'
+    # wxid = 'wxid_8piw6sb4hvfm22'
+    wxid = 'wxid_lltzaezg38so22'
+    world_cloud_data = analysis.wordcloud(wxid)
+    # 创建一个简单的柱状图
+    with open('message_num_test.html','w',encoding='utf-8') as f:
+        f.write(render_template('message_num.html', **world_cloud_data))
+    return render_template('message_num.html', **world_cloud_data)
+
+
+@app.route('/test')
+def test():
+    bar = (
+        Bar(init_opts=opts.InitOpts(theme=ThemeType.LIGHT))
+        .add_xaxis(["A", "B", "C", "D", "E"])
+        .add_yaxis("Series", [5, 20, 36, 10, 75])
+        .set_global_opts(title_opts=opts.TitleOpts(title="Flask and Pyecharts Interaction"))
+    )
+    return bar.dump_options_with_quotes()
 
 
 if __name__ == "__main__":

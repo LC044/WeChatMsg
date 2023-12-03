@@ -288,10 +288,11 @@ python main.py
 # 🏆致谢
 
 * PC微信解密工具:[https://github.com/xaoyaoo/PyWxDump](https://github.com/xaoyaoo/PyWxDump)
+* 我的得力助手:[ChatGPT](https://chat.openai.com/)
 
 ---
 
-> 说明：该项目仅可用于交流学习，禁止任何非法用途，创作者不承担任何责任🙄
+> 声明：该项目有且仅有一个目的：留痕——我的数据我做主，前提是“我的数据”其次才是“我做主”，禁止任何人以任何形式将其用于任何非法用途，对于使用该程序所造成的任何后果，创作者不承担任何责任🙄
 
 [![Star History Chart](https://api.star-history.com/svg?repos=LC044/WeChatMsg&type=Date)](https://star-history.com/?utm_source=bestxtools.com#LC044/WeChatMsg&Date)
 

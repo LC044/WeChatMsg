@@ -29,9 +29,9 @@ def get_code(file_path):
         code = dat_read[0] ^ pic_head[head_index]
         idf_code = dat_read[1] ^ code
         head_index = head_index + 1
-        # if idf_code == pic_head[head_index]:
-        #     dat_file.close()
-        return head_index, code
+        if idf_code == pic_head[head_index]:
+            dat_file.close()
+            return head_index, code
         head_index = head_index + 1
     dat_file.close()
     print("not jpg, png, gif")
@@ -64,9 +64,8 @@ def decode_dat(file_path, out_path):
     with open(file_path, 'rb') as file_in:
         data = file_in.read()
     # 对数据进行异或加密/解密
-    encrypted_data = bytes([byte ^ decode_code for byte in data])
     with open(file_outpath, 'wb') as file_out:
-        file_out.write(encrypted_data)
+        file_out.write(bytes([byte ^ decode_code for byte in data]))
     print(file_path, '->', file_outpath)
     return file_outpath
 

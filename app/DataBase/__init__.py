@@ -13,9 +13,9 @@ from .micro_msg import MicroMsg
 # from . import output
 from .misc import Misc
 from .msg import Msg
-
+from .msg import MsgType
 misc_db = Misc()
 msg_db = Msg()
 micro_msg_db = MicroMsg()
 hard_link_db = HardLink()
-__all__ = ["data", 'output', 'misc_db', 'micro_msg_db', 'msg_db', 'hard_link_db']
+__all__ = ["data", 'output', 'misc_db', 'micro_msg_db', 'msg_db', 'hard_link_db','MsgType']
