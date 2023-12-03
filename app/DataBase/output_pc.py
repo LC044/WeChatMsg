@@ -458,6 +458,25 @@ class ChildThread(QThread):
       align-items: center;
       justify-content: center;
   }
+  
+   .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+   }
+ 
+   .modal-image {
+      display: block;
+      max-width: 90%;
+      max-height: 90%;
+      margin: auto;
+      margin-top: 5%;
+   }
   .container{
       height: 760px;
       width: 900px;
@@ -681,6 +700,9 @@ input {
 
 </div>
 <div></div>
+<div id="modal" class="modal" onclick="hideModal()">
+  <img id="modal-image" class="modal-image">
+</div>
 <div class="pagination-container">
   <div class="button-row">
     <button onclick="prevPage()">上一页</button>
@@ -809,11 +831,11 @@ const chatMessages = [
             else if (message.type == 3){
                 if (message.is_send == 1){
                 messageElement.className = "item item-right";
-                messageElement.innerHTML = `<div class='chat-image'><img src="${message.text}" /></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
+                messageElement.innerHTML = `<div class='chat-image' ><img src="${message.text}" onclick="showModal(this)"/></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
             }
             else if(message.is_send==0){
                 messageElement.className = "item item-left";
-                messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='chat-image'><img src="${message.text}" /></div>`
+                messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}"/></div><div class='chat-image'><img src="${message.text}" onclick="showModal(this)"/></div>`
             }
             }
             chatContainer.appendChild(messageElement);
@@ -855,6 +877,21 @@ const chatMessages = [
 
   // 初始化页面
   renderPage(currentPage);
+</script>
+
+<script>
+   function showModal(image) {
+      var modal = document.getElementById("modal");
+      var modalImage = document.getElementById("modal-image");
+      modal.style.display = "block";
+      modalImage.src = image.src;
+      console.log(image.src);
+   }
+ 
+   function hideModal() {
+      var modal = document.getElementById("modal");
+      modal.style.display = "none";
+   }
 </script>
 </body>
 </html>

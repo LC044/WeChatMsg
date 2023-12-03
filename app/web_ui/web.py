@@ -48,8 +48,8 @@ def home():
 def one():
     msg_db.init_database(path='../DataBase/Msg/MSG.db')
     wxid = 'wxid_0o18ef858vnu22'
-    # wxid = 'wxid_8piw6sb4hvfm22'
-    wxid = 'wxid_lltzaezg38so22'
+    wxid = 'wxid_8piw6sb4hvfm22'
+    # wxid = 'wxid_lltzaezg38so22'
     world_cloud_data = analysis.wordcloud(wxid)
     # 创建一个简单的柱状图
     with open('message_num_test.html','w',encoding='utf-8') as f:
