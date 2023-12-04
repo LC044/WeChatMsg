@@ -7,8 +7,6 @@ from pprint import pprint
 
 from app.log import logger
 
-DB = None
-cursor = None
 db_path = "./app/Database/Msg/MSG.db"
 lock = threading.Lock()
 

@@ -188,6 +188,7 @@ class CAvatar(QWidget):
         """设置url,可以是本地路径,也可以是网络地址
         :param url:
         """
+        return
         self.url = url
         self._get(url)
 
