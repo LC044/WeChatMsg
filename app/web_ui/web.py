@@ -1,14 +1,20 @@
 import json
+import os
+import sys
 
-from flask import Flask, render_template
+from flask import Flask, render_template, send_file
 from pyecharts import options as opts
 from pyecharts.charts import Bar
 from pyecharts.globals import ThemeType
 
 from app.DataBase import msg_db
 from app.analysis import analysis
+from app.person_pc import ContactPC, MePC
 
 app = Flask(__name__)
+
+wxid = ''
+contact: ContactPC = None
 
 
 @app.route("/")
@@ -37,24 +43,22 @@ def index0():
 def home():
     data = {
         'sub_title': '二零二三年度报告',
-        'avatar_path': "static/my_resource/avatar.png",
-        'nickname': '司小远',
-        'first_time': '2023-09-18 20:39:08',
+        'avatar_path': contact.avatar_path,
+        'nickname': contact.remark,
+        'first_time': msg_db.get_first_time_of_message(contact.wxid)[1],
     }
     return render_template('home.html', **data)
 
 
-@app.route('/message_num')
+@app.route('/wordcloud')
 def one():
-    msg_db.init_database(path='../DataBase/Msg/MSG.db')
-    wxid = 'wxid_0o18ef858vnu22'
-    wxid = 'wxid_8piw6sb4hvfm22'
+    wxid = contact.wxid
     # wxid = 'wxid_lltzaezg38so22'
     world_cloud_data = analysis.wordcloud(wxid)
-    # 创建一个简单的柱状图
-    with open('message_num_test.html','w',encoding='utf-8') as f:
-        f.write(render_template('message_num.html', **world_cloud_data))
-    return render_template('message_num.html', **world_cloud_data)
+
+    with open('wordcloud.html', 'w', encoding='utf-8') as f:
+        f.write(render_template('wordcloud.html', **world_cloud_data))
+    return render_template('wordcloud.html', **world_cloud_data)
 
 
 @app.route('/test')
@@ -66,6 +70,25 @@ def test():
         .set_global_opts(title_opts=opts.TitleOpts(title="Flask and Pyecharts Interaction"))
     )
     return bar.dump_options_with_quotes()
+
+
+def run(port=21314):
+    app.run(debug=True, host='0.0.0.0', port=port, use_reloader=False)
+
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
+
+@app.route('/data/avatar/<filename>')
+def get_image(filename):
+    try:
+        # 返回动态生成的图片
+        return send_file(os.path.join("../../data/avatar/", filename), mimetype='image/png')
+    except:
+        return send_file(os.path.join(f"{os.getcwd()}/data/avatar/", filename), mimetype='image/png')
 
 
 if __name__ == "__main__":

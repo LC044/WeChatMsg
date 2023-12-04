@@ -25,5 +25,6 @@
     </qresource>
     <qresource prefix="/data">
         <file>version_list.json</file>
+        <file>stopwords.txt</file>
     </qresource>
 </RCC>

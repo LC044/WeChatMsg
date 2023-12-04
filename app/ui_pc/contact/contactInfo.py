@@ -1,10 +1,12 @@
-from PyQt5.QtCore import pyqtSignal, QUrl
+from PyQt5.QtCore import pyqtSignal, QUrl, QThread
+from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QWidget, QMenu, QAction, QToolButton, QMessageBox
 
 from app.DataBase.output_pc import Output
 from app.ui_pc.Icon import Icon
 from .contactInfoUi import Ui_Form
 from .userinfo import userinfo
+from ...person_pc import ContactPC
 
 
 class ContactInfo(QWidget, Ui_Form):
@@ -15,7 +17,7 @@ class ContactInfo(QWidget, Ui_Form):
     def __init__(self, contact, parent=None):
         super(ContactInfo, self).__init__(parent)
         self.setupUi(self)
-        self.contact = contact
+        self.contact:ContactPC = contact
         self.view_userinfo = userinfo.UserinfoController(self.contact)
         self.btn_back.clicked.connect(self.back)
         self.init_ui()
@@ -66,14 +68,17 @@ class ContactInfo(QWidget, Ui_Form):
         self.view_analysis.start()
 
     def annual_report(self):
-        QMessageBox.warning(
-            self,
-            "提示",
-            "敬请期待"
-        )
-        return
-        # self.report = report.ReportController(self.contact)
-        # self.report.show()
+        # QMessageBox.warning(
+        #     self,
+        #     "提示",
+        #     "敬请期待"
+        # )
+        # return
+        self.contact.save_avatar()
+        self.report_thread = ReportThread(self.contact)
+        self.report_thread.okSignal.connect(lambda x: QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314")))
+        self.report_thread.start()
+        QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314"))
 
     def emotionale_Analysis(self):
         QMessageBox.warning(self,
@@ -136,3 +141,17 @@ class ContactInfo(QWidget, Ui_Form):
     def set_progressBar_range(self, value):
         self.view_userinfo.progressBar.setVisible(True)
         self.view_userinfo.progressBar.setRange(0, value)
+
+
+class ReportThread(QThread):
+    okSignal = pyqtSignal(bool)
+
+    def __init__(self, contact):
+        super().__init__()
+        self.contact = contact
+
+    def run(self):
+        from app.web_ui import web
+        web.contact = self.contact
+        web.run(port='21314')
+        self.okSignal.emit(True)

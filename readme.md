@@ -288,7 +288,7 @@ python main.py
 # 🏆致谢
 
 * PC微信解密工具:[https://github.com/xaoyaoo/PyWxDump](https://github.com/xaoyaoo/PyWxDump)
-* PyQt组件库[https://github.com/PyQt5/CustomWidgets](https://github.com/PyQt5/CustomWidgets)
+* PyQt组件库:[https://github.com/PyQt5/CustomWidgets](https://github.com/PyQt5/CustomWidgets)
 * 我的得力助手:[ChatGPT](https://chat.openai.com/)
 
 ---

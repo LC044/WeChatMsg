@@ -1,11 +1,15 @@
 from collections import Counter
 
+from PyQt5.QtCore import QFile, QTextStream, QIODevice
+
 from app.DataBase import msg_db, MsgType
 from app.person_pc import ContactPC
 import jieba
 from pyecharts import options as opts
 from pyecharts.charts import Pie, WordCloud, Calendar, Bar, Line, Timeline, Grid
+from app.resources import resource_rc
 
+var = resource_rc.qt_resource_name
 charts_width = 800
 charts_height = 450
 wordcloud_width = 780
@@ -22,9 +26,18 @@ def wordcloud(wxid):
     # 统计词频
     word_count = Counter(words)
     # 过滤停用词
-    stopwords_file = '../data/stopwords.txt'
-    with open(stopwords_file, "r", encoding="utf-8") as stopword_file:
-        stopwords = set(stopword_file.read().splitlines())
+    stopwords_file = './app/data/stopwords.txt'
+    try:
+        with open(stopwords_file, "r", encoding="utf-8") as stopword_file:
+            stopwords = set(stopword_file.read().splitlines())
+    except:
+        file = QFile(':/data/stopwords.txt')
+        if file.open(QIODevice.ReadOnly | QIODevice.Text):
+            stream = QTextStream(file)
+            stream.setCodec('utf-8')
+            content = stream.readAll()
+            file.close()
+            stopwords = set(content.splitlines())
     filtered_word_count = {word: count for word, count in word_count.items() if len(word) > 1 and word not in stopwords}
 
     # 转换为词云数据格式

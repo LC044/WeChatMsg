@@ -168,12 +168,6 @@ def resource_path(relative_path):
 
 @log
 def get_info(VERSION_LIST):
-    # try:
-    #     with open(VERSION_LIST_PATH, "r", encoding="utf-8") as f:
-    #         VERSION_LIST = json.load(f)
-    # except:
-    #     with open(resource_path(VERSION_LIST_PATH), "r", encoding="utf-8") as f:
-    #         VERSION_LIST = json.load(f)
     result = read_info(VERSION_LIST, True)  # 读取微信信息
     return result
 
