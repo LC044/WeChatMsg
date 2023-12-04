@@ -46,10 +46,16 @@ class MicroMsg:
             return None
         try:
             lock.acquire(True)
-            sql = '''select UserName,Alias,Type,Remark,NickName,PYInitial,RemarkPYInitial,ContactHeadImgUrl.smallHeadImgUrl,ContactHeadImgUrl.bigHeadImgUrl
-                  from Contact inner join ContactHeadImgUrl on Contact.UserName = ContactHeadImgUrl.usrName
-                  where  Type%2=1 and Alias is not null 
-                  order by PYInitial
+            sql = '''SELECT UserName, Alias, Type, Remark, NickName, PYInitial, RemarkPYInitial, ContactHeadImgUrl.smallHeadImgUrl, ContactHeadImgUrl.bigHeadImgUrl
+                    FROM Contact
+                    INNER JOIN ContactHeadImgUrl ON Contact.UserName = ContactHeadImgUrl.usrName
+                    WHERE Type % 2 = 1
+                        AND NickName != ''
+                    ORDER BY 
+                        CASE
+                            WHEN RemarkPYInitial = '' THEN PYInitial
+                            ELSE RemarkPYInitial
+                        END ASC
                   '''
             self.cursor.execute(sql)
             result = self.cursor.fetchall()
