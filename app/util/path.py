@@ -23,21 +23,25 @@ def mkdir(path):
 
 
 def wx_path():
-    ## 获取当前用户名
-    user_home = os.environ.get("USERPROFILE")
-    ## 找到3ebffe94.ini配置文件
-    f = open(user_home + '\\AppData\\Roaming\\Tencent\\WeChat\\All Users\\config\\3ebffe94.ini', encoding='utf-8')
-    txt = f.read()
-    f.close()
-    # 打开Windows注册表
-    reg_key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
-                             "Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
-    # 获取“我的文档”路径的注册表键值
-    documents_path_value = winreg.QueryValueEx(reg_key, "Personal")
-    # 输出路径
-    ##读取文件将路径放到wx_location变量里
-    if txt == 'MyDocument:':
-        wx_location = documents_path_value[0] + '\WeChat Files'
-    else:
-        wx_location = txt + "\WeChat Files"
-    return wx_location
+    try:
+        ## 获取当前用户名
+        user_home = os.environ.get("USERPROFILE")
+        ## 找到3ebffe94.ini配置文件
+        f = open(user_home + '\\AppData\\Roaming\\Tencent\\WeChat\\All Users\\config\\3ebffe94.ini', encoding='utf-8')
+        txt = f.read()
+        f.close()
+        # 打开Windows注册表
+        reg_key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
+                                 "Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
+        # 获取“我的文档”路径的注册表键值
+        documents_path_value = winreg.QueryValueEx(reg_key, "Personal")
+        # 输出路径
+        ##读取文件将路径放到wx_location变量里
+        if txt == 'MyDocument:':
+            wx_location = documents_path_value[0] + '\WeChat Files'
+        else:
+            wx_location = txt + "\WeChat Files"
+        return wx_location
+    except FileNotFoundError:
+        return '.'
+
