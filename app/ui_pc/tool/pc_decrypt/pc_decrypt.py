@@ -171,7 +171,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
             # 目标数据库文件
         target_database = "app/DataBase/Msg/MSG.db"
         # 源数据库文件列表
-        source_databases = [f"app/DataBase/Msg/MSG{i}.db" for i in range(20)]
+        source_databases = [f"app/DataBase/Msg/MSG{i}.db" for i in range(1,20)]
         import shutil
         shutil.copy("app/DataBase/Msg/MSG0.db", target_database)  # 使用一个数据库文件作为模板
         # 合并数据库

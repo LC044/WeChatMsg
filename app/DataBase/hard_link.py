@@ -14,13 +14,15 @@ root_path = 'FileStorage/MsgAttach/'
 
 @log
 def get_md5_from_xml(content):
-    # 解析XML
-    root = ET.fromstring(content)
-    # 提取md5的值
-    md5_value = root.find(".//img").get("md5")
-    # print(md5_value)
-    return md5_value
-
+    try:
+        # 解析XML
+        root = ET.fromstring(content)
+        # 提取md5的值
+        md5_value = root.find(".//img").get("md5")
+        # print(md5_value)
+        return md5_value
+    except ET.ParseError:
+        return None
 
 def singleton(cls):
     _instance = {}
