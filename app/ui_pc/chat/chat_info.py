@@ -116,7 +116,7 @@ class ChatInfo(QWidget):
                 )
                 self.chat_window.add_message_item(bubble_message, 0)
             elif type_ == 47:
-                # return
+                return
                 if self.is_5_min(timestamp):
                     time_message = Notice(self.last_str_time)
                     self.last_str_time = str_time

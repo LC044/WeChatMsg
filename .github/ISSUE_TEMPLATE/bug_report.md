@@ -7,32 +7,18 @@ assignees: ''
 
 ---
 
-**Describe the bug**
+**bug描述**
 A clear and concise description of what the bug is.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**报错截图**
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**是否可复现**
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**运行环境:**
+ - OS: [e.g. Win11]
+ - Python版本:
+ - 软件版本: 
+ - 微信版本:
 
 **Additional context**
 Add any other context about the problem here.
