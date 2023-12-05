@@ -5,7 +5,7 @@ from typing import Union, List
 
 from Cryptodome.Cipher import AES
 
-from app.log import log
+from app.log import log, logger
 
 # from Crypto.Cipher import AES # 如果上面的导入失败，可以尝试使用这个
 
@@ -24,7 +24,8 @@ def decrypt(key: str, db_path, out_path):
     if not os.path.exists(os.path.dirname(out_path)):
         return f"[-] out_path:'{out_path}' File not found!"
     if len(key) != 64:
-        return f"[-] key:'{key}' Error!"
+        logger.error(f"[-] key:'{key}' Error!")
+        return -1
     password = bytes.fromhex(key.strip())
     with open(db_path, "rb") as file:
         blist = file.read()
@@ -39,7 +40,8 @@ def decrypt(key: str, db_path, out_path):
     hash_mac.update(b'\x01\x00\x00\x00')
 
     if hash_mac.digest() != first[-32:-12]:
-        return f"[-] Password Error! (key:'{key}'; db_path:'{db_path}'; out_path:'{out_path}' )"
+        logger.error(f"[-] Password Error! (key:'{key}'; db_path:'{db_path}'; out_path:'{out_path}' )")
+        return -1
 
     newblist = [blist[i:i + DEFAULT_PAGESIZE] for i in range(DEFAULT_PAGESIZE, len(blist), DEFAULT_PAGESIZE)]
 

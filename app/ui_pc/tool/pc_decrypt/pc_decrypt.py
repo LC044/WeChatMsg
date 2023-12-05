@@ -124,12 +124,17 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
             if not os.path.exists(db_dir):
                 QMessageBox.critical(self, "错误", "文件夹选择错误\n一般以wxid_xxx结尾")
                 return
+        if self.info.get('key') == 'none':
+            QMessageBox.critical(self, "错误", "密钥错误\n请检查微信版本是否为最新")
         self.label_tip.setVisible(True)
         self.label_tip.setText('点我之后没有反应那就多等儿吧,不要再点了')
         self.thread2 = DecryptThread(db_dir, self.info['key'])
         self.thread2.maxNumSignal.connect(self.setProgressBarMaxNum)
         self.thread2.signal.connect(self.progressBar_view)
         self.thread2.okSignal.connect(self.btnExitClicked)
+        self.thread2.errorSignal.connect(
+            lambda x: QMessageBox.critical(self, "错误", "密钥错误\n请检查微信版本是否为最新")
+        )
         self.thread2.start()
 
     def btnEnterClicked(self):
@@ -171,11 +176,14 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
             # 目标数据库文件
         target_database = "app/DataBase/Msg/MSG.db"
         # 源数据库文件列表
-        source_databases = [f"app/DataBase/Msg/MSG{i}.db" for i in range(1,20)]
+        source_databases = [f"app/DataBase/Msg/MSG{i}.db" for i in range(1, 20)]
         import shutil
         shutil.copy("app/DataBase/Msg/MSG0.db", target_database)  # 使用一个数据库文件作为模板
         # 合并数据库
-        merge_databases(source_databases, target_database)
+        try:
+            merge_databases(source_databases, target_database)
+        except FileNotFoundError:
+            QMessageBox.critical(self, "错误", "数据库不存在\n请检查微信版本是否为最新")
         self.DecryptSignal.emit(True)
         self.close()
 
@@ -184,6 +192,7 @@ class DecryptThread(QThread):
     signal = pyqtSignal(str)
     maxNumSignal = pyqtSignal(int)
     okSignal = pyqtSignal(str)
+    errorSignal = pyqtSignal(bool)
 
     def __init__(self, db_path, key):
         super(DecryptThread, self).__init__()
@@ -206,13 +215,16 @@ class DecryptThread(QThread):
             for root, dirs, files in os.walk(self.db_path):
                 for file in files:
                     if '.db' == file[-3:]:
+                        if 'xInfo.db' == file:
+                            continue
                         inpath = os.path.join(root, file)
                         # print(inpath)
                         output_path = os.path.join(output_dir, file)
                         tasks.append([self.key, inpath, output_path])
         self.maxNumSignal.emit(len(tasks))
         for i, task in enumerate(tasks):
-            decrypt.decrypt(*task)
+            if decrypt.decrypt(*task) == -1:
+                self.errorSignal.emit(True)
             self.signal.emit(str(i))
         # print(self.db_path)
         self.okSignal.emit('ok')
