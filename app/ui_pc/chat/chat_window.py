@@ -58,6 +58,7 @@ class ChatWindow(QWidget, Ui_Form):
         self.contacts = [[], []]
         self.init_ui()
         self.show_chats()
+        self.visited = set()
 
     def init_ui(self):
         search_action = QAction(self.lineEdit)
@@ -112,6 +113,10 @@ class ChatWindow(QWidget, Ui_Form):
     def setCurrentIndex(self, row):
         # print(row)
         self.stackedWidget.setCurrentIndex(row)
+        if row not in self.visited:
+            chat_info_window = self.stackedWidget.currentWidget()
+            chat_info_window.update_history_messages()
+            self.visited.add(row)
 
     def stop_loading(self, a0):
         # self.label.setVisible(False)

@@ -39,7 +39,7 @@ class ChatInfo(QWidget):
         self.show_chat_thread = ShowChatThread(self.contact)
         self.show_chat_thread.showSingal.connect(self.add_message)
         self.show_chat_thread.finishSingal.connect(self.show_finish)
-        self.show_chat_thread.start()
+        # self.show_chat_thread.start()
 
     def show_finish(self, ok):
         self.setScrollBarPos()
