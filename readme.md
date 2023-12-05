@@ -308,6 +308,12 @@ python main.py
 * 觉得UI不够美观
 * 等其他给您造成困扰的地方
 
+请提起[issue](https://github.com/LC044/WeChatMsg/issues)或者添加QQ群(进群前先点个⭐哦):[**474379264**](doc/images/qq.jpg)
+，我将尽快为您解决问题
+
+如果您是一名开发者，有新的想法或建议，欢迎[fork](https://github.com/LC044/WeChatMsg/forks)
+该项目并发起[PR](https://github.com/LC044/WeChatMsg/pulls)，我将把您的名字写入贡献者名单中
+
 另外本人硬件配置：
 
 * 在校大学生一枚，时间有限、精力有限、能力有限
@@ -316,9 +322,3 @@ python main.py
 * 内存:64G(那些说性能差爆内存的有没有从自身找原因，这么多年了，有没有努力，内存容量涨没涨)
 * 操作系统:Win11(就俩字“好看”)
 * 所以任何超出硬件支持之外的需求在我硬件没变之前都不会适配
-
-请提起[issue](https://github.com/LC044/WeChatMsg/issues)或者添加QQ群(进群前先点个⭐哦):[**474379264**](doc/images/qq.jpg)
-，我将尽快为您解决问题
-
-如果您是一名开发者，有新的想法或建议，欢迎[fork](https://github.com/LC044/WeChatMsg/forks)
-该项目并发起[PR](https://github.com/LC044/WeChatMsg/pulls)，我将把您的名字写入贡献者名单中
