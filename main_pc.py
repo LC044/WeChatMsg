@@ -3,6 +3,7 @@ import sys
 import time
 import traceback
 
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import *
 
 from app.log import logger
@@ -15,7 +16,7 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("WeChatReport")
 class ViewController(QWidget):
     def __init__(self):
         super().__init__()
-        self.viewMainWIndow = None
+        self.viewMainWindow = None
         self.viewDecrypt = None
 
     def loadPCDecryptView(self):
@@ -35,14 +36,14 @@ class ViewController(QWidget):
         """
         username = ''
         start = time.time()
-        self.viewMainWIndow = mainview.MainWinController(username=username)
-        self.viewMainWIndow.exitSignal.connect(self.close)
+        self.viewMainWindow = mainview.MainWinController(username=username)
+        self.viewMainWindow.exitSignal.connect(self.close)
         try:
-            self.viewMainWIndow.setWindowTitle("留痕")
-            self.viewMainWIndow.show()
+            self.viewMainWindow.setWindowTitle("留痕")
+            self.viewMainWindow.show()
             end = time.time()
-            print('ok', end - start)
-            self.viewMainWIndow.init_ui()
+            print('ok', '本次加载用了', end - start, 's')
+            self.viewMainWindow.init_ui()
         except Exception as e:
             print(f"Exception: {e}")
             logger.error(traceback.print_exc())

@@ -7,7 +7,7 @@ silk-python
 pyaudio
 fuzzywuzzy
 python-Levenshtein
-pillow==9.5.0
+Pillow==10.1.0
 requests
 flask==3.0.0
 pyecharts==2.0.1
