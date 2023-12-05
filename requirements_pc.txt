@@ -9,3 +9,6 @@ fuzzywuzzy
 python-Levenshtein
 pillow
 requests
+flask==3.0.0
+pyecharts==2.0.1
+jieba==0.42.1

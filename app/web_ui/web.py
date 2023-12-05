@@ -41,13 +41,17 @@ def index0():
 
 @app.route('/home')
 def home():
-    data = {
-        'sub_title': '二零二三年度报告',
-        'avatar_path': contact.avatar_path,
-        'nickname': contact.remark,
-        'first_time': msg_db.get_first_time_of_message(contact.wxid)[1],
-    }
-    return render_template('home.html', **data)
+    try:
+        data = {
+            'sub_title': '二零二三年度报告',
+            'avatar_path': contact.avatar_path,
+            'nickname': contact.remark,
+            'first_time': msg_db.get_first_time_of_message(contact.wxid)[1],
+        }
+        return render_template('home.html', **data)
+    except IndexError:
+        return set_text('咱就是说，一次都没聊过就别分析了')
+
 
 
 @app.route('/wordcloud')
@@ -61,15 +65,43 @@ def one():
     return render_template('wordcloud.html', **world_cloud_data)
 
 
+def set_text(text):
+    html = '''
+        <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Centered Text</title>
+        <style>
+            body {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                margin: 0;
+            }
+
+            .centered-text {
+                font-size: 2em;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="centered-text">
+            <!-- 这里是要显示的四个大字 -->
+            %s
+        </div>
+    </body>
+    </html>
+        ''' % (text)
+    return html
+
+
 @app.route('/test')
 def test():
-    bar = (
-        Bar(init_opts=opts.InitOpts(theme=ThemeType.LIGHT))
-        .add_xaxis(["A", "B", "C", "D", "E"])
-        .add_yaxis("Series", [5, 20, 36, 10, 75])
-        .set_global_opts(title_opts=opts.TitleOpts(title="Flask and Pyecharts Interaction"))
-    )
-    return bar.dump_options_with_quotes()
+    return set_text('以下内容仅对VIP开放🐶')
 
 
 def run(port=21314):
