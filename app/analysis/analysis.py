@@ -19,6 +19,13 @@ wordcloud_height = 720
 def wordcloud(wxid):
     import jieba
     txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT)
+    if not txt_messages:
+        return {
+        'chart_data': None,
+        'keyword': "没有聊天你想分析啥",
+        'max_num': "0",
+        'dialogs': []
+    }
     text = ''.join(map(lambda x: x[7], txt_messages))
     total_msg_len = len(text)
     # 使用jieba进行分词，并加入停用词
