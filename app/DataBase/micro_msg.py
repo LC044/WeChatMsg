@@ -63,6 +63,37 @@ class MicroMsg:
             lock.release()
         return result
 
+    def get_contact_by_username(self, username):
+        if not self.open_flag:
+            return None
+        try:
+            lock.acquire(True)
+            sql = '''SELECT UserName, Alias, Type, Remark, NickName, PYInitial, RemarkPYInitial, ContactHeadImgUrl.smallHeadImgUrl, ContactHeadImgUrl.bigHeadImgUrl
+                               FROM Contact
+                               INNER JOIN ContactHeadImgUrl ON Contact.UserName = ContactHeadImgUrl.usrName
+                               WHERE UserName = ?
+                             '''
+            self.cursor.execute(sql, [username])
+            result = self.cursor.fetchone()
+        finally:
+            lock.release()
+        return result
+
+    def get_chatroom_info(self, chatroomname):
+        '''
+        获取群聊信息
+        '''
+        if not self.open_flag:
+            return None
+        try:
+            lock.acquire(True)
+            sql = '''SELECT ChatRoomName, RoomData FROM ChatRoom WHERE ChatRoomName = ?'''
+            self.cursor.execute(sql, [chatroomname])
+            result = self.cursor.fetchone()
+        finally:
+            lock.release()
+        return result
+
     def close(self):
         if self.open_flag:
             try:
