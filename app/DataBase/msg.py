@@ -58,7 +58,7 @@ class Msg:
         sql = '''
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID
             from MSG
-            where StrTalker=?
+            where TRIM(StrTalker)=?
             order by CreateTime
         '''
         try:
@@ -87,11 +87,29 @@ class Msg:
         result.sort(key=lambda x: x[5])
         return result
 
+    def get_messages_length(self):
+        sql = '''
+            select count(*)
+            from MSG
+        '''
+        if not self.open_flag:
+            return None
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+        except Exception as e:
+            result = None
+        finally:
+            lock.release()
+        return result[0]
+
+
     def get_message_by_num(self, username_, local_id):
         sql = '''
                 select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime
                 from MSG
-                where StrTalker = ? and localId < ?
+                where TRIM(StrTalker) = ? and localId < ?
                 order by CreateTime desc 
                 limit 10
             '''
@@ -115,7 +133,7 @@ class Msg:
         sql = '''
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID
             from MSG
-            where StrTalker=? and Type=?
+            where TRIM(StrTalker)=? and Type=?
             order by CreateTime
         '''
         try:
@@ -132,7 +150,7 @@ class Msg:
         sql = '''
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID
             from MSG
-            where StrTalker=? and Type=1 and LENGTH(StrContent)<? and StrContent like ?
+            where TRIM(StrTalker)=? and Type=1 and LENGTH(StrContent)<? and StrContent like ?
             order by CreateTime desc
         '''
         temp = []
@@ -176,7 +194,7 @@ class Msg:
         sql = '''
             select StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime
             from MSG
-            where StrTalker=?
+            where TRIM(StrTalker)=?
             order by CreateTime
             limit 1
         '''
