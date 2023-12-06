@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import *
 from app.log import logger
 from app.ui_pc import mainview
 from app.ui_pc.tool.pc_decrypt import pc_decrypt
-
+from app.config import version
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("WeChatReport")
 
 
@@ -39,7 +39,7 @@ class ViewController(QWidget):
         self.viewMainWindow = mainview.MainWinController(username=username)
         self.viewMainWindow.exitSignal.connect(self.close)
         try:
-            self.viewMainWindow.setWindowTitle("留痕")
+            self.viewMainWindow.setWindowTitle(f"留痕-{version}")
             self.viewMainWindow.show()
             end = time.time()
             print('ok', '本次加载用了', end - start, 's')
