@@ -5,6 +5,7 @@ import os
 from PyQt5.QtCore import pyqtSignal, QThread
 
 from . import msg_db
+from .package_msg import PackageMsg
 from ..DataBase import hard_link_db
 from ..person_pc import MePC
 from ..util import get_abs_path
@@ -65,8 +66,10 @@ class Output(QThread):
         # columns = ["用户名", "消息内容", "发送时间", "发送状态", "消息类型", "isSend", "msgId"]
         columns = ['localId', 'TalkerId', 'Type', 'SubType',
                    'IsSender', 'CreateTime', 'Status', 'StrContent',
-                   'StrTime']
-        messages = msg_db.get_messages_all()
+                   'StrTime', 'Remark', 'NickName', 'Sender']
+        # messages = msg_db.get_messages_all()
+        packagemsg = PackageMsg()
+        messages = packagemsg.get_package_message_all()
         # 写入CSV文件
         with open(filename, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
@@ -165,8 +168,10 @@ class ChildThread(QThread):
         # columns = ["用户名", "消息内容", "发送时间", "发送状态", "消息类型", "isSend", "msgId"]
         columns = ['localId', 'TalkerId', 'Type', 'SubType',
                    'IsSender', 'CreateTime', 'Status', 'StrContent',
-                   'StrTime']
-        messages = msg_db.get_messages_all()
+                   'StrTime', 'Remark', 'NickName', 'Sender']
+        # messages = msg_db.get_messages_all()
+        packagemsg = PackageMsg()
+        messages = packagemsg.get_package_message_all()
         # 写入CSV文件
         with open(filename, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
