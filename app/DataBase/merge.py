@@ -14,6 +14,7 @@ def merge_databases(source_paths, target_path):
                 break
             db = sqlite3.connect(source_path)
             cursor = db.cursor()
+            cursor.text_factory = bytes 
             sql = '''
             SELECT TalkerId,MsgsvrID,Type,SubType,IsSender,CreateTime,Sequence,StrTalker,StrContent,DisplayContent,BytesExtra
             FROM MSG;
