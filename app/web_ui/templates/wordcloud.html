@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!-- saved from url=(0167)http://m2.link/c/year2018/j3POd/?uid=53899B14C24F351212F4DC92673113FC&full_screen=true&keep_status_bar=true&top_bar_bg_color=f9f9f9&status_bar_type=dark&userid=2227269 -->
+<html lang="en" class=" z-ios">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="applicable-device" content="mobile">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1, minimum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>年度聊天报告</title>
+    <meta name="yixin-share-desc" content="点击查看，我的年度聊天报告">
+    <meta name="yixin-share-image" content="https://p1.music.126.net/uLDm27B4bC_kKSD8le3WwA==/109951163754269117.jpg">
+    <link rel="shortcut icon" href="http://s1.music.126.net/style/favicon.ico">
+    <script src="http://share.lc044.love:8080/static/my_resource/raven.min.js"></script>
+    <script type="text/javascript" src="http://share.lc044.love:8080/static/my_resource/tool.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/v5/echarts.min.js"></script>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/v5/echarts-wordcloud.min.js"></script>
+    <link href="http://share.lc044.love:8080/static/my_resource/vendors.a07adb27.css" rel="stylesheet">
+    <link href="http://share.lc044.love:8080/static/my_resource/main.ff465555.css" rel="stylesheet">
+</head>
+
+<body>
+<div id="j-root" class="g-bd">
+    <div class="m-app">
+        <div class="m-module m-module-report z-modshow">
+            <div class="m-reportcontent f-page">
+                <div class="m-page m-page-01 f-page z-enter">
+                    <div class="bg f-page"></div>
+                    <div class="tt f-animOpac" style="font-size:30px !important">
+                        <h1>二零二三</h1>
+                        <h1>你说的最多的是</h1></div>
+                    <div class="ckeywords j-anim01 z-anim">
+                        <div class="hands">
+                            <div class="hand2"></div>
+                            <div class="hand1"></div>
+                            <div class="hand3"></div>
+                        </div>
+                        <div class="words words-2">
+                            {% for t in keyword %}
+                                <span class="word word-1" style="font-size:80px !important">
+                                    <i class="u-word">{{t}}</i></span>
+                            {% endfor %}
+                        </div>
+                        <div class="nums f-animOpac">
+                            {% for n in max_num[::-1] %}
+                                <span class="n">{{n}}</span>
+                            {% endfor %}
+                            <i class="unit"></i>
+                        </div>
+                    </div>
+                    <div class="hand4"></div>
+                    <ul class="lyrics">
+                        {% for dialog in dialogs %}
+                            <li class="itm f-animLineUp">
+                                <div style="transform: translateX(13.7643px);">
+                                    <div class="line1 f-thide" style="font-size:20px !important">
+                                        {% for p in dialog[0][2][:-1] %}
+                                            {{p}}
+                                            <em class="s-fcRed">{{keyword}}</em>
+                                        {% endfor %}
+                                        {{dialog[0][2][-1]}}
+                                    </div>
+                                    <br>
+                                    <div class="line2 f-thide">- {{dialog[1][2]}}<br>{{dialog[0][3]}}</div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                        
+                        <!-- <li class="itm f-animLineUp">
+                            <div style="transform: translateX(26.2581px);">
+                                <div class="line1 f-thide" style="font-size:20px !important">我还是
+                                    <em class="s-fcRed">喜欢</em>大城市
+                                </div>
+                                <br>
+                                <div class="line2 f-thide">- 很繁华</div>
+                            </div>
+                        </li> -->
+                    </ul>
+                </div>
+                <div id="word_cloud" class="chart-container" style="width:780px; height:720px;margin: auto;top:22%"></div>
+            </div>
+            <div class="m-btmbar"></div>
+        </div>
+    </div>
+</div>
+<script>
+    var chart = echarts.init(document.getElementById('word_cloud'), 'white', {renderer: 'canvas'});
+    var result = {{chart_data|safe}};
+    console.log(result);
+    chart.setOption(result);
+</script>
+
+</body>
+
+</html>
