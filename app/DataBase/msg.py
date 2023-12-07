@@ -87,6 +87,24 @@ class Msg:
         result.sort(key=lambda x: x[5])
         return result
 
+    def get_messages_length(self):
+        sql = '''
+            select count(*)
+            from MSG
+        '''
+        if not self.open_flag:
+            return None
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+        except Exception as e:
+            result = None
+        finally:
+            lock.release()
+        return result[0]
+
+
     def get_message_by_num(self, username_, local_id):
         sql = '''
                 select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime
@@ -213,4 +231,4 @@ if __name__ == '__main__':
     pprint(msg.get_message_by_num('wxid_0o18ef858vnu22', local_id))
     print(msg.get_messages_by_keyword(wxid, '干嘛'))
     pprint(msg.get_messages_by_keyword(wxid, '干嘛')[0])
-    print(msg.get_first_time_of_message('wxid_0o18ef858vnu22'))
+    print(msg.get_first_time_of_message('wxid_fervbwign7m822'))

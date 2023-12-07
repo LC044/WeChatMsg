@@ -142,7 +142,7 @@ class ShowChatThread(QThread):
     # heightSingal = pyqtSignal(int)
     def __init__(self, contact):
         super().__init__()
-        self.last_message_id = 9999999
+        self.last_message_id = msg_db.get_messages_length() or 9999999
         self.wxid = contact.wxid
 
     def run(self) -> None:
