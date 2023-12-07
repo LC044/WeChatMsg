@@ -177,6 +177,9 @@ class Msg:
             where StrTalker = ? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
             group by days
         '''
+        result = None
+        if not self.open_flag:
+            return None
         try:
             lock.acquire(True)
             self.cursor.execute(sql, [username_, year_])
