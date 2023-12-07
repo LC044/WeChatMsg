@@ -205,6 +205,28 @@ class Msg:
         finally:
             lock.release()
         return result
+    
+    def get_messages_by_month(self, username_, year_='2023'):
+        sql = '''
+                SELECT strftime('%Y-%m',CreateTime,'unixepoch','localtime') as days,count(MsgSvrID)
+                from MSG
+                where StrTalker = ? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
+                group by days
+            '''
+        result = None
+        if not self.open_flag:
+            return None
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql, [username_, year_])
+            result = self.cursor.fetchall()
+        except sqlite3.DatabaseError:
+            logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
+        finally:
+            lock.release()
+        # result.sort(key=lambda x: x[5])
+        return result
+    
 
     def get_first_time_of_message(self, username_):
         if not self.open_flag:
