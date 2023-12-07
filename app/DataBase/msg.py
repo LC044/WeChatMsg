@@ -231,4 +231,4 @@ if __name__ == '__main__':
     pprint(msg.get_message_by_num('wxid_0o18ef858vnu22', local_id))
     print(msg.get_messages_by_keyword(wxid, '干嘛'))
     pprint(msg.get_messages_by_keyword(wxid, '干嘛')[0])
-    print(msg.get_first_time_of_message('wxid_fervbwign7m822'))
+    print(msg.get_first_time_of_message('wxid_0o18ef858vnu22'))
