@@ -50,14 +50,15 @@ def decode_dat(file_path, out_path):
 
     if decode_code == -1:
         return
+    filename = os.path.basename(file_path)
     if file_type == 1:
         pic_name = os.path.basename(file_path)[:-4] + ".jpg"
     elif file_type == 3:
-        pic_name = file_path[:-4] + ".png"
+        pic_name = filename[:-4] + ".png"
     elif file_type == 5:
-        pic_name = file_path[:-4] + ".gif"
+        pic_name = filename[:-4] + ".gif"
     else:
-        pic_name = file_path[:-4] + ".jpg"
+        pic_name = filename[:-4] + ".jpg"
     file_outpath = os.path.join(out_path, pic_name)
     if os.path.exists(file_outpath):
         return file_outpath

@@ -890,7 +890,7 @@ const chatMessages = [
                 if match:
                     continue
                 image_path = hard_link_db.get_image(content=str_content, thumb=False)
-                image_path = path.get_relative_path(image_path, base_path=f'./data/聊天记录/{self.contact.remark}/image')
+                image_path = path.get_relative_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
                 image_path = image_path.replace('\\', '/')
                 # print(f"tohtml:---{image_path}")
                 if self.is_5_min(timestamp):

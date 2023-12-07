@@ -17,6 +17,8 @@ class TextMessage(QLabel):
     heightSingal = pyqtSignal(int)
 
     def __init__(self, text, is_send=False, parent=None):
+        if isinstance(text, bytes):
+            text = text.decode('utf-8')
         super(TextMessage, self).__init__(text, parent)
         font = QFont('微软雅黑', 12)
         self.setFont(font)

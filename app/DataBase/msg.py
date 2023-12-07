@@ -58,7 +58,7 @@ class Msg:
         sql = '''
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID
             from MSG
-            where StrTalker=?
+            where TRIM(StrTalker)=?
             order by CreateTime
         '''
         try:
@@ -109,7 +109,7 @@ class Msg:
         sql = '''
                 select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime
                 from MSG
-                where StrTalker = ? and localId < ?
+                where TRIM(StrTalker) = ? and localId < ?
                 order by CreateTime desc 
                 limit 10
             '''
@@ -133,7 +133,7 @@ class Msg:
         sql = '''
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID
             from MSG
-            where StrTalker=? and Type=?
+            where TRIM(StrTalker)=? and Type=?
             order by CreateTime
         '''
         try:
@@ -150,7 +150,7 @@ class Msg:
         sql = '''
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID
             from MSG
-            where StrTalker=? and Type=1 and LENGTH(StrContent)<? and StrContent like ?
+            where TRIM(StrTalker)=? and Type=1 and LENGTH(StrContent)<? and StrContent like ?
             order by CreateTime desc
         '''
         temp = []
@@ -194,7 +194,7 @@ class Msg:
         sql = '''
             select StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime
             from MSG
-            where StrTalker=?
+            where TRIM(StrTalker)=?
             order by CreateTime
             limit 1
         '''
