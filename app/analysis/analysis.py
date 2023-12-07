@@ -113,6 +113,41 @@ def calendar_chart(wxid, year):
     }
 
 
+def month_count(wxid, year):
+    """
+    每月聊天条数
+    """
+    msg_data = msg_db.get_messages_by_month(wxid, year)
+    y_data = list(map(lambda x: x[1], msg_data))
+    x_axis = list(map(lambda x: x[0], msg_data))
+    m = (
+        Bar(init_opts=opts.InitOpts(width=f"{charts_width}px", height=f"{charts_height}px"))
+        .add_xaxis(x_axis)
+        .add_yaxis("消息数量", y_data,
+                   label_opts=opts.LabelOpts(is_show=False),
+                   itemstyle_opts=opts.ItemStyleOpts(color="skyblue"),
+        )
+        .set_global_opts(
+            title_opts=opts.TitleOpts(title="逐月统计", subtitle=None),
+            datazoom_opts=opts.DataZoomOpts(),
+            toolbox_opts=opts.ToolboxOpts(),
+            visualmap_opts=opts.VisualMapOpts(
+                min_=min(y_data),  
+                max_=max(y_data),  
+                dimension=1,  # 根据第2个维度（y 轴）进行映射
+                is_piecewise=False,  # 是否分段显示
+                range_color=["#66ccff", "#003366"],  # 设置颜色范围
+                type_="color",
+                pos_right="0%",
+                ),
+        )
+    )
+
+    return {
+        'chart_data': m
+    }
+
+
 class Analysis:
     pass
 
@@ -123,3 +158,5 @@ if __name__ == '__main__':
     c = calendar_chart('wxid_27hqbq7vx5hf22', '2023')
     c['chart_data'].render("./data/聊天统计/calendar.html")
     print('c:::', c)
+    m = month_count('wxid_27hqbq7vx5hf22', '2023')
+    m['chart_data'].render("./data/聊天统计/month_num.html")
