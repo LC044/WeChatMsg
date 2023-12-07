@@ -120,7 +120,7 @@ def month_count(wxid, year):
     msg_data = msg_db.get_messages_by_month(wxid, year)
     y_data = list(map(lambda x: x[1], msg_data))
     x_axis = list(map(lambda x: x[0], msg_data))
-    c = (
+    m = (
         Bar(init_opts=opts.InitOpts(width=f"{charts_width}px", height=f"{charts_height}px"))
         .add_xaxis(x_axis)
         .add_yaxis("消息数量", y_data,
@@ -144,7 +144,7 @@ def month_count(wxid, year):
     )
 
     return {
-        'chart_data': c
+        'chart_data': m
     }
 
 
