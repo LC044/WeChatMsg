@@ -13,7 +13,7 @@ def merge_databases(source_paths, target_path):
             if not os.path.exists(source_path):
                 break
             db = sqlite3.connect(source_path)
-            # db.text_factory = bytes
+            db.text_factory = str 
             cursor = db.cursor()
             sql = '''
             SELECT TalkerId,MsgsvrID,Type,SubType,IsSender,CreateTime,Sequence,StrTalker,StrContent,DisplayContent,BytesExtra
