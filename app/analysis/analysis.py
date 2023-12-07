@@ -146,6 +146,47 @@ def month_count(wxid, year):
     }
 
 
+def hour_count(wxid, year):
+    """
+    小时计数聊天条数
+    """
+    msg_data = msg_db.get_messages_by_hour(wxid, year)
+    print(msg_data)
+    y_data = list(map(lambda x: x[1], msg_data))
+    x_axis = list(map(lambda x: x[0], msg_data))
+    h = (
+        Line(init_opts=opts.InitOpts(width=f"{charts_width}px", height=f"{charts_height}px"))
+        .add_xaxis(xaxis_data=x_axis)
+        .add_yaxis(
+            series_name="聊天频率",
+            y_axis=y_data,
+            markpoint_opts=opts.MarkPointOpts(
+                data=[
+                    opts.MarkPointItem(type_="max", name="最大值"),
+                    opts.MarkPointItem(type_="min", name="最小值", value=int(10)),
+                ]
+            ),
+            markline_opts=opts.MarkLineOpts(
+                data=[opts.MarkLineItem(type_="average", name="平均值")]
+            ),
+        )
+        .set_global_opts(
+            title_opts=opts.TitleOpts(title="聊天时段", subtitle=None),
+            # datazoom_opts=opts.DataZoomOpts(),
+            # toolbox_opts=opts.ToolboxOpts(),
+        )
+        .set_series_opts(
+            label_opts=opts.LabelOpts(
+                is_show=False
+            )
+        )
+    )
+
+    return {
+        'chart_data': h
+    }
+
+
 class Analysis:
     pass
 
@@ -158,3 +199,5 @@ if __name__ == '__main__':
     print('c:::', c)
     m = month_count('wxid_27hqbq7vx5hf22', '2023')
     m['chart_data'].render("./data/聊天统计/month_num.html")
+    h = hour_count('wxid_27hqbq7vx5hf22', '2023')
+    h['chart_data'].render("./data/聊天统计/hour_count.html")
