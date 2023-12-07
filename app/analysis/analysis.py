@@ -19,6 +19,13 @@ wordcloud_height = 720
 def wordcloud(wxid):
     import jieba
     txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT)
+    if not txt_messages:
+        return {
+        'chart_data': None,
+        'keyword': "没有聊天你想分析啥",
+        'max_num': "0",
+        'dialogs': []
+    }
     text = ''.join(map(lambda x: x[7], txt_messages))
     total_msg_len = len(text)
     # 使用jieba进行分词，并加入停用词
@@ -26,7 +33,7 @@ def wordcloud(wxid):
     # 统计词频
     word_count = Counter(words)
     # 过滤停用词
-    stopwords_file = './app/data/stopwords.txt'
+    stopwords_file = './app000/data/stopwords.txt'
     try:
         with open(stopwords_file, "r", encoding="utf-8") as stopword_file:
             stopwords = set(stopword_file.read().splitlines())
@@ -65,7 +72,7 @@ def wordcloud(wxid):
         'chart_data': w.dump_options_with_quotes(),
         'keyword': keyword,
         'max_num': str(max_num),
-        'dialogs': msg_db.get_messages_by_keyword(wxid, keyword, num=5)
+        'dialogs': msg_db.get_messages_by_keyword(wxid, keyword, num=5, max_len=12)
     }
 
 

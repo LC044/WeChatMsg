@@ -72,7 +72,7 @@ class Msg:
 
     def get_messages_all(self):
         sql = '''
-            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID
+            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,StrTalker,Reserved1
             from MSG
             order by CreateTime
         '''
@@ -126,19 +126,19 @@ class Msg:
             lock.release()
         return result
 
-    def get_messages_by_keyword(self, username_, keyword, num=5):
+    def get_messages_by_keyword(self, username_, keyword, num=5, max_len=10):
         if not self.open_flag:
             return None
         sql = '''
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID
             from MSG
-            where StrTalker=? and Type=1 and StrContent like ?
+            where StrTalker=? and Type=1 and LENGTH(StrContent)<? and StrContent like ?
             order by CreateTime desc
         '''
         temp = []
         try:
             lock.acquire(True)
-            self.cursor.execute(sql, [username_, f'%{keyword}%'])
+            self.cursor.execute(sql, [username_, max_len, f'%{keyword}%'])
             messages = self.cursor.fetchall()
         finally:
             lock.release()
@@ -213,4 +213,4 @@ if __name__ == '__main__':
     pprint(msg.get_message_by_num('wxid_0o18ef858vnu22', local_id))
     print(msg.get_messages_by_keyword(wxid, '干嘛'))
     pprint(msg.get_messages_by_keyword(wxid, '干嘛')[0])
-    print(msg.get_first_time_of_message('wxid_0o18ef858vnu22'))
+    print(msg.get_first_time_of_message('wxid_fervbwign7m822'))

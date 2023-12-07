@@ -12,3 +12,6 @@ requests
 flask==3.0.0
 pyecharts==2.0.1
 jieba==0.42.1
+google==3.0.0
+protobuf==4.25.1
+soupsieve==2.5

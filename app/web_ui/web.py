@@ -42,16 +42,16 @@ def index0():
 @app.route('/home')
 def home():
     try:
-        data = {
-            'sub_title': '二零二三年度报告',
-            'avatar_path': contact.avatar_path,
-            'nickname': contact.remark,
-            'first_time': msg_db.get_first_time_of_message(contact.wxid)[1],
-        }
-        return render_template('home.html', **data)
-    except IndexError:
+        first_message, first_time = msg_db.get_first_time_of_message(contact.wxid)
+    except TypeError:
         return set_text('咱就是说，一次都没聊过就别分析了')
-
+    data = {
+        'sub_title': '二零二三年度报告',
+        'avatar_path': contact.avatar_path,
+        'nickname': contact.remark,
+        'first_time': first_time,
+    }
+    return render_template('home.html', **data)
 
 
 @app.route('/wordcloud')
