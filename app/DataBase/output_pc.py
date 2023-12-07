@@ -903,15 +903,6 @@ const chatMessages = [
                     f'''{{ type:{type_}, text: '{str_content}',is_send:{is_send},avatar_path:'{avatar}'}},'''
                 )
             elif type_ == 3:
-                import re
-                pattern1 = r'<msg><img length="\d+" hdlength="0" /><commenturl></commenturl></msg>'
-                pattern2 = r'<msg><img /></msg>'
-                match = re.search(pattern1, str_content)
-                if match:
-                    continue
-                match = re.search(pattern2, str_content)
-                if match:
-                    continue
                 image_path = hard_link_db.get_image(content=str_content, thumb=False)
                 image_path = path.get_relative_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
                 image_path = image_path.replace('\\', '/')
@@ -922,6 +913,11 @@ const chatMessages = [
                     )
                 f.write(
                     f'''{{ type:{type_}, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
+                )
+            elif type_ == 10000:
+                str_content = escape_js_and_html(str_content.lstrip('<revokemsg>').rstrip('</revokemsg>'))
+                f.write(
+                    f'''{{ type:0, text: '{str_content}',is_send:{is_send},avatar_path:''}},'''
                 )
         html_end = '''
 ];

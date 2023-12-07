@@ -129,6 +129,10 @@ class ChatInfo(QWidget):
                     is_send
                 )
                 self.chat_window.add_message_item(bubble_message, 0)
+            elif type_ == 10000:
+                str_content = str_content.lstrip('<revokemsg>').rstrip('</revokemsg>')
+                message = Notice(str_content )
+                self.chat_window.add_message_item(message, 0)
         except:
             print(message)
             traceback.print_exc()

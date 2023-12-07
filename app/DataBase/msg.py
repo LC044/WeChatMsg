@@ -110,7 +110,7 @@ class Msg:
                 from MSG
                 where StrTalker = ? and localId < ?
                 order by CreateTime desc 
-                limit 10
+                limit 20
             '''
         result = None
         if not self.open_flag:
