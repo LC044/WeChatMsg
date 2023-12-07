@@ -188,6 +188,24 @@ class Msg:
 
         return res
 
+    def get_messages_by_days(self, username_, year_='2023'):
+        sql = '''
+            SELECT strftime('%Y-%m-%d',CreateTime,'unixepoch','localtime') as days,count(MsgSvrID)
+            from MSG
+            where StrTalker = ? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
+            group by days
+        '''
+        result = None
+        if not self.open_flag:
+            return None
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql, [username_, year_])
+            result = self.cursor.fetchall()
+        finally:
+            lock.release()
+        return result
+
     def get_first_time_of_message(self, username_):
         if not self.open_flag:
             return None
@@ -231,4 +249,4 @@ if __name__ == '__main__':
     pprint(msg.get_message_by_num('wxid_0o18ef858vnu22', local_id))
     print(msg.get_messages_by_keyword(wxid, '干嘛'))
     pprint(msg.get_messages_by_keyword(wxid, '干嘛')[0])
-    print(msg.get_first_time_of_message('wxid_fervbwign7m822'))
+    print(msg.get_first_time_of_message('wxid_0o18ef858vnu22'))
