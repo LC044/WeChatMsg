@@ -607,6 +607,11 @@ class ChildThread(QThread):
       height: 42px;
       border-radius: 50%;
   }
+  .chat-video video{
+    margin-right: 18px;
+    margin-left: 18px;
+    max-width: 350px;
+  }
   .input-area{
       border-top:0.5px solid #e0e0e0;
       height: 150px;
@@ -914,6 +919,17 @@ const chatMessages = [
                 f.write(
                     f'''{{ type:{type_}, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
                 )
+            elif type_ == 43:
+                video_path = hard_link_db.get_video(content=str_content, thumb=False)
+                video_path = f'file:///{path.wx_path()}/{MePC().wxid}/{video_path}'
+                video_path = video_path.replace('\\', '/')
+                if self.is_5_min(timestamp):
+                    f.write(
+                        f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                    )
+                f.write(
+                    f'''{{ type:{type_}, text: '{video_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
+                )
             elif type_ == 10000:
                 str_content = escape_js_and_html(str_content.lstrip('<revokemsg>').rstrip('</revokemsg>'))
                 f.write(
@@ -926,13 +942,13 @@ const chatMessages = [
             const messageElement = document.createElement('div');
             if (message.type == 1){
                 if (message.is_send == 1){
-                messageElement.className = "item item-right";
-                messageElement.innerHTML = `<div class='bubble bubble-right'>${message.text}</div><div class='avatar'><img src="${message.avatar_path}" /></div>`
-            }
-            else if(message.is_send==0){
-                messageElement.className = "item item-left";
-                messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='bubble bubble-right'>${message.text}</div>`
-            }
+                    messageElement.className = "item item-right";
+                    messageElement.innerHTML = `<div class='bubble bubble-right'>${message.text}</div><div class='avatar'><img src="${message.avatar_path}" /></div>`
+                }
+                else if(message.is_send==0){
+                    messageElement.className = "item item-left";
+                    messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='bubble bubble-right'>${message.text}</div>`
+                }
             }
             else if(message.type == 0){
                 messageElement.className = "item item-center";
@@ -940,13 +956,23 @@ const chatMessages = [
             }
             else if (message.type == 3){
                 if (message.is_send == 1){
-                messageElement.className = "item item-right";
-                messageElement.innerHTML = `<div class='chat-image'><img src="${message.text}" /></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
+                    messageElement.className = "item item-right";
+                    messageElement.innerHTML = `<div class='chat-image'><img src="${message.text}" /></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
+                }
+                else if(message.is_send==0){
+                    messageElement.className = "item item-left";
+                    messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='chat-image'><img src="${message.text}" /></div>`
+                }
             }
-            else if(message.is_send==0){
-                messageElement.className = "item item-left";
-                messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='chat-image'><img src="${message.text}" /></div>`
-            }
+            else if (message.type == 43) {
+                if (message.is_send == 1){
+                    messageElement.className = "item item-right";
+                    messageElement.innerHTML = `<div class='chat-video'><video src="${message.text}" controls /></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
+                }
+                else if(message.is_send==0){
+                    messageElement.className = "item item-left";
+                    messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='chat-video'><video src="${message.text}" controls /></div>`
+                }
             }
             chatContainer.appendChild(messageElement);
         }
@@ -970,13 +996,13 @@ const chatMessages = [
         const messageElement = document.createElement('div');
             if (message.type == 1){
                 if (message.is_send == 1){
-                messageElement.className = "item item-right";
-                messageElement.innerHTML = `<div class='bubble bubble-right'>${message.text}</div><div class='avatar'><img src="${message.avatar_path}" /></div>`
-            }
-            else if(message.is_send==0){
-                messageElement.className = "item item-left";
-                messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='bubble bubble-right'>${message.text}</div>`
-            }
+                    messageElement.className = "item item-right";
+                    messageElement.innerHTML = `<div class='bubble bubble-right'>${message.text}</div><div class='avatar'><img src="${message.avatar_path}" /></div>`
+                }
+                else if(message.is_send==0){
+                    messageElement.className = "item item-left";
+                    messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='bubble bubble-right'>${message.text}</div>`
+                }
             }
             else if(message.type == 0){
                 messageElement.className = "item item-center";
@@ -984,13 +1010,23 @@ const chatMessages = [
             }
             else if (message.type == 3){
                 if (message.is_send == 1){
-                messageElement.className = "item item-right";
-                messageElement.innerHTML = `<div class='chat-image' ><img src="${message.text}" onclick="showModal(this)"/></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
+                    messageElement.className = "item item-right";
+                    messageElement.innerHTML = `<div class='chat-image' ><img src="${message.text}" onclick="showModal(this)"/></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
+                }
+                else if(message.is_send==0){
+                    messageElement.className = "item item-left";
+                    messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}"/></div><div class='chat-image'><img src="${message.text}" onclick="showModal(this)"/></div>`
+                }
             }
-            else if(message.is_send==0){
-                messageElement.className = "item item-left";
-                messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}"/></div><div class='chat-image'><img src="${message.text}" onclick="showModal(this)"/></div>`
-            }
+            else if (message.type == 43) {
+                if (message.is_send == 1){
+                    messageElement.className = "item item-right";
+                    messageElement.innerHTML = `<div class='chat-video'><video src="${message.text}" controls /></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
+                }
+                else if(message.is_send==0){
+                    messageElement.className = "item item-left";
+                    messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='chat-video'><video src="${message.text}" controls "/></div>`
+                }
             }
             chatContainer.appendChild(messageElement);
     }
