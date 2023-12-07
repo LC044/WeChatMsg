@@ -16,31 +16,31 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1280, 779)
         MainWindow.setStyleSheet("\n"
-                                 "                /*去掉item虚线边框*/\n"
-                                 "                QListWidget, QListView, QTreeWidget, QTreeView {\n"
-                                 "                outline: 0px;\n"
-                                 "                }\n"
-                                 "                /*设置左侧选项的最小最大宽度,文字颜色和背景颜色*/\n"
-                                 "                QListWidget {\n"
-                                 "                min-width: 120px;\n"
-                                 "                max-width: 120px;\n"
-                                 "                color: black;\n"
-                                 "                background: white;\n"
-                                 "                border:none;\n"
-                                 "                }\n"
-                                 "                QListWidget::item{\n"
-                                 "                height:80;\n"
-                                 "                }\n"
-                                 "                /*被选中时的背景颜色和左边框颜色*/\n"
-                                 "                QListWidget::item:selected {\n"
-                                 "                background: rgb(204, 204, 204);\n"
-                                 "                border-left: 4px solid rgb(9, 187, 7);\n"
-                                 "                }\n"
-                                 "                /*鼠标悬停颜色*/\n"
-                                 "                HistoryPanel::item:hover {\n"
-                                 "                background: rgb(52, 52, 52);\n"
-                                 "                }\n"
-                                 "            ")
+"                /*去掉item虚线边框*/\n"
+"                QListWidget, QListView, QTreeWidget, QTreeView {\n"
+"                outline: 0px;\n"
+"                }\n"
+"                /*设置左侧选项的最小最大宽度,文字颜色和背景颜色*/\n"
+"                QListWidget {\n"
+"                min-width: 120px;\n"
+"                max-width: 120px;\n"
+"                color: black;\n"
+"                background: white;\n"
+"                border:none;\n"
+"                }\n"
+"                QListWidget::item{\n"
+"                height:80;\n"
+"                }\n"
+"                /*被选中时的背景颜色和左边框颜色*/\n"
+"                QListWidget::item:selected {\n"
+"                background: rgb(204, 204, 204);\n"
+"                border-left: 4px solid rgb(9, 187, 7);\n"
+"                }\n"
+"                /*鼠标悬停颜色*/\n"
+"                HistoryPanel::item:hover {\n"
+"                background: rgb(52, 52, 52);\n"
+"                }\n"
+"            ")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -124,12 +124,15 @@ class Ui_MainWindow(object):
         self.action_help_contact.setObjectName("action_help_contact")
         self.action_output_CSV = QtWidgets.QAction(MainWindow)
         self.action_output_CSV.setObjectName("action_output_CSV")
+        self.action_output_contacts = QtWidgets.QAction(MainWindow)
+        self.action_output_contacts.setObjectName("action_output_contacts")
         self.menu_F.addSeparator()
         self.menu_F.addSeparator()
         self.menu_F.addAction(self.action_3)
         self.menu_F.addAction(self.action_4)
         self.menu_output.addAction(self.action_output_CSV)
         self.menu_data.addAction(self.menu_output.menuAction())
+        self.menu_data.addAction(self.action_output_contacts)
         self.menu_2.addAction(self.action_help_decrypt)
         self.menu_2.addAction(self.action_help_chat)
         self.menu_2.addAction(self.action_help_contact)
@@ -173,3 +176,4 @@ class Ui_MainWindow(object):
         self.action_help_chat.setText(_translate("MainWindow", "聊天相关"))
         self.action_help_contact.setText(_translate("MainWindow", "好友相关"))
         self.action_output_CSV.setText(_translate("MainWindow", "CSV"))
+        self.action_output_contacts.setText(_translate("MainWindow", "导出联系人"))

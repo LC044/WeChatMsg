@@ -102,6 +102,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.menu_output.setIcon(Icon.Output)
         self.action_output_CSV.setIcon(Icon.ToCSV)
         self.action_output_CSV.triggered.connect(self.output)
+        self.action_output_contacts.setIcon(Icon.Output)
+        self.action_output_contacts.triggered.connect(self.output)
         self.action_desc.setIcon(Icon.Help_Icon)
         self.action_help_contact.triggered.connect(
             lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/5")))
@@ -192,7 +194,12 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         if self.sender() == self.action_output_CSV:
             self.outputThread = Output(None, type_=Output.CSV_ALL)
             self.outputThread.okSignal.connect(
-                lambda x: self.message('聊天记录导出成功\n./data/聊天记录/messages.csv'))
+                lambda x: self.message('聊天记录导出成功'))
+            self.outputThread.start()
+        elif self.sender() == self.action_output_contacts:
+            self.outputThread = Output(None, type_=Output.CONTACT_CSV)
+            self.outputThread.okSignal.connect(
+                lambda x: self.message('联系人导出成功'))
             self.outputThread.start()
 
     def message(self, msg):

@@ -6,6 +6,7 @@ labels: ''
 assignees: ''
 
 ---
+**是否检查过issues没有相同问题**
 
 **bug描述**
 A clear and concise description of what the bug is.

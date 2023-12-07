@@ -1,11 +1,8 @@
-import json
 import os
 import sys
 
 from flask import Flask, render_template, send_file
-from pyecharts import options as opts
-from pyecharts.charts import Bar
-from pyecharts.globals import ThemeType
+
 
 from app.DataBase import msg_db
 from app.analysis import analysis
@@ -19,25 +16,8 @@ contact: ContactPC = None
 
 @app.route("/")
 def index():
-    # 创建一个简单的柱状图
-    bar = (
-        Bar(init_opts=opts.InitOpts(theme=ThemeType.LIGHT))
-        .add_xaxis(["A", "B", "C", "D", "E"])
-        .add_yaxis("Series", [5, 20, 36, 10, 75])
-        .set_global_opts(title_opts=opts.TitleOpts(title="Flask and Pyecharts Interaction"))
-    )
-
-    # 将图表转换成 HTML
-    chart_html = bar.render_embed()
-
     # 渲染模板，并传递图表的 HTML 到模板中
-    return render_template("index.html", chart_html=chart_html)
-
-
-@app.route("/index")
-def index0():
-    return render_template("index1.html")
-
+    return render_template("index.html")
 
 @app.route('/home')
 def home():

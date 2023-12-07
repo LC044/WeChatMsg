@@ -6,10 +6,8 @@ import sys
 sys.path.append('.')
 
 from app.DataBase import msg_db, MsgType
-from app.person_pc import ContactPC
-import jieba
 from pyecharts import options as opts
-from pyecharts.charts import Pie, WordCloud, Calendar, Bar, Line, Timeline, Grid
+from pyecharts.charts import WordCloud, Calendar, Bar
 from app.resources import resource_rc
 
 var = resource_rc.qt_resource_name

@@ -104,7 +104,6 @@ class Msg:
             lock.release()
         return result[0]
 
-
     def get_message_by_num(self, username_, local_id):
         sql = '''
                 select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime
@@ -205,7 +204,7 @@ class Msg:
         finally:
             lock.release()
         return result
-    
+
     def get_messages_by_month(self, username_, year_='2023'):
         sql = '''
                 SELECT strftime('%Y-%m',CreateTime,'unixepoch','localtime') as days,count(MsgSvrID)
@@ -226,7 +225,6 @@ class Msg:
             lock.release()
         # result.sort(key=lambda x: x[5])
         return result
-    
 
     def get_first_time_of_message(self, username_):
         if not self.open_flag:
