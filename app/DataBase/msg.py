@@ -170,6 +170,21 @@ class Msg:
 
         return res
 
+    def get_messages_by_days(self, username_, year_='2023'):
+        sql = '''
+            SELECT strftime('%Y-%m-%d',CreateTime,'unixepoch','localtime') as days,count(MsgSvrID)
+            from MSG
+            where StrTalker = ? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
+            group by days
+        '''
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql, [username_, year_])
+            result = self.cursor.fetchall()
+        finally:
+            lock.release()
+        return result
+
     def get_first_time_of_message(self, username_):
         if not self.open_flag:
             return None

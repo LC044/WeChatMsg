@@ -2,6 +2,9 @@ from collections import Counter
 
 from PyQt5.QtCore import QFile, QTextStream, QIODevice
 
+import sys
+sys.path.append('.')
+
 from app.DataBase import msg_db, MsgType
 from app.person_pc import ContactPC
 import jieba
@@ -76,11 +79,47 @@ def wordcloud(wxid):
     }
 
 
+def calendar_chart(wxid, year):
+    calendar_data = msg_db.get_messages_by_days(wxid, year)
+
+    if not calendar_data:
+        return False
+    min_ = min(map(lambda x: x[1], calendar_data))
+    max_ = max(map(lambda x: x[1], calendar_data))
+
+    c = (
+        Calendar(init_opts=opts.InitOpts(width=f"{charts_width}px", height=f"{charts_height}px"))
+        .add(
+            "",
+            calendar_data,
+            calendar_opts=opts.CalendarOpts(range_=year)
+        )
+        .set_global_opts(
+            title_opts=opts.TitleOpts(title="2023年聊天情况"),
+            visualmap_opts=opts.VisualMapOpts(
+                max_=max_,
+                min_=min_,
+                orient="horizontal",
+                # is_piecewise=True,
+                # pos_top="200px",
+                pos_bottom="0px",
+                pos_left="0px",
+            ),
+            legend_opts=opts.LegendOpts(is_show=False)
+        )
+    )
+    return {
+        'chart_data': c
+    }
+
+
 class Analysis:
     pass
 
 
 if __name__ == '__main__':
     msg_db.init_database(path='../DataBase/Msg/MSG.db')
-    w = wordcloud('wxid_0o18ef858vnu22')
-    print(w)
+    # w = wordcloud('wxid_0o18ef858vnu22')
+    c = calendar_chart('wxid_27hqbq7vx5hf22', '2023')
+    c['chart_data'].render("./data/聊天统计/calendar.html")
+    print('c:::', c)
