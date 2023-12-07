@@ -106,7 +106,7 @@ class Msg:
 
     def get_message_by_num(self, username_, local_id):
         sql = '''
-                select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime
+                select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra
                 from MSG
                 where StrTalker = ? and localId < ?
                 order by CreateTime desc 
@@ -130,7 +130,7 @@ class Msg:
         if not self.open_flag:
             return None
         sql = '''
-            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID
+            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra
             from MSG
             where StrTalker=? and Type=?
             order by CreateTime
@@ -147,7 +147,7 @@ class Msg:
         if not self.open_flag:
             return None
         sql = '''
-            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID
+            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra
             from MSG
             where StrTalker=? and Type=1 and LENGTH(StrContent)<? and StrContent like ?
             order by CreateTime desc
@@ -284,10 +284,7 @@ if __name__ == '__main__':
     msg.init_database()
     result = msg.get_message_by_num('wxid_0o18ef858vnu22', 9999999)
     print(result)
-    print(result[-1][0])
-    local_id = result[-1][0]
-    wxid = 'wxid_0o18ef858vnu22'
-    pprint(msg.get_message_by_num('wxid_0o18ef858vnu22', local_id))
-    print(msg.get_messages_by_keyword(wxid, '干嘛'))
-    pprint(msg.get_messages_by_keyword(wxid, '干嘛')[0])
-    print(msg.get_first_time_of_message('wxid_0o18ef858vnu22'))
+    result = msg.get_messages_by_type('wxid_0o18ef858vnu22',43)
+    bytes_ = result[-1][-1]
+    print(bytes_)
+    print(bytes_)
