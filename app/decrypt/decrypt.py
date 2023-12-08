@@ -1,11 +1,23 @@
-import hashlib
+# -*- coding: utf-8 -*-#
+# -------------------------------------------------------------------------------
+# Name:         getwxinfo.py
+# Description:
+# Author:       xaoyaoo
+# Date:         2023/08/21
+# 微信数据库采用的加密算法是256位的AES-CBC。数据库的默认的页大小是4096字节即4KB，其中每一个页都是被单独加解密的。
+# 加密文件的每一个页都有一个随机的初始化向量，它被保存在每一页的末尾。
+# 加密文件的每一页都存有着消息认证码，算法使用的是HMAC-SHA1（安卓数据库使用的是SHA512）。它也被保存在每一页的末尾。
+# 每一个数据库文件的开头16字节都保存了一段唯一且随机的盐值，作为HMAC的验证和数据的解密。
+# 用来计算HMAC的key与解密的key是不同的，解密用的密钥是主密钥和之前提到的16字节的盐值通过PKCS5_PBKF2_HMAC1密钥扩展算法迭代64000次计算得到的。而计算HMAC的密钥是刚提到的解密密钥和16字节盐值异或0x3a的值通过PKCS5_PBKF2_HMAC1密钥扩展算法迭代2次计算得到的。
+# 为了保证数据部分长度是16字节即AES块大小的整倍数，每一页的末尾将填充一段空字节，使得保留字段的长度为48字节。
+# 综上，加密文件结构为第一页4KB数据前16字节为盐值，紧接着4032字节数据，再加上16字节IV和20字节HMAC以及12字节空字节；而后的页均是4048字节长度的加密数据段和48字节的保留段。
+# -------------------------------------------------------------------------------
+import argparse
 import hmac
+import hashlib
 import os
 from typing import Union, List
-
 from Cryptodome.Cipher import AES
-
-from app.log import log, logger
 
 # from Crypto.Cipher import AES # 如果上面的导入失败，可以尝试使用这个
 
@@ -17,15 +29,22 @@ DEFAULT_ITER = 64000
 
 
 # 通过密钥解密数据库
-@log
 def decrypt(key: str, db_path, out_path):
-    if not os.path.exists(db_path):
-        return f"[-] db_path:'{db_path}' File not found!"
+    """
+    通过密钥解密数据库
+    :param key: 密钥 64位16进制字符串
+    :param db_path:  待解密的数据库路径(必须是文件)
+    :param out_path:  解密后的数据库输出路径(必须是文件)
+    :return:
+    """
+    if not os.path.exists(db_path) or not os.path.isfile(db_path):
+        return False, f"[-] db_path:'{db_path}' File not found!"
     if not os.path.exists(os.path.dirname(out_path)):
-        return f"[-] out_path:'{out_path}' File not found!"
+        return False, f"[-] out_path:'{out_path}' File not found!"
+
     if len(key) != 64:
-        logger.error(f"[-] key:'{key}' Error!")
-        return -1
+        return False, f"[-] key:'{key}' Len Error!"
+
     password = bytes.fromhex(key.strip())
     with open(db_path, "rb") as file:
         blist = file.read()
@@ -33,6 +52,8 @@ def decrypt(key: str, db_path, out_path):
     salt = blist[:16]
     byteKey = hashlib.pbkdf2_hmac("sha1", password, salt, DEFAULT_ITER, KEY_SIZE)
     first = blist[16:DEFAULT_PAGESIZE]
+    if len(salt) != 16:
+        return False, f"[-] db_path:'{db_path}' File Error!"
 
     mac_salt = bytes([(salt[i] ^ 58) for i in range(16)])
     mac_key = hashlib.pbkdf2_hmac("sha1", byteKey, mac_salt, 2, KEY_SIZE)
@@ -40,8 +61,7 @@ def decrypt(key: str, db_path, out_path):
     hash_mac.update(b'\x01\x00\x00\x00')
 
     if hash_mac.digest() != first[-32:-12]:
-        logger.error(f"[-] Password Error! (key:'{key}'; db_path:'{db_path}'; out_path:'{out_path}' )")
-        return -1
+        return False, f"[-] Key Error! (key:'{key}'; db_path:'{db_path}'; out_path:'{out_path}' )"
 
     newblist = [blist[i:i + DEFAULT_PAGESIZE] for i in range(DEFAULT_PAGESIZE, len(blist), DEFAULT_PAGESIZE)]
 
@@ -57,19 +77,22 @@ def decrypt(key: str, db_path, out_path):
             decrypted = t.decrypt(i[:-48])
             deFile.write(decrypted)
             deFile.write(i[-48:])
-    return [True, db_path, out_path, key]
+    return True, [db_path, out_path, key]
 
 
-@log
-def batch_decrypt(key: str, db_path: Union[str, List[str]], out_path: str):
+def batch_decrypt(key: str, db_path: Union[str, List[str]], out_path: str, is_logging: bool = False):
     if not isinstance(key, str) or not isinstance(out_path, str) or not os.path.exists(out_path) or len(key) != 64:
-        return f"[-] (key:'{key}' or out_path:'{out_path}') Error!"
+        error = f"[-] (key:'{key}' or out_path:'{out_path}') Error!"
+        if is_logging: print(error)
+        return False, error
 
     process_list = []
 
     if isinstance(db_path, str):
         if not os.path.exists(db_path):
-            return f"[-] db_path:'{db_path}' not found!"
+            error = f"[-] db_path:'{db_path}' not found!"
+            if is_logging: print(error)
+            return False, error
 
         if os.path.isfile(db_path):
             inpath = db_path
@@ -87,7 +110,10 @@ def batch_decrypt(key: str, db_path: Union[str, List[str]], out_path: str):
                         os.makedirs(os.path.dirname(outpath))
                     process_list.append([key, inpath, outpath])
         else:
-            return f"[-] db_path:'{db_path}' Error "
+            error = f"[-] db_path:'{db_path}' Error "
+            if is_logging: print(error)
+            return False, error
+
     elif isinstance(db_path, list):
         rt_path = os.path.commonprefix(db_path)
         if not os.path.exists(rt_path):
@@ -95,7 +121,9 @@ def batch_decrypt(key: str, db_path: Union[str, List[str]], out_path: str):
 
         for inpath in db_path:
             if not os.path.exists(inpath):
-                return f"[-] db_path:'{db_path}' not found!"
+                erreor = f"[-] db_path:'{db_path}' not found!"
+                if is_logging: print(erreor)
+                return False, erreor
 
             inpath = os.path.normpath(inpath)
             rel = os.path.relpath(os.path.dirname(inpath), rt_path)
@@ -104,7 +132,9 @@ def batch_decrypt(key: str, db_path: Union[str, List[str]], out_path: str):
                 os.makedirs(os.path.dirname(outpath))
             process_list.append([key, inpath, outpath])
     else:
-        return f"[-] db_path:'{db_path}' Error "
+        error = f"[-] db_path:'{db_path}' Error "
+        if is_logging: print(error)
+        return False, error
 
     result = []
     for i in process_list:
@@ -115,12 +145,63 @@ def batch_decrypt(key: str, db_path: Union[str, List[str]], out_path: str):
         for dir in dirs:
             if not os.listdir(os.path.join(root, dir)):
                 os.rmdir(os.path.join(root, dir))
-    return result
+
+    if is_logging:
+        print("=" * 32)
+        success_count = 0
+        fail_count = 0
+        for code, ret in result:
+            if code == False:
+                print(ret)
+                fail_count += 1
+            else:
+                print(f'[+] "{ret[0]}" -> "{ret[1]}"')
+                success_count += 1
+        print("-" * 32)
+        print(f"[+] 共 {len(result)} 个文件, 成功 {success_count} 个, 失败 {fail_count} 个")
+        print("=" * 32)
+    return True, result
 
 
-if __name__ == '__main__':
-    # 调用 decrypt 函数，并传入参数
-    key = "2aafab10af7940328bb92ac9d2a8ab5fc07a685646b14f2e9ae6948a7060c0fc"
-    db_path = "E:\86390\Documents\WeChat Files\wxid_27hqbq7vx5hf22\FileStorage\CustomEmotion\\71\\71CE49ED3CE9E57E43E07F802983BF45"
-    out_path = "./test/1.png"
-    print(decrypt(key, db_path, out_path))
+def encrypt(key: str, db_path, out_path):
+    """
+    通过密钥加密数据库
+    :param key: 密钥 64位16进制字符串
+    :param db_path:  待加密的数据库路径(必须是文件)
+    :param out_path:  加密后的数据库输出路径(必须是文件)
+    :return:
+    """
+    if not os.path.exists(db_path) or not os.path.isfile(db_path):
+        return False, f"[-] db_path:'{db_path}' File not found!"
+    if not os.path.exists(os.path.dirname(out_path)):
+        return False, f"[-] out_path:'{out_path}' File not found!"
+
+    if len(key) != 64:
+        return False, f"[-] key:'{key}' Len Error!"
+
+    password = bytes.fromhex(key.strip())
+    with open(db_path, "rb") as file:
+        blist = file.read()
+
+    salt = os.urandom(16)  # 生成随机盐值
+    byteKey = hashlib.pbkdf2_hmac("sha1", password, salt, DEFAULT_ITER, KEY_SIZE)
+
+    # 计算消息认证码
+    mac_salt = bytes([(salt[i] ^ 58) for i in range(16)])
+    mac_key = hashlib.pbkdf2_hmac("sha1", byteKey, mac_salt, 2, KEY_SIZE)
+    hash_mac = hmac.new(mac_key, blist[:-32], hashlib.sha1)
+    hash_mac.update(b'\x01\x00\x00\x00')
+    mac_digest = hash_mac.digest()
+
+    newblist = [blist[i:i + DEFAULT_PAGESIZE] for i in range(DEFAULT_PAGESIZE, len(blist), DEFAULT_PAGESIZE)]
+
+    with open(out_path, "wb") as enFile:
+        enFile.write(salt)  # 写入盐值
+        enFile.write(mac_digest)  # 写入消息认证码
+
+        for i in newblist:
+            t = AES.new(byteKey, AES.MODE_CBC, os.urandom(16))  # 生成随机的初始向量
+            encrypted = t.encrypt(i)  # 加密数据块
+            enFile.write(encrypted)
+
+    return True, [db_path, out_path, key]
