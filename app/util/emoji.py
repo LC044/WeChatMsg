@@ -91,6 +91,7 @@ def get_emoji(xml_string, thumb=True, output_path=root_path) -> str:
             prefix = 'th_' if thumb else ''
             file_path = os.path.join(output_path, prefix + md5 + f)
             if os.path.exists(file_path):
+                print('表情包已存在')
                 return file_path
         url = emoji_info['thumburl'] if thumb else emoji_info['cdnurl']
         print("下载表情包ing:", url)
