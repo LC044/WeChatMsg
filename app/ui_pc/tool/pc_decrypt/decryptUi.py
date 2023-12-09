@@ -50,6 +50,10 @@ class Ui_Dialog(object):
         self.label_3.setAlignment(QtCore.Qt.AlignCenter)
         self.label_3.setObjectName("label_3")
         self.verticalLayout.addWidget(self.label_3)
+        self.label_9 = QtWidgets.QLabel(Dialog)
+        self.label_9.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_9.setObjectName("label_9")
+        self.verticalLayout.addWidget(self.label_9)
         self.gridLayout_2 = QtWidgets.QGridLayout()
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.gridLayout = QtWidgets.QGridLayout()
@@ -63,16 +67,16 @@ class Ui_Dialog(object):
         self.gridLayout.addWidget(self.label_7, 1, 0, 1, 1)
         self.lineEdit = QtWidgets.QLineEdit(Dialog)
         self.lineEdit.setStyleSheet("background:transparent;\n"
-                                    "\n"
-                                    "                                                                    border-radius:5px;\n"
-                                    "                                                                    border-top: 0px solid #b2e281;\n"
-                                    "                                                                    border-bottom: 2px solid black;\n"
-                                    "                                                                    border-right: 0px solid #b2e281;\n"
-                                    "                                                                    border-left: 0px solid #b2e281;\n"
-                                    "\n"
-                                    "\n"
-                                    "                                                                    border-style:outset\n"
-                                    "                                                                ")
+"\n"
+"                                                                    border-radius:5px;\n"
+"                                                                    border-top: 0px solid #b2e281;\n"
+"                                                                    border-bottom: 2px solid black;\n"
+"                                                                    border-right: 0px solid #b2e281;\n"
+"                                                                    border-left: 0px solid #b2e281;\n"
+"\n"
+"\n"
+"                                                                    border-style:outset\n"
+"                                                                ")
         self.lineEdit.setFrame(False)
         self.lineEdit.setObjectName("lineEdit")
         self.gridLayout.addWidget(self.lineEdit, 4, 1, 1, 1)
@@ -178,6 +182,7 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
         self.btn_help.setText(_translate("Dialog", "使用说明"))
         self.label_3.setText(_translate("Dialog", "解密数据库"))
+        self.label_9.setText(_translate("Dialog", "以下内容为自动获取，如获取失败请手动填写"))
         self.label_7.setText(_translate("Dialog", "版本"))
         self.label_5.setText(_translate("Dialog", "微信昵称"))
         self.label_6.setText(_translate("Dialog", "密钥"))

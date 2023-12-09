@@ -10,6 +10,9 @@ from .package_msg import PackageMsg
 from ..DataBase import hard_link_db
 from ..person_pc import MePC
 from ..util import path
+import shutil
+
+from ..util.emoji import get_emoji
 
 os.makedirs('./data/聊天记录', exist_ok=True)
 
@@ -73,8 +76,9 @@ class Output(QThread):
     def to_csv_all(self):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/"
         os.makedirs(origin_docx_path, exist_ok=True)
-        filename = QFileDialog.getSaveFileName(None, "save file", os.path.join(os.getcwd(),'messages.csv'), "csv files (*.csv);;all files(*.*)")
-        if not filename:
+        filename = QFileDialog.getSaveFileName(None, "save file", os.path.join(os.getcwd(), 'messages.csv'),
+                                               "csv files (*.csv);;all files(*.*)")
+        if not filename[0]:
             return
         filename = filename[0]
         # columns = ["用户名", "消息内容", "发送时间", "发送状态", "消息类型", "isSend", "msgId"]
@@ -93,12 +97,14 @@ class Output(QThread):
         self.okSignal.emit(1)
 
     def contact_to_csv(self):
-        filename = QFileDialog.getSaveFileName(None, "save file", os.path.join(os.getcwd(),'contacts.csv'), "csv files (*.csv);;all files(*.*)")
-        if not filename:
+        filename = QFileDialog.getSaveFileName(None, "save file", os.path.join(os.getcwd(), 'contacts.csv'),
+                                               "csv files (*.csv);;all files(*.*)")
+        if not filename[0]:
             return
         filename = filename[0]
         # columns = ["用户名", "消息内容", "发送时间", "发送状态", "消息类型", "isSend", "msgId"]
-        columns = ['UserName','Alias', 'Type', 'Remark', 'NickName', 'PYInitial', 'RemarkPYInitial', 'smallHeadImgUrl', 'bigHeadImgUrl']
+        columns = ['UserName', 'Alias', 'Type', 'Remark', 'NickName', 'PYInitial', 'RemarkPYInitial', 'smallHeadImgUrl',
+                   'bigHeadImgUrl']
         contacts = micro_msg_db.get_contact()
         # 写入CSV文件
         with open(filename, mode='w', newline='', encoding='utf-8') as file:
@@ -210,263 +216,6 @@ class ChildThread(QThread):
             writer.writerow(columns)
             # 写入数据
             writer.writerows(messages)
-        self.okSignal.emit(1)
-
-    def to_html(self):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-        os.makedirs(origin_docx_path, exist_ok=True)
-        messages = msg_db.get_messages(self.contact.wxid)
-        filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}.html"
-        f = open(filename, 'w', encoding='utf-8')
-        html_head = '''
-                    <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <title>Title</title>
-            <style>
-
-                *{
-                padding: 0;
-                margin: 0;
-            }
-            body{
-                height: 100vh;
-                width: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .container{
-                height: 760px;
-                width: 900px;
-                border-radius: 4px;
-                border: 0.5px solid #e0e0e0;
-                background-color: #f5f5f5;
-                display: flex;
-                flex-flow: column;
-                overflow: hidden;
-            }
-            .content{
-                width: calc(100% - 40px);
-                padding: 20px;
-                overflow-y: scroll;
-                flex: 1;
-            }
-            .content:hover::-webkit-scrollbar-thumb{
-                background:rgba(0,0,0,0.1);
-            }
-            .bubble{
-                max-width: 400px;
-                padding: 10px;
-                border-radius: 5px;
-                position: relative;
-                color: #000;
-                word-wrap:break-word;
-                word-break:normal;
-            }
-            .item-left .bubble{
-                margin-left: 15px;
-                background-color: #fff;
-            }
-            .item-left .bubble:before{
-                content: "";
-                position: absolute;
-                width: 0;
-                height: 0;
-                border-left: 10px solid transparent;
-                border-top: 10px solid transparent;
-                border-right: 10px solid #fff;
-                border-bottom: 10px solid transparent;
-                left: -20px;
-            }
-            .item-right .bubble{
-                margin-right: 15px;
-                background-color: #9eea6a;
-            }
-            .item-right .bubble:before{
-                content: "";
-                position: absolute;
-                width: 0;
-                height: 0;
-                border-left: 10px solid #9eea6a;
-                border-top: 10px solid transparent;
-                border-right: 10px solid transparent;
-                border-bottom: 10px solid transparent;
-                right: -20px;
-            }
-            .item{
-                margin-top: 15px;
-                display: flex;
-                width: 100%;
-            }
-            .item.item-right{
-                justify-content: flex-end;
-            }
-            .item.item-center{
-                justify-content: center;
-            }
-            .item.item-center span{
-                font-size: 12px;
-                padding: 2px 4px;
-                color: #fff;
-                background-color: #dadada;
-                border-radius: 3px;
-                -moz-user-select:none; /*火狐*/
-                -webkit-user-select:none; /*webkit浏览器*/
-                -ms-user-select:none; /*IE10*/
-                -khtml-user-select:none; /*早期浏览器*/
-                user-select:none;
-            }
-
-            .avatar img{
-                width: 42px;
-                height: 42px;
-                border-radius: 50%;
-            }
-            .input-area{
-                border-top:0.5px solid #e0e0e0;
-                height: 150px;
-                display: flex;
-                flex-flow: column;
-                background-color: #fff;
-            }
-            textarea{
-                flex: 1;
-                padding: 5px;
-                font-size: 14px;
-                border: none;
-                cursor: pointer;
-                overflow-y: auto;
-                overflow-x: hidden;
-                outline:none;
-                resize:none;
-            }
-            .button-area{
-                display: flex;
-                height: 40px;
-                margin-right: 10px;
-                line-height: 40px;
-                padding: 5px;
-                justify-content: flex-end;
-            }
-            .button-area button{
-                width: 80px;
-                border: none;
-                outline: none;
-                border-radius: 4px;
-                float: right;
-                cursor: pointer;
-            }
-
-            /* 设置滚动条的样式 */
-            ::-webkit-scrollbar {
-                width:10px;
-            }
-            /* 滚动槽 */
-            ::-webkit-scrollbar-track {
-                -webkit-box-shadow:inset006pxrgba(0,0,0,0.3);
-                border-radius:8px;
-            }
-            /* 滚动条滑块 */
-            ::-webkit-scrollbar-thumb {
-                border-radius:10px;
-                background:rgba(0,0,0,0);
-                -webkit-box-shadow:inset006pxrgba(0,0,0,0.5);
-            }
-            </style>
-        </head>
-        <body>
-        <div class="container" id="container" onscroll="handleScroll()">
-            <div class="content">
-                '''
-        f.write(html_head)
-        MePC().avatar.save(os.path.join(origin_docx_path, 'myhead.png'))
-        self.contact.avatar.save(os.path.join(origin_docx_path, 'tahead.png'))
-        self.rangeSignal.emit(len(messages))
-        for index, message in enumerate(messages):
-            type_ = message[2]
-            str_content = message[7]
-            str_time = message[8]
-            # print(type_, type(type_))
-            is_send = message[4]
-            avatar = MePC().avatar_path if is_send else self.contact.avatar_path
-            timestamp = message[5]
-            self.progressSignal.emit(index)
-            if type_ == 1:
-                if self.is_5_min(timestamp):
-                    f.write(
-                        f'''
-                                <div class="item item-center"><span>{str_time}</span></div>
-                                '''
-                    )
-                if is_send:
-                    f.write(
-                        f'''
-                                <div class="item item-right">
-                    <div class="bubble bubble-right">{str_content}</div>
-                    <div class="avatar">
-                        <img src="myhead.png" />
-                    </div>
-                </div>
-                                '''
-                    )
-                else:
-                    f.write(
-                        f'''
-                                <div class="item item-left">
-                    <div class="avatar">
-                        <img src="tahead.png" />
-                    </div>
-                    <div class="bubble bubble-left">{str_content}
-                    </div>
-                </div>
-                                '''
-                    )
-        html_end = '''
-
-            </div>
-        </div>
-        <script>
-  const container = document.getElementById('container');
-  const content = document.getElementById('content');
-
-  const totalItems = 1000;
-  const itemsPerPage = 20;
-  const itemHeight = 50;
-
-  function updateContent() {
-    const scrollTop = container.scrollTop;
-    const startIndex = Math.floor(scrollTop / itemHeight);
-    const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-
-    // Remove existing items
-    content.innerHTML = '';
-
-    // Add new items
-    for (let i = startIndex; i < endIndex; i++) {
-      const item = document.createElement('div');
-      item.className = 'item';
-      item.textContent = `Item ${i}`;
-      content.appendChild(item);
-    }
-
-    // Update container height to show correct scrollbar
-    container.style.height = totalItems * itemHeight + 'px';
-  }
-
-  function handleScroll() {
-    updateContent();
-  }
-
-  // Initial content rendering
-  updateContent();
-</script>
-        </body>
-        </html>
-                '''
-        f.write(html_end)
-        f.close()
         self.okSignal.emit(1)
 
     def to_html_(self):
@@ -921,7 +670,12 @@ const chatMessages = [
                 )
             elif type_ == 43:
                 video_path = hard_link_db.get_video(content=str_content, thumb=False)
-                video_path = f'file:///{path.wx_path()}/{MePC().wxid}/{video_path}'
+                video_path = f'{MePC().wx_dir}/{video_path}'
+                if os.path.exists(video_path):
+                    new_path = origin_docx_path + '/video/' + os.path.basename(video_path)
+                    if not os.path.exists(new_path):
+                        shutil.copy(video_path, os.path.join(origin_docx_path, 'video'))
+                    video_path = f'./video/{os.path.basename(video_path)}'
                 video_path = video_path.replace('\\', '/')
                 if self.is_5_min(timestamp):
                     f.write(
@@ -929,6 +683,16 @@ const chatMessages = [
                     )
                 f.write(
                     f'''{{ type:{type_}, text: '{video_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
+                )
+            elif type_ == 47:
+                emoji_path = get_emoji(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
+                emoji_path = './emoji/'+os.path.basename(emoji_path)
+                if self.is_5_min(timestamp):
+                    f.write(
+                        f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                    )
+                f.write(
+                    f'''{{ type:{3}, text: '{emoji_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
                 )
             elif type_ == 10000:
                 str_content = escape_js_and_html(str_content.lstrip('<revokemsg>').rstrip('</revokemsg>'))

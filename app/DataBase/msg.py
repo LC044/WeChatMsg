@@ -184,7 +184,6 @@ class Msg:
                 (msg1[4], msg1[5], msg1[7].split(keyword), msg1[8]),
                 (msg2[4], msg2[5], msg2[7], msg2[8])
             ))
-
         return res
 
     def get_messages_by_days(self, username_, year_='2023'):

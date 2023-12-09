@@ -54,7 +54,6 @@ class Misc:
             lock.acquire(True)
             self.cursor.execute(sql, [userName])
             result = self.cursor.fetchall()
-            # print(result[0][0])
             if result:
                 return result[0][0]
         finally:

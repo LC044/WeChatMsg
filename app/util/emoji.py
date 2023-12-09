@@ -79,18 +79,18 @@ def download(url, output_dir, name, thumb=False):
     return output_path
 
 
-def get_emoji(xml_string, thumb=True) -> str:
+def get_emoji(xml_string, thumb=True, output_path=root_path) -> str:
     emoji_info = parser_xml(xml_string)
     md5 = emoji_info['md5']
     image_format = ['.png', '.gif', '.jpeg']
     for f in image_format:
         prefix = 'th_' if thumb else ''
-        file_path = os.path.join(root_path, prefix + md5 + f)
+        file_path = os.path.join(output_path, prefix + md5 + f)
         if os.path.exists(file_path):
             return file_path
     url = emoji_info['thumburl'] if thumb else emoji_info['cdnurl']
     print("下载表情包ing:", url)
-    return download(url, root_path, md5, thumb)
+    return download(url, output_path, md5, thumb)
 
 
 if __name__ == '__main__':

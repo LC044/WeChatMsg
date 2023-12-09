@@ -72,6 +72,7 @@ def set_text(text):
         <div class="centered-text">
             <!-- 这里是要显示的四个大字 -->
             %s
+            <img src="https://res.wx.qq.com/t/wx_fed/we-emoji/res/v1.2.8/assets/newemoji/Yellowdog.png" id="旺柴" class="emoji_img">
         </div>
     </body>
     </html>
@@ -81,7 +82,7 @@ def set_text(text):
 
 @app.route('/test')
 def test():
-    return set_text('以下内容仅对VIP开放🐶')
+    return set_text('以下内容仅对VIP开放')
 
 
 def run(port=21314):

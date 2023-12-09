@@ -125,7 +125,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
                 QMessageBox.critical(self, "错误", "文件夹选择错误\n一般以wxid_xxx结尾")
                 return
         if self.info.get('key') == 'none':
-            QMessageBox.critical(self, "错误", "密钥错误\n请检查微信版本是否为最新")
+            QMessageBox.critical(self, "错误", "密钥错误\n请检查微信版本是否为最新和微信路径是否正确")
         self.label_tip.setVisible(True)
         self.label_tip.setText('点我之后没有反应那就多等儿吧,不要再点了')
         self.thread2 = DecryptThread(db_dir, self.info['key'])
@@ -133,7 +133,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         self.thread2.signal.connect(self.progressBar_view)
         self.thread2.okSignal.connect(self.btnExitClicked)
         self.thread2.errorSignal.connect(
-            lambda x: QMessageBox.critical(self, "错误", "密钥错误\n请检查微信版本是否为最新")
+            lambda x: QMessageBox.critical(self, "错误", "密钥错误\n请检查微信版本是否为最新和微信路径是否正确")
         )
         self.thread2.start()
 
