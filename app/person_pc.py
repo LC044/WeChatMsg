@@ -47,6 +47,7 @@ class ContactPC:
         self.nickName = contact_info.get('NickName')
         if not self.remark:
             self.remark = self.nickName
+        self.remark.replace('*', '_').replace('/', '_').replace('\\', '_')
         self.smallHeadImgUrl = contact_info.get('smallHeadImgUrl')
         self.smallHeadImgBLOG = b''
         self.avatar = QPixmap()

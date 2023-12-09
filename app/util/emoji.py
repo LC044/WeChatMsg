@@ -9,9 +9,12 @@ emoji.py
 """
 
 import os
+import traceback
 import xml.etree.ElementTree as ET
 
 import requests
+
+from app.log import log, logger
 
 root_path = './data/emoji/'
 if not os.path.exists('./data'):
@@ -19,7 +22,7 @@ if not os.path.exists('./data'):
 if not os.path.exists(root_path):
     os.mkdir(root_path)
 
-
+@log
 def get_image_format(header):
     # 定义图片格式的 magic numbers
     image_formats = {
@@ -36,7 +39,7 @@ def get_image_format(header):
     # 如果无法识别格式，返回 None
     return None
 
-
+@log
 def parser_xml(xml_string):
     # Parse the XML string
     root = ET.fromstring(xml_string)
@@ -60,7 +63,7 @@ def parser_xml(xml_string):
         'md5': md5 if md5 else androidmd5,
     }
 
-
+@log
 def download(url, output_dir, name, thumb=False):
     if not url:
         return ':/icons/icons/404.png'
@@ -80,17 +83,22 @@ def download(url, output_dir, name, thumb=False):
 
 
 def get_emoji(xml_string, thumb=True, output_path=root_path) -> str:
-    emoji_info = parser_xml(xml_string)
-    md5 = emoji_info['md5']
-    image_format = ['.png', '.gif', '.jpeg']
-    for f in image_format:
-        prefix = 'th_' if thumb else ''
-        file_path = os.path.join(output_path, prefix + md5 + f)
-        if os.path.exists(file_path):
-            return file_path
-    url = emoji_info['thumburl'] if thumb else emoji_info['cdnurl']
-    print("下载表情包ing:", url)
-    return download(url, output_path, md5, thumb)
+    try:
+        emoji_info = parser_xml(xml_string)
+        md5 = emoji_info['md5']
+        image_format = ['.png', '.gif', '.jpeg']
+        for f in image_format:
+            prefix = 'th_' if thumb else ''
+            file_path = os.path.join(output_path, prefix + md5 + f)
+            if os.path.exists(file_path):
+                return file_path
+        url = emoji_info['thumburl'] if thumb else emoji_info['cdnurl']
+        print("下载表情包ing:", url)
+        emoji_path = download(url, output_path, md5, thumb)
+        return emoji_path
+    except:
+        logger.error(traceback.format_exc())
+        return ""
 
 
 if __name__ == '__main__':

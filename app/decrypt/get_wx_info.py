@@ -256,7 +256,7 @@ def read_info(version_list, is_logging=False):
 
         tmp_rd['wxid'] = get_info_wxid(Handle)
         tmp_rd['filePath'] = get_info_filePath(tmp_rd['wxid']) if tmp_rd['wxid'] != "None" else "None"
-        tmp_rd['key'] = get_key(tmp_rd['filePath'], addrLen) if tmp_rd['filePath'] != "None" else "None"
+        tmp_rd['key'] = get_key(tmp_rd['filePath'], addrLen)
         result.append(tmp_rd)
 
     if is_logging:

@@ -16,7 +16,7 @@ def merge_databases(source_paths, target_path):
             db.text_factory = str 
             cursor = db.cursor()
             sql = '''
-            SELECT TalkerId,MsgsvrID,Type,SubType,IsSender,CreateTime,Sequence,StrTalker,StrContent,DisplayContent,BytesExtra
+            SELECT TalkerId,MsgsvrID,Type,SubType,IsSender,CreateTime,Sequence,StrTalker,StrContent,DisplayContent,BytesExtra,CompressContent
             FROM MSG;
             '''
             cursor.execute(sql)
@@ -25,8 +25,8 @@ def merge_databases(source_paths, target_path):
             target_cursor.executemany(
                 "INSERT INTO MSG "
                 "(TalkerId,MsgsvrID,Type,SubType,IsSender,CreateTime,Sequence,StrTalker,StrContent,DisplayContent,"
-                "BytesExtra)"
-                "VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+                "BytesExtra,CompressContent)"
+                "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
                 result)
             cursor.close()
             db.close()
