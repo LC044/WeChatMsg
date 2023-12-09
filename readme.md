@@ -114,8 +114,9 @@ pip install -r requirements_pc.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 手机端使用聊天记录迁移功能将聊天数据迁移到电脑上
 
-操作步骤：我->设置->聊天->聊天记录迁移与备份->迁移->
-迁移到电脑微信（迁移完成后重启微信）[否则](https://github.com/LC044/WeChatMsg/issues/27)
+操作步骤：
+- 安卓： 我->设置->聊天->聊天记录迁移与备份->迁移-> 迁移到电脑微信（迁移完成后重启微信）[否则](https://github.com/LC044/WeChatMsg/issues/27)
+- iOS： 我->设置->通用->聊天记录迁移与备份->迁移-> 迁移到电脑微信（迁移完成后重启微信）[否则](https://github.com/LC044/WeChatMsg/issues/27)
 
 2. 运行程序
 
