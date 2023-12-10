@@ -1,12 +1,13 @@
 from PyQt5.QtCore import pyqtSignal, QUrl, QThread
 from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtWidgets import QWidget, QMenu, QAction, QToolButton, QMessageBox
+from PyQt5.QtWidgets import QWidget, QMenu, QAction, QToolButton, QMessageBox, QDialog
 
 from app.DataBase.output_pc import Output
 from app.ui_pc.Icon import Icon
 from .contactInfoUi import Ui_Form
 from .userinfo import userinfo
 from ...person_pc import ContactPC
+from .export_dialog import ExportDialog
 
 
 class ContactInfo(QWidget, Ui_Form):
@@ -17,7 +18,7 @@ class ContactInfo(QWidget, Ui_Form):
     def __init__(self, contact, parent=None):
         super(ContactInfo, self).__init__(parent)
         self.setupUi(self)
-        self.contact:ContactPC = contact
+        self.contact: ContactPC = contact
         self.view_userinfo = userinfo.UserinfoController(self.contact)
         self.btn_back.clicked.connect(self.back)
         self.init_ui()
@@ -116,14 +117,22 @@ class ContactInfo(QWidget, Ui_Form):
             return
             self.outputThread = Output(self.Me, self.contact.wxid)
         elif self.sender() == self.toCSVAct:
-            self.outputThread = Output(self.contact, type_=Output.CSV)
+            # self.outputThread = Output(self.contact, type_=Output.CSV)
+            dialog = ExportDialog(self.contact,title='选择导出的消息类型', file_type='csv', parent=self)
+            result = dialog.exec_()  # 使用exec_()获取用户的操作结果
         elif self.sender() == self.toHtmlAct:
-            self.outputThread = Output(self.contact, type_=Output.HTML)
+            dialog = ExportDialog(self.contact,title='选择导出的消息类型', file_type='html', parent=self)
+            result = dialog.exec_()  # 使用exec_()获取用户的操作结果
+            # if result == QDialog.Accepted:
+            #     self.result_label.setText("用户点击了导出按钮")
+            # else:
+            #     self.result_label.setText("用户点击了取消按钮")
+            # self.outputThread = Output(self.contact, type_=Output.HTML)
 
-        self.outputThread.progressSignal.connect(self.output_progress)
-        self.outputThread.rangeSignal.connect(self.set_progressBar_range)
-        self.outputThread.okSignal.connect(self.hide_progress_bar)
-        self.outputThread.start()
+        # self.outputThread.progressSignal.connect(self.output_progress)
+        # self.outputThread.rangeSignal.connect(self.set_progressBar_range)
+        # self.outputThread.okSignal.connect(self.hide_progress_bar)
+        # self.outputThread.start()
 
     def hide_progress_bar(self, int):
         reply = QMessageBox(self)
