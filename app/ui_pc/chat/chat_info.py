@@ -88,6 +88,7 @@ class ChatInfo(QWidget):
             is_send = message[4]
             avatar = MePC().avatar if is_send else self.contact.avatar
             timestamp = message[5]
+            BytesExtra = message[10]
             if type_ == 1:
                 if self.is_5_min(timestamp):
                     time_message = Notice(self.last_str_time)
@@ -106,7 +107,7 @@ class ChatInfo(QWidget):
                     time_message = Notice(self.last_str_time)
                     self.last_str_time = str_time
                     self.chat_window.add_message_item(time_message, 0)
-                image_path = hard_link_db.get_image(content=str_content, thumb=False)
+                image_path = hard_link_db.get_image(content=str_content,bytesExtra=BytesExtra, thumb=False)
                 image_path = get_abs_path(image_path)
                 bubble_message = BubbleMessage(
                     image_path,
