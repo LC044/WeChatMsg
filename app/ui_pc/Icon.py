@@ -15,6 +15,7 @@ class Icon:
     ToDocx = QIcon(':/icons/icons/word.svg')
     ToCSV = QIcon(':/icons/icons/csv.svg')
     ToHTML = QIcon(':/icons/icons/html.svg')
+    ToTXT = QIcon(':/icons/icons/txt.svg')
     Chat_Icon = QIcon(':/icons/icons/chat.svg')
     Contact_Icon = QIcon(':/icons/icons/contact.svg')
     MyInfo_Icon = QIcon(':/icons/icons/myinfo.svg')

@@ -38,7 +38,7 @@ class ContactInfo(QWidget, Ui_Form):
         self.toDocxAct = QAction(Icon.ToDocx, '导出Docx', self)
         self.toCSVAct = QAction(Icon.ToCSV, '导出CSV', self)
         self.toHtmlAct = QAction(Icon.ToHTML, '导出HTML', self)
-        self.toTxtAct = QAction(Icon.ToHTML, '导出TXT', self)
+        self.toTxtAct = QAction(Icon.ToTXT, '导出TXT', self)
         self.toolButton_output.setPopupMode(QToolButton.MenuButtonPopup)
         self.toolButton_output.clicked.connect(self.toolButton_show)
         menu.addAction(self.toDocxAct)

@@ -22,6 +22,7 @@
         <file>icons/tool.svg</file>
         <file>icons/home.svg</file>
         <file>icons/help.svg</file>
+        <file>icons/txt.svg</file>
     </qresource>
     <qresource prefix="/data">
         <file>version_list.json</file>
