@@ -7,7 +7,7 @@ sys.path.append('.')
 
 from app.DataBase import msg_db, MsgType
 from pyecharts import options as opts
-from pyecharts.charts import WordCloud, Calendar, Bar
+from pyecharts.charts import WordCloud, Calendar, Bar, Line
 from app.resources import resource_rc
 
 var = resource_rc.qt_resource_name
@@ -17,9 +17,9 @@ wordcloud_width = 780
 wordcloud_height = 720
 
 
-def wordcloud(wxid):
+def wordcloud(wxid, is_Annual_report=False, year='2023'):
     import jieba
-    txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT)
+    txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT, is_Annual_report, year)
     if not txt_messages:
         return {
         'chart_data': None,
@@ -77,23 +77,31 @@ def wordcloud(wxid):
     }
 
 
-def calendar_chart(wxid, year):
-    calendar_data = msg_db.get_messages_by_days(wxid, year)
+def calendar_chart(wxid, is_Annual_report=False, year='2023'):
+    calendar_data = msg_db.get_messages_by_days(wxid, is_Annual_report, year)
 
     if not calendar_data:
         return False
     min_ = min(map(lambda x: x[1], calendar_data))
     max_ = max(map(lambda x: x[1], calendar_data))
-
+    start_date_ = calendar_data[0][0]
+    end_date_ = calendar_data[-1][0]
+    print(start_date_, '---->', end_date_)
+    if is_Annual_report:
+        calendar_days = year
+        calendar_title = f'{year}年聊天情况'
+    else:
+        calendar_days = (start_date_, end_date_)
+        calendar_title = '和Ta的聊天情况'
     c = (
         Calendar(init_opts=opts.InitOpts(width=f"{charts_width}px", height=f"{charts_height}px"))
         .add(
             "",
             calendar_data,
-            calendar_opts=opts.CalendarOpts(range_=year)
+            calendar_opts=opts.CalendarOpts(range_=calendar_days)
         )
         .set_global_opts(
-            title_opts=opts.TitleOpts(title="2023年聊天情况"),
+            title_opts=opts.TitleOpts(title=calendar_title),
             visualmap_opts=opts.VisualMapOpts(
                 max_=max_,
                 min_=min_,
@@ -111,11 +119,11 @@ def calendar_chart(wxid, year):
     }
 
 
-def month_count(wxid, year):
+def month_count(wxid, is_Annual_report=False, year='2023'):
     """
     每月聊天条数
     """
-    msg_data = msg_db.get_messages_by_month(wxid, year)
+    msg_data = msg_db.get_messages_by_month(wxid, is_Annual_report, year)
     y_data = list(map(lambda x: x[1], msg_data))
     x_axis = list(map(lambda x: x[0], msg_data))
     m = (
@@ -146,11 +154,11 @@ def month_count(wxid, year):
     }
 
 
-def hour_count(wxid, year):
+def hour_count(wxid, is_Annual_report=False, year='2023'):
     """
     小时计数聊天条数
     """
-    msg_data = msg_db.get_messages_by_hour(wxid, year)
+    msg_data = msg_db.get_messages_by_hour(wxid, is_Annual_report, year)
     print(msg_data)
     y_data = list(map(lambda x: x[1], msg_data))
     x_axis = list(map(lambda x: x[0], msg_data))
@@ -194,10 +202,13 @@ class Analysis:
 if __name__ == '__main__':
     msg_db.init_database(path='../DataBase/Msg/MSG.db')
     # w = wordcloud('wxid_0o18ef858vnu22')
-    c = calendar_chart('wxid_27hqbq7vx5hf22', '2023')
+    w_data = wordcloud('wxid_27hqbq7vx5hf22', True, '2023')
+    # print(w_data)
+    # w['chart_data'].render("./data/聊天统计/wordcloud.html")
+    c = calendar_chart('wxid_27hqbq7vx5hf22', False, '2023')
     c['chart_data'].render("./data/聊天统计/calendar.html")
-    print('c:::', c)
-    m = month_count('wxid_27hqbq7vx5hf22', '2023')
+    # print('c:::', c)
+    m = month_count('wxid_27hqbq7vx5hf22', False, '2023')
     m['chart_data'].render("./data/聊天统计/month_num.html")
-    h = hour_count('wxid_27hqbq7vx5hf22', '2023')
+    h = hour_count('wxid_27hqbq7vx5hf22')
     h['chart_data'].render("./data/聊天统计/hour_count.html")
