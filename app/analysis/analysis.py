@@ -12,7 +12,7 @@ from app.resources import resource_rc
 
 import tkinter as tk
 import os
-from tkinter import simpledialog, messagebox
+from tkinter import messagebox
 import shutil
 
 var = resource_rc.qt_resource_name
@@ -20,11 +20,6 @@ charts_width = 800
 charts_height = 450
 wordcloud_width = 780
 wordcloud_height = 720
-
-import tkinter as tk
-from tkinter import simpledialog, messagebox
-import os
-import shutil
 
 class StopwordsWindow(tk.Tk):
     def __init__(self):
