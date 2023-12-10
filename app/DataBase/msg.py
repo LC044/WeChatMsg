@@ -126,10 +126,18 @@ class Msg:
         # result.sort(key=lambda x: x[5])
         return result
 
-    def get_messages_by_type(self, username_, type_):
+    def get_messages_by_type(self, username_, type_, is_Annual_report_=False, year_='2023'):
         if not self.open_flag:
             return None
-        sql = '''
+        if is_Annual_report_:
+            sql = '''
+                select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra
+                from MSG
+                where StrTalker=? and Type=? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
+                order by CreateTime
+            '''
+        else:
+            sql = '''
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra
             from MSG
             where StrTalker=? and Type=?
@@ -137,7 +145,10 @@ class Msg:
         '''
         try:
             lock.acquire(True)
-            self.cursor.execute(sql, [username_, type_])
+            if is_Annual_report_:
+                self.cursor.execute(sql, [username_, type_, year_])
+            else:
+                self.cursor.execute(sql, [username_, type_])
             result = self.cursor.fetchall()
         finally:
             lock.release()
@@ -186,29 +197,19 @@ class Msg:
             ))
         return res
 
-    def get_messages_by_days(self, username_, year_='2023'):
-        sql = '''
-            SELECT strftime('%Y-%m-%d',CreateTime,'unixepoch','localtime') as days,count(MsgSvrID)
-            from MSG
-            where StrTalker = ? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
-            group by days
-        '''
-        result = None
-        if not self.open_flag:
-            return None
-        try:
-            lock.acquire(True)
-            self.cursor.execute(sql, [username_, year_])
-            result = self.cursor.fetchall()
-        finally:
-            lock.release()
-        return result
-
-    def get_messages_by_month(self, username_, year_='2023'):
-        sql = '''
-                SELECT strftime('%Y-%m',CreateTime,'unixepoch','localtime') as days,count(MsgSvrID)
+    def get_messages_by_days(self, username_, is_Annual_report_=False, year_='2023'):
+        if is_Annual_report_:
+            sql = '''
+                SELECT strftime('%Y-%m-%d',CreateTime,'unixepoch','localtime') as days,count(MsgSvrID)
                 from MSG
                 where StrTalker = ? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
+                group by days
+            '''
+        else:
+            sql = '''
+                SELECT strftime('%Y-%m-%d',CreateTime,'unixepoch','localtime') as days,count(MsgSvrID)
+                from MSG
+                where StrTalker = ?
                 group by days
             '''
         result = None
@@ -216,7 +217,39 @@ class Msg:
             return None
         try:
             lock.acquire(True)
-            self.cursor.execute(sql, [username_, year_])
+            if is_Annual_report_:
+                self.cursor.execute(sql, [username_, year_])
+            else:
+                self.cursor.execute(sql, [username_])
+            result = self.cursor.fetchall()
+        finally:
+            lock.release()
+        return result
+
+    def get_messages_by_month(self, username_, is_Annual_report_=False, year_='2023'):
+        if is_Annual_report_:
+            sql = '''
+                    SELECT strftime('%Y-%m',CreateTime,'unixepoch','localtime') as days,count(MsgSvrID)
+                    from MSG
+                    where StrTalker = ? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
+                    group by days
+                '''
+        else:
+            sql = '''
+                SELECT strftime('%Y-%m',CreateTime,'unixepoch','localtime') as days,count(MsgSvrID)
+                from MSG
+                where StrTalker = ?
+                group by days
+            '''
+        result = None
+        if not self.open_flag:
+            return None
+        try:
+            lock.acquire(True)
+            if is_Annual_report_:
+                self.cursor.execute(sql, [username_, year_])
+            else:
+                self.cursor.execute(sql, [username_])
             result = self.cursor.fetchall()
         except sqlite3.DatabaseError:
             logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
@@ -225,11 +258,19 @@ class Msg:
         # result.sort(key=lambda x: x[5])
         return result
 
-    def get_messages_by_hour(self, username_, year_='2023'):
-        sql = '''
+    def get_messages_by_hour(self, username_, is_Annual_report_=False, year_='2023'):
+        if is_Annual_report_:
+            sql = '''
+                    SELECT strftime('%H:00',CreateTime,'unixepoch','localtime') as hours,count(MsgSvrID)
+                    from MSG
+                    where StrTalker = ? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
+                    group by hours
+                '''
+        else:
+            sql = '''
                 SELECT strftime('%H:00',CreateTime,'unixepoch','localtime') as hours,count(MsgSvrID)
                 from MSG
-                where StrTalker = ? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
+                where StrTalker = ?
                 group by hours
             '''
         result = None
@@ -237,7 +278,10 @@ class Msg:
             return None
         try:
             lock.acquire(True)
-            self.cursor.execute(sql, [username_, year_])
+            if is_Annual_report_:
+                self.cursor.execute(sql, [username_, year_])
+            else:
+                self.cursor.execute(sql, [username_])
             result = self.cursor.fetchall()
         except sqlite3.DatabaseError:
             logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
