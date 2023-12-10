@@ -637,6 +637,7 @@ const chatMessages = [
             str_time = message[8]
             # print(type_, type(type_))
             is_send = message[4]
+            BytesExtra = message[10]
             # avatar = MePC().avatar_path if is_send else self.contact.avatar_path
             # avatar = avatar.replace('\\', '\\\\')
             avatar = 'myhead.png' if is_send else 'tahead.png'
@@ -657,7 +658,7 @@ const chatMessages = [
                     f'''{{ type:{type_}, text: '{str_content}',is_send:{is_send},avatar_path:'{avatar}'}},'''
                 )
             elif type_ == 3:
-                image_path = hard_link_db.get_image(content=str_content, thumb=False)
+                image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
                 image_path = path.get_relative_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
                 image_path = image_path.replace('\\', '/')
                 # print(f"tohtml:---{image_path}")
@@ -669,7 +670,7 @@ const chatMessages = [
                     f'''{{ type:{type_}, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
                 )
             elif type_ == 43:
-                video_path = hard_link_db.get_video(content=str_content, thumb=False)
+                video_path = hard_link_db.get_video(str_content, BytesExtra, thumb=False)
                 video_path = f'{MePC().wx_dir}/{video_path}'
                 if os.path.exists(video_path):
                     new_path = origin_docx_path + '/video/' + os.path.basename(video_path)
