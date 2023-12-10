@@ -62,8 +62,8 @@ class StopwordsWindow(tk.Tk):
         # Check if each word already exists in the original file before appending
         duplicates = [word for word in word_list if word in self.original_stopwords]
         if duplicates:
-            message = f"Words {', '.join(duplicates)} already exist in the original file."
-            messagebox.showinfo("Duplicate Words", message)
+            message = f"以下屏蔽词已存在于原始文件中: {', '.join(duplicates)}"
+            messagebox.showinfo("重复词汇", message)
         else:
             # Update the original stopwords set with new words
             self.original_stopwords.update(word_list)
