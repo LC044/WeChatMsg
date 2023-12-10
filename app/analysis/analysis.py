@@ -10,12 +10,87 @@ from pyecharts import options as opts
 from pyecharts.charts import WordCloud, Calendar, Bar
 from app.resources import resource_rc
 
+import tkinter as tk
+import os
+from tkinter import simpledialog, messagebox
+import shutil
+
 var = resource_rc.qt_resource_name
 charts_width = 800
 charts_height = 450
 wordcloud_width = 780
 wordcloud_height = 720
 
+import tkinter as tk
+from tkinter import simpledialog, messagebox
+import os
+import shutil
+
+class StopwordsWindow(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("屏蔽词管理")
+        
+        # Set the size of the window
+        self.geometry("250x170")
+
+        # File paths
+        original_stopwords_file = os.path.abspath('./app/data/stopwords.txt')
+        default_stopwords_file = os.path.abspath('./app/data/default_stopwords.txt')
+
+        # Read existing stopwords from the original file
+        with open(original_stopwords_file, "r", encoding="utf-8") as original_stopword_file:
+            self.original_stopwords = set(original_stopword_file.read().splitlines())
+
+        # Create a replicate of the original stopwords file as the default file
+        if not os.path.exists(default_stopwords_file):
+            shutil.copy(original_stopwords_file, default_stopwords_file)
+
+        # UI elements
+        self.label = tk.Label(self, text="输入你想添加的屏蔽词:")
+        self.label.pack(pady=10)
+
+        self.user_input = tk.StringVar()
+        entry = tk.Entry(self, textvariable=self.user_input)
+        entry.pack(pady=10)
+
+        self.add_button = tk.Button(self, text="添加屏蔽词", command=self.add_stopwords)
+        self.add_button.pack(pady=5)
+
+        self.undo_button = tk.Button(self, text="撤销", command=self.undo_stopwords)
+        self.undo_button.pack(pady=5)
+
+    def add_stopwords(self):
+        original_stopwords_file = os.path.abspath('./app/data/stopwords.txt')
+        default_stopwords_file = os.path.abspath('./app/data/default_stopwords.txt')
+        
+        user_input = self.user_input.get()
+        word_list = user_input.split()
+
+        # Check if each word already exists in the original file before appending
+        duplicates = [word for word in word_list if word in self.original_stopwords]
+        if duplicates:
+            message = f"Words {', '.join(duplicates)} already exist in the original file."
+            messagebox.showinfo("Duplicate Words", message)
+        else:
+            # Update the original stopwords set with new words
+            self.original_stopwords.update(word_list)
+
+            # Write the updated original stopwords set back to the file
+            with open(original_stopwords_file, 'w', encoding="utf-8") as original_stopword_file:
+                original_stopword_file.write("\n".join(self.original_stopwords))
+
+            messagebox.showinfo("Success", "屏蔽词已添加")
+
+    def undo_stopwords(self):
+        try:
+            # Revert the stopwords file to its original state
+            original_stopwords_file = os.path.abspath('./app/data/stopwords.txt')
+            default_stopwords_file = os.path.abspath('./app/data/default_stopwords.txt')
+            shutil.copy(default_stopwords_file, original_stopwords_file)
+            messagebox.showinfo("Undo", "屏蔽词已还原至原始状态")
+        except Exception as e:
+            messagebox.showerror("Error", f"An error occurred: {str(e)}")
 
 def wordcloud(wxid):
     import jieba
@@ -34,10 +109,15 @@ def wordcloud(wxid):
     # 统计词频
     word_count = Counter(words)
     # 过滤停用词
-    stopwords_file = './app000/data/stopwords.txt'
+    stopwords_file = './app/data/stopwords.txt'
+
+    stopwords_window = StopwordsWindow()
+    stopwords_window.mainloop()
+    
     try:
         with open(stopwords_file, "r", encoding="utf-8") as stopword_file:
             stopwords = set(stopword_file.read().splitlines())
+
     except:
         file = QFile(':/data/stopwords.txt')
         if file.open(QIODevice.ReadOnly | QIODevice.Text):
