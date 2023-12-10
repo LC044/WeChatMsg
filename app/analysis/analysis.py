@@ -25,8 +25,6 @@ class StopwordsWindow(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("屏蔽词管理")
-        
-        # Set the size of the window
         self.geometry("250x170")
 
         # File paths
@@ -57,7 +55,6 @@ class StopwordsWindow(tk.Tk):
 
     def add_stopwords(self):
         original_stopwords_file = os.path.abspath('./app/data/stopwords.txt')
-        default_stopwords_file = os.path.abspath('./app/data/default_stopwords.txt')
         
         user_input = self.user_input.get()
         word_list = user_input.split()
