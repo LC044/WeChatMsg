@@ -38,17 +38,20 @@ class ContactInfo(QWidget, Ui_Form):
         self.toDocxAct = QAction(Icon.ToDocx, '导出Docx', self)
         self.toCSVAct = QAction(Icon.ToCSV, '导出CSV', self)
         self.toHtmlAct = QAction(Icon.ToHTML, '导出HTML', self)
+        self.toTxtAct = QAction(Icon.ToHTML, '导出TXT', self)
         self.toolButton_output.setPopupMode(QToolButton.MenuButtonPopup)
         self.toolButton_output.clicked.connect(self.toolButton_show)
         menu.addAction(self.toDocxAct)
         menu.addAction(self.toCSVAct)
         menu.addAction(self.toHtmlAct)
+        menu.addAction(self.toTxtAct)
         self.toolButton_output.setMenu(menu)
         self.toolButton_output.setIcon(Icon.Output)
         # self.toolButton_output.addSeparator()
         self.toHtmlAct.triggered.connect(self.output)
         self.toDocxAct.triggered.connect(self.output)
         self.toCSVAct.triggered.connect(self.output)
+        self.toTxtAct.triggered.connect(self.output)
 
     def toolButton_show(self):
         self.toolButton_output.showMenu()
@@ -123,16 +126,9 @@ class ContactInfo(QWidget, Ui_Form):
         elif self.sender() == self.toHtmlAct:
             dialog = ExportDialog(self.contact,title='选择导出的消息类型', file_type='html', parent=self)
             result = dialog.exec_()  # 使用exec_()获取用户的操作结果
-            # if result == QDialog.Accepted:
-            #     self.result_label.setText("用户点击了导出按钮")
-            # else:
-            #     self.result_label.setText("用户点击了取消按钮")
-            # self.outputThread = Output(self.contact, type_=Output.HTML)
-
-        # self.outputThread.progressSignal.connect(self.output_progress)
-        # self.outputThread.rangeSignal.connect(self.set_progressBar_range)
-        # self.outputThread.okSignal.connect(self.hide_progress_bar)
-        # self.outputThread.start()
+        elif self.sender() == self.toTxtAct:
+            dialog = ExportDialog(self.contact, title='选择导出的消息类型', file_type='txt', parent=self)
+            result = dialog.exec_()  # 使用exec_()获取用户的操作结果
 
     def hide_progress_bar(self, int):
         reply = QMessageBox(self)

@@ -24,6 +24,9 @@ class ExportDialog(QDialog):
         elif file_type == 'csv':
             self.export_type = Output.CSV
             self.export_choices = {"文本": True, "图片": True, "视频": True, "表情包": True}  # 定义导出的数据类型，默认全部选择
+        elif file_type == 'txt':
+            self.export_type = Output.TXT
+            self.export_choices = {"文本": True, "图片": True, "视频": True, "表情包": True}  # 定义导出的数据类型，默认全部选择
         else:
             self.export_choices = {"文本": True, "图片": True, "视频": True, "表情包": True}  # 定义导出的数据类型，默认全部选择
         self.setWindowTitle(title)
@@ -58,11 +61,12 @@ class ExportDialog(QDialog):
 
         # 在这里根据用户选择的数据类型执行导出操作
         print("选择的数据类型:", selected_types)
-        self.worker = Output(self.contact, type_=self.export_type,message_types=selected_types)
+        self.worker = Output(self.contact, type_=self.export_type, message_types=selected_types)
         self.worker.progressSignal.connect(self.update_progress)
         self.worker.okSignal.connect(self.export_finished)
         self.worker.start()
         # self.accept()  # 使用accept关闭对话框
+
     def export_finished(self):
         self.export_button.setEnabled(True)
         self.cancel_button.setEnabled(True)
@@ -74,6 +78,7 @@ class ExportDialog(QDialog):
         reply.addButton("取消", QMessageBox.RejectRole)
         api = reply.exec_()
         self.accept()
+
     def update_progress(self, progress_percentage):
         self.progress_bar.setValue(progress_percentage)
         self.progress_label.setText(f"导出进度: {progress_percentage}%")

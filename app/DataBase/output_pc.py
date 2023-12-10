@@ -57,6 +57,7 @@ class Output(QThread):
     HTML = 2
     CSV_ALL = 3
     CONTACT_CSV = 4
+    TXT = 5
 
     def __init__(self, contact, type_=DOCX, message_types={}, parent=None):
         super().__init__(parent)
@@ -123,7 +124,7 @@ class Output(QThread):
         elif self.output_type == self.CONTACT_CSV:
             self.contact_to_csv()
         else:
-            self.Child = ChildThread(self.contact, type_=self.output_type,message_types=self.message_types)
+            self.Child = ChildThread(self.contact, type_=self.output_type, message_types=self.message_types)
             self.Child.progressSignal.connect(self.progress)
             self.Child.rangeSignal.connect(self.rangeSignal)
             self.Child.okSignal.connect(self.okSignal)
@@ -154,7 +155,6 @@ class ChildThread(QThread):
         self.msg_id = 0
         self.output_type = type_
 
-
     def is_5_min(self, timestamp):
         if abs(timestamp - self.last_timestamp) > 300:
             self.last_timestamp = timestamp
@@ -168,18 +168,24 @@ class ChildThread(QThread):
         is_send = message[4]
         avatar = 'myhead.png' if is_send else 'tahead.png'
         timestamp = message[5]
-        str_content = escape_js_and_html(str_content)
-        if self.is_5_min(timestamp):
+        if self.output_type == Output.HTML:
+            str_content = escape_js_and_html(str_content)
+            if self.is_5_min(timestamp):
+                doc.write(
+                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                )
+            emojiText = findall(r"(\[.+?\])", str_content)
+            for emoji_text in emojiText:
+                if emoji_text in emoji:
+                    str_content = str_content.replace(emoji_text, emoji[emoji_text])
             doc.write(
-                f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                f'''{{ type:{type_}, text: '{str_content}',is_send:{is_send},avatar_path:'{avatar}'}},'''
             )
-        emojiText = findall(r"(\[.+?\])", str_content)
-        for emoji_text in emojiText:
-            if emoji_text in emoji:
-                str_content = str_content.replace(emoji_text, emoji[emoji_text])
-        doc.write(
-            f'''{{ type:{type_}, text: '{str_content}',is_send:{is_send},avatar_path:'{avatar}'}},'''
-        )
+        elif self.output_type == Output.TXT:
+            name = '你' if is_send else self.contact.remark
+            doc.write(
+                f'''{str_time} {name}\n{str_content}\n\n'''
+            )
 
     def image(self, doc, message):
         type_ = message[2]
@@ -189,24 +195,29 @@ class ChildThread(QThread):
         avatar = 'myhead.png' if is_send else 'tahead.png'
         timestamp = message[5]
         BytesExtra = message[10]
-        str_content = escape_js_and_html(str_content)
-        image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
-        image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
-        if image_path is None and image_thumb_path is not None:
-            image_path = image_thumb_path
-        if image_path is None and image_thumb_path is None:
-            return
-        image_path = path.get_relative_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
-        image_path = image_path.replace('\\', '/')
-        # print(f"tohtml:---{image_path}")
-        if self.is_5_min(timestamp):
+        if self.output_type == Output.HTML:
+            str_content = escape_js_and_html(str_content)
+            image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
+            image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
+            if image_path is None and image_thumb_path is not None:
+                image_path = image_thumb_path
+            if image_path is None and image_thumb_path is None:
+                return
+            image_path = path.get_relative_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
+            image_path = image_path.replace('\\', '/')
+            # print(f"tohtml:---{image_path}")
+            if self.is_5_min(timestamp):
+                doc.write(
+                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                )
             doc.write(
-                f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                f'''{{ type:{type_}, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
             )
-        doc.write(
-            f'''{{ type:{type_}, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
-        )
-        return
+        elif self.output_type == Output.TXT:
+            name = '你' if is_send else self.contact.remark
+            doc.write(
+                f'''{str_time} {name}\n[图片]\n\n'''
+            )
 
     def emoji(self, doc, message):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
@@ -215,16 +226,21 @@ class ChildThread(QThread):
         is_send = message[4]
         avatar = 'myhead.png' if is_send else 'tahead.png'
         timestamp = message[5]
-        emoji_path = get_emoji(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
-        emoji_path = './emoji/' + os.path.basename(emoji_path)
-        if self.is_5_min(timestamp):
+        if self.output_type == Output.HTML:
+            emoji_path = get_emoji(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
+            emoji_path = './emoji/' + os.path.basename(emoji_path)
+            if self.is_5_min(timestamp):
+                doc.write(
+                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                )
             doc.write(
-                f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                f'''{{ type:{3}, text: '{emoji_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
             )
-        doc.write(
-            f'''{{ type:{3}, text: '{emoji_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
-        )
-        return
+        elif self.output_type == Output.TXT:
+            name = '你' if is_send else self.contact.remark
+            doc.write(
+                f'''{str_time} {name}\n[表情包]\n\n'''
+            )
 
     def wx_file(self, doc, isSend, content, status):
         return
@@ -238,10 +254,17 @@ class ChildThread(QThread):
     def system_msg(self, doc, message):
         str_content = message[7]
         is_send = message[4]
+        str_time = message[8]
         str_content = escape_js_and_html(str_content.lstrip('<revokemsg>').rstrip('</revokemsg>'))
-        doc.write(
-            f'''{{ type:0, text: '{str_content}',is_send:{is_send},avatar_path:''}},'''
-        )
+        if self.output_type == Output.HTML:
+            doc.write(
+                f'''{{ type:0, text: '{str_content}',is_send:{is_send},avatar_path:''}},'''
+            )
+        elif self.output_type == Output.TXT:
+            name = '你' if is_send else self.contact.remark
+            doc.write(
+                f'''{str_time} {name}\n{str_content}\n\n'''
+            )
 
     def video(self, doc, message):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
@@ -252,43 +275,49 @@ class ChildThread(QThread):
         BytesExtra = message[10]
         avatar = 'myhead.png' if is_send else 'tahead.png'
         timestamp = message[5]
-        video_path = hard_link_db.get_video(str_content, BytesExtra, thumb=False)
-        image_path = hard_link_db.get_video(str_content, BytesExtra, thumb=True)
-        if video_path is None and image_path is not None:
-            print(video_path, image_path)
-            image_path = path.get_relative_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
-            print(image_path)
-            image_path = image_path.replace('\\', '/')
-            # print(f"tohtml:---{image_path}")
+        if self.output_type == Output.HTML:
+            video_path = hard_link_db.get_video(str_content, BytesExtra, thumb=False)
+            image_path = hard_link_db.get_video(str_content, BytesExtra, thumb=True)
+            if video_path is None and image_path is not None:
+                print(video_path, image_path)
+                image_path = path.get_relative_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
+                print(image_path)
+                image_path = image_path.replace('\\', '/')
+                # print(f"tohtml:---{image_path}")
+                if self.is_5_min(timestamp):
+                    doc.write(
+                        f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                    )
+                doc.write(
+                    f'''{{ type:3, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
+                )
+                return
+            if video_path is None and image_path is None:
+                return
+            video_path = f'{MePC().wx_dir}/{video_path}'
+            if os.path.exists(video_path):
+                new_path = origin_docx_path + '/video/' + os.path.basename(video_path)
+                if not os.path.exists(new_path):
+                    shutil.copy(video_path, os.path.join(origin_docx_path, 'video'))
+                video_path = f'./video/{os.path.basename(video_path)}'
+            video_path = video_path.replace('\\', '/')
             if self.is_5_min(timestamp):
                 doc.write(
                     f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
                 )
             doc.write(
-                f'''{{ type:3, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
+                f'''{{ type:{type_}, text: '{video_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
             )
-            return
-        if video_path is None and image_path is None:
-            return
-        video_path = f'{MePC().wx_dir}/{video_path}'
-        if os.path.exists(video_path):
-            new_path = origin_docx_path + '/video/' + os.path.basename(video_path)
-            if not os.path.exists(new_path):
-                shutil.copy(video_path, os.path.join(origin_docx_path, 'video'))
-            video_path = f'./video/{os.path.basename(video_path)}'
-        video_path = video_path.replace('\\', '/')
-        if self.is_5_min(timestamp):
+        elif self.output_type == Output.TXT:
+            name = '你' if is_send else self.contact.remark
             doc.write(
-                f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                f'''{str_time} {name}\n[视频]\n\n'''
             )
-        doc.write(
-            f'''{{ type:{type_}, text: '{video_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
-        )
 
     def to_csv(self):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         os.makedirs(origin_docx_path, exist_ok=True)
-        filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}.csv"
+        filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}_utf8.csv"
         # columns = ["用户名", "消息内容", "发送时间", "发送状态", "消息类型", "isSend", "msgId"]
         columns = ['localId', 'TalkerId', 'Type', 'SubType',
                    'IsSender', 'CreateTime', 'Status', 'StrContent',
@@ -300,26 +329,12 @@ class ChildThread(QThread):
             writer.writerow(columns)
             # 写入数据
             writer.writerows(messages)
+        # with open(filename, mode='r', newline='', encoding='utf-8') as file:
+        #     content = file.read()
+        # filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}_gbk.csv"
+        # with open(filename, mode='w', newline='', encoding='gbk') as file:
+        #     file.write(content.encode('utf-8', errors='ignore').decode('gbk', errors='ignore'))
         self.okSignal.emit('ok')
-
-    def to_csv_all(self):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/"
-        os.makedirs(origin_docx_path, exist_ok=True)
-        filename = f"{os.path.abspath('.')}/data/聊天记录/messages.csv"
-        # columns = ["用户名", "消息内容", "发送时间", "发送状态", "消息类型", "isSend", "msgId"]
-        columns = ['localId', 'TalkerId', 'Type', 'SubType',
-                   'IsSender', 'CreateTime', 'Status', 'StrContent',
-                   'StrTime', 'Remark', 'NickName', 'Sender']
-        # messages = msg_db.get_messages_all()
-        packagemsg = PackageMsg()
-        messages = packagemsg.get_package_message_all()
-        # 写入CSV文件
-        with open(filename, mode='w', newline='', encoding='utf-8') as file:
-            writer = csv.writer(file)
-            writer.writerow(columns)
-            # 写入数据
-            writer.writerows(messages)
-        self.okSignal.emit(1)
 
     def to_html_(self):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
@@ -334,7 +349,7 @@ class ChildThread(QThread):
         total_steps = len(messages)
         for index, message in enumerate(messages):
             type_ = message[2]
-            self.progressSignal.emit(int((index+1) / total_steps * 100))
+            self.progressSignal.emit(int((index + 1) / total_steps * 100))
             if type_ == 1 and self.message_types.get(type_):
                 self.text(f, message)
             elif type_ == 3 and self.message_types.get(type_):
@@ -349,6 +364,27 @@ class ChildThread(QThread):
         f.close()
         self.okSignal.emit(1)
 
+    def to_txt(self):
+        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        os.makedirs(origin_docx_path, exist_ok=True)
+        filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}.txt"
+        messages = msg_db.get_messages(self.contact.wxid)
+        total_steps = len(messages)
+        with open(filename, mode='w', newline='', encoding='utf-8') as f:
+            for index, message in enumerate(messages):
+                type_ = message[2]
+                self.progressSignal.emit(int((index + 1) / total_steps * 100))
+                if type_ == 1 and self.message_types.get(type_):
+                    self.text(f, message)
+                elif type_ == 3 and self.message_types.get(type_):
+                    self.image(f, message)
+                elif type_ == 43 and self.message_types.get(type_):
+                    self.video(f, message)
+                elif type_ == 47 and self.message_types.get(type_):
+                    self.emoji(f, message)
+                elif type_ == 10000 and self.message_types.get(type_):
+                    self.system_msg(f, message)
+        self.okSignal.emit(1)
     def run(self):
         if self.output_type == Output.DOCX:
             return
@@ -358,6 +394,8 @@ class ChildThread(QThread):
             self.to_html_()
         elif self.output_type == Output.CSV_ALL:
             self.to_csv_all()
+        elif self.output_type == Output.TXT:
+            self.to_txt()
 
     def cancel(self):
         self.requestInterruption()
