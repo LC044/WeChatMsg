@@ -71,6 +71,7 @@ class ChatWindow(QWidget, Ui_Form):
         self.stackedWidget.setCurrentIndex(0)
 
     def show_chats(self):
+        # return
         if self.ok_flag:
             return
         msg_db.init_database()

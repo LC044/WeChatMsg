@@ -13,6 +13,7 @@ app/data/image2
 app/data/emoji
 app/DataBase/Msg/*
 *.db
+*.ui
 *.pyc
 *.log
 *.spec

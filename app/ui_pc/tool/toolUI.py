@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(630, 547)
+        Dialog.resize(590, 547)
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         Dialog.setFont(font)
@@ -30,7 +30,7 @@ class Ui_Dialog(object):
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
         self.listWidget = QtWidgets.QListWidget(Dialog)
-        self.listWidget.setMinimumSize(QtCore.QSize(500, 80))
+        self.listWidget.setMinimumSize(QtCore.QSize(100, 80))
         self.listWidget.setMaximumSize(QtCore.QSize(500, 80))
         self.listWidget.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.listWidget.setFrameShadow(QtWidgets.QFrame.Plain)

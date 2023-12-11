@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Frame(object):
     def setupUi(self, Frame):
         Frame.setObjectName("Frame")
-        Frame.resize(800, 720)
+        Frame.resize(624, 720)
         Frame.setCursor(QtGui.QCursor(QtCore.Qt.IBeamCursor))
         Frame.setMouseTracking(True)
         Frame.setTabletTracking(True)
@@ -81,7 +81,9 @@ class Ui_Frame(object):
         self.lineEdit.setFont(font)
         self.lineEdit.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.lineEdit.setAutoFillBackground(False)
-        self.lineEdit.setStyleSheet("background:transparent;border-width:0;border-style:outset")
+        self.lineEdit.setStyleSheet("\n"
+"                                                    background:transparent;border-width:0;border-style:outset\n"
+"                                                ")
         self.lineEdit.setObjectName("lineEdit")
         self.horizontalLayout.addWidget(self.lineEdit)
         self.verticalLayout.addLayout(self.horizontalLayout)

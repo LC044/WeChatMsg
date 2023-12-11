@@ -297,6 +297,7 @@ python main.py
 
 > 声明：该项目有且仅有一个目的：“留痕”——我的数据我做主，前提是“我的数据”其次才是“我做主”，禁止任何人以任何形式将其用于任何非法用途，对于使用该程序所造成的任何后果，所有创作者不承担任何责任🙄<br>
 > 该软件不会对您使用的微信造成任何影响，更不会对他人的微信造成任何影响，不能找回删除的聊天记录，任何企图篡改微信聊天数据的想法都是无稽之谈。本项目所有功能均建立在”前言“的基础之上，基于该项目的所有开发者均不能接受任何有悖于”前言“的功能需求，违者后果自负。
+> <br>该软件不存在任何收费，谨防上当受骗
 
 [![Star History Chart](https://api.star-history.com/svg?repos=LC044/WeChatMsg&type=Date)](https://star-history.com/?utm_source=bestxtools.com#LC044/WeChatMsg&Date)
 
@@ -322,7 +323,7 @@ python main.py
   <img src="https://contrib.rocks/image?repo=lc044/wechatmsg" />
 </a>
 
-# 支持
+# 支持该项目
 
 感谢您对这个项目的兴趣和支持！如果您发现这个项目对您有帮助，并且您愿意提供赞助以维持项目的发展和改进，我将非常感激。
 
@@ -336,6 +337,8 @@ python main.py
 ## 赞助者名单
 
 感谢以下赞助者的慷慨支持：
+
+- [STDquantum](https://github.com/STDquantum)
 
 如果您提供赞助并希望出现在赞助者名单中，请在提交赞助时提供您的 GitHub 用户名或其他相关信息。
 
