@@ -70,6 +70,7 @@ class ContactWindow(QWidget, Ui_Form):
         self.stackedWidget.setCurrentIndex(0)
 
     def show_contacts(self):
+        # return
         if self.ok_flag:
             return
         micro_msg_db.init_database()
