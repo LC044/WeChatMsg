@@ -38,11 +38,11 @@ def decompress_CompressContent(data):
     if data is None or not isinstance(data, bytes):
         return None
 
-    try:    
+    try:
         dst = lz4.block.decompress(data, uncompressed_size=len(data) << 10)
         decoded_string = dst.decode().replace('\x00', '')  # Remove any null characters
     except lz4.block.LZ4BlockError:
-        print("Decompression failed: potentially corrupt input or insufficient buffer size.") 
+        print("Decompression failed: potentially corrupt input or insufficient buffer size.")
         return None
 
     # 处理 HTML 转义字符串如 &amp;gt; 等。可能会递归嵌套，我们只考虑原会话和第一级引用会话，不考虑更深的引用，故只执行两遍。
@@ -384,9 +384,14 @@ if __name__ == '__main__':
     db_path = "./Msg/MSG.db"
     msg = Msg()
     msg.init_database()
-    result = msg.get_message_by_num('wxid_0o18ef858vnu22', 9999999)
+    result = msg.get_message_by_num('wxid_vtz9jk9ulzjt22', 9999999)
     print(result)
-    result = msg.get_messages_by_type('wxid_0o18ef858vnu22',43)
-    bytes_ = result[-1][-1]
-    print(bytes_)
-    print(bytes_)
+    result = msg.get_messages_by_type('wxid_vtz9jk9ulzjt22',49)
+    for r in result:
+        type_ = r[2]
+        sub_type = r[3]
+        if type_ == 49 and sub_type == 57:
+            # print(r)
+            # print(r[-1])
+            print(decompress_CompressContent(r[-1]))
+            break

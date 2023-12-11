@@ -1,4 +1,5 @@
 import os.path
+import re
 from typing import Dict
 
 from PyQt5.QtCore import Qt
@@ -47,7 +48,7 @@ class ContactPC:
         self.nickName = contact_info.get('NickName')
         if not self.remark:
             self.remark = self.nickName
-        self.remark.replace('*', '_').replace('/', '_').replace('\\', '_')
+        self.remark = re.sub(r'[\/:*?"<>|]', '_', self.remark)
         self.smallHeadImgUrl = contact_info.get('smallHeadImgUrl')
         self.smallHeadImgBLOG = b''
         self.avatar = QPixmap()

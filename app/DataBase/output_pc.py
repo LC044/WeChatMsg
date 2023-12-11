@@ -12,6 +12,7 @@ from ..person_pc import MePC
 from ..util import path
 import shutil
 
+from ..util.compress_content import parser_reply
 from ..util.emoji import get_emoji
 
 os.makedirs('./data/聊天记录', exist_ok=True)
@@ -179,7 +180,7 @@ class ChildThread(QThread):
                 if emoji_text in emoji:
                     str_content = str_content.replace(emoji_text, emoji[emoji_text])
             doc.write(
-                f'''{{ type:{type_}, text: '{str_content}',is_send:{is_send},avatar_path:'{avatar}'}},'''
+                f'''{{ type:{1}, text: '{str_content}',is_send:{is_send},avatar_path:'{avatar}'}},'''
             )
         elif self.output_type == Output.TXT:
             name = '你' if is_send else self.contact.remark
@@ -248,8 +249,33 @@ class ChildThread(QThread):
     def retract_message(self, doc, isSend, content, status):
         return
 
-    def reply(self, doc, isSend, content, status):
-        return
+    def refermsg(self, doc,message):
+        """
+        处理回复消息
+        @param doc:
+        @param message:
+        @return:
+        """
+        type_ = message[2]
+        str_content = message[7]
+        str_time = message[8]
+        is_send = message[4]
+        avatar = 'myhead.png' if is_send else 'tahead.png'
+        content = parser_reply(message[11])
+        refer_msg = content.get('refer')
+        if self.output_type == Output.HTML:
+            doc.write(
+                f'''{{ type:1, text: '{content.get('title')}',is_send:{is_send},avatar_path:'{avatar}'}},'''
+            )
+
+            doc.write(
+                f'''{{ type:{49},sub_type:{content.get('type')}, text: '{refer_msg.get('displayname')}:{refer_msg.get('content')}',is_send:{is_send},avatar_path:''}},'''
+            )
+        elif self.output_type==Output.TXT:
+            name = '你' if is_send else self.contact.remark
+            doc.write(
+                f'''{str_time} {name}\n{content.get('title')}\n引用:{refer_msg.get('displayname')}:{refer_msg.get('content')}\n\n'''
+            )
 
     def system_msg(self, doc, message):
         str_content = message[7]
@@ -349,6 +375,7 @@ class ChildThread(QThread):
         total_steps = len(messages)
         for index, message in enumerate(messages):
             type_ = message[2]
+            sub_type = message[3]
             self.progressSignal.emit(int((index + 1) / total_steps * 100))
             if type_ == 1 and self.message_types.get(type_):
                 self.text(f, message)
@@ -360,6 +387,8 @@ class ChildThread(QThread):
                 self.emoji(f, message)
             elif type_ == 10000 and self.message_types.get(type_):
                 self.system_msg(f, message)
+            elif type_ == 49 and sub_type == 57:
+                self.refermsg(f,message)
         f.write(html_end)
         f.close()
         self.okSignal.emit(1)
@@ -373,6 +402,7 @@ class ChildThread(QThread):
         with open(filename, mode='w', newline='', encoding='utf-8') as f:
             for index, message in enumerate(messages):
                 type_ = message[2]
+                sub_type = message[3]
                 self.progressSignal.emit(int((index + 1) / total_steps * 100))
                 if type_ == 1 and self.message_types.get(type_):
                     self.text(f, message)
@@ -384,6 +414,8 @@ class ChildThread(QThread):
                     self.emoji(f, message)
                 elif type_ == 10000 and self.message_types.get(type_):
                     self.system_msg(f, message)
+                elif type_ == 49 and sub_type == 57:
+                    self.refermsg(f, message)
         self.okSignal.emit(1)
     def run(self):
         if self.output_type == Output.DOCX:
@@ -576,6 +608,22 @@ body{
     word-wrap:break-word;
     word-break:normal;
 }
+.chat-refer{
+    max-width: 400px;
+    padding: 3px;
+    border-radius: 5px;
+    position: relative;
+    color: #000;
+    background-color: #e8e8e8;
+    word-wrap:break-word;
+    word-break:normal;
+}
+.chat-refer-right{
+    margin-right:55px;
+}
+.chat-refer-left{
+    margin-left:55px;
+}
 .item-left .bubble{
     margin-left: 15px;
     background-color: #fff;
@@ -700,7 +748,7 @@ textarea{
 .pagination-container {
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
     margin-top: 20px;
     margin-left: 20px; /* 新增的左边距 */
 }
@@ -802,47 +850,6 @@ input {
         '''
 html_end = '''
     ];
-    function renderMessages(messages) {
-        for (const message of messages) {
-            const messageElement = document.createElement('div');
-            if (message.type == 1) {
-                if (message.is_send == 1) {
-                    messageElement.className = "item item-right";
-                    messageElement.innerHTML = `<div class='bubble bubble-right'>${message.text}</div><div class='avatar'><img src="${message.avatar_path}" /></div>`
-                }
-                else if (message.is_send == 0) {
-                    messageElement.className = "item item-left";
-                    messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='bubble bubble-right'>${message.text}</div>`
-                }
-            }
-            else if (message.type == 0) {
-                messageElement.className = "item item-center";
-                messageElement.innerHTML = `<span>${message.text}</span>`
-            }
-            else if (message.type == 3) {
-                if (message.is_send == 1) {
-                    messageElement.className = "item item-right";
-                    messageElement.innerHTML = `<div class='chat-image'><img src="${message.text}" /></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
-                }
-                else if (message.is_send == 0) {
-                    messageElement.className = "item item-left";
-                    messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='chat-image'><img src="${message.text}" /></div>`
-                }
-            }
-            else if (message.type == 43) {
-                if (message.is_send == 1) {
-                    messageElement.className = "item item-right";
-                    messageElement.innerHTML = `<div class='chat-video'><video src="${message.text}" controls /></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
-                }
-                else if (message.is_send == 0) {
-                    messageElement.className = "item item-left";
-                    messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='chat-video'><video src="${message.text}" controls /></div>`
-                }
-            }
-            chatContainer.appendChild(messageElement);
-        }
-    }
-
     function checkEnter(event) {
         if (event.keyCode === 13) {
             gotoPage();
@@ -896,6 +903,18 @@ html_end = '''
                 else if (message.is_send == 0) {
                     messageElement.className = "item item-left";
                     messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='chat-video'><video src="${message.text}" controls "/></div>`
+                }
+            }
+            else if (message.type == 49) {
+                if (message.sub_type == 57){
+                    if (message.is_send == 1) {
+                    messageElement.className = "item item-right";
+                    messageElement.innerHTML = `<div class='chat-refer chat-refer-right'>${message.text}</div></div>`
+                    }
+                    else if (message.is_send == 0) {
+                        messageElement.className = "item item-left";
+                        messageElement.innerHTML = `<div class='chat-refer chat-refer-left'>${message.text}</div></div>`
+                    }
                 }
             }
             chatContainer.appendChild(messageElement);
