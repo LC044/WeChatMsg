@@ -34,7 +34,7 @@ def wordcloud(wxid, is_Annual_report=False, year='2023'):
     # 统计词频
     word_count = Counter(words)
     # 过滤停用词
-    stopwords_file = './app000/data/stopwords.txt'
+    stopwords_file = './app/data/stopwords.txt'
     try:
         with open(stopwords_file, "r", encoding="utf-8") as stopword_file:
             stopwords = set(stopword_file.read().splitlines())
