@@ -518,234 +518,233 @@ html_head = '''
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Records</title>
     <style>
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-      *{
-      padding: 0;
-      margin: 0;
-  }
-  body{
-      height: 100vh;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-  }
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+}
 
-   .modal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
-   }
+.modal-image {
+    display: block;
+    max-width: 90%;
+    max-height: 90%;
+    margin: auto;
+    margin-top: 5%;
+}
+.container{
+    height: 760px;
+    width: 900px;
+    border-radius: 4px;
+    border: 0.5px solid #e0e0e0;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-flow: column;
+    overflow: hidden;
+}
+.content{
+    width: calc(100% - 40px);
+    padding: 20px;
+    overflow-y: scroll;
+    flex: 1;
+}
+.content:hover::-webkit-scrollbar-thumb{
+    background:rgba(0,0,0,0.1);
+}
+.bubble{
+    max-width: 400px;
+    padding: 10px;
+    border-radius: 5px;
+    position: relative;
+    color: #000;
+    word-wrap:break-word;
+    word-break:normal;
+}
+.item-left .bubble{
+    margin-left: 15px;
+    background-color: #fff;
+}
+.item-left .bubble:before{
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-top: 10px solid transparent;
+    border-right: 10px solid #fff;
+    border-bottom: 10px solid transparent;
+    left: -20px;
+}
+.item-right .bubble{
+    margin-right: 15px;
+    background-color: #9eea6a;
+}
+.item-right .bubble:before{
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 10px solid #9eea6a;
+    border-top: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    right: -20px;
+}
+.item{
+    margin-top: 15px;
+    display: flex;
+    width: 100%;
+}
+.item.item-right{
+    justify-content: flex-end;
+}
+.item.item-center{
+    justify-content: center;
+}
+.item.item-center span{
+    font-size: 12px;
+    padding: 2px 4px;
+    color: #fff;
+    background-color: #dadada;
+    border-radius: 3px;
+    -moz-user-select:none; /*火狐*/
+    -webkit-user-select:none; /*webkit浏览器*/
+    -ms-user-select:none; /*IE10*/
+    -khtml-user-select:none; /*早期浏览器*/
+    user-select:none;
+}
 
-   .modal-image {
-      display: block;
-      max-width: 90%;
-      max-height: 90%;
-      margin: auto;
-      margin-top: 5%;
-   }
-  .container{
-      height: 760px;
-      width: 900px;
-      border-radius: 4px;
-      border: 0.5px solid #e0e0e0;
-      background-color: #f5f5f5;
-      display: flex;
-      flex-flow: column;
-      overflow: hidden;
-  }
-  .content{
-      width: calc(100% - 40px);
-      padding: 20px;
-      overflow-y: scroll;
-      flex: 1;
-  }
-  .content:hover::-webkit-scrollbar-thumb{
-      background:rgba(0,0,0,0.1);
-  }
-  .bubble{
-      max-width: 400px;
-      padding: 10px;
-      border-radius: 5px;
-      position: relative;
-      color: #000;
-      word-wrap:break-word;
-      word-break:normal;
-  }
-  .item-left .bubble{
-      margin-left: 15px;
-      background-color: #fff;
-  }
-  .item-left .bubble:before{
-      content: "";
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-left: 10px solid transparent;
-      border-top: 10px solid transparent;
-      border-right: 10px solid #fff;
-      border-bottom: 10px solid transparent;
-      left: -20px;
-  }
-  .item-right .bubble{
-      margin-right: 15px;
-      background-color: #9eea6a;
-  }
-  .item-right .bubble:before{
-      content: "";
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-left: 10px solid #9eea6a;
-      border-top: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-bottom: 10px solid transparent;
-      right: -20px;
-  }
-  .item{
-      margin-top: 15px;
-      display: flex;
-      width: 100%;
-  }
-  .item.item-right{
-      justify-content: flex-end;
-  }
-  .item.item-center{
-      justify-content: center;
-  }
-  .item.item-center span{
-      font-size: 12px;
-      padding: 2px 4px;
-      color: #fff;
-      background-color: #dadada;
-      border-radius: 3px;
-      -moz-user-select:none; /*火狐*/
-      -webkit-user-select:none; /*webkit浏览器*/
-      -ms-user-select:none; /*IE10*/
-      -khtml-user-select:none; /*早期浏览器*/
-      user-select:none;
-  }
-
-  .chat-image img{
+.chat-image img{
     margin-right: 18px;
     margin-left: 18px;
     max-width: 300px;
     max-height: auto;
-  }
-  .avatar img{
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-  }
-  .chat-video video{
+}
+.avatar img{
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+}
+.chat-video video{
     margin-right: 18px;
     margin-left: 18px;
     max-width: 350px;
-  }
-  .input-area{
-      border-top:0.5px solid #e0e0e0;
-      height: 150px;
-      display: flex;
-      flex-flow: column;
-      background-color: #fff;
-  }
-  textarea{
-      flex: 1;
-      padding: 5px;
-      font-size: 14px;
-      border: none;
-      cursor: pointer;
-      overflow-y: auto;
-      overflow-x: hidden;
-      outline:none;
-      resize:none;
-  }
-  .button-area{
-      display: flex;
-      height: 40px;
-      margin-right: 10px;
-      line-height: 40px;
-      padding: 5px;
-      justify-content: flex-end;
-  }
-  .button-area button{
-      width: 80px;
-      border: none;
-      outline: none;
-      border-radius: 4px;
-      float: right;
-      cursor: pointer;
-  }
+}
+.input-area{
+    border-top:0.5px solid #e0e0e0;
+    height: 150px;
+    display: flex;
+    flex-flow: column;
+    background-color: #fff;
+}
+textarea{
+    flex: 1;
+    padding: 5px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    overflow-y: auto;
+    overflow-x: hidden;
+    outline:none;
+    resize:none;
+}
+.button-area{
+    display: flex;
+    height: 40px;
+    margin-right: 10px;
+    line-height: 40px;
+    padding: 5px;
+    justify-content: flex-end;
+}
+.button-area button{
+    width: 80px;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    float: right;
+    cursor: pointer;
+}
 
-  /* 设置滚动条的样式 */
-  ::-webkit-scrollbar {
-      width:10px;
-  }
-  /* 滚动槽 */
-  ::-webkit-scrollbar-track {
-      -webkit-box-shadow:inset006pxrgba(0,0,0,0.3);
-      border-radius:8px;
-  }
-  /* 滚动条滑块 */
-  ::-webkit-scrollbar-thumb {
-      border-radius:10px;
-      background:rgba(0,0,0,0);
-      -webkit-box-shadow:inset006pxrgba(0,0,0,0.5);
-  }
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+    width:10px;
+}
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow:inset006pxrgba(0,0,0,0.3);
+    border-radius:8px;
+}
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+    border-radius:10px;
+    background:rgba(0,0,0,0);
+    -webkit-box-shadow:inset006pxrgba(0,0,0,0.5);
+}
 
-  .pagination-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center; 
-  margin-top: 20px;
-  margin-left: 20px; /* 新增的左边距 */
+.pagination-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    margin-top: 20px;
+    margin-left: 20px; /* 新增的左边距 */
 }
 
 .button-row,
 .jump-row,
 #paginationInfo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 button {
-  padding: 10px 25px;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin: 0 14px;
-  transition: background-color 0.3s;
+    padding: 10px 25px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 14px;
+    transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: #2980b9;
+    background-color: #2980b9;
 }
 
 input {
-  padding: 8px;
-  width: 120px;
-  box-sizing: border-box;
-  margin-right: 0px;
-  margin-left: 15px;
+    padding: 8px;
+    width: 120px;
+    box-sizing: border-box;
+    margin-right: 0px;
+    margin-left: 15px;
 }
 
 button,
 input {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 #paginationInfo {
-  color: #555;
-  font-size: 14px;
+    color: #555;
+    font-size: 14px;
 }
 
 .emoji_img {
@@ -758,7 +757,7 @@ input {
   </style>
 </head>
 <body>
-  <div class="container">
+<div class="container">
     <div class="content" id="chat-container">
         <div class="item item-center"><span>昨天 12:35</span></div>
         <div class="item item-center"><span>你已添加了凡繁烦，现在可以开始聊天了。</span></div>
@@ -779,65 +778,63 @@ input {
         <div class="item item-center">
             <span>昨天 13:15</span>
         </div>
-
     </div>
-
 </div>
 <div></div>
 <div id="modal" class="modal" onclick="hideModal()">
-  <img id="modal-image" class="modal-image">
+    <img id="modal-image" class="modal-image">
 </div>
 <div class="pagination-container">
-  <div class="button-row">
-    <button onclick="prevPage()">上一页</button>
-    <button onclick="nextPage()">下一页</button>
-  </div>
-  <div class="jump-row">
-    <input type="number" id="gotoPageInput" placeholder="跳转到第几页">
-    <button onclick="gotoPage()">跳转</button>
-  </div>
-  <div id="paginationInfo"></div>
+    <div class="button-row">
+        <button onclick="prevPage()">上一页</button>
+        <button onclick="nextPage()">下一页</button>
+    </div>
+    <div class="jump-row">
+        <input type="number" id="gotoPageInput" onkeydown="checkEnter(event)" placeholder="跳转到第几页">
+        <button onclick="gotoPage()">跳转</button>
+    </div>
+    <div id="paginationInfo"></div>
 </div>
 <script>
-const chatContainer = document.getElementById('chat-container');
-// Sample chat messages (replace this with your actual data)
-const chatMessages = [
+    const chatContainer = document.getElementById('chat-container');
+    // Sample chat messages (replace this with your actual data)
+    const chatMessages = [
         '''
 html_end = '''
-];
+    ];
     function renderMessages(messages) {
         for (const message of messages) {
             const messageElement = document.createElement('div');
-            if (message.type == 1){
-                if (message.is_send == 1){
+            if (message.type == 1) {
+                if (message.is_send == 1) {
                     messageElement.className = "item item-right";
                     messageElement.innerHTML = `<div class='bubble bubble-right'>${message.text}</div><div class='avatar'><img src="${message.avatar_path}" /></div>`
                 }
-                else if(message.is_send==0){
+                else if (message.is_send == 0) {
                     messageElement.className = "item item-left";
                     messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='bubble bubble-right'>${message.text}</div>`
                 }
             }
-            else if(message.type == 0){
+            else if (message.type == 0) {
                 messageElement.className = "item item-center";
                 messageElement.innerHTML = `<span>${message.text}</span>`
             }
-            else if (message.type == 3){
-                if (message.is_send == 1){
+            else if (message.type == 3) {
+                if (message.is_send == 1) {
                     messageElement.className = "item item-right";
                     messageElement.innerHTML = `<div class='chat-image'><img src="${message.text}" /></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
                 }
-                else if(message.is_send==0){
+                else if (message.is_send == 0) {
                     messageElement.className = "item item-left";
                     messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='chat-image'><img src="${message.text}" /></div>`
                 }
             }
             else if (message.type == 43) {
-                if (message.is_send == 1){
+                if (message.is_send == 1) {
                     messageElement.className = "item item-right";
                     messageElement.innerHTML = `<div class='chat-video'><video src="${message.text}" controls /></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
                 }
-                else if(message.is_send==0){
+                else if (message.is_send == 0) {
                     messageElement.className = "item item-left";
                     messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='chat-video'><video src="${message.text}" controls /></div>`
                 }
@@ -846,110 +843,116 @@ html_end = '''
         }
     }
 
+    function checkEnter(event) {
+        if (event.keyCode === 13) {
+            gotoPage();
+        }
+    }
 
-  const itemsPerPage = 100; // 每页显示的元素个数
-  let currentPage = 1; // 当前页
+    const itemsPerPage = 100; // 每页显示的元素个数
+    let currentPage = 1; // 当前页
 
-  function renderPage(page) {
-    const container = document.getElementById('chat-container');
-    container.innerHTML = ''; // 清空容器
+    function renderPage(page) {
+        const container = document.getElementById('chat-container');
+        container.innerHTML = ''; // 清空容器
 
-    // 计算当前页应该显示的元素范围
-    const startIndex = (page - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    console.log(page);
-    // 从数据列表中取出对应范围的元素并添加到容器中
-    for (let i = startIndex; i < endIndex && i < chatMessages.length; i++) {
-        const message = chatMessages[i];
-        const messageElement = document.createElement('div');
-            if (message.type == 1){
-                if (message.is_send == 1){
+        // 计算当前页应该显示的元素范围
+        const startIndex = (page - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        console.log(page);
+        // 从数据列表中取出对应范围的元素并添加到容器中
+        for (let i = startIndex; i < endIndex && i < chatMessages.length; i++) {
+            const message = chatMessages[i];
+            const messageElement = document.createElement('div');
+            if (message.type == 1) {
+                if (message.is_send == 1) {
                     messageElement.className = "item item-right";
                     messageElement.innerHTML = `<div class='bubble bubble-right'>${message.text}</div><div class='avatar'><img src="${message.avatar_path}" /></div>`
                 }
-                else if(message.is_send==0){
+                else if (message.is_send == 0) {
                     messageElement.className = "item item-left";
                     messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='bubble bubble-right'>${message.text}</div>`
                 }
             }
-            else if(message.type == 0){
+            else if (message.type == 0) {
                 messageElement.className = "item item-center";
                 messageElement.innerHTML = `<span>${message.text}</span>`
             }
-            else if (message.type == 3){
-                if (message.is_send == 1){
+            else if (message.type == 3) {
+                if (message.is_send == 1) {
                     messageElement.className = "item item-right";
                     messageElement.innerHTML = `<div class='chat-image' ><img src="${message.text}" onclick="showModal(this)"/></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
                 }
-                else if(message.is_send==0){
+                else if (message.is_send == 0) {
                     messageElement.className = "item item-left";
                     messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}"/></div><div class='chat-image'><img src="${message.text}" onclick="showModal(this)"/></div>`
                 }
             }
             else if (message.type == 43) {
-                if (message.is_send == 1){
+                if (message.is_send == 1) {
                     messageElement.className = "item item-right";
                     messageElement.innerHTML = `<div class='chat-video'><video src="${message.text}" controls /></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
                 }
-                else if(message.is_send==0){
+                else if (message.is_send == 0) {
                     messageElement.className = "item item-left";
                     messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='chat-video'><video src="${message.text}" controls "/></div>`
                 }
             }
             chatContainer.appendChild(messageElement);
+        }
+        document.querySelector("#chat-container").scrollTop = 0;
+        updatePaginationInfo();
     }
-    updatePaginationInfo();
-  }
 
-  function prevPage() {
-    if (currentPage > 1) {
-      currentPage--;
-      renderPage(currentPage);
+    function prevPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            renderPage(currentPage);
+        }
     }
-  }
 
-  function nextPage() {
-    const totalPages = Math.ceil(chatMessages.length / itemsPerPage);
-    if (currentPage < totalPages) {
-      currentPage++;
-      renderPage(currentPage);
+    function nextPage() {
+        const totalPages = Math.ceil(chatMessages.length / itemsPerPage);
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderPage(currentPage);
+        }
     }
-  }
-  function updatePaginationInfo() {
-    const totalPages = Math.ceil(chatMessages.length / itemsPerPage);
-    const paginationInfo = document.getElementById('paginationInfo');
-    paginationInfo.textContent = `共 ${totalPages} 页，当前第 ${currentPage} 页`;
-  }
-  function gotoPage() {
-    const totalPages = Math.ceil(chatMessages.length / itemsPerPage);
-    const inputElement = document.getElementById('gotoPageInput');
-    const targetPage = parseInt(inputElement.value);
-
-    if (targetPage >= 1 && targetPage <= totalPages) {
-      currentPage = targetPage;
-      renderPage(currentPage);
-    } else {
-      alert('请输入有效的页码');
+    function updatePaginationInfo() {
+        const totalPages = Math.ceil(chatMessages.length / itemsPerPage);
+        const paginationInfo = document.getElementById('paginationInfo');
+        paginationInfo.textContent = `共 ${totalPages} 页，当前第 ${currentPage} 页`;
     }
-  }
+    function gotoPage() {
+        const totalPages = Math.ceil(chatMessages.length / itemsPerPage);
+        const inputElement = document.getElementById('gotoPageInput');
+        const targetPage = parseInt(inputElement.value);
 
-  // 初始化页面
-  renderPage(currentPage);
+        if (targetPage >= 1 && targetPage <= totalPages) {
+            currentPage = targetPage;
+            renderPage(currentPage);
+        } else {
+            alert('请输入有效的页码');
+        }
+    }
+
+    // 初始化页面
+    renderPage(currentPage);
 </script>
 
 <script>
-   function showModal(image) {
-      var modal = document.getElementById("modal");
-      var modalImage = document.getElementById("modal-image");
-      modal.style.display = "block";
-      modalImage.src = image.src;
-      console.log(image.src);
-   }
+    function showModal(image) {
+        var modal = document.getElementById("modal");
+        var modalImage = document.getElementById("modal-image");
+        modal.style.display = "block";
+        modalImage.src = image.src;
+        console.log(image.src);
+    }
 
-   function hideModal() {
-      var modal = document.getElementById("modal");
-      modal.style.display = "none";
-   }
+    function hideModal() {
+        var modal = document.getElementById("modal");
+        modal.style.display = "none";
+    }
 </script>
 </body>
 </html>
