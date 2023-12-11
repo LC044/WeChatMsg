@@ -8,7 +8,7 @@ from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QWidget, QMessageBox, QFileDialog
 
 from app.DataBase import msg_db, misc_db
-from app.DataBase.merge import merge_databases
+from app.DataBase.merge import merge_databases, merge_MediaMSG_databases
 from app.decrypt import get_wx_info, decrypt
 from app.log import logger
 from app.util import path
@@ -173,7 +173,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         except:
             with open('./info.json', 'w', encoding='utf-8') as f:
                 f.write(json.dumps(dic))
-            # 目标数据库文件
+        # 目标数据库文件
         target_database = "app/DataBase/Msg/MSG.db"
         # 源数据库文件列表
         source_databases = [f"app/DataBase/Msg/MSG{i}.db" for i in range(1, 20)]
@@ -184,6 +184,19 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
             merge_databases(source_databases, target_database)
         except FileNotFoundError:
             QMessageBox.critical(self, "错误", "数据库不存在\n请检查微信版本是否为最新")
+
+        # 音频数据库文件
+        target_database = "app/DataBase/Msg/MediaMSG.db"
+        # 源数据库文件列表
+        source_databases = [f"app/DataBase/Msg/MediaMSG{i}.db" for i in range(1, 20)]
+        import shutil
+        shutil.copy("app/DataBase/Msg/MediaMSG0.db", target_database)  # 使用一个数据库文件作为模板
+        # 合并数据库
+        try:
+            merge_MediaMSG_databases(source_databases, target_database)
+        except FileNotFoundError:
+            QMessageBox.critical(self, "错误", "数据库不存在\n请检查微信版本是否为最新")
+        
         self.DecryptSignal.emit(True)
         self.close()
 
