@@ -1,9 +1,13 @@
 import os.path
 import random
+import html
 import sqlite3
 import threading
 import traceback
 from pprint import pprint
+import lz4.block
+import html
+import re
 
 from app.log import logger
 
@@ -24,6 +28,61 @@ def singleton(cls):
         return _instance[cls]
 
     return inner
+
+def decompress_CompressContent(data):
+    """
+    解压缩Msg：CompressContent内容
+    :param data:
+    :return:
+    """
+    if data is None or not isinstance(data, bytes):
+        return None
+
+    try:    
+        dst = lz4.block.decompress(data, uncompressed_size=len(data) << 10)
+        decoded_string = dst.decode().replace('\x00', '')  # Remove any null characters
+    except lz4.block.LZ4BlockError:
+        print("Decompression failed: potentially corrupt input or insufficient buffer size.") 
+        return None
+
+    # 处理 HTML 转义字符串如 &amp;gt; 等。可能会递归嵌套，我们只考虑原会话和第一级引用会话，不考虑更深的引用，故只执行两遍。
+    uncompressed_data = html.unescape(decoded_string)
+    uncompressed_data = html.unescape(uncompressed_data)
+
+    return uncompressed_data
+
+def transferMessages(messages, compress_content_column=-1, content_column=7):
+  """
+  将 MSG 中压缩的聊天内容（包含引用的聊天），解压后，以简单形式放入 content (只取前两级会话主题)
+  :param compress_content_column: 压缩聊天所在列，-1 则为最后一列
+  :param content_column: 聊天内容所在列
+  :return:
+  """
+  new_messages = []
+  for row in messages:
+      mutable_row = list(row)
+      type = row[2]
+      sub_type = row[3]
+      addition_idx = len(mutable_row) - 1 if compress_content_column == -1 else compress_content_column
+
+      if type == 49 and sub_type == 57 and mutable_row[addition_idx] is not None:
+          decoded_string = decompress_CompressContent(mutable_row[addition_idx])
+
+          # 使用正则表达式查找所有的 <title> 标签内容
+          title_regex = r'<title>(.*?)</title>'
+          titles = re.findall(title_regex, decoded_string)
+
+          if len(titles) >= 2:
+              # 如果找到了至少两个 title，就把他们结合起来
+              decoded_string = titles[0] + '<br/>引用：' + titles[1]
+          # 否则，如果只找到一个 title，就只保留这一个
+          elif len(titles) == 1:
+              decoded_string = titles[0]
+
+          mutable_row[content_column] = decoded_string
+      row = tuple(mutable_row)
+      new_messages.append(row)
+  return new_messages
 
 
 class MsgType:
@@ -56,7 +115,7 @@ class Msg:
         if not self.open_flag:
             return None
         sql = '''
-            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra
+            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
             from MSG
             where StrTalker=?
             order by CreateTime
@@ -68,11 +127,11 @@ class Msg:
         finally:
             lock.release()
         result.sort(key=lambda x: x[5])
-        return result
+        return transferMessages(result)
 
     def get_messages_all(self):
         sql = '''
-            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,StrTalker,Reserved1
+            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,StrTalker,Reserved1,CompressContent
             from MSG
             order by CreateTime
         '''
@@ -85,7 +144,7 @@ class Msg:
         finally:
             lock.release()
         result.sort(key=lambda x: x[5])
-        return result
+        return transferMessages(result)
 
     def get_messages_length(self):
         sql = '''
@@ -106,7 +165,7 @@ class Msg:
 
     def get_message_by_num(self, username_, local_id):
         sql = '''
-                select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra
+                select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
                 from MSG
                 where StrTalker = ? and localId < ?
                 order by CreateTime desc 
@@ -124,21 +183,21 @@ class Msg:
         finally:
             lock.release()
         # result.sort(key=lambda x: x[5])
-        return result
+        return transferMessages(result)
 
     def get_messages_by_type(self, username_, type_, is_Annual_report_=False, year_='2023'):
         if not self.open_flag:
             return None
         if is_Annual_report_:
             sql = '''
-                select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra
+                select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
                 from MSG
                 where StrTalker=? and Type=? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
                 order by CreateTime
             '''
         else:
             sql = '''
-            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra
+            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
             from MSG
             where StrTalker=? and Type=?
             order by CreateTime
@@ -152,7 +211,7 @@ class Msg:
             result = self.cursor.fetchall()
         finally:
             lock.release()
-        return result
+        return transferMessages(result)
 
     def get_messages_by_keyword(self, username_, keyword, num=5, max_len=10):
         if not self.open_flag:

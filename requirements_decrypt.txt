@@ -7,3 +7,4 @@ silk-python
 pyaudio
 fuzzywuzzy
 python-Levenshtein
+lz4
