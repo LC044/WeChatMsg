@@ -1,6 +1,42 @@
 import os
 import sqlite3
 
+def merge_MediaMSG_databases(source_paths, target_path):
+    # 创建目标数据库连接
+    target_conn = sqlite3.connect(target_path)
+    target_cursor = target_conn.cursor()
+    try:
+        # 开始事务
+        target_conn.execute("BEGIN;")
+        for i, source_path in enumerate(source_paths):
+            if not os.path.exists(source_path):
+                break
+            db = sqlite3.connect(source_path)
+            db.text_factory = str 
+            cursor = db.cursor()
+            sql = '''
+            SELECT Key,Reserved0,Buf,Reserved1,Reserved2 FROM Media;
+            '''
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            # 附加源数据库
+            target_cursor.executemany(
+                "INSERT INTO Media (Key,Reserved0,Buf,Reserved1,Reserved2)"
+                "VALUES(?,?,?,?,?)",
+                result)
+            cursor.close()
+            db.close()
+        # 提交事务
+        target_conn.execute("COMMIT;")
+
+    except Exception as e:
+        # 发生异常时回滚事务
+        target_conn.execute("ROLLBACK;")
+        raise e
+
+    finally:
+        # 关闭目标数据库连接
+        target_conn.close()
 
 def merge_databases(source_paths, target_path):
     # 创建目标数据库连接
