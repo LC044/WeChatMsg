@@ -10,12 +10,19 @@ types = {
     '表情包': 47,
     '拍一拍等系统消息': 10000
 }
-
+Stylesheet = """
+QPushButton{
+    background-color: #ffffff;
+}
+QPushButton:hover { 
+    background-color: lightgray;
+}
+"""
 
 class ExportDialog(QDialog):
     def __init__(self, contact=None, title="选择导出的类型", file_type="csv", parent=None):
         super(ExportDialog, self).__init__(parent)
-
+        self.setStyleSheet(Stylesheet)
         self.contact = contact
         if file_type == 'html':
             self.export_type = Output.HTML

@@ -8,7 +8,12 @@ from .toolUI import Ui_Dialog
 
 # 美化样式表
 Stylesheet = """
-
+QPushButton{
+    background-color: #ffffff;
+}
+QPushButton:hover { 
+    background-color: lightgray;
+}
 /*去掉item虚线边框*/
 QListWidget, QListView, QTreeWidget, QTreeView {
     outline: 0px;

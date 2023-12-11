@@ -11,7 +11,12 @@ from ...util import search
 
 # 美化样式表
 Stylesheet = """
-
+QPushButton{
+    background-color: transparent;
+}
+QPushButton:hover { 
+    background-color: lightgray;
+}
 /*去掉item虚线边框*/
 QListWidget, QListView, QTreeWidget, QTreeView {
     outline: 0px;
