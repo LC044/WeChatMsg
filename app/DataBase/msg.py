@@ -156,7 +156,7 @@ class Msg:
             result = self.cursor.fetchall()
         finally:
             lock.release()
-        return transferMessages(result)
+        return result
 
     def get_messages_by_keyword(self, username_, keyword, num=5, max_len=10):
         if not self.open_flag:
