@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QFileDialog
 from . import msg_db, micro_msg_db
 from .package_msg import PackageMsg
 from ..DataBase import hard_link_db
+from ..DataBase import media_msg_db
 from ..person_pc import MePC
 from ..util import path
 import shutil
@@ -200,6 +201,10 @@ class ChildThread(QThread):
             str_content = escape_js_and_html(str_content)
             image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
             image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
+            if not os.path.exists(os.path.join(MePC().wx_dir, image_path)):
+                image_path = None
+            if not os.path.exists(os.path.join(MePC().wx_dir, image_thumb_path)):
+                image_thumb_path = None
             if image_path is None and image_thumb_path is not None:
                 image_path = image_thumb_path
             if image_path is None and image_thumb_path is None:
@@ -219,6 +224,30 @@ class ChildThread(QThread):
             doc.write(
                 f'''{str_time} {name}\n[图片]\n\n'''
             )
+
+    def audio(self, doc, message):
+        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        str_content = message[7]
+        str_time = message[8]
+        is_send = message[4]
+        avatar = 'myhead.png' if is_send else 'tahead.png'
+        timestamp = message[5]
+        msgSvrId = message[9]
+        if self.output_type == Output.HTML:
+            try:
+                audio_path = media_msg_db.get_audio(msgSvrId, output_path=origin_docx_path + "/voice")
+                audio_path = audio_path.replace('\\', '/')
+                voice_to_text = media_msg_db.get_audio_text(str_content)
+            except:
+                return
+            if self.is_5_min(timestamp):
+                doc.write(
+                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                )
+            doc.write(
+                f'''{{ type:34, text:'{audio_path}',is_send:{is_send},avatar_path:'{avatar}',voice_to_text:'{voice_to_text}'}},'''
+            )
+
 
     def emoji(self, doc, message):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
@@ -381,6 +410,8 @@ class ChildThread(QThread):
                 self.text(f, message)
             elif type_ == 3 and self.message_types.get(type_):
                 self.image(f, message)
+            elif type_ == 34 and self.message_types.get(type_):
+                self.audio(f, message)
             elif type_ == 43 and self.message_types.get(type_):
                 self.video(f, message)
             elif type_ == 47 and self.message_types.get(type_):
@@ -581,7 +612,7 @@ body{
     margin-top: 5%;
 }
 .container{
-    height: 760px;
+    height: 99%;
     width: 900px;
     border-radius: 4px;
     border: 0.5px solid #e0e0e0;
@@ -693,6 +724,12 @@ body{
     margin-right: 18px;
     margin-left: 18px;
     max-width: 350px;
+}
+.chat-audio{
+    max-width: 300px;
+}
+audio{
+    right: 25px;
 }
 .input-area{
     border-top:0.5px solid #e0e0e0;
@@ -908,13 +945,23 @@ html_end = '''
             else if (message.type == 49) {
                 if (message.sub_type == 57){
                     if (message.is_send == 1) {
-                    messageElement.className = "item item-right";
-                    messageElement.innerHTML = `<div class='chat-refer chat-refer-right'>${message.text}</div></div>`
+                        messageElement.className = "item item-right";
+                        messageElement.innerHTML = `<div class='chat-refer chat-refer-right'>${message.text}</div></div>`
                     }
                     else if (message.is_send == 0) {
                         messageElement.className = "item item-left";
                         messageElement.innerHTML = `<div class='chat-refer chat-refer-left'>${message.text}</div></div>`
                     }
+                }
+            }
+            else if (message.type == 34) {
+                if (message.is_send == 1) {
+                    messageElement.className = "item item-right";
+                    messageElement.innerHTML = `<div class='chat-audio'>${message.voice_to_text == "" ? "" : `<div class="bubble">${message.voice_to_text}</div>`}<audio src="${message.text}" controls></audio></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
+                }
+                else if (message.is_send == 0) {
+                    messageElement.className = "item item-left";
+                    messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='chat-audio'>${message.voice_to_text == "" ? "" : `<div class="bubble">${message.voice_to_text}</div>`}<audio src="${message.text}" controls></audio></div>`
                 }
             }
             chatContainer.appendChild(messageElement);

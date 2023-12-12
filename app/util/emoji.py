@@ -41,6 +41,7 @@ def get_image_format(header):
 
 @log
 def parser_xml(xml_string):
+    assert type(xml_string) == str
     # Parse the XML string
     root = ET.fromstring(xml_string)
     emoji = root.find('./emoji')
