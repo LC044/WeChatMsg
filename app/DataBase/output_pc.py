@@ -201,6 +201,10 @@ class ChildThread(QThread):
             str_content = escape_js_and_html(str_content)
             image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
             image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
+            if not os.path.exists(os.path.join(MePC().wx_dir, image_path)):
+                image_path = None
+            if not os.path.exists(os.path.join(MePC().wx_dir, image_thumb_path)):
+                image_thumb_path = None
             if image_path is None and image_thumb_path is not None:
                 image_path = image_thumb_path
             if image_path is None and image_thumb_path is None:
@@ -608,7 +612,7 @@ body{
     margin-top: 5%;
 }
 .container{
-    height: 760px;
+    height: 99%;
     width: 900px;
     border-radius: 4px;
     border: 0.5px solid #e0e0e0;
