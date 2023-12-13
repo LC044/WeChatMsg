@@ -247,6 +247,11 @@ class ChildThread(QThread):
             doc.write(
                 f'''{{ type:34, text:'{audio_path}',is_send:{is_send},avatar_path:'{avatar}',voice_to_text:'{voice_to_text}'}},'''
             )
+        if self.output_type == Output.TXT:
+            name = '你' if is_send else self.contact.remark
+            doc.write(
+                f'''{str_time} {name}\n[语音]\n\n'''
+            )
 
 
     def emoji(self, doc, message):
@@ -314,11 +319,6 @@ class ChildThread(QThread):
         elif self.output_type==Output.TXT:
             name = '你' if is_send else self.contact.remark
             if refer_msg:
-                referText = f"{refer_msg.get('displayname')}：{refer_msg.get('content')}"
-                emojiText = findall(r"(\[.+?\])", referText)
-                for emoji_text in emojiText:
-                    if emoji_text in emoji:
-                        referText = referText.replace(emoji_text, emoji[emoji_text])
                 doc.write(
                     f'''{str_time} {name}\n{content.get('title')}\n引用:{refer_msg.get('displayname')}:{refer_msg.get('content')}\n\n'''
                 )
@@ -461,6 +461,8 @@ class ChildThread(QThread):
                     self.text(f, message)
                 elif type_ == 3 and self.message_types.get(type_):
                     self.image(f, message)
+                elif type_ == 34 and self.message_types.get(type_):
+                    self.audio(f, message)
                 elif type_ == 43 and self.message_types.get(type_):
                     self.video(f, message)
                 elif type_ == 47 and self.message_types.get(type_):
