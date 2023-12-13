@@ -1,4 +1,4 @@
-version = '0.2.8'
+version = '0.2.9'
 contact = '474379264'
 description = [
     '1. 支持获取个人信息<br>',
