@@ -1,5 +1,0 @@
-PRAGMA key = '10f35f1';
-PRAGMA cipher_migrate;
-ATTACH DATABASE 'plaintext.db' AS plaintext KEY '';
-SELECT sqlcipher_export('plaintext');
-DETACH DATABASE plaintext;

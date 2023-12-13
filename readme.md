@@ -97,7 +97,7 @@
 # Python>=3.10
 git clone https://github.com/LC044/WeChatMsg
 cd WeChatMsg
-pip install -r requirements_pc.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ### 2. 使用
@@ -113,7 +113,7 @@ pip install -r requirements_pc.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 2. 运行程序
 
 ```shell
-python main_pc.py
+python main.py
 ```
 
 3. 点击获取信息
@@ -188,13 +188,6 @@ python main_pc.py
 
 ![](./doc/images/login_wx.png)
 
-如果您遇到下图所示的问题，需要先运行`decrypt_window`的可执行文件或者源代码文件
-
-```
-python decrypt_window.py
-```
-
-![](./doc/images/decrypt_wx.png)
 
 如果您在运行可执行程序的时候出现闪退的现象，请右击软件使用管理员权限运行。
 
@@ -205,7 +198,7 @@ python decrypt_window.py
 
 ![](./doc/images/with_wxid_name.png)
 
-如果出现如图所示的报错信息，将`app/database/msg`文件夹删除，重新运行`main_pc.py`。
+如果出现如图所示的报错信息，将`app/database/msg`文件夹删除，重新运行`main.py`。
 
 ![](./doc/images/err_log.png)
 
@@ -221,59 +214,6 @@ python decrypt_window.py
 
 </details>
 
-## 使用模拟器（支持可视化分析）
-
-<details>
-
-**不推荐使用，PC端微信可视化功能马上实现**
-
-1. 根据[教程](https://blog.csdn.net/m0_59452630/article/details/124222235?spm=1001.2014.3001.5501)获得两个文件
-    - auth_info_key_prefs.xml——解析数据库密码
-    - EnMicroMsg.db——聊天数据库
-    - **上面这两个文件就可以**
-2. 安装依赖库
-
-python版本>=3.10
-
-**说明:用到了python3.10的match语法，不方便更换python版本的小伙伴可以把match(运行报错的地方)更改为if else**
-
-命令行运行以下代码（**建议使用Pycharm打开项目，Pycharm会自动配置好所有东西，直接运行main.py即可**）
-
-```bash
-pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
-```
-
-运行main.py
-
-```bash
-python main.py
-```
-
-3. 出现解密界面
-
-![image-20230521001305274](doc/images/image-20230521001305274.png)
-
-按照提示选择上面获得的两个文件，等待解密完成，重新运行程序
-
-4. 进入主界面
-
-这时候不显示头像，因为头像文件没有导入进来
-
-![image-20230521001547481](doc/images/image-20230521001547481.png)
-
-根据[教程](https://blog.csdn.net/m0_59452630/article/details/124222235?spm=1001.2014.3001.5501)
-将头像文件夹avatar复制到工程目录./app/data/目录下
-
-![image-20230521001726799](doc/images/image-20230521001726799.png)
-
-如果想要显示聊天图像就把[教程](https://blog.csdn.net/m0_59452630/article/details/124222235?spm=1001.2014.3001.5501)
-里的image2文件夹复制到./app/data文件夹里，效果跟上图一样
-
-复制进来之后再运行程序就有图像了
-
-![image-20230520235113261](doc/images/image-20230520235113261.png)
-
-</details>
 
 # 🏆致谢
 

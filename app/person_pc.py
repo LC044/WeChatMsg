@@ -5,7 +5,7 @@ from typing import Dict
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 
-from app.ui_pc.Icon import Icon
+from app.ui.Icon import Icon
 
 
 def singleton(cls):

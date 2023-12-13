@@ -1,32 +1,23 @@
 import ctypes
 import sys
 import time
+import traceback
 
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import *
 
-import app.DataBase.data as DB
-from app.Ui import decrypt, mainview
-
+from app.log import logger
+from app.ui import mainview
+from app.ui.tool.pc_decrypt import pc_decrypt
+from app.config import version
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("WeChatReport")
 
 
-class ViewController:
+class ViewController(QWidget):
     def __init__(self):
-        self.viewMainWIn = None
+        super().__init__()
+        self.viewMainWindow = None
         self.viewDecrypt = None
-
-    def loadDecryptView(self):
-        """
-        登录界面
-        :return:
-        """
-        if DB.is_db_exist():
-            self.loadMainWinView()
-        else:
-            self.viewDecrypt = decrypt.DecryptControl()  # 需要将view login设为成员变量
-            self.viewDecrypt.DecryptSignal.connect(self.loadMainWinView)
-            self.viewDecrypt.show()
-            self.viewDecrypt.db_exist()
 
     def loadPCDecryptView(self):
         """
@@ -34,7 +25,7 @@ class ViewController:
         :return:
         """
         self.viewDecrypt = pc_decrypt.DecryptControl()
-        self.viewDecrypt.DecryptSignal.connect(self.loadMainWinView)
+        self.viewDecrypt.DecryptSignal.connect(self.show_success)
         self.viewDecrypt.show()
 
     def loadMainWinView(self, username=None):
@@ -45,21 +36,31 @@ class ViewController:
         """
         username = ''
         start = time.time()
-        self.viewMainWIn = mainview.MainWinController(username=username)
-        self.viewMainWIn.setWindowTitle("Chat")
-        # print(username)
-        self.viewMainWIn.username = username
-        # self.viewMainWIn.exitSignal.connect(self.loadDecryptView)  # 不需要回到登录界面可以省略
-        self.viewMainWIn.show()
-        end = time.time()
-        print('ok', end - start)
-        # self.viewMainWIn.signUp()
+        self.viewMainWindow = mainview.MainWinController(username=username)
+        self.viewMainWindow.exitSignal.connect(self.close)
+        try:
+            self.viewMainWindow.setWindowTitle(f"留痕-{version}")
+            self.viewMainWindow.show()
+            end = time.time()
+            print('ok', '本次加载用了', end - start, 's')
+            self.viewMainWindow.init_ui()
+        except Exception as e:
+            print(f"Exception: {e}")
+            logger.error(traceback.print_exc())
+
+    def show_success(self):
+        QMessageBox.about(self, "解密成功", "数据库文件存储在\napp/DataBase/Msg\n文件夹下")
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     view = ViewController()
-    # view.loadPCDecryptView()
-    view.loadDecryptView()  # 进入登录界面，如果view login不是成员变量，则离开作用域后失效。
-    # view.loadMainWinView('102')
-    sys.exit(app.exec_())
+    try:
+        # view.loadPCDecryptView()
+        view.loadMainWinView()
+        # view.show()
+        # view.show_success()
+        sys.exit(app.exec_())
+    except Exception as e:
+        print(f"Exception: {e}")
+        logger.error(traceback.print_exc())

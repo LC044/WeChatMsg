@@ -1,7 +1,0 @@
-
-    PRAGMA key = '10f35f1';
-    PRAGMA cipher_migrate;
-    ATTACH DATABASE './app/DataBase/Msg.db' AS Msg KEY '';
-    SELECT sqlcipher_export('Msg');
-    DETACH DATABASE Msg;
-        

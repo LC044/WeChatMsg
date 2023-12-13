@@ -1,3 +1,0 @@
-1.将要加密的数据名称改为encrypt.db，并放到当前bin目录下
-2.编辑adb.txt 文件 PRAGMA key = 'password';这里的password是加密数据的密码
-3.修改保存完，双击sqlcipher.bat文件
