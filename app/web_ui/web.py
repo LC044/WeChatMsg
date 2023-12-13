@@ -3,10 +3,9 @@ import sys
 
 from flask import Flask, render_template, send_file
 
-
 from app.DataBase import msg_db
 from app.analysis import analysis
-from app.person_pc import ContactPC, MePC
+from app.person import ContactPC, MePC
 
 app = Flask(__name__)
 
@@ -18,6 +17,7 @@ contact: ContactPC = None
 def index():
     # 渲染模板，并传递图表的 HTML 到模板中
     return render_template("index.html")
+
 
 @app.route('/home')
 def home():
@@ -39,12 +39,12 @@ def one(who):
     wxid = contact.wxid
     # wxid = 'wxid_lltzaezg38so22'
     # print('wxid:'+wxid)
-    world_cloud_data = analysis.wordcloud(wxid,who=who) # 获取与Ta的对话数据
+    world_cloud_data = analysis.wordcloud(wxid, who=who)  # 获取与Ta的对话数据
     # print(world_cloud_data)
     who = "你" if who == '1' else "TA"
     with open('wordcloud.html', 'w', encoding='utf-8') as f:
         f.write(render_template('wordcloud.html', **world_cloud_data))
-    return render_template('wordcloud.html', **world_cloud_data,who=who)
+    return render_template('wordcloud.html', **world_cloud_data, who=who)
 
 
 def set_text(text):

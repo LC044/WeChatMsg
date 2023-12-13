@@ -9,7 +9,7 @@ from . import msg_db, micro_msg_db
 from .package_msg import PackageMsg
 from ..DataBase import hard_link_db
 from ..DataBase import media_msg_db
-from ..person_pc import MePC
+from ..person import MePC
 from ..util import path
 import shutil
 

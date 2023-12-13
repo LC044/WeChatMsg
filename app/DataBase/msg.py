@@ -63,7 +63,6 @@ class Msg:
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
             from MSG
             where StrTalker=?
-            group by MsgSvrID
             order by CreateTime
         '''
         try:
@@ -79,7 +78,6 @@ class Msg:
         sql = '''
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,StrTalker,Reserved1,CompressContent
             from MSG
-            group by MsgSvrID
             order by CreateTime
         '''
         if not self.open_flag:
@@ -116,7 +114,6 @@ class Msg:
                 select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
                 from MSG
                 where StrTalker = ? and localId < ?
-                group by MsgSvrID
                 order by CreateTime desc 
                 limit 20
             '''
@@ -142,7 +139,6 @@ class Msg:
                 select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
                 from MSG
                 where StrTalker=? and Type=? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
-                group by MsgSvrID
                 order by CreateTime
             '''
         else:
@@ -150,7 +146,6 @@ class Msg:
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
             from MSG
             where StrTalker=? and Type=?
-            group by MsgSvrID
             order by CreateTime
         '''
         try:
@@ -171,7 +166,6 @@ class Msg:
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra
             from MSG
             where StrTalker=? and Type=1 and LENGTH(StrContent)<? and StrContent like ?
-            group by MsgSvrID
             order by CreateTime desc
         '''
         temp = []
@@ -192,7 +186,6 @@ class Msg:
                     select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID
                     from MSG
                     where localId > ? and StrTalker=? and Type=1 and IsSender=?
-                    group by MsgSvrID
                     limit 1
                 '''
                 self.cursor.execute(sql, [local_id, username_, 1 - is_send])
@@ -213,6 +206,7 @@ class Msg:
                     ('', '', ['', ''], ''),
                     ('', '', '', '')
                 ))
+        print(keyword,res)
         return res
 
     def get_messages_by_days(self, username_, is_Annual_report_=False, year_='2023'):
@@ -223,7 +217,6 @@ class Msg:
                     SELECT MsgSvrID, CreateTime
                     FROM MSG
                     WHERE StrTalker = ? AND strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?
-                    GROUP BY MsgSvrID
                 )
                 group by days
             '''
@@ -234,7 +227,6 @@ class Msg:
                     SELECT MsgSvrID, CreateTime
                     FROM MSG
                     WHERE StrTalker = ?
-                    GROUP BY MsgSvrID
                 )
                 group by days
             '''
@@ -260,7 +252,6 @@ class Msg:
                     SELECT MsgSvrID, CreateTime
                     FROM MSG
                     WHERE StrTalker = ? AND strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?
-                    GROUP BY MsgSvrID
                 )
                 group by days
                 '''
@@ -271,7 +262,6 @@ class Msg:
                     SELECT MsgSvrID, CreateTime
                     FROM MSG
                     WHERE StrTalker = ?
-                    GROUP BY MsgSvrID
                 )
                 group by days
             '''
@@ -300,7 +290,6 @@ class Msg:
                     SELECT MsgSvrID, CreateTime
                     FROM MSG
                     where StrTalker = ? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
-                    GROUP BY MsgSvrID
                 )
                 group by hours
                 '''
@@ -311,7 +300,6 @@ class Msg:
                     SELECT MsgSvrID, CreateTime
                     FROM MSG
                     where StrTalker = ?
-                    GROUP BY MsgSvrID
                 )
                 group by hours
             '''
