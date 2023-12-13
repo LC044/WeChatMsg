@@ -52,13 +52,13 @@ def decode_dat(file_path, out_path):
         return
     filename = os.path.basename(file_path)
     if file_type == 1:
-        pic_name = os.path.basename(file_path)[:-4] + ".jpg"
+        pic_name = f"{os.path.basename(file_path)[:-4]}.jpg"
     elif file_type == 3:
-        pic_name = filename[:-4] + ".png"
+        pic_name = f"{filename[:-4]}.png"
     elif file_type == 5:
-        pic_name = filename[:-4] + ".gif"
+        pic_name = f"{filename[:-4]}.gif"
     else:
-        pic_name = filename[:-4] + ".jpg"
+        pic_name = f"{filename[:-4]}.jpg"
     file_outpath = os.path.join(out_path, pic_name)
     if os.path.exists(file_outpath):
         return file_outpath
@@ -79,7 +79,7 @@ def find_datfile(dir_path, out_path):
     """
     files_list = os.listdir(dir_path)
     for file_name in files_list:
-        file_path = dir_path + "\\" + file_name
+        file_path = f"{dir_path}\\{file_name}"
         decode_dat(file_path, out_path)
 
 
