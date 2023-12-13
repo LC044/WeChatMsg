@@ -50,15 +50,15 @@ def parser_reply(data: bytes):
         }
     root = ET.XML(xml_content)
     appmsg = root.find('appmsg')
-    msg_type = appmsg.find('type').text
+    msg_type = int(appmsg.find('type').text)
     title = appmsg.find('title').text
     refermsg_content = appmsg.find('refermsg').find('content').text
-    refermsg_type = appmsg.find('refermsg').find('type').text
+    refermsg_type = int(appmsg.find('refermsg').find('type').text)
     refermsg_displayname = appmsg.find('refermsg').find('displayname').text
     return {
         'type': msg_type,
-        'title': title,
-        'refer': {
+        'title': escape_js_and_html(title),
+        'refer': None if refermsg_type != 1 else {
             'type': refermsg_type,
             'content': escape_js_and_html(refermsg_content),
             'displayname': escape_js_and_html(refermsg_displayname),

@@ -293,13 +293,14 @@ class ChildThread(QThread):
         content = parser_reply(message[11])
         refer_msg = content.get('refer')
         if self.output_type == Output.HTML:
-            doc.write(
-                f'''{{ type:1, text: '{content.get('title')}',is_send:{is_send},avatar_path:'{avatar}'}},'''
-            )
-
-            doc.write(
-                f'''{{ type:{49},sub_type:{content.get('type')}, text: '{refer_msg.get('displayname')}:{refer_msg.get('content')}',is_send:{is_send},avatar_path:''}},'''
-            )
+            if refer_msg:
+                doc.write(
+                    f'''{{ type:49, text: '{content.get('title')}',is_send:{is_send},sub_type:{content.get('type')},refer_text: '{refer_msg.get('displayname')}：{refer_msg.get('content')}',avatar_path:'{avatar}'}},'''
+                )
+            else:
+                doc.write(
+                    f'''{{ type:49, text: '{content.get('title')}',is_send:{is_send},sub_type:{content.get('type')},avatar_path:'{avatar}'}},'''
+                )
         elif self.output_type==Output.TXT:
             name = '你' if is_send else self.contact.remark
             doc.write(
@@ -641,7 +642,7 @@ body{
 }
 .chat-refer{
     max-width: 400px;
-    padding: 3px;
+    padding: 6px;
     border-radius: 5px;
     position: relative;
     color: #000;
@@ -689,6 +690,9 @@ body{
     margin-top: 15px;
     display: flex;
     width: 100%;
+}
+.item-refer{
+    margin-top: 4px;
 }
 .item.item-right{
     justify-content: flex-end;
@@ -908,6 +912,7 @@ html_end = '''
         for (let i = startIndex; i < endIndex && i < chatMessages.length; i++) {
             const message = chatMessages[i];
             const messageElement = document.createElement('div');
+            const messageElementRefer = document.createElement('div');
             if (message.type == 1) {
                 if (message.is_send == 1) {
                     messageElement.className = "item item-right";
@@ -946,11 +951,19 @@ html_end = '''
                 if (message.sub_type == 57){
                     if (message.is_send == 1) {
                         messageElement.className = "item item-right";
-                        messageElement.innerHTML = `<div class='chat-refer chat-refer-right'>${message.text}</div></div>`
+                        messageElement.innerHTML = `<div class='bubble bubble-right'>${message.text}</div><div class='avatar'><img src="${message.avatar_path}" /></div>`
+                        if (message.refer_text) {
+                            messageElementRefer.className = "item item-right item-refer";
+                            messageElementRefer.innerHTML = `<div class='chat-refer chat-refer-right'>${message.refer_text}</div></div>`
+                        }
                     }
                     else if (message.is_send == 0) {
                         messageElement.className = "item item-left";
-                        messageElement.innerHTML = `<div class='chat-refer chat-refer-left'>${message.text}</div></div>`
+                        messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='bubble bubble-left'>${message.text}</div>`
+                        if (message.refer_text) {
+                            messageElementRefer.className = "item item-left item-refer";
+                            messageElementRefer.innerHTML = `<div class='chat-refer chat-refer-left'>${message.refer_text}</div></div>`
+                        }
                     }
                 }
             }
@@ -965,6 +978,9 @@ html_end = '''
                 }
             }
             chatContainer.appendChild(messageElement);
+            if (message.type == 49 && message.sub_type == 57 && message.refer_text) {
+                chatContainer.appendChild(messageElementRefer);
+            }
         }
         document.querySelector("#chat-container").scrollTop = 0;
         updatePaginationInfo();
