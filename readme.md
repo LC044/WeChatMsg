@@ -54,15 +54,7 @@
     - 合并多个备份数据❎
     - 语音❎
     - 文件❎
-
 - 小伙伴们想要其他功能可以留言哦📬
-- 有任何问题可以随时联系我(863909694@qq.com)
-
-为了方便大家交流，我新建了一个QQ群💬：**474379264**
-
-大家有任何想法💡、建议或bug可以群里反馈给我
-
-[//]: # (<img src="doc/images/qq.jpg" height=480/>)
 
 ## 🥤效果
 
@@ -283,10 +275,6 @@ python main.py
 
 </details>
 
-## 项目还有很多bug，希望大家能够及时反馈
-
-项目地址：https://github.com/LC044/WeChatMsg
-
 # 🏆致谢
 
 * PC微信解密工具:[https://github.com/xaoyaoo/PyWxDump](https://github.com/xaoyaoo/PyWxDump)
@@ -311,8 +299,7 @@ python main.py
 * 觉得UI不够美观
 * 等其他给您造成困扰的地方
 
-请提起[issue](https://github.com/LC044/WeChatMsg/issues)或者添加QQ群(进群前先点个⭐哦):[**474379264**](doc/images/qq.jpg)
-，我将尽快为您解决问题
+请提起[issue](https://github.com/LC044/WeChatMsg/issues)，我将尽快为您解决问题
 
 如果您是一名开发者，有新的想法或建议，欢迎[fork](https://github.com/LC044/WeChatMsg/forks)
 该项目并发起[PR](https://github.com/LC044/WeChatMsg/pulls)，我将把您的名字写入贡献者名单中
@@ -341,6 +328,7 @@ python main.py
 - [STDquantum](https://github.com/STDquantum)
 
 如果您提供赞助并希望出现在赞助者名单中，请在提交赞助时提供您的 GitHub 用户名或其他相关信息。
+您也可以在赞助时备注您的诉求，我将提前开发合理的功能需求。
 
 ## 感谢
 
