@@ -63,6 +63,7 @@ class Msg:
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
             from MSG
             where StrTalker=?
+            group by MsgSvrID
             order by CreateTime
         '''
         try:
@@ -78,6 +79,7 @@ class Msg:
         sql = '''
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,StrTalker,Reserved1,CompressContent
             from MSG
+            group by MsgSvrID
             order by CreateTime
         '''
         if not self.open_flag:
@@ -94,6 +96,7 @@ class Msg:
     def get_messages_length(self):
         sql = '''
             select count(*)
+            group by MsgSvrID
             from MSG
         '''
         if not self.open_flag:
@@ -113,6 +116,7 @@ class Msg:
                 select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
                 from MSG
                 where StrTalker = ? and localId < ?
+                group by MsgSvrID
                 order by CreateTime desc 
                 limit 20
             '''
@@ -138,6 +142,7 @@ class Msg:
                 select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
                 from MSG
                 where StrTalker=? and Type=? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
+                group by MsgSvrID
                 order by CreateTime
             '''
         else:
@@ -145,6 +150,7 @@ class Msg:
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
             from MSG
             where StrTalker=? and Type=?
+            group by MsgSvrID
             order by CreateTime
         '''
         try:
@@ -165,6 +171,7 @@ class Msg:
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra
             from MSG
             where StrTalker=? and Type=1 and LENGTH(StrContent)<? and StrContent like ?
+            group by MsgSvrID
             order by CreateTime desc
         '''
         temp = []
@@ -185,6 +192,7 @@ class Msg:
                     select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID
                     from MSG
                     where localId > ? and StrTalker=? and Type=1 and IsSender=?
+                    group by MsgSvrID
                     limit 1
                 '''
                 self.cursor.execute(sql, [local_id, username_, 1 - is_send])
@@ -205,15 +213,23 @@ class Msg:
         if is_Annual_report_:
             sql = '''
                 SELECT strftime('%Y-%m-%d',CreateTime,'unixepoch','localtime') as days,count(MsgSvrID)
-                from MSG
-                where StrTalker = ? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
+                from (
+                    SELECT MsgSvrID, CreateTime
+                    FROM MSG
+                    WHERE StrTalker = ? AND strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?
+                    GROUP BY MsgSvrID
+                )
                 group by days
             '''
         else:
             sql = '''
                 SELECT strftime('%Y-%m-%d',CreateTime,'unixepoch','localtime') as days,count(MsgSvrID)
-                from MSG
-                where StrTalker = ?
+                from (
+                    SELECT MsgSvrID, CreateTime
+                    FROM MSG
+                    WHERE StrTalker = ?
+                    GROUP BY MsgSvrID
+                )
                 group by days
             '''
         result = None
@@ -233,16 +249,24 @@ class Msg:
     def get_messages_by_month(self, username_, is_Annual_report_=False, year_='2023'):
         if is_Annual_report_:
             sql = '''
-                    SELECT strftime('%Y-%m',CreateTime,'unixepoch','localtime') as days,count(MsgSvrID)
-                    from MSG
-                    where StrTalker = ? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
-                    group by days
+                SELECT strftime('%Y-%m',CreateTime,'unixepoch','localtime') as days,count(MsgSvrID)
+                from (
+                    SELECT MsgSvrID, CreateTime
+                    FROM MSG
+                    WHERE StrTalker = ? AND strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?
+                    GROUP BY MsgSvrID
+                )
+                group by days
                 '''
         else:
             sql = '''
                 SELECT strftime('%Y-%m',CreateTime,'unixepoch','localtime') as days,count(MsgSvrID)
-                from MSG
-                where StrTalker = ?
+                from (
+                    SELECT MsgSvrID, CreateTime
+                    FROM MSG
+                    WHERE StrTalker = ?
+                    GROUP BY MsgSvrID
+                )
                 group by days
             '''
         result = None
@@ -265,16 +289,24 @@ class Msg:
     def get_messages_by_hour(self, username_, is_Annual_report_=False, year_='2023'):
         if is_Annual_report_:
             sql = '''
-                    SELECT strftime('%H:00',CreateTime,'unixepoch','localtime') as hours,count(MsgSvrID)
-                    from MSG
+                SELECT strftime('%H:00',CreateTime,'unixepoch','localtime') as hours,count(MsgSvrID)
+                from (
+                    SELECT MsgSvrID, CreateTime
+                    FROM MSG
                     where StrTalker = ? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
-                    group by hours
+                    GROUP BY MsgSvrID
+                )
+                group by hours
                 '''
         else:
             sql = '''
                 SELECT strftime('%H:00',CreateTime,'unixepoch','localtime') as hours,count(MsgSvrID)
-                from MSG
-                where StrTalker = ?
+                from (
+                    SELECT MsgSvrID, CreateTime
+                    FROM MSG
+                    where StrTalker = ?
+                    GROUP BY MsgSvrID
+                )
                 group by hours
             '''
         result = None
