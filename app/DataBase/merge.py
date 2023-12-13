@@ -20,10 +20,13 @@ def merge_MediaMSG_databases(source_paths, target_path):
             cursor.execute(sql)
             result = cursor.fetchall()
             # 附加源数据库
-            target_cursor.executemany(
-                "INSERT INTO Media (Key,Reserved0,Buf,Reserved1,Reserved2)"
-                "VALUES(?,?,?,?,?)",
-                result)
+            try:
+                target_cursor.executemany(
+                    "INSERT INTO Media (Key,Reserved0,Buf,Reserved1,Reserved2)"
+                    "VALUES(?,?,?,?,?)",
+                    result)
+            except sqlite3.IntegrityError:
+                print("有重复key", "跳过")
             cursor.close()
             db.close()
         # 提交事务
