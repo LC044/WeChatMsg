@@ -174,10 +174,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
 
     def loading(self, a0):
         self.load_num += 1
-        # self.label.setVisible(False)
-        print('加载一个了')
         if self.load_num == 1:
-            print('ok了')
             self.label.clear()
             self.label.hide()
             self.okSignal.emit(True)
@@ -210,7 +207,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         关于
         """
         QMessageBox.about(self, "关于",
-                          f'''版本：{config.version}<br>QQ交流群:{config.contact}<br>地址：<a href='https://github.com/LC044/WeChatMsg'>https://github.com/LC044/WeChatMsg</a><br>新特性:<br>{''.join(['' + i for i in config.description])}
+                          f'''版本：{config.version}<br>QQ交流群:{config.contact},加群要求请阅读文档<br>地址：<a href='https://github.com/LC044/WeChatMsg'>https://github.com/LC044/WeChatMsg</a><br>新特性:<br>{''.join(['' + i for i in config.description])}
                             '''
                           )
 
