@@ -73,7 +73,7 @@ class MediaMsg:
             root = ET.fromstring(content)
             transtext = root.find(".//voicetrans").get("transtext")
             return transtext
-        except ET.ParseError:
+        except:
             return ""
 
 
