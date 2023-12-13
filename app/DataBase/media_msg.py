@@ -55,17 +55,20 @@ class MediaMsg:
         silk_path = f"{output_path}\\{reserved0}.silk"
         pcm_path = f"{output_path}\\{reserved0}.pcm"
         mp3_path = f"{output_path}\\{reserved0}.mp3"
-        slik_path = silk_path.replace("/", "\\")
+        silk_path = silk_path.replace("/", "\\")
         pcm_path = pcm_path.replace("/", "\\")
         mp3_path = mp3_path.replace("/", "\\")
-        print(mp3_path)
         if os.path.exists(mp3_path):
             return mp3_path
-        open(silk_path, "wb").write(buf)
+        with open(silk_path, "wb") as f:
+            f.write(buf)
+        # open(silk_path, "wb").write()
         decode(silk_path, pcm_path, 44100)
-        system(f'ffmpeg.exe -loglevel quiet -y -f s16le -i "{pcm_path}" -ar 44100 -ac 1 "{mp3_path}"')
-        system(f'del "{silk_path}"')
-        system(f'del "{pcm_path}"')
+        cmd = f'''{os.path.join(os.getcwd(),'app','resources','ffmpeg.exe')} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
+        system(cmd)
+        system(f'del {silk_path}')
+        system(f'del {pcm_path}')
+        print(mp3_path)
         return mp3_path
 
     def get_audio_text(self, content):

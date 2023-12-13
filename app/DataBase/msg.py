@@ -203,10 +203,16 @@ class Msg:
         for dialog in temp:
             msg1 = dialog[0]
             msg2 = dialog[1]
-            res.append((
-                (msg1[4], msg1[5], msg1[7].split(keyword), msg1[8]),
-                (msg2[4], msg2[5], msg2[7], msg2[8])
-            ))
+            try:
+                res.append((
+                    (msg1[4], msg1[5], msg1[7].split(keyword), msg1[8]),
+                    (msg2[4], msg2[5], msg2[7], msg2[8])
+                ))
+            except TypeError:
+                res.append((
+                    ('', '', ['', ''], ''),
+                    ('', '', '', '')
+                ))
         return res
 
     def get_messages_by_days(self, username_, is_Annual_report_=False, year_='2023'):
