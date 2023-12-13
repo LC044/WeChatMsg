@@ -48,19 +48,30 @@ def parser_reply(data: bytes):
                 'displayname': '用户名',
             }
         }
-    root = ET.XML(xml_content)
-    appmsg = root.find('appmsg')
-    msg_type = int(appmsg.find('type').text)
-    title = appmsg.find('title').text
-    refermsg_content = appmsg.find('refermsg').find('content').text
-    refermsg_type = int(appmsg.find('refermsg').find('type').text)
-    refermsg_displayname = appmsg.find('refermsg').find('displayname').text
-    return {
-        'type': msg_type,
-        'title': escape_js_and_html(title),
-        'refer': None if refermsg_type != 1 else {
-            'type': refermsg_type,
-            'content': escape_js_and_html(refermsg_content),
-            'displayname': escape_js_and_html(refermsg_displayname),
+    try :
+        root = ET.XML(xml_content)
+        appmsg = root.find('appmsg')
+        msg_type = int(appmsg.find('type').text)
+        title = appmsg.find('title').text
+        refermsg_content = appmsg.find('refermsg').find('content').text
+        refermsg_type = int(appmsg.find('refermsg').find('type').text)
+        refermsg_displayname = appmsg.find('refermsg').find('displayname').text
+        return {
+            'type': msg_type,
+            'title': escape_js_and_html(title),
+            'refer': None if refermsg_type != 1 else {
+                'type': refermsg_type,
+                'content': escape_js_and_html(refermsg_content),
+                'displayname': escape_js_and_html(refermsg_displayname),
+            }
         }
-    }
+    except:
+        return {
+            'type': 57,
+            'title': "发生错误",
+            'refer': {
+                'type': '1',
+                'content': '引用错误',
+                'displayname': '用户名',
+            }
+        }

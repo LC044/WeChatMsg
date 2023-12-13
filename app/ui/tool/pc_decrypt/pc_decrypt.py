@@ -188,7 +188,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         # 音频数据库文件
         target_database = "app/DataBase/Msg/MediaMSG.db"
         # 源数据库文件列表
-        source_databases = [f"app/DataBase/Msg/MediaMSG{i}.db" for i in range(1, 20)]
+        source_databases = [f"app/DataBase/Msg/MediaMSG{i}.db" for i in range(1, 200)]
         shutil.copy2("app/DataBase/Msg/MediaMSG0.db", target_database)  # 使用一个数据库文件作为模板
         # 合并数据库
         try:
