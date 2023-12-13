@@ -293,13 +293,23 @@ class ChildThread(QThread):
         content = parser_reply(message[11])
         refer_msg = content.get('refer')
         if self.output_type == Output.HTML:
+            contentText = content.get('title')
+            emojiText = findall(r"(\[.+?\])", contentText)
+            for emoji_text in emojiText:
+                if emoji_text in emoji:
+                    contentText = contentText.replace(emoji_text, emoji[emoji_text])
             if refer_msg:
+                referText = f"{refer_msg.get('displayname')}：{refer_msg.get('content')}"
+                emojiText = findall(r"(\[.+?\])", referText)
+                for emoji_text in emojiText:
+                    if emoji_text in emoji:
+                        referText = referText.replace(emoji_text, emoji[emoji_text])
                 doc.write(
-                    f'''{{ type:49, text: '{content.get('title')}',is_send:{is_send},sub_type:{content.get('type')},refer_text: '{refer_msg.get('displayname')}：{refer_msg.get('content')}',avatar_path:'{avatar}'}},'''
+                    f'''{{ type:49, text: '{contentText}',is_send:{is_send},sub_type:{content.get('type')},refer_text: '{referText}',avatar_path:'{avatar}'}},'''
                 )
             else:
                 doc.write(
-                    f'''{{ type:49, text: '{content.get('title')}',is_send:{is_send},sub_type:{content.get('type')},avatar_path:'{avatar}'}},'''
+                    f'''{{ type:49, text: '{contentText}',is_send:{is_send},sub_type:{content.get('type')},avatar_path:'{avatar}'}},'''
                 )
         elif self.output_type==Output.TXT:
             name = '你' if is_send else self.contact.remark
