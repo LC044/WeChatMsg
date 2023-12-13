@@ -107,14 +107,28 @@ def get_info_wxid(h_process):
 def get_info_filePath(wxid="all"):
     if not wxid:
         return "None"
+    w_dir = "MyDocument:"
+    is_w_dir = False
+
     try:
-        user_profile = os.environ.get("USERPROFILE")
-        path_3ebffe94 = os.path.join(user_profile, "AppData", "Roaming", "Tencent", "WeChat", "All Users", "config",
-                                     "3ebffe94.ini")
-        with open(path_3ebffe94, "r", encoding="utf-8") as f:
-            w_dir = f.read()
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Tencent\WeChat", 0, winreg.KEY_READ)
+        value, _ = winreg.QueryValueEx(key, "FileSavePath")
+        winreg.CloseKey(key)
+        w_dir = value
+        is_w_dir = True
     except Exception as e:
         w_dir = "MyDocument:"
+
+    if not is_w_dir:
+        try:
+            user_profile = os.environ.get("USERPROFILE")
+            path_3ebffe94 = os.path.join(user_profile, "AppData", "Roaming", "Tencent", "WeChat", "All Users", "config",
+                                         "3ebffe94.ini")
+            with open(path_3ebffe94, "r", encoding="utf-8") as f:
+                w_dir = f.read()
+            is_w_dir = True
+        except Exception as e:
+            w_dir = "MyDocument:"
 
     if w_dir == "MyDocument:":
         try:
@@ -154,6 +168,8 @@ def get_key(db_path, addr_len):
         return key_bytes
 
     def verify_key(key, wx_db_path):
+        if not wx_db_path:
+            return True
         KEY_SIZE = 32
         DEFAULT_PAGESIZE = 4096
         DEFAULT_ITER = 64000
