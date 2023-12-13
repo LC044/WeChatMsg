@@ -313,9 +313,20 @@ class ChildThread(QThread):
                 )
         elif self.output_type==Output.TXT:
             name = '你' if is_send else self.contact.remark
-            doc.write(
-                f'''{str_time} {name}\n{content.get('title')}\n引用:{refer_msg.get('displayname')}:{refer_msg.get('content')}\n\n'''
-            )
+            if refer_msg:
+                referText = f"{refer_msg.get('displayname')}：{refer_msg.get('content')}"
+                emojiText = findall(r"(\[.+?\])", referText)
+                for emoji_text in emojiText:
+                    if emoji_text in emoji:
+                        referText = referText.replace(emoji_text, emoji[emoji_text])
+                doc.write(
+                    f'''{str_time} {name}\n{content.get('title')}\n引用:{refer_msg.get('displayname')}:{refer_msg.get('content')}\n\n'''
+                )
+            else:
+                doc.write(
+                    f'''{str_time} {name}\n{content.get('title')}\n引用:未知\n\n'''
+                )
+
 
     def system_msg(self, doc, message):
         str_content = message[7]
