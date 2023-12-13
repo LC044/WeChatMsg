@@ -17,7 +17,7 @@ wordcloud_width = 780
 wordcloud_height = 720
 
 
-def wordcloud(wxid, is_Annual_report=False, year='2023'):
+def wordcloud(wxid, is_Annual_report=False, year='2023', who='1'):
     import jieba
     txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT, is_Annual_report, year)
     if not txt_messages:
@@ -27,7 +27,9 @@ def wordcloud(wxid, is_Annual_report=False, year='2023'):
         'max_num': "0",
         'dialogs': []
     }
-    text = ''.join(map(lambda x: x[7], txt_messages))
+    # text = ''.join(map(lambda x: x[7], txt_messages))
+    text = ''.join(map(lambda x: x[7] if x[4] == int(who) else '', txt_messages)) # 1“我”说的话，0“Ta”说的话
+
     total_msg_len = len(text)
     # 使用jieba进行分词，并加入停用词
     words = jieba.cut(text)

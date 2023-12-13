@@ -34,15 +34,17 @@ def home():
     return render_template('home.html', **data)
 
 
-@app.route('/wordcloud')
-def one():
+@app.route('/wordcloud/<who>/')
+def one(who):
     wxid = contact.wxid
     # wxid = 'wxid_lltzaezg38so22'
-    world_cloud_data = analysis.wordcloud(wxid)
-
+    # print('wxid:'+wxid)
+    world_cloud_data = analysis.wordcloud(wxid,who=who) # 获取与Ta的对话数据
+    # print(world_cloud_data)
+    who = "你" if who == '1' else "TA"
     with open('wordcloud.html', 'w', encoding='utf-8') as f:
         f.write(render_template('wordcloud.html', **world_cloud_data))
-    return render_template('wordcloud.html', **world_cloud_data)
+    return render_template('wordcloud.html', **world_cloud_data,who=who)
 
 
 def set_text(text):
