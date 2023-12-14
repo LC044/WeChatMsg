@@ -15,32 +15,13 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1280, 779)
-        MainWindow.setStyleSheet("\n"
-"                /*去掉item虚线边框*/\n"
-"                QListWidget, QListView, QTreeWidget, QTreeView {\n"
-"                outline: 0px;\n"
-"                }\n"
-"                /*设置左侧选项的最小最大宽度,文字颜色和背景颜色*/\n"
-"                QListWidget {\n"
-"                min-width: 120px;\n"
-"                max-width: 120px;\n"
-"                color: black;\n"
-"                background: white;\n"
-"                border:none;\n"
-"                }\n"
-"                QListWidget::item{\n"
-"                height:80;\n"
-"                }\n"
-"                /*被选中时的背景颜色和左边框颜色*/\n"
-"                QListWidget::item:selected {\n"
-"                background: rgb(204, 204, 204);\n"
-"                border-left: 4px solid rgb(9, 187, 7);\n"
-"                }\n"
-"                /*鼠标悬停颜色*/\n"
-"                HistoryPanel::item:hover {\n"
-"                background: rgb(52, 52, 52);\n"
-"                }\n"
-"            ")
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setWeight(50)
+        MainWindow.setFont(font)
+        MainWindow.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -49,7 +30,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.frame_info = QtWidgets.QFrame(self.centralwidget)
         self.frame_info.setMinimumSize(QtCore.QSize(80, 500))
-        self.frame_info.setMaximumSize(QtCore.QSize(80, 16777215))
+        self.frame_info.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.frame_info.setStyleSheet("")
         self.frame_info.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.frame_info.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -60,8 +41,8 @@ class Ui_MainWindow(object):
         self.myavatar.setObjectName("myavatar")
         self.listWidget = QtWidgets.QListWidget(self.frame_info)
         self.listWidget.setGeometry(QtCore.QRect(0, 230, 120, 331))
-        self.listWidget.setMinimumSize(QtCore.QSize(120, 0))
-        self.listWidget.setMaximumSize(QtCore.QSize(120, 16777215))
+        self.listWidget.setMinimumSize(QtCore.QSize(0, 0))
+        self.listWidget.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.listWidget.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.listWidget.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.listWidget.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustIgnored)
@@ -79,7 +60,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.frame_info)
         self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
         font = QtGui.QFont()
-        font.setFamily("微软雅黑")
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(15)
         font.setBold(False)
         font.setWeight(50)
         self.stackedWidget.setFont(font)
@@ -87,13 +69,22 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.stackedWidget)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1280, 23))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1280, 28))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setWeight(50)
+        self.menubar.setFont(font)
         self.menubar.setObjectName("menubar")
         self.menu_F = QtWidgets.QMenu(self.menubar)
         self.menu_F.setObjectName("menu_F")
         self.menu_data = QtWidgets.QMenu(self.menubar)
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setWeight(50)
         self.menu_data.setFont(font)
         self.menu_data.setObjectName("menu_data")
         self.menu_output = QtWidgets.QMenu(self.menu_data)
@@ -106,6 +97,12 @@ class Ui_MainWindow(object):
         self.menu_3.setObjectName("menu_3")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setWeight(50)
+        self.statusbar.setFont(font)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.action_3 = QtWidgets.QAction(MainWindow)

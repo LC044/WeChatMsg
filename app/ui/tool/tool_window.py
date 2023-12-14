@@ -29,8 +29,10 @@ QListWidget {
     border:none;
 }
 QListWidget::item{
-    height:80px;
-    width:80px;
+    min-width: 80px;
+    max-width: 400px;
+    min-height: 80px;
+    max-height: 80px;
 }
 /*被选中时的背景颜色和左边框颜色*/
 QListWidget::item:selected {

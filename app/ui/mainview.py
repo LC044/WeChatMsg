@@ -36,12 +36,15 @@ QListWidget, QListView, QTreeWidget, QTreeView {
 /*设置左侧选项的最小最大宽度,文字颜色和背景颜色*/
 QListWidget {
     min-width: 120px;
-    max-width: 120px;
+    max-width: 380px;
     color: black;
     border:none;
 }
 QListWidget::item{
-    height:60;
+    min-width: 80px;
+    max-width: 380px;
+    min-height: 60px;
+    max-height: 60px;
 }
 QListWidget::item:hover {
     background: rgb(230, 235, 240);
@@ -49,7 +52,7 @@ QListWidget::item:hover {
 /*被选中时的背景颜色和左边框颜色*/
 QListWidget::item:selected {
     background: rgb(230, 235, 240);
-    border-left: 3px solid rgb(62, 62, 62);
+    border-left: 2px solid rgb(62, 62, 62);
     color: black;
     font-weight: bold;
 }
