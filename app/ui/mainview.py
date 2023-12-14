@@ -33,6 +33,12 @@ QWidget{
 QListWidget, QListView, QTreeWidget, QTreeView {
     outline: 0px;
 }
+QPushButton:menu-indicator {
+}
+QMenu::item:selected {
+      color: black;
+      background: rgb(230, 235, 240);
+}
 /*设置左侧选项的最小最大宽度,文字颜色和背景颜色*/
 QListWidget {
     min-width: 120px;
