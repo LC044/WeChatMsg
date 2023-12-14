@@ -20,6 +20,12 @@ class Ui_Dialog(object):
         font.setPointSize(12)
         Dialog.setFont(font)
         Dialog.setLayoutDirection(QtCore.Qt.LeftToRight)
+        Dialog.setStyleSheet("QPushButton {\n"
+"    background-color:transparent;\n"
+"}\n"
+"QPushButton:hover{\n"
+"    background: rgb(230, 235, 240);\n"
+"}")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
@@ -31,6 +37,7 @@ class Ui_Dialog(object):
         self.btn_help = QtWidgets.QPushButton(Dialog)
         self.btn_help.setMinimumSize(QtCore.QSize(0, 40))
         self.btn_help.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.btn_help.setStyleSheet("")
         self.btn_help.setObjectName("btn_help")
         self.horizontalLayout_4.addWidget(self.btn_help)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)

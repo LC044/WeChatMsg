@@ -57,6 +57,8 @@ class Ui_Dialog(object):
         self.horizontalLayout.addWidget(self.label_2)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.stackedWidget = QtWidgets.QStackedWidget(Dialog)
+        self.stackedWidget.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.stackedWidget.setFrameShadow(QtWidgets.QFrame.Raised)
         self.stackedWidget.setObjectName("stackedWidget")
         self.verticalLayout.addWidget(self.stackedWidget)
         self.verticalLayout.setStretch(1, 1)
