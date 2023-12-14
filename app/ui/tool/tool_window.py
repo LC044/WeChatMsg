@@ -36,7 +36,6 @@ QListWidget::item{
 }
 /*被选中时的背景颜色和左边框颜色*/
 QListWidget::item:selected {
-    border-bottom: 4px solid rgb(9, 187, 7);
     border-left:none;
     color: black;
     font-weight: bold;

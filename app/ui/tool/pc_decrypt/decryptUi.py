@@ -21,7 +21,7 @@ class Ui_Dialog(object):
         Dialog.setFont(font)
         Dialog.setLayoutDirection(QtCore.Qt.LeftToRight)
         Dialog.setStyleSheet("QPushButton {\n"
-"    background-color:transparent;\n"
+"    background: rgb(238,244,249);\n"
 "}\n"
 "QPushButton:hover{\n"
 "    background: rgb(230, 235, 240);\n"
