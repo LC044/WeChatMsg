@@ -2,7 +2,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import QWidget, QMessageBox, QAction, QLineEdit
 
 from app.DataBase import micro_msg_db, misc_db
-from app.components import ContactQListWidgetItem
+from app.components import ContactQListWidgetItem, ScrollBar
 from app.person import ContactPC
 from app.ui.Icon import Icon
 from .contactInfo import ContactInfo
@@ -21,7 +21,6 @@ QPushButton:hover {
 QListWidget, QListView, QTreeWidget, QTreeView {
     outline: 0px;
     border:none;
-    background-color:rgb(240,240,240)
 }
 /*设置左侧选项的最小最大宽度,文字颜色和背景颜色*/
 QListWidget {
@@ -38,8 +37,7 @@ QListWidget::item{
 }
 /*被选中时的背景颜色和左边框颜色*/
 QListWidget::item:selected {
-    background: rgb(204, 204, 204);
-    border-bottom: 2px solid rgb(9, 187, 7);
+    background: rgb(230, 235, 240);
     border-left:none;
     color: black;
     font-weight: bold;
@@ -56,6 +54,7 @@ class ContactWindow(QWidget, Ui_Form):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.now_index = 0
         self.show_thread = None
         self.setupUi(self)
         self.ok_flag = False
@@ -70,6 +69,7 @@ class ContactWindow(QWidget, Ui_Form):
         self.lineEdit.addAction(search_action, QLineEdit.LeadingPosition)
         self.lineEdit.returnPressed.connect(self.search_contact)
         self.listWidget.clear()
+        self.listWidget.setVerticalScrollBar(ScrollBar())
         self.listWidget.currentRowChanged.connect(self.setCurrentIndex)
         self.listWidget.setCurrentRow(0)
         self.stackedWidget.setCurrentIndex(0)
@@ -111,6 +111,12 @@ class ContactWindow(QWidget, Ui_Form):
 
     def setCurrentIndex(self, row):
         # print(row)
+        item = self.listWidget.item(self.now_index)
+        item.dis_select()
+        self.stackedWidget.setCurrentIndex(row)
+        item = self.listWidget.item(row)
+        item.select()
+        self.now_index = row
         self.stackedWidget.setCurrentIndex(row)
 
 

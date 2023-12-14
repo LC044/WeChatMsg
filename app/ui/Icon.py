@@ -26,3 +26,7 @@ class Icon:
     Tool_Icon = QIcon(':/icons/icons/tool.svg')
     Home_Icon = QIcon(':/icons/icons/home.svg')
     Help_Icon = QIcon(':/icons/icons/help.svg')
+    Get_info_Icon = QIcon(':/icons/icons/get_wx_info.svg')
+    Folder_Icon = QIcon(':/icons/icons/folder.svg')
+    Start_Icon = QIcon(':/icons/icons/start.svg')
+    Decrypt_Icon = QIcon(':/icons/icons/decrypt.svg')

@@ -26,7 +26,9 @@ from ..person import MePC
 
 # 美化样式表
 Stylesheet = """
-
+QWidget{
+    background: rgb(238,244,249);
+}
 /*去掉item虚线边框*/
 QListWidget, QListView, QTreeWidget, QTreeView {
     outline: 0px;
@@ -36,16 +38,18 @@ QListWidget {
     min-width: 120px;
     max-width: 120px;
     color: black;
-    background: white;
     border:none;
 }
 QListWidget::item{
     height:60;
 }
+QListWidget::item:hover {
+    background: rgb(230, 235, 240);
+}
 /*被选中时的背景颜色和左边框颜色*/
 QListWidget::item:selected {
-    background: rgb(204, 204, 204);
-    border-left: 4px solid rgb(9, 187, 7);
+    background: rgb(230, 235, 240);
+    border-left: 3px solid rgb(62, 62, 62);
     color: black;
     font-weight: bold;
 }
@@ -155,7 +159,10 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.avatar = QPixmap()
         try:
             img_bytes = misc_db.get_avatar_buffer(wxid)
-        except AttributeError:
+        except :
+            QMessageBox.critical(self, "数据库错误", "请重启微信后重试")
+            import shutil
+            shutil.rmtree('./app/Database/Msg')
             return
         if not img_bytes:
             return

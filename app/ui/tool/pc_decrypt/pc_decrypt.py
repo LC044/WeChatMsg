@@ -13,6 +13,7 @@ from app.decrypt import get_wx_info, decrypt
 from app.log import logger
 from app.util import path
 from . import decryptUi
+from ...Icon import Icon
 
 
 class DecryptControl(QWidget, decryptUi.Ui_Dialog):
@@ -23,12 +24,16 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         super(DecryptControl, self).__init__(parent)
         self.setupUi(self)
 
-        self.pushButton_3.clicked.connect(self.decrypt)
+        self.btn_start.clicked.connect(self.decrypt)
         self.btn_getinfo.clicked.connect(self.get_info)
         self.btn_db_dir.clicked.connect(self.select_db_dir)
         self.lineEdit.returnPressed.connect(self.set_wxid)
         self.lineEdit.textChanged.connect(self.set_wxid_)
         self.btn_help.clicked.connect(self.show_help)
+        self.btn_getinfo.setIcon(Icon.Get_info_Icon)
+        self.btn_db_dir.setIcon(Icon.Folder_Icon)
+        self.btn_start.setIcon(Icon.Start_Icon)
+        self.btn_help.setIcon(Icon.Help_Icon)
         self.label_tip.setVisible(False)
         self.info = {}
         self.lineEdit.setFocus()

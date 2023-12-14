@@ -23,6 +23,10 @@
         <file>icons/home.svg</file>
         <file>icons/help.svg</file>
         <file>icons/txt.svg</file>
+        <file>icons/get_wx_info.svg</file>
+        <file>icons/folder.svg</file>
+        <file>icons/start.svg</file>
+        <file>icons/decrypt.svg</file>
     </qresource>
     <qresource prefix="/data">
         <file>version_list.json</file>

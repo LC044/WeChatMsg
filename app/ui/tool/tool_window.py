@@ -9,7 +9,7 @@ from .toolUI import Ui_Dialog
 # 美化样式表
 Stylesheet = """
 QPushButton{
-    background-color: #ffffff;
+    background-color: rgb(250,252,253);
 }
 QPushButton:hover { 
     background-color: lightgray;
@@ -18,7 +18,6 @@ QPushButton:hover {
 QListWidget, QListView, QTreeWidget, QTreeView {
     outline: 0px;
     border:none;
-    background-color:rgb(240,240,240)
 }
 /*设置左侧选项的最小最大宽度,文字颜色和背景颜色*/
 QListWidget {
@@ -35,16 +34,12 @@ QListWidget::item{
 }
 /*被选中时的背景颜色和左边框颜色*/
 QListWidget::item:selected {
-    background: rgb(204, 204, 204);
     border-bottom: 4px solid rgb(9, 187, 7);
     border-left:none;
     color: black;
     font-weight: bold;
 }
-/*鼠标悬停颜色*/
-HistoryPanel::item:hover {
-    background: rgb(52, 52, 52);
-}
+
 """
 
 
@@ -63,10 +58,10 @@ class ToolWindow(QWidget, Ui_Dialog):
     def init_ui(self):
         self.listWidget.clear()
         self.listWidget.currentRowChanged.connect(self.setCurrentIndex)
-        chat_item = QListWidgetItem(Icon.Chat_Icon, '解密', self.listWidget)
+        chat_item = QListWidgetItem(Icon.Decrypt_Icon, '解密', self.listWidget)
         contact_item = QListWidgetItem(Icon.Contact_Icon, '别点', self.listWidget)
-        myinfo_item = QListWidgetItem(Icon.MyInfo_Icon, '别点', self.listWidget)
-        tool_item = QListWidgetItem(Icon.MyInfo_Icon, '别点', self.listWidget)
+        myinfo_item = QListWidgetItem(Icon.Home_Icon, '别点', self.listWidget)
+        tool_item = QListWidgetItem(Icon.Home_Icon, '别点', self.listWidget)
         decrypt_window = DecryptControl()
         decrypt_window.get_wxidSignal.connect(self.get_info_signal)
         decrypt_window.DecryptSignal.connect(self.decrypt_success_signal)
@@ -85,5 +80,4 @@ class ToolWindow(QWidget, Ui_Dialog):
         self.stackedWidget.setCurrentIndex(0)
 
     def setCurrentIndex(self, row):
-        print(row)
         self.stackedWidget.setCurrentIndex(row)

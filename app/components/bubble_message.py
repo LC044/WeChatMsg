@@ -7,6 +7,8 @@ from PyQt5.QtGui import QPainter, QFont, QColor, QPixmap, QPolygon, QFontMetrics
 from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QSizePolicy, QVBoxLayout, QSpacerItem, \
     QScrollArea, QScrollBar
 
+from app.components.scroll_bar import ScrollBar
+
 
 class MessageType:
     Text = 1
@@ -204,51 +206,6 @@ class ScrollArea(QScrollArea):
         )
 
 
-class ScrollBar(QScrollBar):
-    def __init__(self):
-        super().__init__()
-        self.setStyleSheet(
-            '''
-          QScrollBar:vertical {
-              border-width: 0px;
-              border: none;
-              background:rgba(64, 65, 79, 0);
-              width:5px;
-              margin: 0px 0px 0px 0px;
-          }
-          QScrollBar::handle:vertical {
-              background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-              stop: 0 #DDDDDD, stop: 0.5 #DDDDDD, stop:1 #aaaaff);
-              min-height: 20px;
-              max-height: 20px;
-              margin: 0 0px 0 0px;
-              border-radius: 2px;
-          }
-          QScrollBar::add-line:vertical {
-              background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-              stop: 0 rgba(64, 65, 79, 0), stop: 0.5 rgba(64, 65, 79, 0),  stop:1 rgba(64, 65, 79, 0));
-              height: 0px;
-              border: none;
-              subcontrol-position: bottom;
-              subcontrol-origin: margin;
-          }
-          QScrollBar::sub-line:vertical {
-              background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-              stop: 0  rgba(64, 65, 79, 0), stop: 0.5 rgba(64, 65, 79, 0),  stop:1 rgba(64, 65, 79, 0));
-              height: 0 px;
-              border: none;
-              subcontrol-position: top;
-              subcontrol-origin: margin;
-          }
-          QScrollBar::sub-page:vertical {
-              background: rgba(64, 65, 79, 0);
-          }
-
-          QScrollBar::add-page:vertical {
-              background: rgba(64, 65, 79, 0);
-          }
-            '''
-        )
 
 
 class ChatWidget(QWidget):

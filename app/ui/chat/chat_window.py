@@ -2,7 +2,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import QWidget, QMessageBox, QAction, QLineEdit
 
 from app.DataBase import micro_msg_db, misc_db, msg_db
-from app.components import ContactQListWidgetItem
+from app.components import ContactQListWidgetItem, ScrollBar
 from app.person import ContactPC
 from app.ui.Icon import Icon
 from app.util import search
@@ -16,7 +16,6 @@ Stylesheet = """
 QListWidget, QListView, QTreeWidget, QTreeView {
     outline: 0px;
     border:none;
-    background-color:rgb(240,240,240)
 }
 /*设置左侧选项的最小最大宽度,文字颜色和背景颜色*/
 QListWidget {
@@ -33,15 +32,10 @@ QListWidget::item{
 }
 /*被选中时的背景颜色和左边框颜色*/
 QListWidget::item:selected {
-    background: rgb(204, 204, 204);
-    border-bottom: 2px solid rgb(9, 187, 7);
+    background: rgb(230, 235, 240);
     border-left:none;
     color: black;
     font-weight: bold;
-}
-/*鼠标悬停颜色*/
-HistoryPanel::item:hover {
-    background: rgb(52, 52, 52);
 }
 """
 
@@ -59,6 +53,7 @@ class ChatWindow(QWidget, Ui_Form):
         self.init_ui()
         self.show_chats()
         self.visited = set()
+        self.now_index = 0
 
     def init_ui(self):
         search_action = QAction(self.lineEdit)
@@ -66,6 +61,7 @@ class ChatWindow(QWidget, Ui_Form):
         self.lineEdit.addAction(search_action, QLineEdit.LeadingPosition)
         self.lineEdit.returnPressed.connect(self.search_contact)
         self.listWidget.clear()
+        self.listWidget.setVerticalScrollBar(ScrollBar())
         self.listWidget.currentRowChanged.connect(self.setCurrentIndex)
         self.listWidget.setCurrentRow(0)
         self.stackedWidget.setCurrentIndex(0)
@@ -113,7 +109,12 @@ class ChatWindow(QWidget, Ui_Form):
 
     def setCurrentIndex(self, row):
         # print(row)
+        item = self.listWidget.item(self.now_index)
+        item.dis_select()
         self.stackedWidget.setCurrentIndex(row)
+        item = self.listWidget.item(row)
+        item.select()
+        self.now_index = row
         if row not in self.visited:
             chat_info_window = self.stackedWidget.currentWidget()
             chat_info_window.update_history_messages()

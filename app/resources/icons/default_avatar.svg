@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
         "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg height="1024" node-id="1" sillyvg="true" template-height="1024" template-width="1024" version="1.1"
-     viewBox="0 0 1024 1024" width="1024" xmlns="http://www.w3.org/2000/svg">
+<svg height="64" node-id="1" sillyvg="true" template-height="64" template-width="64" version="1.1"
+     viewBox="0 0 1024 1024" width="64" xmlns="http://www.w3.org/2000/svg">
     <defs node-id="53">
         <linearGradient gradientUnits="objectBoundingBox" id="linearGradient-3" node-id="6" spreadMethod="pad" x1="0"
                         x2="0.5" y1="-0.11715827" y2="0.75683814">
