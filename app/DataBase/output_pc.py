@@ -190,6 +190,7 @@ class ChildThread(QThread):
             )
 
     def image(self, doc, message):
+        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         type_ = message[2]
         str_content = message[7]
         str_time = message[8]
@@ -210,6 +211,9 @@ class ChildThread(QThread):
             if image_path is None and image_thumb_path is None:
                 return
             image_path = path.get_relative_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
+            image_path = image_path.replace('/', '\\')
+            os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
+            print(origin_docx_path + image_path[1:])
             image_path = image_path.replace('\\', '/')
             # print(f"tohtml:---{image_path}")
             if self.is_5_min(timestamp):
@@ -236,6 +240,8 @@ class ChildThread(QThread):
         if self.output_type == Output.HTML:
             try:
                 audio_path = media_msg_db.get_audio(msgSvrId, output_path=origin_docx_path + "/voice")
+                audio_path = audio_path.replace('/', '\\')
+                os.utime(audio_path, (timestamp, timestamp))
                 audio_path = audio_path.replace('\\', '/')
                 voice_to_text = media_msg_db.get_audio_text(str_content)
             except:
@@ -356,9 +362,10 @@ class ChildThread(QThread):
             video_path = hard_link_db.get_video(str_content, BytesExtra, thumb=False)
             image_path = hard_link_db.get_video(str_content, BytesExtra, thumb=True)
             if video_path is None and image_path is not None:
-                print(video_path, image_path)
                 image_path = path.get_relative_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
-                print(image_path)
+                image_path = image_path
+                os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
+                print(origin_docx_path + image_path[1:])
                 image_path = image_path.replace('\\', '/')
                 # print(f"tohtml:---{image_path}")
                 if self.is_5_min(timestamp):
@@ -376,6 +383,7 @@ class ChildThread(QThread):
                 new_path = origin_docx_path + '/video/' + os.path.basename(video_path)
                 if not os.path.exists(new_path):
                     shutil.copy(video_path, os.path.join(origin_docx_path, 'video'))
+                os.utime(new_path, (timestamp, timestamp))
                 video_path = f'./video/{os.path.basename(video_path)}'
             video_path = video_path.replace('\\', '/')
             if self.is_5_min(timestamp):
