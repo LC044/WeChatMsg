@@ -1,7 +1,7 @@
 import os
 import winreg
 
-from app.person_pc import MePC
+from app.person import MePC
 from app.util import dat2pic
 
 os.makedirs('./data/image', exist_ok=True)

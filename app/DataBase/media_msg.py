@@ -78,8 +78,11 @@ class MediaMsg:
             # 获取 FFmpeg 可执行文件的路径
             ffmpeg_path = get_ffmpeg_path()
             # 调用 FFmpeg
-            # subprocess.run([ffmpeg_path, f'''-loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''], check=True)
-            cmd = f'''{get_ffmpeg_path()} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
+            cmd = f'''{ffmpeg_path} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
+            system(cmd)
+            # 源码运行的时候下面的有效
+            # 这里不知道怎么捕捉异常
+            cmd = f'''{os.path.join(os.getcwd(), 'app', 'resources', 'ffmpeg.exe')} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
             system(cmd)
         except subprocess.CalledProcessError as e:
             print(f"Error: {e}")
