@@ -35,8 +35,7 @@
 
 ## 🍉功能
 
-- 🔒️🔑🔓️手机本地微信数据库
-- 🔒️🔑🔓️PC端本地微信数据库
+- 🔒️🔑🔓️Windows本地微信数据库
 - 还原微信聊天界面
     - 🗨文本✅
     - 🏝图片✅
@@ -229,20 +228,6 @@ python main.py
 
 [![Star History Chart](https://api.star-history.com/svg?repos=LC044/WeChatMsg&type=Date)](https://star-history.com/?utm_source=bestxtools.com#LC044/WeChatMsg&Date)
 
-# 🎄温馨提示
-
-如果您在使用该软件的过程中
-
-* 发现新的bug
-* 有新的功能诉求
-* 操作比较繁琐
-* 觉得UI不够美观
-* 等其他给您造成困扰的地方
-
-请提起[issue](https://github.com/LC044/WeChatMsg/issues)，我将尽快为您解决问题
-
-如果您是一名开发者，有新的想法或建议，欢迎[fork](https://github.com/LC044/WeChatMsg/forks)
-该项目并发起[PR](https://github.com/LC044/WeChatMsg/pulls)，我将把您的名字写入贡献者名单中
 
 # 贡献者
 
@@ -268,8 +253,36 @@ python main.py
 - [STDquantum](https://github.com/STDquantum)
 
 如果您提供赞助并希望出现在赞助者名单中，请在提交赞助时提供您的 GitHub 用户名或其他相关信息。
+
 您也可以在赞助时备注您的诉求，我将提前开发合理的功能需求。
 
 ## 感谢
 
 再次感谢您的支持，这对项目的持续发展至关重要！
+
+# 🎄温馨提示
+
+如果您在使用该软件的过程中
+
+* 发现新的bug
+* 有新的功能诉求
+* 操作比较繁琐
+* 觉得UI不够美观
+* 等其他给您造成困扰的地方
+
+请提起[issue](https://github.com/LC044/WeChatMsg/issues)，我将尽快为您解决问题
+
+如果您是一名开发者，有新的想法或建议，欢迎[fork](https://github.com/LC044/WeChatMsg/forks)
+该项目并发起[PR](https://github.com/LC044/WeChatMsg/pulls)，我将把您的名字写入贡献者名单中
+
+# 联系方式
+
+如果您遇到了问题，可以添加QQ群：**701805520**寻求帮助，由于精力有限，不能回答所有问题，所以还请您仔细阅读文档之后再考虑是否入群
+
+## 加群方式
+
+1. [fork](https://github.com/LC044/WeChatMsg/forks)该项目并发起[PR](https://github.com/LC044/WeChatMsg/pulls)
+2. 宣传该项目（在任一社交平台发图文介绍该项目）
+3. [赞助](#支持该项目)该项目
+
+注意：加群时请备注您的贡献，如PR链接、宣传截图或赞助金额，若没有审核通过，可添加QQ或发邮件：863909694@qq.com反馈问题（一定要备注来意）
