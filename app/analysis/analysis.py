@@ -1,4 +1,7 @@
 from collections import Counter
+import snownlp
+import numpy as np
+import pandas as pd
 
 from PyQt5.QtCore import QFile, QTextStream, QIODevice
 
@@ -197,6 +200,65 @@ def hour_count(wxid, is_Annual_report=False, year='2023'):
     }
 
 
+def emotion_chart(wxid, is_Annual_report=False, year='2023'):
+    txt_messages = msg_db.get_txt_messages_by_days(wxid, is_Annual_report, year)
+
+    df = pd.DataFrame(txt_messages, columns=['message', 'date'])
+    d = df.groupby('date')
+    dates = []
+    emotions = []
+    for date, messages in d:
+        dates.append(date)
+        s = 0
+        for msg in messages:
+            val = snownlp.SnowNLP(msg).sentiments
+            s += val
+        emotions.append(s / len(messages))
+    emotions = np.array(emotions)
+    emotions = np.around(emotions, 3) * 100
+    emotions = np.around(emotions, 1)
+
+    max_ = max(emotions)
+    min_ = min(emotions)
+    # print(f'max:{max_},min:{min_}')
+    e = (
+        Line()
+        .add_xaxis(
+            xaxis_data=dates,
+        )
+        .add_yaxis(
+            series_name="情感趋势",
+            is_smooth=True,
+            y_axis=emotions,
+            markpoint_opts=opts.MarkPointOpts(
+                data=[
+                    opts.MarkPointItem(type_="max", name="最大值", value=int(max_ * 100) / 100),
+                    opts.MarkPointItem(type_="min", name="最小值", value=int(min_ * 100) / 100),
+                ]
+            ),
+            markline_opts=opts.MarkLineOpts(
+                data=[opts.MarkLineItem(type_="average", name="平均值")]
+            ),
+        )
+        .set_global_opts(
+            yaxis_opts=opts.AxisOpts(
+                max_=max_,
+                min_=min_,
+            ),
+            xaxis_opts=opts.AxisOpts(
+                type_='time'
+            ),
+            axispointer_opts=opts.AxisPointerOpts(
+                is_show=True, link=[{"xAxisIndex": "all"}]
+            ),
+        )
+        .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
+    )
+    return {
+        'chart_data': e
+    }
+
+
 class Analysis:
     pass
 
@@ -214,3 +276,5 @@ if __name__ == '__main__':
     m['chart_data'].render("./data/聊天统计/month_num.html")
     h = hour_count('wxid_27hqbq7vx5hf22')
     h['chart_data'].render("./data/聊天统计/hour_count.html")
+    e = emotion_chart('wxid_27hqbq7vx5hf22', False, '2023')
+    e['chart_data'].render("./data/聊天统计/emotion_chart.html")

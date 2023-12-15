@@ -158,6 +158,34 @@ class Msg:
         finally:
             lock.release()
         return result
+    
+    def get_txt_messages_by_days(self, username_, is_Annual_report_=False, year_='2023'):
+        if not self.open_flag:
+            return None
+        if is_Annual_report_:
+            sql = '''
+                select StrContent,strftime('%Y-%m-%d',CreateTime,'unixepoch','localtime') as days
+                from MSG
+                where StrTalker=? and Type=1 and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
+                order by days
+            '''
+        else:
+            sql = '''
+            select StrContent,strftime('%Y-%m-%d',CreateTime,'unixepoch','localtime') as days
+            from MSG
+            where StrTalker=? and Type=1
+            order by days
+        '''
+        try:
+            lock.acquire(True)
+            if is_Annual_report_:
+                self.cursor.execute(sql, [username_, year_])
+            else:
+                self.cursor.execute(sql, [username_])
+            result = self.cursor.fetchall()
+        finally:
+            lock.release()
+        return result
 
     def get_messages_by_keyword(self, username_, keyword, num=5, max_len=10):
         if not self.open_flag:
