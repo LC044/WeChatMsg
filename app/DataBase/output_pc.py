@@ -4,6 +4,7 @@ import os
 from re import findall
 from PyQt5.QtCore import pyqtSignal, QThread
 from PyQt5.QtWidgets import QFileDialog
+from eyed3 import load
 
 from . import msg_db, micro_msg_db
 from .package_msg import PackageMsg
@@ -136,6 +137,18 @@ class Output(QThread):
         self.requestInterruption()
 
 
+def modify_audio_metadata(audiofile, new_artist): # 修改音频元数据中的“创作者”标签
+    audiofile = load(audiofile)
+    
+    # 检查文件是否有标签
+    if audiofile.tag is None:
+        audiofile.initTag()
+
+    # 修改艺术家名称
+    audiofile.tag.artist = new_artist
+    audiofile.tag.save()
+
+
 class ChildThread(QThread):
     """
         子线程，用于导出部分聊天记录
@@ -235,12 +248,14 @@ class ChildThread(QThread):
         str_time = message[8]
         is_send = message[4]
         avatar = 'myhead.png' if is_send else 'tahead.png'
+        creatorName = MePC().name if is_send else self.contact.remark
         timestamp = message[5]
         msgSvrId = message[9]
         if self.output_type == Output.HTML:
             try:
                 audio_path = media_msg_db.get_audio(msgSvrId, output_path=origin_docx_path + "/voice")
                 audio_path = audio_path.replace('/', '\\')
+                modify_audio_metadata(audio_path, creatorName)
                 os.utime(audio_path, (timestamp, timestamp))
                 audio_path = audio_path.replace('\\', '/')
                 voice_to_text = media_msg_db.get_audio_text(str_content)
