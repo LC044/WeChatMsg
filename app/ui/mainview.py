@@ -11,7 +11,7 @@ import json
 import os.path
 
 from PyQt5.QtCore import pyqtSignal, QUrl, Qt, QThread, QSize
-from PyQt5.QtGui import QPixmap, QFont, QDesktopServices
+from PyQt5.QtGui import QPixmap, QFont, QDesktopServices, QIcon
 from PyQt5.QtWidgets import QMainWindow, QLabel, QListWidgetItem, QMessageBox
 
 from app import config
@@ -79,7 +79,10 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.outputThread0 = None
         self.outputThread = None
         self.setupUi(self)
-        self.setWindowIcon(Icon.MainWindow_Icon)
+        # self.setWindowIcon(Icon.MainWindow_Icon)
+        pixmap = QPixmap(Icon.logo_ico_path)
+        icon = QIcon(pixmap)
+        self.setWindowIcon(icon)
         self.setStyleSheet(Stylesheet)
         self.listWidget.clear()
         self.resize(QSize(800, 600))
