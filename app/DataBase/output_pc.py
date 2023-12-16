@@ -258,7 +258,7 @@ class ChildThread(QThread):
                 modify_audio_metadata(audio_path, creatorName)
                 os.utime(audio_path, (timestamp, timestamp))
                 audio_path = audio_path.replace('\\', '/')
-                voice_to_text = media_msg_db.get_audio_text(str_content)
+                voice_to_text = escape_js_and_html(media_msg_db.get_audio_text(str_content))
             except:
                 return
             if self.is_5_min(timestamp):
