@@ -364,17 +364,22 @@ class ChildThread(QThread):
             if video_path is None and image_path is not None:
                 image_path = path.get_relative_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
                 image_path = image_path
-                os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
-                print(origin_docx_path + image_path[1:])
-                image_path = image_path.replace('\\', '/')
-                # print(f"tohtml:---{image_path}")
-                if self.is_5_min(timestamp):
+                try:
+                    print(origin_docx_path + image_path[1:])
+                    os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
+                    image_path = image_path.replace('\\', '/')
+                    # print(f"tohtml:---{image_path}")
+                    if self.is_5_min(timestamp):
+                        doc.write(
+                            f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                        )
                     doc.write(
-                        f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                        f'''{{ type:3, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
                     )
-                doc.write(
-                    f'''{{ type:3, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
-                )
+                except:
+                    doc.write(
+                        f'''{{ type:1, text: '视频丢失',is_send:{is_send},avatar_path:'{avatar}'}},'''
+                    )
                 return
             if video_path is None and image_path is None:
                 return
