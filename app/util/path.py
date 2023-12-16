@@ -35,23 +35,47 @@ def mkdir(path):
 
 def wx_path():
     try:
-        ## 获取当前用户名
-        user_home = os.environ.get("USERPROFILE")
-        ## 找到3ebffe94.ini配置文件
-        f = open(user_home + '\\AppData\\Roaming\\Tencent\\WeChat\\All Users\\config\\3ebffe94.ini', encoding='utf-8')
-        txt = f.read()
-        f.close()
-        # 打开Windows注册表
-        reg_key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
-                                 "Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
-        # 获取“我的文档”路径的注册表键值
-        documents_path_value = winreg.QueryValueEx(reg_key, "Personal")
-        # 输出路径
-        ##读取文件将路径放到wx_location变量里
-        if txt == 'MyDocument:':
-            wx_location = documents_path_value[0] + '\WeChat Files'
-        else:
-            wx_location = txt + "\WeChat Files"
-        return wx_location
+        is_w_dir = False
+
+        try:
+            key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Tencent\WeChat", 0, winreg.KEY_READ)
+            value, _ = winreg.QueryValueEx(key, "FileSavePath")
+            winreg.CloseKey(key)
+            w_dir = value
+            is_w_dir = True
+        except Exception as e:
+            w_dir = "MyDocument:"
+
+        if not is_w_dir:
+            try:
+                user_profile = os.environ.get("USERPROFILE")
+                path_3ebffe94 = os.path.join(user_profile, "AppData", "Roaming", "Tencent", "WeChat", "All Users",
+                                             "config",
+                                             "3ebffe94.ini")
+                with open(path_3ebffe94, "r", encoding="utf-8") as f:
+                    w_dir = f.read()
+                is_w_dir = True
+            except Exception as e:
+                w_dir = "MyDocument:"
+
+        if w_dir == "MyDocument:":
+            try:
+                # 打开注册表路径
+                key = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
+                                     r"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders")
+                documents_path = winreg.QueryValueEx(key, "Personal")[0]  # 读取文档实际目录路径
+                winreg.CloseKey(key)  # 关闭注册表
+                documents_paths = os.path.split(documents_path)
+                if "%" in documents_paths[0]:
+                    w_dir = os.environ.get(documents_paths[0].replace("%", ""))
+                    w_dir = os.path.join(w_dir, os.path.join(*documents_paths[1:]))
+                    # print(1, w_dir)
+                else:
+                    w_dir = documents_path
+            except Exception as e:
+                profile = os.environ.get("USERPROFILE")
+                w_dir = os.path.join(profile, "Documents")
+        msg_dir = os.path.join(w_dir, "WeChat Files")
+        return msg_dir
     except FileNotFoundError:
         return '.'

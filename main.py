@@ -6,6 +6,7 @@ import traceback
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import *
 
+from app.DataBase import close_db
 from app.log import logger
 from app.ui import mainview
 from app.ui.tool.pc_decrypt import pc_decrypt
@@ -51,7 +52,9 @@ class ViewController(QWidget):
     def show_success(self):
         QMessageBox.about(self, "解密成功", "数据库文件存储在\napp/DataBase/Msg\n文件夹下")
 
-
+    def close(self) -> bool:
+        close_db()
+        super().close()
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     font = QFont('微软雅黑', 12)  # 使用 Times New Roman 字体，字体大小为 14

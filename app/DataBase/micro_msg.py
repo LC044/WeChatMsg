@@ -3,8 +3,6 @@ import sqlite3
 import threading
 
 lock = threading.Lock()
-DB = None
-cursor = None
 db_path = "./app/Database/Msg/MicroMsg.db"
 
 
@@ -21,61 +19,6 @@ def singleton(cls):
 
 def is_database_exist():
     return os.path.exists(db_path)
-
-lockMSG = threading.Lock()
-DBMSG = None
-cursorMSG = None
-db_msg_path = "./app/Database/Msg/MSG.db"
-
-@singleton
-class MicroMSGMsg:
-    def __init__(self):
-        self.DBMSG = None
-        self.cursorMSG = None
-        self.open_flag = False
-        self.init_database()
-
-    def init_database(self):
-        if not self.open_flag:
-            if os.path.exists(db_msg_path):
-                self.DBMSG = sqlite3.connect(db_msg_path, check_same_thread=False)
-                # '''创建游标'''
-                self.cursorMSG = self.DBMSG.cursor()
-                self.open_flag = True
-                if lockMSG.locked():
-                    lockMSG.release()
-
-    def get_contact(self, contacts):
-        if not self.open_flag:
-            return None
-        try:
-            lockMSG.acquire(True)
-            sql = '''select StrTalker, MAX(CreateTime) from MSG group by StrTalker'''
-            self.cursorMSG.execute(sql)
-            res = self.cursorMSG.fetchall()
-            res = {StrTalker: CreateTime for StrTalker, CreateTime in res}
-            contacts = [list(cur_contact) for cur_contact in contacts]
-            for i, cur_contact in enumerate(contacts):
-                if cur_contact[0] in res:
-                    contacts[i].append(res[cur_contact[0]])
-                else:
-                    contacts[i].append(0)
-            contacts.sort(key=lambda cur_contact: cur_contact[-1], reverse=True)
-        finally:
-            lockMSG.release()
-        return contacts
-
-    def close(self):
-        if self.open_flag:
-            try:
-                lockMSG.acquire(True)
-                self.open_flag = False
-                self.DBMSG.close()
-            finally:
-                lockMSG.release()
-
-    def __del__(self):
-        self.close()
 
 
 @singleton
@@ -116,7 +59,8 @@ class MicroMsg:
             result = self.cursor.fetchall()
         finally:
             lock.release()
-        return MicroMSGMsg().get_contact(result)
+        from app.DataBase import msg_db
+        return msg_db.get_contact(result)
 
     def get_contact_by_username(self, username):
         if not self.open_flag:
