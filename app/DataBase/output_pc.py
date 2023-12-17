@@ -1220,6 +1220,7 @@ html_end = '''
         }
         document.querySelector("#chat-container").scrollTop = 0;
         updatePaginationInfo();
+        refreshMediaListener();
     }
 
     function prevPage() {
@@ -1256,6 +1257,39 @@ html_end = '''
 
     // 初始化页面
     renderPage(currentPage);
+
+    function refreshMediaListener() {
+        const audioTags = document.querySelectorAll('audio');
+        const videoTags = document.querySelectorAll('video');
+        
+        audioTags.forEach(audio => {
+            audio.addEventListener('play', function () {
+                pauseOtherMedia(audio);
+            });
+        });
+        videoTags.forEach(video => {
+            video.addEventListener('play', function () {
+                pauseOtherMedia(video);
+            });
+        });
+
+        function pauseOtherMedia(currentMedia) {
+            const audioTags = document.querySelectorAll('audio');
+            const videoTags = document.querySelectorAll('video');
+            audioTags.forEach(media => {
+                if (media !== currentMedia && !media.paused) {
+                    media.pause();
+                }
+            });
+            videoTags.forEach(media => {
+                if (media !== currentMedia && !media.paused) {
+                    media.pause();
+                }
+            });
+        }
+    }
+
+    refreshMediaListener();
 </script>
 
 <script>
