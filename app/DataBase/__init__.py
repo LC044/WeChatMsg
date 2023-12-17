@@ -15,9 +15,20 @@ from .media_msg import MediaMsg
 from .misc import Misc
 from .msg import Msg
 from .msg import MsgType
+
 misc_db = Misc()
 msg_db = Msg()
 micro_msg_db = MicroMsg()
 hard_link_db = HardLink()
 media_msg_db = MediaMsg()
-__all__ = ["data", 'output', 'misc_db', 'micro_msg_db', 'msg_db', 'hard_link_db','MsgType', "media_msg_db"]
+
+
+def close_db():
+    misc_db.close()
+    msg_db.close()
+    micro_msg_db.close()
+    hard_link_db.close()
+    media_msg_db.close()
+
+
+__all__ = ['output', 'misc_db', 'micro_msg_db', 'msg_db', 'hard_link_db', 'MsgType', "media_msg_db"]

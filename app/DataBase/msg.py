@@ -208,7 +208,25 @@ class Msg:
                 ))
         print(keyword,res)
         return res
-
+    def get_contact(self, contacts):
+        if not self.open_flag:
+            return None
+        try:
+            lock.acquire(True)
+            sql = '''select StrTalker, MAX(CreateTime) from MSG group by StrTalker'''
+            self.cursor.execute(sql)
+            res = self.cursor.fetchall()
+        finally:
+            lock.release()
+        res = {StrTalker: CreateTime for StrTalker, CreateTime in res}
+        contacts = [list(cur_contact) for cur_contact in contacts]
+        for i, cur_contact in enumerate(contacts):
+            if cur_contact[0] in res:
+                contacts[i].append(res[cur_contact[0]])
+            else:
+                contacts[i].append(0)
+        contacts.sort(key=lambda cur_contact: cur_contact[-1], reverse=True)
+        return contacts
     def get_messages_by_days(self, username_, is_Annual_report_=False, year_='2023'):
         if is_Annual_report_:
             sql = '''

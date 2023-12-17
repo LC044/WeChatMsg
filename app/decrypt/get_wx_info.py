@@ -168,7 +168,7 @@ def get_key(db_path, addr_len):
         return key_bytes
 
     def verify_key(key, wx_db_path):
-        if not wx_db_path:
+        if wx_db_path == "None":
             return True
         KEY_SIZE = 32
         DEFAULT_PAGESIZE = 4096
@@ -287,6 +287,8 @@ def read_info(version_list, is_logging=False):
         print("=" * 32)
 
     return result
+
+
 import os
 import sys
 
@@ -295,7 +297,6 @@ def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
-
 
 
 def get_info(VERSION_LIST):

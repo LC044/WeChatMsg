@@ -16,7 +16,7 @@
 </div>
 
 <div align="center">
-<a><img src="./doc/images/logo.png" height="240"/></a>
+<a><img src="https://blog.lc044.love/static/img/91cadaae3a6f7ee133dafd4f9b5d8680.logo.webp" height="240"/></a>
 </div>
 <blockquote>
 <div style="background-color: #eaf7ea; border-radius: 10px; padding: 20px; position: relative;">
@@ -24,6 +24,7 @@
     <div style="position: absolute;top: 0;bottom: 0;left: 0;width: 2px;background-color: #000000;"></div>
     <h2>前言</h2>
     <div style="text-indent: 2em;">
+        <div align="center"><img src="https://blog.lc044.love/static/img/7393a67ac602f7761e3c7b806165c892.logo99.webp"/></div>
         <p style="text-indent:2em;">我深信有意义的不是微信，而是隐藏在对话框背后的一个个<strong>深刻故事</strong>。未来，每个人都能拥有AI的陪伴，而你的数据能够赋予它有关与你过去的珍贵记忆。我希望每个人都有将自己的生活痕迹👨‍👩‍👦👚🥗🏠️🚴🧋⛹️🛌🛀留存的权利，而不是将之遗忘💀。</p>
         <p style="text-indent:2em;">AI的发展不仅仅是技术的提升，更是情感💞的延续。每一个对话、每一个互动都是生活中独一无二的片段，是真实而动人的情感交流。因此，我希望AI工作者们能够<strong>善用这些自己的数据</strong>，用于培训独特的、属于个体的人工智能。让<strong>个人AI成为生活中的朋友</strong>，能够理解、记录并分享我们的欢笑、泪水和成长。</p>
         <p style="text-indent:2em;">那天，AI不再是高不可攀的存在，而是融入寻常百姓家的一部分。因为<strong>每个人能拥有自己的AI</strong>，将科技的力量融入生活的方方面面。这是一场关于真情实感的革命，一场让技术变得更加人性化的探索，让我们共同见证未来的美好。</p>
@@ -58,21 +59,21 @@
 
 <details>
 
-<img alt="聊天界面" src="doc/images/chat_.png"/>
+<img alt="聊天界面" src="https://blog.lc044.love/static/img/b355c16c4a4037deec96fd87efecb74b.image.webp"/>
 
-![image-20230520235220104](doc/images/image-20230520235220104.png)
+![image-20230520235351749](https://blog.lc044.love/static/img/beb1500f349ce289406e0e8accac63c0.clipboard-2023-12-12.webp)
 
-![image-20230520235338305](doc/images/image-20230520235338305.png)
+![image-20230520235351749](https://blog.lc044.love/static/img/c0e17f989978f843147fa9b8d32949b8.clipboard-2023-12-12.webp)
 
-![image-20230520235351749](doc/images/image-20230520235351749.png)
+![image-20230520235351749](https://blog.lc044.love/static/img/47b4476a522f79286b71438bc78a1304.clipboard-2023-12-12.webp)
 
-![image-20230520235400772](doc/images/image-20230520235400772.png)
+![image-20230520235400772](https://blog.lc044.love/static/img/526e20e1b8cbcd9a20ea48e242433f0a.clipboard-2023-12-12.webp)
 
-![image-20230520235409112](doc/images/image-20230520235409112.png)
+![image-20230520235409112](https://blog.lc044.love/static/img/e74f9747bf9e686ae5bccc678fe0c7ad.clipboard-2023-12-12.webp)
 
-![image-20230520235422128](doc/images/image-20230520235422128.png)
+![image-20230520235422128](https://blog.lc044.love/static/img/22edd25fc32a7a11c13d1f36f6421997.clipboard-2023-12-12.webp)
 
-![image-20230520235431091](doc/images/image-20230520235431091.png)
+![image-20230520235431091](https://blog.lc044.love/static/img/f3f88205d4596c2d098996d86e5ede7e.clipboard-2023-12-12.webp)
 
 </details>
 
@@ -220,7 +221,8 @@ python main.py
 * 我的得力助手:[ChatGPT](https://chat.openai.com/)
 
 ---
-
+> \[!IMPORTANT]
+> 
 > 声明：该项目有且仅有一个目的：“留痕”——我的数据我做主，前提是“我的数据”其次才是“我做主”，禁止任何人以任何形式将其用于任何非法用途，对于使用该程序所造成的任何后果，所有创作者不承担任何责任🙄<br>
 > 该软件不会对您使用的微信造成任何影响，更不会对他人的微信造成任何影响，不能找回删除的聊天记录，任何企图篡改微信聊天数据的想法都是无稽之谈。本项目所有功能均建立在”前言“的基础之上，基于该项目的所有开发者均不能接受任何有悖于”前言“的功能需求，违者后果自负。
 > <br>该软件不存在任何收费，谨防上当受骗
@@ -250,6 +252,7 @@ python main.py
 感谢以下赞助者的慷慨支持：
 
 - [STDquantum](https://github.com/STDquantum)
+- [xuanli](https://github.com/xuanli)
 
 如果您提供赞助并希望出现在赞助者名单中，请在提交赞助时提供您的 GitHub 用户名或其他相关信息。
 

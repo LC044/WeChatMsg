@@ -100,7 +100,17 @@ class MediaMsg:
             return transtext
         except:
             return ""
+    def close(self):
+        if self.open_flag:
+            try:
+                lock.acquire(True)
+                self.open_flag = False
+                self.DB.close()
+            finally:
+                lock.release()
 
+    def __del__(self):
+        self.close()
 
 if __name__ == '__main__':
     db_path = './Msg/MediaMSG.db'

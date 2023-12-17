@@ -11,11 +11,11 @@ import json
 import os.path
 
 from PyQt5.QtCore import pyqtSignal, QUrl, Qt, QThread, QSize
-from PyQt5.QtGui import QPixmap, QFont, QDesktopServices
+from PyQt5.QtGui import QPixmap, QFont, QDesktopServices, QIcon
 from PyQt5.QtWidgets import QMainWindow, QLabel, QListWidgetItem, QMessageBox
 
 from app import config
-from app.DataBase import msg_db, misc_db, micro_msg_db, hard_link_db
+from app.DataBase import msg_db, misc_db, micro_msg_db, hard_link_db, close_db
 from app.ui.Icon import Icon
 from . import mainwindow
 from .chat import ChatWindow
@@ -79,7 +79,10 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.outputThread0 = None
         self.outputThread = None
         self.setupUi(self)
-        self.setWindowIcon(Icon.MainWindow_Icon)
+        # self.setWindowIcon(Icon.MainWindow_Icon)
+        pixmap = QPixmap(Icon.logo_ico_path)
+        icon = QIcon(pixmap)
+        self.setWindowIcon(icon)
         self.setStyleSheet(Stylesheet)
         self.listWidget.clear()
         self.resize(QSize(800, 600))
@@ -231,12 +234,19 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         QMessageBox.about(self, "解密成功", "请重新启动")
         self.close()
 
+    def closeEvent(self, event):
+        reply = QMessageBox.question(self, '确认退出', '确定要退出吗？',
+                                     QMessageBox.Yes | QMessageBox.No,
+                                     QMessageBox.No)
+
+        if reply == QMessageBox.Yes:
+            close_db()
+            event.accept()
+        else:
+            event.ignore()
     def close(self) -> bool:
+        close_db()
         super().close()
-        misc_db.close()
-        msg_db.close()
-        micro_msg_db.close()
-        hard_link_db.close()
         self.contact_window.close()
         self.exitSignal.emit(True)
 

@@ -7,7 +7,7 @@ from PyQt5.QtCore import pyqtSignal, QThread, QUrl, QFile, QIODevice, QTextStrea
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QWidget, QMessageBox, QFileDialog
 
-from app.DataBase import msg_db, misc_db
+from app.DataBase import msg_db, misc_db, media_msg_db, close_db
 from app.DataBase.merge import merge_databases, merge_MediaMSG_databases
 from app.decrypt import get_wx_info, decrypt
 from app.log import logger
@@ -131,6 +131,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
                 return
         if self.info.get('key') == 'none':
             QMessageBox.critical(self, "错误", "密钥错误\n请检查微信版本是否为最新和微信路径是否正确")
+        close_db()
         self.label_tip.setVisible(True)
         self.label_tip.setText('点我之后没有反应那就多等儿吧,不要再点了')
         self.thread2 = DecryptThread(db_dir, self.info['key'])
@@ -171,6 +172,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
             'name': self.info['name'],
             'mobile': self.info['mobile']
         }
+
         try:
             os.makedirs('./app/data', exist_ok=True)
             with open('./app/data/info.json', 'w', encoding='utf-8') as f:
@@ -183,6 +185,8 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         # 源数据库文件列表
         source_databases = [f"app/DataBase/Msg/MSG{i}.db" for i in range(1, 200)]
         import shutil
+        if os.path.exists(target_database):
+            os.remove(target_database)
         shutil.copy2("app/DataBase/Msg/MSG0.db", target_database)  # 使用一个数据库文件作为模板
         # 合并数据库
         try:
@@ -193,6 +197,8 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
         # 音频数据库文件
         target_database = "app/DataBase/Msg/MediaMSG.db"
         # 源数据库文件列表
+        if os.path.exists(target_database):
+            os.remove(target_database)
         source_databases = [f"app/DataBase/Msg/MediaMSG{i}.db" for i in range(1, 200)]
         shutil.copy2("app/DataBase/Msg/MediaMSG0.db", target_database)  # 使用一个数据库文件作为模板
         # 合并数据库
