@@ -420,7 +420,11 @@ class ChildThread(QThread):
         str_time = message[8]
         timestamp = message[5]
         is_chatroom = 1 if self.contact.is_chatroom else 0
-        str_content = escape_js_and_html(str_content.lstrip('<revokemsg>').rstrip('</revokemsg>'))
+        str_content = str_content.lstrip('<![CDATA[').rstrip(' <a href="weixin://revoke_edit_click">重新编辑</a>]]>')
+        res = findall('(</{0,1}(img|revokemsg|_wc_cus|a).*?>)', str_content)
+        for xmlstr, b in res:
+            str_content = str_content.replace(xmlstr, "")
+        str_content = escape_js_and_html(str_content)
         if self.output_type == Output.HTML:
             doc.write(
                 f'''{{ type:0, text: '{str_content}',is_send:{is_send},avatar_path:'',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:''}},'''
