@@ -187,7 +187,7 @@ class ChildThread(QThread):
         if is_chatroom:
             avatar = f"./avatar/{message[12].wxid}.png"
         else:
-            avatar = "./avatar/" + ('myhead.png' if is_send else 'tahead.png')
+            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
         if is_chatroom:
             if is_send:
                 displayname = MePC().name
@@ -227,7 +227,7 @@ class ChildThread(QThread):
         if is_chatroom:
             avatar = f"./avatar/{message[12].wxid}.png"
         else:
-            avatar = "./avatar/" + ('myhead.png' if is_send else 'tahead.png')
+            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
         if is_chatroom:
             if is_send:
                 displayname = MePC().name
@@ -278,7 +278,7 @@ class ChildThread(QThread):
         if is_chatroom:
             avatar = f"./avatar/{message[12].wxid}.png"
         else:
-            avatar = "./avatar/" + ('myhead.png' if is_send else 'tahead.png')
+            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
         if is_chatroom:
             if is_send:
                 displayname = MePC().name
@@ -320,7 +320,7 @@ class ChildThread(QThread):
         if is_chatroom:
             avatar = f"./avatar/{message[12].wxid}.png"
         else:
-            avatar = "./avatar/" + ('myhead.png' if is_send else 'tahead.png')
+            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
         if is_chatroom:
             if is_send:
                 displayname = MePC().name
@@ -374,7 +374,7 @@ class ChildThread(QThread):
         if is_chatroom:
             avatar = f"./avatar/{message[12].wxid}.png"
         else:
-            avatar = "./avatar/" + ('myhead.png' if is_send else 'tahead.png')
+            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
         if is_chatroom:
             if is_send:
                 displayname = MePC().name
@@ -442,7 +442,7 @@ class ChildThread(QThread):
         if is_chatroom:
             avatar = f"./avatar/{message[12].wxid}.png"
         else:
-            avatar = "./avatar/" + ('myhead.png' if is_send else 'tahead.png')
+            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
         if is_chatroom:
             if is_send:
                 displayname = MePC().name
@@ -801,7 +801,7 @@ body{
     word-break:normal;
 }
 .chat-refer-right {
-    margin-right: 55px;
+    margin-right: 15px;
 }
 .chat-refer-left{
     margin-left: 15px;
@@ -867,7 +867,14 @@ body{
 .content-wrapper {
     display: flex;
     flex-direction: column;
+}
+
+.content-wrapper-left {
     align-items: baseline;
+}
+
+.content-wrapper-right {
+    align-items: flex-end;
 }
 
 .displayname {
@@ -1133,7 +1140,7 @@ html_end = '''
             const side = message.is_send ? "right" : "left";
             if (message.type == 1) {
                 // displayname 和 bubble
-                messageContent.className = "content-wrapper";
+                messageContent.className = `content-wrapper content-wrapper-${side}`;
                 if (message.is_chatroom && !message.is_send) {
                     messageContent.appendChild(displayNameBox(message));
                 }
@@ -1150,7 +1157,7 @@ html_end = '''
             }
             else if (message.type == 3) {
                 // displayname 和 img
-                messageContent.className = "content-wrapper";
+                messageContent.className = `content-wrapper content-wrapper-${side}`;
                 if (message.is_chatroom && !message.is_send) {
                     messageContent.appendChild(displayNameBox(message));
                 }
@@ -1163,7 +1170,7 @@ html_end = '''
             }
             else if (message.type == 43) {
                 // displayname 和 video
-                messageContent.className = "content-wrapper";
+                messageContent.className = `content-wrapper content-wrapper-${side}`;
                 if (message.is_chatroom && !message.is_send) {
                     messageContent.appendChild(displayNameBox(message));
                 }
@@ -1177,7 +1184,7 @@ html_end = '''
             else if (message.type == 49) {
                 if (message.sub_type == 57) {
                     // displayname 和 bubble 和 refer
-                    messageContent.className = "content-wrapper";
+                    messageContent.className = `content-wrapper content-wrapper-${side}`;
                     if (message.is_chatroom && !message.is_send) {
                         messageContent.appendChild(displayNameBox(message));
                     }
@@ -1194,7 +1201,7 @@ html_end = '''
             }
             else if (message.type == 34) {
                 // displayname 和 转的文字 和 audio
-                messageContent.className = "content-wrapper";
+                messageContent.className = `content-wrapper content-wrapper-${side}`;
                 if (message.is_chatroom && !message.is_send) {
                     messageContent.appendChild(displayNameBox(message));
                 }
