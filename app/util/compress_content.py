@@ -61,7 +61,7 @@ def parser_reply(data: bytes):
             'title': escape_js_and_html(title),
             'refer': None if refermsg_type != 1 else {
                 'type': refermsg_type,
-                'content': escape_js_and_html(refermsg_content),
+                'content': escape_js_and_html(refermsg_content.lstrip("\n")),
                 'displayname': escape_js_and_html(refermsg_displayname),
             }
         }
