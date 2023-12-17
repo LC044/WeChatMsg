@@ -251,8 +251,11 @@ class ChildThread(QThread):
                 return
             image_path = path.get_relative_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
             image_path = image_path.replace('/', '\\')
-            os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
-            print(origin_docx_path + image_path[1:])
+            try:
+                os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
+            except:
+                print("网络图片",image_path)
+                pass
             image_path = image_path.replace('\\', '/')
             # print(f"tohtml:---{image_path}")
             if self.is_5_min(timestamp):
