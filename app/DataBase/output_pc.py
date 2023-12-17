@@ -562,7 +562,7 @@ class ChildThread(QThread):
                 self.emoji(f, message)
             elif type_ == 10000 and self.message_types.get(type_):
                 self.system_msg(f, message)
-            elif type_ == 49 and sub_type == 57 and self.message_types.get(type_):
+            elif type_ == 49 and sub_type == 57 and self.message_types.get(1):
                 self.refermsg(f, message)
         f.write(html_end)
         f.close()
