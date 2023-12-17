@@ -210,7 +210,7 @@ def get_key(db_path, addr_len):
             key_bytes = read_key_bytes(pm.process_handle, j, addr_len)
             if key_bytes == "None":
                 continue
-            if verify_key(key_bytes, MicroMsg_path):
+            if db_path != "None" and verify_key(key_bytes, MicroMsg_path):
                 return key_bytes.hex()
     return "None"
 
