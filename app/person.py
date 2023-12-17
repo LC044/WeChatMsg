@@ -53,6 +53,7 @@ class ContactPC:
         self.smallHeadImgBLOG = b''
         self.avatar = QPixmap()
         self.avatar_path = Icon.Default_avatar_path
+        self.is_chatroom = self.wxid.__contains__('@chatroom')
 
     def set_avatar(self, img_bytes):
         if not img_bytes:

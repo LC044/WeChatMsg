@@ -3,6 +3,7 @@ from collections import Counter
 from PyQt5.QtCore import QFile, QTextStream, QIODevice
 
 import sys
+
 sys.path.append('.')
 
 from app.DataBase import msg_db, MsgType
@@ -22,13 +23,13 @@ def wordcloud(wxid, is_Annual_report=False, year='2023', who='1'):
     txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT, is_Annual_report, year)
     if not txt_messages:
         return {
-        'chart_data': None,
-        'keyword': "没有聊天你想分析啥",
-        'max_num': "0",
-        'dialogs': []
-    }
+            'chart_data': None,
+            'keyword': "没有聊天你想分析啥",
+            'max_num': "0",
+            'dialogs': []
+        }
     # text = ''.join(map(lambda x: x[7], txt_messages))
-    text = ''.join(map(lambda x: x[7] if x[4] == int(who) else '', txt_messages)) # 1“我”说的话，0“Ta”说的话
+    text = ''.join(map(lambda x: x[7] if x[4] == int(who) else '', txt_messages))  # 1“我”说的话，0“Ta”说的话
 
     total_msg_len = len(text)
     # 使用jieba进行分词，并加入停用词
@@ -60,15 +61,7 @@ def wordcloud(wxid, is_Annual_report=False, year='2023', who='1'):
     keyword, max_num = text_data[0]
     w = (
         WordCloud(init_opts=opts.InitOpts(width=f"{wordcloud_width}px", height=f"{wordcloud_height}px"))
-        .add(series_name="聊天文字", data_pair=text_data, word_size_range=[20, 100])
-        .set_global_opts(
-            title_opts=opts.TitleOpts(
-                title=f"词云图", subtitle=f"总计{total_msg_len}字",
-                title_textstyle_opts=opts.TextStyleOpts(font_size=23)
-            ),
-            tooltip_opts=opts.TooltipOpts(is_show=True),
-            legend_opts=opts.LegendOpts(is_show=False)
-        )
+        .add(series_name="聊天文字", data_pair=text_data, word_size_range=[5, 40])
     )
     # return w.render_embed()
     return {
@@ -134,20 +127,20 @@ def month_count(wxid, is_Annual_report=False, year='2023'):
         .add_yaxis("消息数量", y_data,
                    label_opts=opts.LabelOpts(is_show=False),
                    itemstyle_opts=opts.ItemStyleOpts(color="skyblue"),
-        )
+                   )
         .set_global_opts(
             title_opts=opts.TitleOpts(title="逐月统计", subtitle=None),
             datazoom_opts=opts.DataZoomOpts(),
             toolbox_opts=opts.ToolboxOpts(),
             visualmap_opts=opts.VisualMapOpts(
-                min_=min(y_data),  
-                max_=max(y_data),  
+                min_=min(y_data),
+                max_=max(y_data),
                 dimension=1,  # 根据第2个维度（y 轴）进行映射
                 is_piecewise=False,  # 是否分段显示
                 range_color=["#66ccff", "#003366"],  # 设置颜色范围
                 type_="color",
                 pos_right="0%",
-                ),
+            ),
         )
     )
 

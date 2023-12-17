@@ -10,8 +10,6 @@
 from .hard_link import HardLink
 from .micro_msg import MicroMsg
 from .media_msg import MediaMsg
-# from . import data
-# from . import output
 from .misc import Misc
 from .msg import Msg
 from .msg import MsgType
@@ -29,6 +27,14 @@ def close_db():
     micro_msg_db.close()
     hard_link_db.close()
     media_msg_db.close()
+
+
+def init_db():
+    misc_db.init_database()
+    msg_db.init_database()
+    micro_msg_db.init_database()
+    hard_link_db.init_database()
+    media_msg_db.init_database()
 
 
 __all__ = ['output', 'misc_db', 'micro_msg_db', 'msg_db', 'hard_link_db', 'MsgType', "media_msg_db"]
