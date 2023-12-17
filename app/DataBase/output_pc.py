@@ -284,11 +284,7 @@ class ChildThread(QThread):
         timestamp = message[5]
         if self.output_type == Output.HTML:
             emoji_path = get_emoji(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
-            if emoji_path == "":
-                shutil.copy(f"{os.path.abspath('.')}/app/resources/icons/404.png", origin_docx_path + '/emoji/404.png')
-                emoji_path = "./emoji/404.png"
-            else:
-                emoji_path = './emoji/' + os.path.basename(emoji_path)
+            emoji_path = './emoji/' + os.path.basename(emoji_path)
             if self.is_5_min(timestamp):
                 doc.write(
                     f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
@@ -473,7 +469,7 @@ class ChildThread(QThread):
                 self.emoji(f, message)
             elif type_ == 10000 and self.message_types.get(type_):
                 self.system_msg(f, message)
-            elif type_ == 49 and sub_type == 57 and self.message_types.get(1):
+            elif type_ == 49 and sub_type == 57:
                 self.refermsg(f,message)
         f.write(html_end)
         f.close()
