@@ -11,6 +11,8 @@ emoji.py
 import os
 import traceback
 import xml.etree.ElementTree as ET
+import sqlite3
+import threading
 
 import requests
 
@@ -43,7 +45,10 @@ def get_image_format(header):
 def parser_xml(xml_string):
     assert type(xml_string) == str
     # Parse the XML string
-    root = ET.fromstring(xml_string)
+    try:
+        root = ET.fromstring(xml_string)
+    except:
+        root = ET.fromstring(xml_string.replace("&", "&amp;"))
     emoji = root.find('./emoji')
     # Accessing attributes of the 'emoji' element
     fromusername = emoji.get('fromusername')
@@ -61,8 +66,65 @@ def parser_xml(xml_string):
         'height': height,
         'cdnurl': cdnurl,
         'thumburl': thumburl if thumburl else cdnurl,
-        'md5': md5 if md5 else androidmd5,
+        'md5': (md5 if md5 else androidmd5).lower(),
     }
+
+lock = threading.Lock()
+db_path = "./app/Database/Msg/Emotion.db"
+
+class Emotion:
+    def __init__(self):
+        self.DB = None
+        self.cursor: sqlite3.Cursor = None
+        self.open_flag = False
+        self.init_database()
+
+    def init_database(self):
+        if not self.open_flag:
+            if os.path.exists(db_path):
+                self.DB = sqlite3.connect(db_path, check_same_thread=False)
+                # '''创建游标'''
+                self.cursor = self.DB.cursor()
+                self.open_flag = True
+                if lock.locked():
+                    lock.release()
+
+    def get_emoji_url(self, md5: str):
+        sql = '''
+            select CDNUrl
+            from CustomEmotion
+            where md5 = ?
+        '''
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql, [md5])
+            return self.cursor.fetchone()[0]
+        except:
+            md5 = md5.upper()
+            sql = """
+                select Data
+                from EmotionItem
+                where md5 = ?
+            """
+            self.cursor.execute(sql, [md5])
+            try:
+                return self.cursor.fetchone()[0]
+            except:
+                return ""
+        finally:
+            lock.release()
+
+    def close(self):
+        if self.open_flag:
+            try:
+                lock.acquire(True)
+                self.open_flag = False
+                self.DB.close()
+            finally:
+                lock.release()
+
+    def __del__(self):
+        self.close()
 
 @log
 def download(url, output_dir, name, thumb=False):
@@ -95,9 +157,28 @@ def get_emoji(xml_string, thumb=True, output_path=root_path) -> str:
                 print('表情包已存在')
                 return file_path
         url = emoji_info['thumburl'] if thumb else emoji_info['cdnurl']
-        print("下载表情包ing:", url)
-        emoji_path = download(url, output_path, md5, thumb)
-        return emoji_path
+        if not url or url == "":
+            url = Emotion().get_emoji_url(md5)
+        if type(url) == str and url != "":
+            print("下载表情包ing:", url)
+            emoji_path = download(url, output_path, md5, thumb)
+            return emoji_path
+        elif type(url) == bytes:
+            image_format = get_image_format(url[:8])
+            if image_format:
+                if thumb:
+                    output_path = os.path.join(output_path, 'th_' + md5 + '.' + image_format)
+                else:
+                    output_path = os.path.join(output_path, md5 + '.' + image_format)
+            else:
+                output_path = os.path.join(output_path, md5)
+            with open(output_path, 'wb') as f:
+                f.write(url)
+            print("表情包数据库加载", output_path)
+            return output_path
+        else:
+            print("！！！未知表情包数据，信息：", xml_string, emoji_info, url)
+            return ""
     except:
         logger.error(traceback.format_exc())
         return ""
