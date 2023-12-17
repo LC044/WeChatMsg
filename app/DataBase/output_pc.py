@@ -790,7 +790,7 @@ body{
 .chat-refer {
     margin-top: 5px;
     max-width: 400px;
-    padding: 6px;
+    padding: 9px;
     border-radius: 5px;
     position: relative;
     color: #000;

@@ -48,7 +48,7 @@ def parser_reply(data: bytes):
                 'displayname': '用户名',
             }
         }
-    try :
+    try:
         root = ET.XML(xml_content)
         appmsg = root.find('appmsg')
         msg_type = int(appmsg.find('type').text)
