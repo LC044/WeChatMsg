@@ -756,8 +756,10 @@ body{
     display: block;
     max-width: 90%;
     max-height: 90%;
-    margin: auto;
-    margin-top: 5%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 .container{
     height: 99%;
