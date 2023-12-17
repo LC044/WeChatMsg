@@ -1000,10 +1000,10 @@ input {
 }
 
 .emoji_img {
-    width: 26px;
-    height: 26px;
-    position: relative;
-    bottom: -6px;
+    width: 22px;
+    height: 22px;
+    vertical-align: middle;
+    margin-top: -4.4px;
 }
 
   </style>
