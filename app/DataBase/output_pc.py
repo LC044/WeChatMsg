@@ -4,7 +4,7 @@ import os
 from re import findall
 from PyQt5.QtCore import pyqtSignal, QThread
 from PyQt5.QtWidgets import QFileDialog
-from eyed3 import load
+# from eyed3 import load
 
 from . import msg_db, micro_msg_db
 from .package_msg import PackageMsg
@@ -139,6 +139,7 @@ class Output(QThread):
 
 
 def modify_audio_metadata(audiofile, new_artist): # 修改音频元数据中的“创作者”标签
+    return
     audiofile = load(audiofile)
     
     # 检查文件是否有标签
