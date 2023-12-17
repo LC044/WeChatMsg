@@ -4,6 +4,7 @@ import os
 from re import findall
 from PyQt5.QtCore import pyqtSignal, QThread
 from PyQt5.QtWidgets import QFileDialog
+from eyed3 import load
 
 from . import msg_db, micro_msg_db
 from .package_msg import PackageMsg
@@ -26,6 +27,7 @@ def makedirs(path):
     os.makedirs(os.path.join(path, 'video'), exist_ok=True)
     os.makedirs(os.path.join(path, 'voice'), exist_ok=True)
     os.makedirs(os.path.join(path, 'file'), exist_ok=True)
+    os.makedirs(os.path.join(path, 'avatar'), exist_ok=True)
 
 
 def escape_js_and_html(input_str):
@@ -136,6 +138,18 @@ class Output(QThread):
         self.requestInterruption()
 
 
+def modify_audio_metadata(audiofile, new_artist): # 修改音频元数据中的“创作者”标签
+    audiofile = load(audiofile)
+    
+    # 检查文件是否有标签
+    if audiofile.tag is None:
+        audiofile.initTag()
+
+    # 修改艺术家名称
+    audiofile.tag.artist = new_artist
+    audiofile.tag.save()
+
+
 class ChildThread(QThread):
     """
         子线程，用于导出部分聊天记录
@@ -168,20 +182,32 @@ class ChildThread(QThread):
         str_content = message[7]
         str_time = message[8]
         is_send = message[4]
-        avatar = 'myhead.png' if is_send else 'tahead.png'
         timestamp = message[5]
+        is_chatroom = 1 if self.contact.is_chatroom else 0
+        if is_chatroom:
+            avatar = f"./avatar/{message[12].wxid}.png"
+        else:
+            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
+        if is_chatroom:
+            if is_send:
+                displayname = MePC().name
+            else:
+                displayname = message[12].remark
+        else:
+            displayname = MePC().name if is_send else self.contact.remark
+        displayname = escape_js_and_html(displayname)
         if self.output_type == Output.HTML:
             str_content = escape_js_and_html(str_content)
             if self.is_5_min(timestamp):
                 doc.write(
-                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:'',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
                 )
             emojiText = findall(r"(\[.+?\])", str_content)
             for emoji_text in emojiText:
                 if emoji_text in emoji:
                     str_content = str_content.replace(emoji_text, emoji[emoji_text])
             doc.write(
-                f'''{{ type:{1}, text: '{str_content}',is_send:{is_send},avatar_path:'{avatar}'}},'''
+                f'''{{ type:{1}, text: '{str_content}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
             )
         elif self.output_type == Output.TXT:
             name = '你' if is_send else self.contact.remark
@@ -195,9 +221,21 @@ class ChildThread(QThread):
         str_content = message[7]
         str_time = message[8]
         is_send = message[4]
-        avatar = 'myhead.png' if is_send else 'tahead.png'
-        timestamp = message[5]
         BytesExtra = message[10]
+        timestamp = message[5]
+        is_chatroom = 1 if self.contact.is_chatroom else 0
+        if is_chatroom:
+            avatar = f"./avatar/{message[12].wxid}.png"
+        else:
+            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
+        if is_chatroom:
+            if is_send:
+                displayname = MePC().name
+            else:
+                displayname = message[12].remark
+        else:
+            displayname = MePC().name if is_send else self.contact.remark
+        displayname = escape_js_and_html(displayname)
         if self.output_type == Output.HTML:
             str_content = escape_js_and_html(str_content)
             image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
@@ -218,10 +256,10 @@ class ChildThread(QThread):
             # print(f"tohtml:---{image_path}")
             if self.is_5_min(timestamp):
                 doc.write(
-                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:'',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
                 )
             doc.write(
-                f'''{{ type:{type_}, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
+                f'''{{ type:{type_}, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
             )
         elif self.output_type == Output.TXT:
             name = '你' if is_send else self.contact.remark
@@ -234,24 +272,37 @@ class ChildThread(QThread):
         str_content = message[7]
         str_time = message[8]
         is_send = message[4]
-        avatar = 'myhead.png' if is_send else 'tahead.png'
-        timestamp = message[5]
         msgSvrId = message[9]
+        timestamp = message[5]
+        is_chatroom = 1 if self.contact.is_chatroom else 0
+        if is_chatroom:
+            avatar = f"./avatar/{message[12].wxid}.png"
+        else:
+            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
+        if is_chatroom:
+            if is_send:
+                displayname = MePC().name
+            else:
+                displayname = message[12].remark
+        else:
+            displayname = MePC().name if is_send else self.contact.remark
+        displayname = escape_js_and_html(displayname)
         if self.output_type == Output.HTML:
             try:
                 audio_path = media_msg_db.get_audio(msgSvrId, output_path=origin_docx_path + "/voice")
                 audio_path = audio_path.replace('/', '\\')
+                modify_audio_metadata(audio_path, displayname)
                 os.utime(audio_path, (timestamp, timestamp))
                 audio_path = audio_path.replace('\\', '/')
-                voice_to_text = media_msg_db.get_audio_text(str_content)
+                voice_to_text = escape_js_and_html(media_msg_db.get_audio_text(str_content))
             except:
                 return
             if self.is_5_min(timestamp):
                 doc.write(
-                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:'',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
                 )
             doc.write(
-                f'''{{ type:34, text:'{audio_path}',is_send:{is_send},avatar_path:'{avatar}',voice_to_text:'{voice_to_text}'}},'''
+                f'''{{ type:34, text:'{audio_path}',is_send:{is_send},avatar_path:'{avatar}',voice_to_text:'{voice_to_text}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
             )
         if self.output_type == Output.TXT:
             name = '你' if is_send else self.contact.remark
@@ -264,17 +315,33 @@ class ChildThread(QThread):
         str_content = message[7]
         str_time = message[8]
         is_send = message[4]
-        avatar = 'myhead.png' if is_send else 'tahead.png'
         timestamp = message[5]
+        is_chatroom = 1 if self.contact.is_chatroom else 0
+        if is_chatroom:
+            avatar = f"./avatar/{message[12].wxid}.png"
+        else:
+            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
+        if is_chatroom:
+            if is_send:
+                displayname = MePC().name
+            else:
+                displayname = message[12].remark
+        else:
+            displayname = MePC().name if is_send else self.contact.remark
+        displayname = escape_js_and_html(displayname)
         if self.output_type == Output.HTML:
             emoji_path = get_emoji(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
-            emoji_path = './emoji/' + os.path.basename(emoji_path)
+            if emoji_path == "":
+                shutil.copy(f"{os.path.abspath('.')}/app/resources/icons/404.png", origin_docx_path + '/emoji/404.png')
+                emoji_path = "./emoji/404.png"
+            else:
+                emoji_path = './emoji/' + os.path.basename(emoji_path)
             if self.is_5_min(timestamp):
                 doc.write(
-                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:'',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
                 )
             doc.write(
-                f'''{{ type:{3}, text: '{emoji_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
+                f'''{{ type:{3}, text: '{emoji_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
             )
         elif self.output_type == Output.TXT:
             name = '你' if is_send else self.contact.remark
@@ -302,6 +369,20 @@ class ChildThread(QThread):
         avatar = 'myhead.png' if is_send else 'tahead.png'
         content = parser_reply(message[11])
         refer_msg = content.get('refer')
+        timestamp = message[5]
+        is_chatroom = 1 if self.contact.is_chatroom else 0
+        if is_chatroom:
+            avatar = f"./avatar/{message[12].wxid}.png"
+        else:
+            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
+        if is_chatroom:
+            if is_send:
+                displayname = MePC().name
+            else:
+                displayname = message[12].remark
+        else:
+            displayname = MePC().name if is_send else self.contact.remark
+        displayname = escape_js_and_html(displayname)
         if self.output_type == Output.HTML:
             contentText = content.get('title')
             emojiText = findall(r"(\[.+?\])", contentText)
@@ -315,11 +396,11 @@ class ChildThread(QThread):
                     if emoji_text in emoji:
                         referText = referText.replace(emoji_text, emoji[emoji_text])
                 doc.write(
-                    f'''{{ type:49, text: '{contentText}',is_send:{is_send},sub_type:{content.get('type')},refer_text: '{referText}',avatar_path:'{avatar}'}},'''
+                    f'''{{ type:49, text: '{contentText}',is_send:{is_send},sub_type:{content.get('type')},refer_text: '{referText}',avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
                 )
             else:
                 doc.write(
-                    f'''{{ type:49, text: '{contentText}',is_send:{is_send},sub_type:{content.get('type')},avatar_path:'{avatar}'}},'''
+                    f'''{{ type:49, text: '{contentText}',is_send:{is_send},sub_type:{content.get('type')},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
                 )
         elif self.output_type == Output.TXT:
             name = '你' if is_send else self.contact.remark
@@ -336,10 +417,12 @@ class ChildThread(QThread):
         str_content = message[7]
         is_send = message[4]
         str_time = message[8]
+        timestamp = message[5]
+        is_chatroom = 1 if self.contact.is_chatroom else 0
         str_content = escape_js_and_html(str_content.lstrip('<revokemsg>').rstrip('</revokemsg>'))
         if self.output_type == Output.HTML:
             doc.write(
-                f'''{{ type:0, text: '{str_content}',is_send:{is_send},avatar_path:''}},'''
+                f'''{{ type:0, text: '{str_content}',is_send:{is_send},avatar_path:'',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:''}},'''
             )
         elif self.output_type == Output.TXT:
             name = '你' if is_send else self.contact.remark
@@ -354,8 +437,20 @@ class ChildThread(QThread):
         str_time = message[8]
         is_send = message[4]
         BytesExtra = message[10]
-        avatar = 'myhead.png' if is_send else 'tahead.png'
         timestamp = message[5]
+        is_chatroom = 1 if self.contact.is_chatroom else 0
+        if is_chatroom:
+            avatar = f"./avatar/{message[12].wxid}.png"
+        else:
+            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
+        if is_chatroom:
+            if is_send:
+                displayname = MePC().name
+            else:
+                displayname = message[12].remark
+        else:
+            displayname = MePC().name if is_send else self.contact.remark
+        displayname = escape_js_and_html(displayname)
         if self.output_type == Output.HTML:
             video_path = hard_link_db.get_video(str_content, BytesExtra, thumb=False)
             image_path = hard_link_db.get_video(str_content, BytesExtra, thumb=True)
@@ -370,14 +465,14 @@ class ChildThread(QThread):
                     # print(f"tohtml:---{image_path}")
                     if self.is_5_min(timestamp):
                         doc.write(
-                            f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                            f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:'',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
                         )
                     doc.write(
-                        f'''{{ type:3, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
+                        f'''{{ type:3, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
                     )
                 except:
                     doc.write(
-                        f'''{{ type:1, text: '视频丢失',is_send:{is_send},avatar_path:'{avatar}'}},'''
+                        f'''{{ type:1, text: '视频丢失',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
                     )
                 return
             if video_path is None and image_path is None:
@@ -392,10 +487,10 @@ class ChildThread(QThread):
             video_path = video_path.replace('\\', '/')
             if self.is_5_min(timestamp):
                 doc.write(
-                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:''}},'''
+                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:'',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
                 )
             doc.write(
-                f'''{{ type:{type_}, text: '{video_path}',is_send:{is_send},avatar_path:'{avatar}'}},'''
+                f'''{{ type:{type_}, text: '{video_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
             )
         elif self.output_type == Output.TXT:
             name = '你' if is_send else self.contact.remark
@@ -428,12 +523,27 @@ class ChildThread(QThread):
     def to_html_(self):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         makedirs(origin_docx_path)
-        messages = msg_db.get_messages(self.contact.wxid)
+        if self.contact.is_chatroom:
+            packagemsg = PackageMsg()
+            messages = packagemsg.get_package_message_by_wxid(self.contact.wxid)
+        else:
+            messages = msg_db.get_messages(self.contact.wxid)
         filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}.html"
         f = open(filename, 'w', encoding='utf-8')
-        f.write(html_head)
-        MePC().avatar.save(os.path.join(origin_docx_path, 'myhead.png'))
-        self.contact.avatar.save(os.path.join(origin_docx_path, 'tahead.png'))
+        f.write(html_head.replace("<title>Chat Records</title>", f"<title>{self.contact.remark}</title>"))
+        MePC().avatar.save(os.path.join(f"{origin_docx_path}/avatar/{MePC().wxid}.png"))
+        if self.contact.is_chatroom:
+            for message in messages:
+                if message[4]: # is_send
+                    continue
+                try:
+                    chatroom_avatar_path = f"{origin_docx_path}/avatar/{message[12].wxid}.png"
+                    if not os.path.exists(chatroom_avatar_path):
+                        message[12].avatar.save(chatroom_avatar_path)
+                except:
+                    pass
+        else:
+            self.contact.avatar.save(os.path.join(f"{origin_docx_path}/avatar/{self.contact.wxid}.png"))
         self.rangeSignal.emit(len(messages))
         total_steps = len(messages)
         for index, message in enumerate(messages):
@@ -452,7 +562,7 @@ class ChildThread(QThread):
                 self.emoji(f, message)
             elif type_ == 10000 and self.message_types.get(type_):
                 self.system_msg(f, message)
-            elif type_ == 49 and sub_type == 57:
+            elif type_ == 49 and sub_type == 57 and self.message_types.get(1):
                 self.refermsg(f, message)
         f.write(html_end)
         f.close()
@@ -547,6 +657,7 @@ emoji = {
     '[阴险]': '<img src="https://res.wx.qq.com/t/wx_fed/we-emoji/res/v1.2.8/assets/Expression/Expression_52@2x.png" id="阴险" class="emoji_img">',
     '[亲亲]': '<img src="https://res.wx.qq.com/t/wx_fed/we-emoji/res/v1.2.8/assets/Expression/Expression_53@2x.png" id="亲亲" class="emoji_img">',
     '[可怜]': '<img src="https://res.wx.qq.com/t/wx_fed/we-emoji/res/v1.2.8/assets/Expression/Expression_55@2x.png" id="可怜" class="emoji_img">',
+    '[Whimper]': '<img src="https://res.wx.qq.com/t/wx_fed/we-emoji/res/v1.2.8/assets/Expression/Expression_55@2x.png" id="可怜" class="emoji_img">',
     '[笑脸]': '<img src="https://res.wx.qq.com/t/wx_fed/we-emoji/res/v1.2.8/assets/newemoji/Happy.png" id="笑脸" class="emoji_img">',
     '[生病]': '<img src="https://res.wx.qq.com/t/wx_fed/we-emoji/res/v1.2.8/assets/newemoji/Sick.png" id="生病" class="emoji_img">',
     '[脸红]': '<img src="https://res.wx.qq.com/t/wx_fed/we-emoji/res/v1.2.8/assets/newemoji/Flushed.png" id="脸红" class="emoji_img">',
@@ -645,8 +756,10 @@ body{
     display: block;
     max-width: 90%;
     max-height: 90%;
-    margin: auto;
-    margin-top: 5%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 .container{
     height: 99%;
@@ -676,9 +789,10 @@ body{
     word-wrap:break-word;
     word-break:normal;
 }
-.chat-refer{
+.chat-refer {
+    margin-top: 5px;
     max-width: 400px;
-    padding: 6px;
+    padding: 9px;
     border-radius: 5px;
     position: relative;
     color: #000;
@@ -686,11 +800,11 @@ body{
     word-wrap:break-word;
     word-break:normal;
 }
-.chat-refer-right{
-    margin-right:55px;
+.chat-refer-right {
+    margin-right: 15px;
 }
 .chat-refer-left{
-    margin-left:55px;
+    margin-left: 15px;
 }
 .item-left .bubble{
     margin-left: 15px;
@@ -722,8 +836,8 @@ body{
     border-bottom: 10px solid transparent;
     right: -20px;
 }
-.item{
-    white-space: pre-line;
+.item {
+    white-space: pre-wrap;
     margin-top: 15px;
     display: flex;
     width: 100%;
@@ -750,6 +864,27 @@ body{
     user-select:none;
 }
 
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.content-wrapper-left {
+    align-items: baseline;
+}
+
+.content-wrapper-right {
+    align-items: flex-end;
+}
+
+.displayname {
+    margin-left: 13px;
+    margin-left: 13px;
+    font-size: 13px;
+    margin-bottom: 5px;
+    color: darkgray;
+}
+
 .chat-image img{
     margin-right: 18px;
     margin-left: 18px;
@@ -767,10 +902,11 @@ body{
     max-width: 350px;
 }
 .chat-audio{
-    max-width: 300px;
+    max-width: 400px;
 }
 audio{
-    right: 25px;
+    margin-left: 9px;
+    margin-right: 9px;
 }
 .input-area{
     border-top:0.5px solid #e0e0e0;
@@ -874,10 +1010,10 @@ input {
 }
 
 .emoji_img {
-    width: 26px;
-    height: 26px;
-    position: relative;
-    bottom: -6px;
+    width: 22px;
+    height: 22px;
+    vertical-align: middle;
+    margin-top: -4.4px;
 }
 
   </style>
@@ -945,87 +1081,146 @@ html_end = '''
         const startIndex = (page - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
         console.log(page);
+
+        // 生成各类标签的函数
+        function messageBubble(message, side) {
+            const messageBubbleTag = document.createElement('div');
+            messageBubbleTag.className = `bubble bubble-${side}`;
+            messageBubbleTag.innerHTML = message.text;
+            return messageBubbleTag;
+        }
+        function displayNameBox(message) {
+            const displayName = document.createElement('div');
+            displayName.className = "displayname";
+            displayName.innerHTML = message.displayname;
+            return displayName;
+        }
+        function avatarBox(message) {
+            const avatarTag = document.createElement('div');
+            avatarTag.className = "avatar";
+            avatarTag.innerHTML = `<img src="${message.avatar_path}" />`
+            return avatarTag;
+        }
+        function messageImgBox(message) {
+            const messageImgTag = document.createElement('div');
+            messageImgTag.className = `chat-image`;
+            messageImgTag.innerHTML = `<img src="${message.text}" onclick="showModal(this)"/>`;
+            return messageImgTag;
+        }
+        function messageVideoBox(message) {
+            const messageVideoTag = document.createElement('div');
+            messageVideoTag.className = `chat-video`;
+            messageVideoTag.innerHTML = `<video src="${message.text}" controls />`;
+            return messageVideoTag;
+        }
+        function messageElementReferText(message, side) {
+            const messageElementRefer = document.createElement('div');
+            messageElementRefer.className = `chat-refer chat-refer-${side}`;
+            messageElementRefer.innerHTML = message.refer_text;
+            return messageElementRefer;
+        }
+        function messageVoiceToTextBubble(message, side) {
+            const messageVoiceToTextTag = document.createElement('div');
+            messageVoiceToTextTag.className = `bubble bubble-${side}`;
+            messageVoiceToTextTag.innerHTML = message.voice_to_text;
+            return messageVoiceToTextTag;
+        }
+        function messageAudioBox(message) {
+            const messageAudioTag = document.createElement('div');
+            messageAudioTag.className = `chat-audio`;
+            messageAudioTag.innerHTML = `<audio src="${message.text}" controls></audio>`;
+            return messageAudioTag;
+        }
+        
         // 从数据列表中取出对应范围的元素并添加到容器中
         for (let i = startIndex; i < endIndex && i < chatMessages.length; i++) {
             const message = chatMessages[i];
-            const messageElement = document.createElement('div');
-            const messageElementRefer = document.createElement('div');
-            const formattedText = message.text.replace(/\\n/g, "<br>");
-            var formattedReferText = "";
+            const messageElement = document.createElement('div'); // 下面那俩的合体
+            const avatarTag = avatarBox(message); // 头像
+            const messageContent = document.createElement('div'); // 除了avatar之外的所有
+            const side = message.is_send ? "right" : "left";
             if (message.type == 1) {
-                if (message.is_send == 1) {
-                    messageElement.className = "item item-right";
-                    messageElement.innerHTML = `<div class='bubble bubble-right'>${formattedText}</div><div class='avatar'><img src="${message.avatar_path}" /></div>`
+                // displayname 和 bubble
+                messageContent.className = `content-wrapper content-wrapper-${side}`;
+                if (message.is_chatroom && !message.is_send) {
+                    messageContent.appendChild(displayNameBox(message));
                 }
-                else if (message.is_send == 0) {
-                    messageElement.className = "item item-left";
-                    messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='bubble bubble-right'>${formattedText}</div>`
-                }
+                messageContent.appendChild(messageBubble(message, side));
+                
+                // 整合
+                messageElement.className = `item item-${side}`;
+                messageElement.appendChild(message.is_send ? messageContent : avatarTag);
+                messageElement.appendChild(message.is_send ? avatarTag : messageContent);
             }
             else if (message.type == 0) {
                 messageElement.className = "item item-center";
-                messageElement.innerHTML = `<span>${formattedText}</span>`
+                messageElement.innerHTML = `<span>${message.text}</span>`
             }
             else if (message.type == 3) {
-                if (message.is_send == 1) {
-                    messageElement.className = "item item-right";
-                    messageElement.innerHTML = `<div class='chat-image' ><img src="${formattedText}" onclick="showModal(this)"/></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
+                // displayname 和 img
+                messageContent.className = `content-wrapper content-wrapper-${side}`;
+                if (message.is_chatroom && !message.is_send) {
+                    messageContent.appendChild(displayNameBox(message));
                 }
-                else if (message.is_send == 0) {
-                    messageElement.className = "item item-left";
-                    messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}"/></div><div class='chat-image'><img src="${formattedText}" onclick="showModal(this)"/></div>`
-                }
+                messageContent.appendChild(messageImgBox(message));
+
+                // 整合
+                messageElement.className = `item item-${side}`;
+                messageElement.appendChild(message.is_send ? messageContent : avatarTag);
+                messageElement.appendChild(message.is_send ? avatarTag : messageContent);
             }
             else if (message.type == 43) {
-                if (message.is_send == 1) {
-                    messageElement.className = "item item-right";
-                    messageElement.innerHTML = `<div class='chat-video'><video src="${formattedText}" controls /></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
+                // displayname 和 video
+                messageContent.className = `content-wrapper content-wrapper-${side}`;
+                if (message.is_chatroom && !message.is_send) {
+                    messageContent.appendChild(displayNameBox(message));
                 }
-                else if (message.is_send == 0) {
-                    messageElement.className = "item item-left";
-                    messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='chat-video'><video src="${formattedText}" controls "/></div>`
-                }
+                messageContent.appendChild(messageVideoBox(message));
+
+                // 整合
+                messageElement.className = `item item-${side}`;
+                messageElement.appendChild(message.is_send ? messageContent : avatarTag);
+                messageElement.appendChild(message.is_send ? avatarTag : messageContent);
             }
             else if (message.type == 49) {
-                if (message.sub_type == 57){
+                if (message.sub_type == 57) {
+                    // displayname 和 bubble 和 refer
+                    messageContent.className = `content-wrapper content-wrapper-${side}`;
+                    if (message.is_chatroom && !message.is_send) {
+                        messageContent.appendChild(displayNameBox(message));
+                    }
+                    messageContent.appendChild(messageBubble(message, side));
                     if (message.refer_text) {
-                        formattedReferText = message.refer_text.replace(/\\n/g, "<br>");
+                        messageContent.appendChild(messageElementReferText(message, side));
                     }
-                    if (message.is_send == 1) {
-                        messageElement.className = "item item-right";
-                        messageElement.innerHTML = `<div class='bubble bubble-right'>${formattedText}</div><div class='avatar'><img src="${message.avatar_path}" /></div>`
-                        if (message.refer_text) {
-                            messageElementRefer.className = "item item-right item-refer";
-                            messageElementRefer.innerHTML = `<div class='chat-refer chat-refer-right'>${formattedReferText}</div></div>`
-                        }
-                    }
-                    else if (message.is_send == 0) {
-                        messageElement.className = "item item-left";
-                        messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='bubble bubble-left'>${formattedText}</div>`
-                        if (message.refer_text) {
-                            messageElementRefer.className = "item item-left item-refer";
-                            messageElementRefer.innerHTML = `<div class='chat-refer chat-refer-left'>${formattedReferText}</div></div>`
-                        }
-                    }
+
+                    // 整合
+                    messageElement.className = `item item-${side}`;
+                    messageElement.appendChild(message.is_send ? messageContent : avatarTag);
+                    messageElement.appendChild(message.is_send ? avatarTag : messageContent);
                 }
             }
             else if (message.type == 34) {
-                if (message.is_send == 1) {
-                    messageElement.className = "item item-right";
-                    messageElement.innerHTML = `<div class='chat-audio'>${message.voice_to_text == "" ? "" : `<div class="bubble">${message.voice_to_text}</div>`}<audio src="${formattedText}" controls></audio></div><div class='avatar'><img src="${message.avatar_path}" /></div>`
+                // displayname 和 转的文字 和 audio
+                messageContent.className = `content-wrapper content-wrapper-${side}`;
+                if (message.is_chatroom && !message.is_send) {
+                    messageContent.appendChild(displayNameBox(message));
                 }
-                else if (message.is_send == 0) {
-                    messageElement.className = "item item-left";
-                    messageElement.innerHTML = `<div class='avatar'><img src="${message.avatar_path}" /></div><div class='chat-audio'>${message.voice_to_text == "" ? "" : `<div class="bubble">${message.voice_to_text}</div>`}<audio src="${formattedText}" controls></audio></div>`
+                if (message.voice_to_text) {
+                    messageContent.appendChild(messageVoiceToTextBubble(message, side));
                 }
+                messageContent.appendChild(messageAudioBox(message));
+
+                // 整合
+                messageElement.className = `item item-${side}`;
+                messageElement.appendChild(message.is_send ? messageContent : avatarTag);
+                messageElement.appendChild(message.is_send ? avatarTag : messageContent);
             }
             chatContainer.appendChild(messageElement);
-            if (message.type == 49 && message.sub_type == 57 && message.refer_text) {
-                chatContainer.appendChild(messageElementRefer);
-            }
         }
         document.querySelector("#chat-container").scrollTop = 0;
         updatePaginationInfo();
+        refreshMediaListener();
     }
 
     function prevPage() {
@@ -1062,6 +1257,39 @@ html_end = '''
 
     // 初始化页面
     renderPage(currentPage);
+
+    function refreshMediaListener() {
+        const audioTags = document.querySelectorAll('audio');
+        const videoTags = document.querySelectorAll('video');
+        
+        audioTags.forEach(audio => {
+            audio.addEventListener('play', function () {
+                pauseOtherMedia(audio);
+            });
+        });
+        videoTags.forEach(video => {
+            video.addEventListener('play', function () {
+                pauseOtherMedia(video);
+            });
+        });
+
+        function pauseOtherMedia(currentMedia) {
+            const audioTags = document.querySelectorAll('audio');
+            const videoTags = document.querySelectorAll('video');
+            audioTags.forEach(media => {
+                if (media !== currentMedia && !media.paused) {
+                    media.pause();
+                }
+            });
+            videoTags.forEach(media => {
+                if (media !== currentMedia && !media.paused) {
+                    media.pause();
+                }
+            });
+        }
+    }
+
+    refreshMediaListener();
 </script>
 
 <script>

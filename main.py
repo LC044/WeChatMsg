@@ -55,6 +55,7 @@ class ViewController(QWidget):
     def close(self) -> bool:
         close_db()
         super().close()
+        
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     font = QFont('微软雅黑', 12)  # 使用 Times New Roman 字体，字体大小为 14

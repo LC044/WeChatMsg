@@ -57,6 +57,21 @@ class Msg:
                     lock.release()
 
     def get_messages(self, username_):
+        '''
+        return list
+            a[0]: localId,
+            a[1]: talkerId, （和strtalker对应的，不是群聊信息发送人）
+            a[2]: type,
+            a[3]: subType,
+            a[4]: is_sender,
+            a[5]: timestamp,
+            a[6]: status, （没啥用）
+            a[7]: str_content,
+            a[8]: str_time, （格式化的时间）
+            a[9]: msgSvrId,
+            a[10]: BytesExtra,
+            a[11]: CompressContent,
+        '''
         if not self.open_flag:
             return None
         sql = '''

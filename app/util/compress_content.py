@@ -48,7 +48,7 @@ def parser_reply(data: bytes):
                 'displayname': '用户名',
             }
         }
-    try :
+    try:
         root = ET.XML(xml_content)
         appmsg = root.find('appmsg')
         msg_type = int(appmsg.find('type').text)
@@ -61,7 +61,7 @@ def parser_reply(data: bytes):
             'title': escape_js_and_html(title),
             'refer': None if refermsg_type != 1 else {
                 'type': refermsg_type,
-                'content': escape_js_and_html(refermsg_content),
+                'content': escape_js_and_html(refermsg_content.lstrip("\n")),
                 'displayname': escape_js_and_html(refermsg_displayname),
             }
         }
