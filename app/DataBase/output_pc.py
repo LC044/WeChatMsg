@@ -778,7 +778,9 @@ body{
 .content:hover::-webkit-scrollbar-thumb{
     background:rgba(0,0,0,0.1);
 }
-.bubble{
+.bubble {
+    display: flex;
+    align-items: center;
     max-width: 400px;
     padding: 10px;
     border-radius: 5px;
@@ -788,6 +790,8 @@ body{
     word-break:normal;
 }
 .chat-refer {
+    display: flex;
+    align-items: center;
     margin-top: 5px;
     max-width: 400px;
     padding: 9px;
@@ -1000,10 +1004,8 @@ input {
 }
 
 .emoji_img {
-    width: 26px;
-    height: 26px;
-    position: relative;
-    bottom: -6px;
+    width: 22px;
+    height: 22px;
 }
 
   </style>
