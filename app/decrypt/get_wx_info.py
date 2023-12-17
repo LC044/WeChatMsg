@@ -8,14 +8,10 @@
 import hmac
 import hashlib
 import ctypes
-import os
-import re
 import winreg
 import pymem
 from win32com.client import Dispatch
 import psutil
-import sys
-from typing import List, Union
 
 ReadProcessMemory = ctypes.windll.kernel32.ReadProcessMemory
 void_p = ctypes.c_void_p

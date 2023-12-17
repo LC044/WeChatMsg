@@ -82,7 +82,7 @@ class ContactInfo(QWidget, Ui_Form):
         self.report_thread = ReportThread(self.contact)
         self.report_thread.okSignal.connect(lambda x: QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314")))
         self.report_thread.start()
-        QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314"))
+        QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314/"))
 
     def emotionale_Analysis(self):
         QMessageBox.warning(self,

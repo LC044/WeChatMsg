@@ -129,8 +129,8 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
             if not os.path.exists(db_dir):
                 QMessageBox.critical(self, "错误", "文件夹选择错误\n一般以wxid_xxx结尾")
                 return
-        if self.info.get('key') == 'none':
-            QMessageBox.critical(self, "错误", "密钥错误\n请检查微信版本是否为最新和微信路径是否正确")
+        if self.info.get('key') == 'None':
+            QMessageBox.critical(self, "错误", "密钥错误\n将软件放在桌面上试试\n如果还不可以的话我也我能为力，您可以等待后续版本解决该问题")
         close_db()
         self.label_tip.setVisible(True)
         self.label_tip.setText('点我之后没有反应那就多等儿吧,不要再点了')
