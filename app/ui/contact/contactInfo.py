@@ -72,12 +72,12 @@ class ContactInfo(QWidget, Ui_Form):
         self.view_analysis.start()
 
     def annual_report(self):
-        # QMessageBox.warning(
-        #     self,
-        #     "提示",
-        #     "敬请期待"
-        # )
-        # return
+        if 'room' in self.contact.wxid:
+            QMessageBox.warning(
+                self, '警告',
+                '暂不支持群组'
+            )
+            return
         self.contact.save_avatar()
         self.report_thread = ReportThread(self.contact)
         self.report_thread.okSignal.connect(lambda x: QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314")))
@@ -85,18 +85,19 @@ class ContactInfo(QWidget, Ui_Form):
         QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314/"))
 
     def emotionale_Analysis(self):
-        QMessageBox.warning(self,
-                            "别急别急",
-                            "马上就实现该功能"
-                            )
-        return
-        self.stackedWidget.setCurrentWidget(self.view_emotion)
         if 'room' in self.contact.wxid:
             QMessageBox.warning(
                 self, '警告',
                 '暂不支持群组'
             )
             return
+        QMessageBox.warning(self,
+                            "别急别急",
+                            "马上就实现该功能"
+                            )
+        return
+        self.stackedWidget.setCurrentWidget(self.view_emotion)
+
         self.view_emotion.start()
 
     def back(self):
