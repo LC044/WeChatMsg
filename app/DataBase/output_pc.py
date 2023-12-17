@@ -902,10 +902,11 @@ body{
     max-width: 350px;
 }
 .chat-audio{
-    max-width: 300px;
+    max-width: 400px;
 }
 audio{
-    right: 25px;
+    margin-left: 9px;
+    margin-right: 9px;
 }
 .input-area{
     border-top:0.5px solid #e0e0e0;
