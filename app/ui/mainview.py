@@ -225,10 +225,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         """
         关于
         """
-        QMessageBox.about(self, "关于",
-                          f'''版本：{config.version}<br>QQ交流群:{config.contact},加群要求请阅读文档<br>地址：<a href='https://github.com/LC044/WeChatMsg'>https://github.com/LC044/WeChatMsg</a><br>新特性:<br>{''.join(['' + i for i in config.description])}
-                            '''
-                          )
+        QMessageBox.about(self, "关于",config.about)
 
     def decrypt_success(self):
         QMessageBox.about(self, "解密成功", "请重新启动")

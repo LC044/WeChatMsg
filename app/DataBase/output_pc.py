@@ -259,7 +259,6 @@ class ChildThread(QThread):
                 f'''{str_time} {name}\n[语音]\n\n'''
             )
 
-
     def emoji(self, doc, message):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         str_content = message[7]
@@ -289,7 +288,7 @@ class ChildThread(QThread):
     def retract_message(self, doc, isSend, content, status):
         return
 
-    def refermsg(self, doc,message):
+    def refermsg(self, doc, message):
         """
         处理回复消息
         @param doc:
@@ -322,7 +321,7 @@ class ChildThread(QThread):
                 doc.write(
                     f'''{{ type:49, text: '{contentText}',is_send:{is_send},sub_type:{content.get('type')},avatar_path:'{avatar}'}},'''
                 )
-        elif self.output_type==Output.TXT:
+        elif self.output_type == Output.TXT:
             name = '你' if is_send else self.contact.remark
             if refer_msg:
                 doc.write(
@@ -332,7 +331,6 @@ class ChildThread(QThread):
                 doc.write(
                     f'''{str_time} {name}\n{content.get('title')}\n引用:未知\n\n'''
                 )
-
 
     def system_msg(self, doc, message):
         str_content = message[7]
@@ -455,7 +453,7 @@ class ChildThread(QThread):
             elif type_ == 10000 and self.message_types.get(type_):
                 self.system_msg(f, message)
             elif type_ == 49 and sub_type == 57:
-                self.refermsg(f,message)
+                self.refermsg(f, message)
         f.write(html_end)
         f.close()
         self.okSignal.emit(1)
@@ -486,6 +484,7 @@ class ChildThread(QThread):
                 elif type_ == 49 and sub_type == 57:
                     self.refermsg(f, message)
         self.okSignal.emit(1)
+
     def run(self):
         if self.output_type == Output.DOCX:
             return
