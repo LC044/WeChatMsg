@@ -1140,9 +1140,31 @@ html_end = '''
             return messageAudioTag;
         }
         
-        // 从数据列表中取出对应范围的元素并添加到容器中
+            // 从数据列表中取出对应范围的元素并添加到容器中
         for (let i = startIndex; i < endIndex && i < chatMessages.length; i++) {
             const message = chatMessages[i];
+            if (i == startIndex) { // 判断一下在页面顶部多加一个时间
+                if (!/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(message.text)) {
+                    // 时间戳转成时间
+                    function timestampToTime(timestamp) {
+                        let date = new Date(timestamp * 1000);
+                        let year = date.getFullYear() + '-';
+                        let month = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+                        let day = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+                        let hour = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+                        let minute = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+                        let second = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+                        return year + month + day + hour + minute + second;
+                    }
+
+                    // 添加div
+                    const newTimeMessage = document.createElement('div');
+                    newTimeMessage.className = "item item-center";
+                    newTimeMessage.innerHTML = `<span>${timestampToTime(message.timestamp)}</span>`;
+                    chatContainer.appendChild(newTimeMessage);
+                    console.log("增加时间元素", timestampToTime(message.timestamp));
+                }
+            }
             const messageElement = document.createElement('div'); // 下面那俩的合体
             const avatarTag = avatarBox(message); // 头像
             const messageContent = document.createElement('div'); // 除了avatar之外的所有
@@ -1154,7 +1176,7 @@ html_end = '''
                     messageContent.appendChild(displayNameBox(message));
                 }
                 messageContent.appendChild(messageBubble(message, side));
-                
+
                 // 整合
                 messageElement.className = `item item-${side}`;
                 messageElement.appendChild(message.is_send ? messageContent : avatarTag);
@@ -1162,7 +1184,7 @@ html_end = '''
             }
             else if (message.type == 0) {
                 messageElement.className = "item item-center";
-                messageElement.innerHTML = `<span>${message.text}</span>`
+                messageElement.innerHTML = `<span>${message.text}</span>`;
             }
             else if (message.type == 3) {
                 // displayname 和 img
