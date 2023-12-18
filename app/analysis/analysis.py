@@ -1,7 +1,5 @@
 from collections import Counter
 import snownlp
-import numpy as np
-import pandas as pd
 
 from PyQt5.QtCore import QFile, QTextStream, QIODevice
 
@@ -203,20 +201,25 @@ def hour_count(wxid, is_Annual_report=False, year='2023'):
 def emotion_chart(wxid, is_Annual_report=False, year='2023'):
     txt_messages = msg_db.get_txt_messages_by_days(wxid, is_Annual_report, year)
 
-    df = pd.DataFrame(txt_messages, columns=['message', 'date'])
-    d = df.groupby('date')
+    date_emotions = {}
+    for message, date in txt_messages:
+        if date not in date_emotions:
+            date_emotions[date] = {'sentiments': [], 'count': 0}
+
+        val = snownlp.SnowNLP(message).sentiments
+        date_emotions[date]['sentiments'].append(val)
+        date_emotions[date]['count'] += 1
+
     dates = []
     emotions = []
-    for date, messages in d:
+
+    for date, data in date_emotions.items():
         dates.append(date)
-        s = 0
-        for msg in messages:
-            val = snownlp.SnowNLP(msg).sentiments
-            s += val
-        emotions.append(s / len(messages))
-    emotions = np.array(emotions)
-    emotions = np.around(emotions, 3) * 100
-    emotions = np.around(emotions, 1)
+        average_sentiment = sum(data['sentiments']) / data['count']
+        emotions.append(round(average_sentiment, 3) * 100)
+
+    # 四舍五入到小数点一位
+    emotions = [round(e, 1) for e in emotions]
 
     max_ = max(emotions)
     min_ = min(emotions)
