@@ -35,8 +35,8 @@
 </blockquote>
 
 ## 🍉功能
-- [官网](http://memotrace.lc044.love/)
-- [点击预览](http://memotrace.lc044.love/demo.html)
+- [官网](https://memotrace.lc044.love/)
+- [点击预览](https://memotrace.lc044.love/demo.html)
 - 🔒️🔑🔓️Windows本地微信数据库
 - 还原微信聊天界面
     - 🗨文本✅
@@ -280,12 +280,16 @@ python main.py
 
 # 联系方式
 
-如果您遇到了问题，可以添加QQ群：**701805520**寻求帮助，由于精力有限，不能回答所有问题，所以还请您仔细阅读文档之后再考虑是否入群
+如果您遇到了问题，可以添加QQ群寻求帮助，由于精力有限，不能回答所有问题，所以还请您仔细阅读文档之后再考虑是否入群
 
 ## 加群方式
 
 1. [fork](https://github.com/LC044/WeChatMsg/forks)该项目并发起[PR](https://github.com/LC044/WeChatMsg/pulls)
 2. 宣传该项目（在任一社交平台发图文介绍该项目）
 3. [赞助](#支持该项目)该项目
+4. QQ群：**701805520** （不满足要求就别加了，不会通过的）
 
 注意：加群时请备注您的贡献，如PR链接、宣传截图或赞助金额，若没有审核通过，可添加QQ或发邮件：863909694@qq.com反馈问题（一定要备注来意）
+
+您也可以关注官方公众号，后续更新将会在公众号同步发布
+![](https://blog.lc044.love/static/img/3fd32f1732a2c8f53a7eb923472b8f19.clipboard-2023-12-18.webp)
