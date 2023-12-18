@@ -34,19 +34,24 @@ class PackageMsg:
         for row in messages:
             row_list = list(row)
             # 删除不使用的几个字段
+            del row_list[13]
             del row_list[12]
             del row_list[11]
             del row_list[10]
+            del row_list[9]
 
             strtalker = row[11]
             info = micro_msg_db.get_contact_by_username(strtalker)
             if info is not None:
                 row_list.append(info[3])
                 row_list.append(info[4])
+            else:
+                row_list.append('')
+                row_list.append('')
             # 判断是否是群聊
             if strtalker.__contains__('@chatroom'):
                 # 自己发送
-                if row[12] == 1:
+                if row[4] == 1:
                     row_list.append('我')
                 else:
                     # 存在BytesExtra为空的情况，此时消息类型应该为提示性消息。跳过不处理
@@ -75,6 +80,14 @@ class PackageMsg:
                                     sender = senderinfo[3]
                                     membersMap[wxid] = senderinfo[3]
                     row_list.append(sender)
+            else:
+                if row[4] == 1:
+                    row_list.append('我')
+                else:
+                    if info is not None:
+                        row_list.append(info[4])
+                    else:
+                        row_list.append('')
             updated_messages.append(tuple(row_list))
         return updated_messages
     
