@@ -36,7 +36,13 @@ class Misc:
                 self.DB = sqlite3.connect(db_path, check_same_thread=False)
                 # '''创建游标'''
                 self.cursor = self.DB.cursor()
-                self.open_flag = True
+
+                # 检查Media表是否存在
+                self.cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='smallHeadBuf'")
+                result = self.cursor.fetchone()
+                if result:
+                    self.open_flag = True
+
                 if lock.locked():
                     lock.release()
 

@@ -5,6 +5,9 @@ def merge_MediaMSG_databases(source_paths, target_path):
     # 创建目标数据库连接
     target_conn = sqlite3.connect(target_path)
     target_cursor = target_conn.cursor()
+   
+    table_name = "Media"
+    
     try:
         # 开始事务
         target_conn.execute("BEGIN;")
@@ -14,11 +17,22 @@ def merge_MediaMSG_databases(source_paths, target_path):
             db = sqlite3.connect(source_path)
             db.text_factory = str 
             cursor = db.cursor()
+
+            # 检查Media表是否存在
+            cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}'")
+            result = cursor.fetchone()
+            if not result:
+                continue
+
             sql = '''
             SELECT Key,Reserved0,Buf,Reserved1,Reserved2 FROM Media;
             '''
             cursor.execute(sql)
             result = cursor.fetchall()
+
+            # 创建目标表
+            target_cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} (Key, Reserved0, Buf, Reserved1, Reserved2);")
+
             # 附加源数据库
             try:
                 target_cursor.executemany(
@@ -54,6 +68,13 @@ def merge_databases(source_paths, target_path):
             db = sqlite3.connect(source_path)
             db.text_factory = str 
             cursor = db.cursor()
+
+            # 检查MSG表是否存在
+            cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='MSG'")
+            result = cursor.fetchone()
+            if not result:
+                continue
+
             sql = '''
             SELECT TalkerId,MsgsvrID,Type,SubType,IsSender,CreateTime,Sequence,StrTalker,StrContent,DisplayContent,BytesExtra,CompressContent
             FROM MSG;
