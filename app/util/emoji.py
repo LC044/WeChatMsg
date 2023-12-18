@@ -89,20 +89,31 @@ class Emotion:
                 if lock.locked():
                     lock.release()
 
-    def get_emoji_url(self, md5: str):
-        sql = '''
-            select CDNUrl
-            from CustomEmotion
-            where md5 = ?
-        '''
+    def get_emoji_url(self, md5: str, thumb: bool):
+        if thumb:
+            sql = '''
+                select
+                    case
+                        when thumburl is NULL or thumburl = '' then cdnurl
+                        else thumburl
+                    end as selected_url
+                from CustomEmotion
+                where md5 = ?
+            '''
+        else:
+            sql = '''
+                select CDNUrl
+                from CustomEmotion
+                where md5 = ?
+            '''
         try:
             lock.acquire(True)
             self.cursor.execute(sql, [md5])
             return self.cursor.fetchone()[0]
         except:
             md5 = md5.upper()
-            sql = """
-                select Data
+            sql = f"""
+                select {"Thumb" if thumb else "Data"}
                 from EmotionItem
                 where md5 = ?
             """
@@ -158,7 +169,7 @@ def get_emoji(xml_string, thumb=True, output_path=root_path) -> str:
                 return file_path
         url = emoji_info['thumburl'] if thumb else emoji_info['cdnurl']
         if not url or url == "":
-            url = Emotion().get_emoji_url(md5)
+            url = Emotion().get_emoji_url(md5, thumb)
         if type(url) == str and url != "":
             print("下载表情包ing:", url)
             emoji_path = download(url, output_path, md5, thumb)
@@ -185,11 +196,13 @@ def get_emoji(xml_string, thumb=True, output_path=root_path) -> str:
 
 
 if __name__ == '__main__':
-    xml_string = '<msg><emoji fromusername = "wxid_0o18ef858vnu22" tousername = "wxid_27hqbq7vx5hf22" type="2" idbuffer="media:0_0" md5="71ce49ed3ce9e57e43e07f802983bf45" len = "352588" productid="com.tencent.xin.emoticon.person.stiker_1678703862259eb01f2ef4a313" androidmd5="71ce49ed3ce9e57e43e07f802983bf45" androidlen="352588" s60v3md5 = "71ce49ed3ce9e57e43e07f802983bf45" s60v3len="352588" s60v5md5 = "71ce49ed3ce9e57e43e07f802983bf45" s60v5len="352588" cdnurl = "http://wxapp.tc.qq.com/262/20304/stodownload?m=71ce49ed3ce9e57e43e07f802983bf45&amp;filekey=30350201010421301f020201060402535a041071ce49ed3ce9e57e43e07f802983bf45020305614c040d00000004627466730000000132&amp;hy=SZ&amp;storeid=263ffa00b000720d03274c5820000010600004f50535a1ca0c950b64287022&amp;bizid=1023" designerid = "" thumburl = "http://mmbiz.qpic.cn/mmemoticon/ajNVdqHZLLDSKTMRgM8agiadpFhKz9IJ3cD5Ra2sTROibOaShdt3D4z6PfE92WkjQY/0" encrypturl = "http://wxapp.tc.qq.com/262/20304/stodownload?m=cbaae1d847aac6389652b65562bacaa2&amp;filekey=30350201010421301f020201060402535a0410cbaae1d847aac6389652b65562bacaa20203056150040d00000004627466730000000132&amp;hy=SZ&amp;storeid=263ffa00b0008d8223274c5820000010600004f50535a17b82910b64764739&amp;bizid=1023" aeskey= "7051ab2a34442dec63434832463f45ce" externurl = "http://wxapp.tc.qq.com/262/20304/stodownload?m=960f68693454dfa64b9966ca5d70dbd3&amp;filekey=30340201010420301e020201060402535a0410960f68693454dfa64b9966ca5d70dbd3020221a0040d00000004627466730000000132&amp;hy=SZ&amp;storeid=26423dbe3000793a8720e40de0000010600004f50535a1d40c950b71be0a50&amp;bizid=1023" externmd5 = "41895664fc5a77878e2155fc96209a19" width= "240" height= "240" tpurl= "" tpauthkey= "" attachedtext= "" attachedtextcolor= "" lensid= "" emojiattr= "" linkid= "" desc= "ChEKB2RlZmF1bHQSBuWNlee6rw==" ></emoji> </msg>'
-    res1 = parser_xml(xml_string)
-    print(res1, res1['md5'])
+    # xml_string = '<msg><emoji fromusername = "wxid_0o18ef858vnu22" tousername = "wxid_27hqbq7vx5hf22" type="2" idbuffer="media:0_0" md5="71ce49ed3ce9e57e43e07f802983bf45" len = "352588" productid="com.tencent.xin.emoticon.person.stiker_1678703862259eb01f2ef4a313" androidmd5="71ce49ed3ce9e57e43e07f802983bf45" androidlen="352588" s60v3md5 = "71ce49ed3ce9e57e43e07f802983bf45" s60v3len="352588" s60v5md5 = "71ce49ed3ce9e57e43e07f802983bf45" s60v5len="352588" cdnurl = "http://wxapp.tc.qq.com/262/20304/stodownload?m=71ce49ed3ce9e57e43e07f802983bf45&amp;filekey=30350201010421301f020201060402535a041071ce49ed3ce9e57e43e07f802983bf45020305614c040d00000004627466730000000132&amp;hy=SZ&amp;storeid=263ffa00b000720d03274c5820000010600004f50535a1ca0c950b64287022&amp;bizid=1023" designerid = "" thumburl = "http://mmbiz.qpic.cn/mmemoticon/ajNVdqHZLLDSKTMRgM8agiadpFhKz9IJ3cD5Ra2sTROibOaShdt3D4z6PfE92WkjQY/0" encrypturl = "http://wxapp.tc.qq.com/262/20304/stodownload?m=cbaae1d847aac6389652b65562bacaa2&amp;filekey=30350201010421301f020201060402535a0410cbaae1d847aac6389652b65562bacaa20203056150040d00000004627466730000000132&amp;hy=SZ&amp;storeid=263ffa00b0008d8223274c5820000010600004f50535a17b82910b64764739&amp;bizid=1023" aeskey= "7051ab2a34442dec63434832463f45ce" externurl = "http://wxapp.tc.qq.com/262/20304/stodownload?m=960f68693454dfa64b9966ca5d70dbd3&amp;filekey=30340201010420301e020201060402535a0410960f68693454dfa64b9966ca5d70dbd3020221a0040d00000004627466730000000132&amp;hy=SZ&amp;storeid=26423dbe3000793a8720e40de0000010600004f50535a1d40c950b71be0a50&amp;bizid=1023" externmd5 = "41895664fc5a77878e2155fc96209a19" width= "240" height= "240" tpurl= "" tpauthkey= "" attachedtext= "" attachedtextcolor= "" lensid= "" emojiattr= "" linkid= "" desc= "ChEKB2RlZmF1bHQSBuWNlee6rw==" ></emoji> </msg>'
+    # res1 = parser_xml(xml_string)
+    # print(res1, res1['md5'])
     # download(res1['cdnurl'], "./data/emoji/", res1['md5'])
     # download(res1['thumburl'], "./data/emoji/", res1['md5'], True)
-    print(get_emoji(xml_string, True))
-    print(get_emoji(xml_string, False))
+    print(Emotion().get_emoji_url("144714f65c98844128ac3a1042445d9a", True))
+    print(Emotion().get_emoji_url("144714f65c98844128ac3a1042445d9a", False))
+    # print(get_emoji(xml_string, True))
+    # print(get_emoji(xml_string, False))
 #     http://vweixinf.tc.qq.com/110/20403/stodownload?m=3a4d439aba02dce4834b2c54e9f15597&filekey=3043020101042f302d02016e0402534804203361346434333961626130326463653438333462326335346539663135353937020213f0040d00000004627466730000000131&hy=SH&storeid=323032313037323030373236313130303039653236646365316535316534383236386234306230303030303036653033303034666233&ef=3&bizid=1022
