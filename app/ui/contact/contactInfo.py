@@ -31,7 +31,6 @@ class ContactInfo(QWidget, Ui_Form):
         self.btn_report.clicked.connect(self.annual_report)
         self.btn_analysis.clicked.connect(self.analysis)
         self.btn_emotion.clicked.connect(self.emotionale_Analysis)
-        self.label_remark.setText(self.contact.remark)
         self.stackedWidget.addWidget(self.view_userinfo)
         self.stackedWidget.setCurrentWidget(self.view_userinfo)
         menu = QMenu(self)

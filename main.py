@@ -5,6 +5,7 @@ import traceback
 
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import *
+from PyQt5.QtCore import Qt
 
 from app.DataBase import close_db
 from app.log import logger
@@ -12,7 +13,8 @@ from app.ui import mainview
 from app.ui.tool.pc_decrypt import pc_decrypt
 from app.config import version
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("WeChatReport")
-
+QApplication.setAttribute(Qt.AA_EnableHighDpiScaling,True)
+QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps,True)
 
 class ViewController(QWidget):
     def __init__(self):
