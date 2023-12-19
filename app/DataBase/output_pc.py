@@ -465,7 +465,6 @@ class ChildThread(QThread):
             image_path = hard_link_db.get_video(str_content, BytesExtra, thumb=True)
             if video_path is None and image_path is not None:
                 image_path = path.get_relative_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
-                image_path = image_path
                 try:
                     # todo 网络图片问题
                     print(origin_docx_path + image_path[1:])
