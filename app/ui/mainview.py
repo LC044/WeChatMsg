@@ -172,6 +172,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         try:
             img_bytes = misc_db.get_avatar_buffer(wxid)
         except :
+            close_db()
             QMessageBox.critical(self, "数据库错误", "请重启微信后重试")
             import shutil
             shutil.rmtree('./app/Database/Msg')
