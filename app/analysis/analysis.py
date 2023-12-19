@@ -1,4 +1,5 @@
 from collections import Counter
+from datetime import datetime
 
 from PyQt5.QtCore import QFile, QTextStream, QIODevice
 
@@ -79,8 +80,21 @@ def calendar_chart(wxid, is_Annual_report=False, year='2023'):
         return False
     min_ = min(map(lambda x: x[1], calendar_data))
     max_ = max(map(lambda x: x[1], calendar_data))
+    max_date = next(x[0] for x in calendar_data if x[1] == max_)
+    # formatted_date = str(max_date)[:4] + '年' + str(max_date)[4:6] + '月' + str(max_date)[6:] + '日'
+    date_obj = datetime.strptime(max_date, "%Y-%m-%d")
+    formatted_date = date_obj.strftime("%Y年%m月%d日")
+    print(formatted_date)
+
     start_date_ = calendar_data[0][0]
     end_date_ = calendar_data[-1][0]
+
+    # 计算两个日期之间的天数差
+    date1 = datetime.strptime(str(start_date_), "%Y-%m-%d")
+    date2 = datetime.strptime(str(end_date_), "%Y-%m-%d")
+    date_num = (date2 - date1).days + 1
+    print(date_num)
+
     print(start_date_, '---->', end_date_)
     if is_Annual_report:
         calendar_days = year
@@ -110,7 +124,11 @@ def calendar_chart(wxid, is_Annual_report=False, year='2023'):
         )
     )
     return {
-        'chart_data': c
+        'chart_data': c.dump_options_with_quotes(),
+        'max_date': formatted_date,
+        'max_num': str(max_),
+        'date_num': str(date_num),
+        'dialogs': msg_db.get_first_time_of_message(wxid) # 非年度报告使用
     }
 
 
@@ -197,13 +215,14 @@ class Analysis:
 if __name__ == '__main__':
     msg_db.init_database(path='../DataBase/Msg/MSG.db')
     # w = wordcloud('wxid_0o18ef858vnu22')
-    w_data = wordcloud('wxid_27hqbq7vx5hf22', True, '2023')
+    # w_data = wordcloud('wxid_27hqbq7vx5hf22', True, '2023')
     # print(w_data)
     # w['chart_data'].render("./data/聊天统计/wordcloud.html")
     c = calendar_chart('wxid_27hqbq7vx5hf22', False, '2023')
-    c['chart_data'].render("./data/聊天统计/calendar.html")
+    # c['chart_data'].render("./data/聊天统计/calendar.html")
+    c['chart_data'].render("./data/calendar.html")
     # print('c:::', c)
-    m = month_count('wxid_27hqbq7vx5hf22', False, '2023')
-    m['chart_data'].render("./data/聊天统计/month_num.html")
-    h = hour_count('wxid_27hqbq7vx5hf22')
-    h['chart_data'].render("./data/聊天统计/hour_count.html")
+    # m = month_count('wxid_27hqbq7vx5hf22', False, '2023')
+    # m['chart_data'].render("./data/聊天统计/month_num.html")
+    # h = hour_count('wxid_27hqbq7vx5hf22')
+    # h['chart_data'].render("./data/聊天统计/hour_count.html")
