@@ -46,7 +46,8 @@ def parser_reply(data: bytes):
                 'type': '1',
                 'content': '引用错误',
                 'displayname': '用户名',
-            }
+            },
+            "is_error": True
         }
     try:
         root = ET.XML(xml_content)
@@ -58,12 +59,13 @@ def parser_reply(data: bytes):
         refermsg_displayname = appmsg.find('refermsg').find('displayname').text
         return {
             'type': msg_type,
-            'title': escape_js_and_html(title),
+            'title': title,
             'refer': None if refermsg_type != 1 else {
                 'type': refermsg_type,
-                'content': escape_js_and_html(refermsg_content.lstrip("\n")),
-                'displayname': escape_js_and_html(refermsg_displayname),
-            }
+                'content': refermsg_content.lstrip("\n"),
+                'displayname': refermsg_displayname,
+            },
+            "is_error": False
         }
     except:
         return {
@@ -73,5 +75,6 @@ def parser_reply(data: bytes):
                 'type': '1',
                 'content': '引用错误',
                 'displayname': '用户名',
-            }
+            },
+            "is_error": True
         }

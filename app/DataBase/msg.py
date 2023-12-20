@@ -10,6 +10,7 @@ import html
 import re
 
 from app.log import logger
+from app.util.compress_content import parser_reply
 
 db_path = "./app/Database/Msg/MSG.db"
 lock = threading.Lock()
@@ -153,7 +154,7 @@ class Msg:
             sql = '''
                 select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
                 from MSG
-                where StrTalker=? and Type=? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
+                where StrTalker=? and Type=? and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?
                 order by CreateTime
             '''
         else:
@@ -323,7 +324,7 @@ class Msg:
                 from (
                     SELECT MsgSvrID, CreateTime
                     FROM MSG
-                    where StrTalker = ? and strftime('%Y',CreateTime,'unixepoch','localtime') = ?
+                    where StrTalker = ? and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?
                 )
                 group by hours
                 '''
@@ -372,6 +373,155 @@ class Msg:
             lock.release()
         return result
 
+    def get_send_messages_type_number(self, year_="all") -> list:
+        """
+        统计自己发的各类型消息条数，按条数降序，精确到subtype\n
+        return [(type_1, subtype_1, number_1), (type_2, subtype_2, number_2), ...]\n
+        be like [(1, 0, 71481), (3, 0, 6686), (49, 57, 3887), ..., (10002, 0, 1)]
+        """
+
+        sql = f"""
+            SELECT type, subtype, Count(MsgSvrID)
+            from MSG
+            where isSender = 1
+            {"and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?" if year_ != "all" else ""}
+            group by type, subtype
+            order by Count(MsgSvrID) desc
+        """
+        result = None
+        if not self.open_flag:
+            return None
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql, [year_] if year_ != "all" else [])
+            result = self.cursor.fetchall()
+        except sqlite3.DatabaseError:
+            logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
+        finally:
+            lock.release()
+        return result
+
+    def get_chatted_top_contacts(self, year_="all", contain_chatroom=False, top_n=10) -> list:
+        """
+        统计聊天最多的 n 个联系人（默认不包含群组），按条数降序\n
+        return [(wxid_1, number_1), (wxid_2, number_2), ...]
+        """
+
+        sql = f"""
+            SELECT strtalker, Count(MsgSvrID)
+            from MSG
+            where strtalker != "filehelper" and strtalker != "notifymessage" and strtalker not like "gh_%"
+            {"and strtalker not like '%@chatroom'" if not contain_chatroom else ""}
+            {"and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?" if year_ != "all" else ""}
+            group by strtalker
+            order by Count(MsgSvrID) desc
+            limit {top_n}
+        """
+        result = None
+        if not self.open_flag:
+            return None
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql, [year_] if year_ != "all" else [])
+            result = self.cursor.fetchall()
+        except sqlite3.DatabaseError:
+            logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
+        finally:
+            lock.release()
+        return result
+    
+    def get_send_messages_length(self, year_="all") -> int:
+        """
+        统计自己总共发消息的字数，包含type=1的文本和type=49,subtype=57里面自己发的文本
+        """
+
+        sql_type_1 = f"""
+            SELECT sum(length(strContent))
+            from MSG
+            where isSender = 1 and type = 1
+            {"and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?" if year_ != "all" else ""}
+        """
+        sql_type_49 = f"""
+            SELECT CompressContent
+            from MSG
+            where isSender = 1 and type = 49 and subtype = 57
+            {"and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?" if year_ != "all" else ""}
+        """
+        sum_type_1 = None
+        result_type_49 = None
+        sum_type_49 = 0
+
+        if not self.open_flag:
+            return None
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql_type_1, [year_] if year_ != "all" else [])
+            sum_type_1 = self.cursor.fetchall()[0][0]
+            self.cursor.execute(sql_type_49, [year_] if year_ != "all" else [])
+            result_type_49 = self.cursor.fetchall()
+            for message in result_type_49:
+                message = message[0]
+                content = parser_reply(message)
+                if content["is_error"]:
+                    continue
+                sum_type_49 += len(content["title"])
+        except sqlite3.DatabaseError:
+            logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
+        finally:
+            lock.release()
+        return sum_type_1 + sum_type_49
+
+    def get_send_messages_number_sum(self, year_="all") -> int:
+        """统计自己总共发了多少条消息"""
+
+        sql = f"""
+            SELECT count(MsgSvrID)
+            from MSG
+            where isSender = 1
+            {"and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?" if year_ != "all" else ""}
+        """
+        result = None
+        if not self.open_flag:
+            return None
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql, [year_] if year_ != "all" else [])
+            result = self.cursor.fetchall()[0][0]
+        except sqlite3.DatabaseError:
+            logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
+        finally:
+            lock.release()
+        return result
+
+    def get_send_messages_number_by_hour(self, year_="all"):
+        """
+        统计每个（小时）时段自己总共发了多少消息，从最多到最少排序\n
+        return be like [('23', 9526), ('00', 7890), ('22', 7600),  ..., ('05', 29)]
+        """
+        sql = f"""
+            SELECT strftime('%H', CreateTime, 'unixepoch', 'localtime') as hour,count(MsgSvrID)
+            from (
+                SELECT MsgSvrID, CreateTime
+                FROM MSG
+                where isSender = 1
+                    {"and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?" if year_ != "all" else ""}
+            )
+            group by hour
+            order by count(MsgSvrID) desc
+        """
+        result = None
+        if not self.open_flag:
+            return None
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql, [year_] if year_ != "all" else [])
+            result = self.cursor.fetchall()
+        except sqlite3.DatabaseError:
+            logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
+        finally:
+            lock.release()
+        return result
+
     def close(self):
         if self.open_flag:
             try:
@@ -386,16 +536,18 @@ class Msg:
 
 
 if __name__ == '__main__':
-    db_path = "./Msg/MSG.db"
+    db_path = "./app/database/Msg/MSG.db"
     msg = Msg()
     msg.init_database()
-    result = msg.get_message_by_num('wxid_vtz9jk9ulzjt22', 9999999)
-    print(result)
-    result = msg.get_messages_by_type('wxid_vtz9jk9ulzjt22', 49)
-    for r in result:
-        type_ = r[2]
-        sub_type = r[3]
-        if type_ == 49 and sub_type == 57:
-            print(r)
-            print(r[-1])
-            break
+    print(msg.get_chatted_top_contacts(year_="2023"))
+    print(msg.get_chatted_top_contacts(year_="2023", contain_chatroom=True, top_n=20))
+    # result = msg.get_message_by_num("wxid_vtz9jk9ulzjt22", 9999999)
+    # print(result)
+    # result = msg.get_messages_by_type("wxid_vtz9jk9ulzjt22", 49)
+    # for r in result:
+    #     type_ = r[2]
+    #     sub_type = r[3]
+    #     if type_ == 49 and sub_type == 57:
+    #         print(r)
+    #         print(r[-1])
+    #         break
