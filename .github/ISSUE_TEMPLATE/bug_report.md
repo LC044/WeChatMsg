@@ -6,6 +6,8 @@ labels: ''
 assignees: ''
 
 ---
+**是否star**
+
 **是否检查过issues没有相同问题**
 
 **bug描述**
