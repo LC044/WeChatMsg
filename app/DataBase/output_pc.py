@@ -389,13 +389,13 @@ class ChildThread(QThread):
             displayname = MePC().name if is_send else self.contact.remark
         displayname = escape_js_and_html(displayname)
         if self.output_type == Output.HTML:
-            contentText = content.get('title')
+            contentText = escape_js_and_html(content.get('title'))
             emojiText = findall(r"(\[.+?\])", contentText)
             for emoji_text in emojiText:
                 if emoji_text in emoji:
                     contentText = contentText.replace(emoji_text, emoji[emoji_text])
             if refer_msg:
-                referText = f"{refer_msg.get('displayname')}：{refer_msg.get('content')}"
+                referText = f"{escape_js_and_html(refer_msg.get('displayname'))}：{escape_js_and_html(refer_msg.get('content'))}"
                 emojiText = findall(r"(\[.+?\])", referText)
                 for emoji_text in emojiText:
                     if emoji_text in emoji:
