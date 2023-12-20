@@ -21,9 +21,9 @@ wordcloud_width = 780
 wordcloud_height = 720
 
 
-def wordcloud(wxid, is_Annual_report=False, year='2023', who='1'):
+def wordcloud(wxid, year='all', who='1'):
     import jieba
-    txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT, is_Annual_report, year)
+    txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT, year)
     if not txt_messages:
         return {
             'chart_data': None,
@@ -75,10 +75,10 @@ def wordcloud(wxid, is_Annual_report=False, year='2023', who='1'):
     }
 
 
-def calendar_chart(wxid, is_Annual_report=False, year='2023'):
-    data_length = msg_db.get_messages_length_with_ta(wxid, is_Annual_report, year)  # 获取和他的聊天条数
+def calendar_chart(wxid, year='all'):
+    data_length = msg_db.get_messages_length_with_ta(wxid, year)  # 获取和他的聊天条数
     print(f'聊天总数：{data_length}')
-    calendar_data = msg_db.get_messages_by_days(wxid, is_Annual_report, year)
+    calendar_data = msg_db.get_messages_by_days(wxid, year)
 
     if not calendar_data:
         return False
@@ -99,7 +99,7 @@ def calendar_chart(wxid, is_Annual_report=False, year='2023'):
     date_num = (date2 - date1).days + 1
     print(date_num)
 
-    if is_Annual_report:
+    if year != 'all':
         calendar_days = year
         calendar_title = f'{year}年聊天情况'
     else:
@@ -127,7 +127,7 @@ def calendar_chart(wxid, is_Annual_report=False, year='2023'):
         )
     )
     return {
-        'chart_data': c,
+        'chart_data': c.dump_options_with_quotes(),
         'data_length': data_length,  # 和xx的聊天记录总数
         'max_date': formatted_date,
         'max_num': str(max_),
@@ -136,19 +136,23 @@ def calendar_chart(wxid, is_Annual_report=False, year='2023'):
     }
 
 
-def month_count(wxid, is_Annual_report=False, year='2023'):
+def month_count(wxid, year='all'):
     """
     每月聊天条数
     """
-    msg_data = msg_db.get_messages_by_month(wxid, is_Annual_report, year)
+    msg_data = msg_db.get_messages_by_month(wxid, year)
     y_data = list(map(lambda x: x[1], msg_data))
     x_axis = list(map(lambda x: x[0], msg_data))
     # 获取聊天的月数
-    if all(y > 0 for y in y_data):
-        conc = "我们这一年每个月都有在聊天"
+    if year != 'all':
+        if all(y > 0 for y in y_data):
+            conc = "我们这一年每个月都有在聊天"
+        else:
+            months_with_chat = sum(1 for y in y_data if y > 0)
+            conc = f"我们这一年有{months_with_chat}个月都在聊天"
     else:
         months_with_chat = sum(1 for y in y_data if y > 0)
-        conc = f"我们这一年有{months_with_chat}个月都在聊天"
+        conc = f"我们有{months_with_chat}个月都在聊天"
     print("聊天月数", conc)
     # 月平均聊天条数
     average_num = round(sum(y_data)/12)
@@ -194,11 +198,11 @@ def month_count(wxid, is_Annual_report=False, year='2023'):
     }
 
 
-def hour_count(wxid, is_Annual_report=False, year='2023'):
+def hour_count(wxid, year='all'):
     """
     小时计数聊天条数
     """
-    msg_data = msg_db.get_messages_by_hour(wxid, is_Annual_report, year)
+    msg_data = msg_db.get_messages_by_hour(wxid, year)
     print(msg_data)
     y_data = list(map(lambda x: x[1], msg_data))
     x_axis = list(map(lambda x: x[0], msg_data))
@@ -232,8 +236,8 @@ def hour_count(wxid, is_Annual_report=False, year='2023'):
             )
         )
     )
-    late_data = msg_db.get_lateDay_messages(wxid, is_Annual_report, year)  # 最晚的消息记录
-    early_data = msg_db.get_earlyDay_messages(wxid, is_Annual_report, year)  # 早上最早的记录
+    late_data = msg_db.get_lateDay_messages(wxid, year)  # 最晚的消息记录
+    early_data = msg_db.get_earlyDay_messages(wxid, year)  # 早上最早的记录
     print(late_data)
     print(early_data)
     return {
@@ -245,9 +249,9 @@ def hour_count(wxid, is_Annual_report=False, year='2023'):
     }
 
 
-def emoji_count(wxid, is_Annual_report=False, year='2023'):
+def emoji_count(wxid, year='all'):
     # 最常发的表情
-    txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT, is_Annual_report, year)
+    txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT, year)
     me_txt_messages = ''.join(map(lambda x: x[7] if x[4] == 1 else '', txt_messages))
     ta_txt_messages = ''.join(map(lambda x: x[7] if x[4] == 0 else '', txt_messages))
 
@@ -296,16 +300,16 @@ class Analysis:
 if __name__ == '__main__':
     msg_db.init_database(path='../DataBase/Msg/MSG.db')
     # w = wordcloud('wxid_0o18ef858vnu22')
-    # w_data = wordcloud('wxid_27hqbq7vx5hf22', True, '2023')
+    w_data = wordcloud('wxid_27hqbq7vx5hf22', '2023')
     # # print(w_data)
     # # w['chart_data'].render("./data/聊天统计/wordcloud.html")
-    # c = calendar_chart('wxid_27hqbq7vx5hf22', False, '2023')
+    c = calendar_chart('wxid_27hqbq7vx5hf22', '2023')
     # c['chart_data'].render("./data/聊天统计/calendar.html")
     # # print('c:::', c)
-    # m = month_count('wxid_27hqbq7vx5hf22', False, '2023')
+    m = month_count('wxid_27hqbq7vx5hf22', False, '2023')
     # m['chart_data'].render("./data/聊天统计/month_num.html")
-    # h = hour_count('wxid_27hqbq7vx5hf22',is_Annual_report=False)
+    # h = hour_count('wxid_27hqbq7vx5hf22')
     # h['chart_data'].render("./data/聊天统计/hour_count.html")
 
-    h = emoji_count('wxid_27hqbq7vx5hf22',is_Annual_report=False)
+    h = emoji_count('wxid_27hqbq7vx5hf22')
     # h['chart_data'].render("./data/聊天统计/hour_count.html")
