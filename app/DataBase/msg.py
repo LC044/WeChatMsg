@@ -471,6 +471,32 @@ class Msg:
         # result.sort(key=lambda x: x[5])
         return result
 
+    def get_emoji_Img(self, username_, year_='all'):
+        sql = f"""
+            SELECT StrContent, count(StrContent)
+            from MSG
+            where StrTalker = ? and isSender = ?
+            {"and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?" if year_ != "all" else ""} and Type=47
+            group by StrContent
+            order by Count(StrContent) desc
+            limit 3
+        """
+        me_result = None
+        ta_result = None
+        if not self.open_flag:
+            return None, None
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql, [username_, 1, year_] if year_ != "all" else [username_, 1])
+            me_result = self.cursor.fetchall()
+            self.cursor.execute(sql, [username_, 0, year_] if year_ != "all" else [username_, 0])
+            ta_result = self.cursor.fetchall()
+        except sqlite3.DatabaseError:
+            logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
+        finally:
+            lock.release()
+        return me_result, ta_result
+
     def get_first_time_of_message(self, username_):
         if not self.open_flag:
             return None

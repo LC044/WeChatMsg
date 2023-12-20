@@ -1,5 +1,6 @@
 from collections import Counter
 from datetime import datetime
+import re 
 
 from PyQt5.QtCore import QFile, QTextStream, QIODevice
 
@@ -11,6 +12,7 @@ from app.DataBase import msg_db, MsgType
 from pyecharts import options as opts
 from pyecharts.charts import WordCloud, Calendar, Bar, Line
 from app.resources import resource_rc
+from app.util.emoji import get_emoji
 
 var = resource_rc.qt_resource_name
 charts_width = 800
@@ -243,6 +245,50 @@ def hour_count(wxid, is_Annual_report=False, year='2023'):
     }
 
 
+def emoji_count(wxid, is_Annual_report=False, year='2023'):
+    # 最常发的表情
+    txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT, is_Annual_report, year)
+    me_txt_messages = ''.join(map(lambda x: x[7] if x[4] == 1 else '', txt_messages))
+    ta_txt_messages = ''.join(map(lambda x: x[7] if x[4] == 0 else '', txt_messages))
+
+    pattern = re.compile(r"\[.+?\]")
+    MeEmoji = re.findall(pattern, me_txt_messages)
+    TaEmoji = re.findall(pattern, ta_txt_messages)
+
+    # 按照出现次数统计
+    MeEmoji_num = Counter(MeEmoji)
+    TaEmoji_num = Counter(TaEmoji)
+
+    # 打印统计结果
+    ta_total_emoji_num = len(TaEmoji)
+    me_total_emoji_num = len(MeEmoji)
+    ta_max_emoji = TaEmoji_num.most_common(10)
+    me_max_emoji = MeEmoji_num.most_common(10)
+    print("ta发的表情数：", len(TaEmoji))
+    print("我发的表情数：", len(MeEmoji))
+    print("---"*10)
+    print("ta最常用的 10 个表情：\n", TaEmoji_num.most_common(10))
+    print("---"*10)
+    print("我最常用的 10 个表情：\n", MeEmoji_num.most_common(10))
+
+    # 最常发的表情包图片
+    MeImgList, TaImgList = msg_db.get_emoji_Img(wxid, year)
+    MeImgDict = {}
+    TaImgDict = {}
+    for xml, num in MeImgList:
+        MeImgDict[get_emoji(xml)] = num
+    for xml, num in TaImgList:
+        TaImgDict[get_emoji(xml)] = num
+    return {
+        'ta_total_emoji_num': ta_total_emoji_num,
+        'me_total_emoji_num': me_total_emoji_num,
+        'ta_max_emoji': ta_max_emoji,
+        'me_max_emoji': me_max_emoji,
+        'MeImgDict': MeImgDict,  # 三张图片地址+数量，字典格式，path为key
+        'MeImgDict': MeImgDict
+    }
+
+
 class Analysis:
     pass
 
@@ -250,13 +296,16 @@ class Analysis:
 if __name__ == '__main__':
     msg_db.init_database(path='../DataBase/Msg/MSG.db')
     # w = wordcloud('wxid_0o18ef858vnu22')
-    w_data = wordcloud('wxid_27hqbq7vx5hf22', True, '2023')
-    # print(w_data)
-    # w['chart_data'].render("./data/聊天统计/wordcloud.html")
-    c = calendar_chart('wxid_27hqbq7vx5hf22', False, '2023')
-    c['chart_data'].render("./data/聊天统计/calendar.html")
-    # print('c:::', c)
-    m = month_count('wxid_27hqbq7vx5hf22', False, '2023')
-    m['chart_data'].render("./data/聊天统计/month_num.html")
-    h = hour_count('wxid_27hqbq7vx5hf22',is_Annual_report=False)
-    h['chart_data'].render("./data/聊天统计/hour_count.html")
+    # w_data = wordcloud('wxid_27hqbq7vx5hf22', True, '2023')
+    # # print(w_data)
+    # # w['chart_data'].render("./data/聊天统计/wordcloud.html")
+    # c = calendar_chart('wxid_27hqbq7vx5hf22', False, '2023')
+    # c['chart_data'].render("./data/聊天统计/calendar.html")
+    # # print('c:::', c)
+    # m = month_count('wxid_27hqbq7vx5hf22', False, '2023')
+    # m['chart_data'].render("./data/聊天统计/month_num.html")
+    # h = hour_count('wxid_27hqbq7vx5hf22',is_Annual_report=False)
+    # h['chart_data'].render("./data/聊天统计/hour_count.html")
+
+    h = emoji_count('wxid_27hqbq7vx5hf22',is_Annual_report=False)
+    # h['chart_data'].render("./data/聊天统计/hour_count.html")

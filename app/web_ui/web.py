@@ -89,10 +89,18 @@ def month():
 @app.route('/hour_count')
 def hour():
     wxid = contact.wxid
-    world_cloud_data = analysis.month_count(wxid, is_Annual_report=True) 
+    world_cloud_data = analysis.hour_count(wxid, is_Annual_report=True) 
     with open('hour_count.html', 'w', encoding='utf-8') as f:
         f.write(render_template('hour_count.html', **world_cloud_data))
     return render_template('hour_count.html', **world_cloud_data)
+
+@app.route('/emoji_count')
+def emoji_count():
+    wxid = contact.wxid
+    world_cloud_data = analysis.emoji_count(wxid, is_Annual_report=True) 
+    with open('emoji_count.html', 'w', encoding='utf-8') as f:
+        f.write(render_template('emoji_count.html', **world_cloud_data))
+    return render_template('emoji_count.html', **world_cloud_data)
 
 
 @app.route('/wordcloud')
