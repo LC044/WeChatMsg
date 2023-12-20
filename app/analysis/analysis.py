@@ -22,6 +22,18 @@ wordcloud_height = 720
 
 
 def wordcloud(wxid, year='all', who='1'):
+    '''
+        词云分析
+        parameters:
+            year: 默认分析全部年份，如果自定义，格式为'2023'，
+            who: 默认为1，即自己发送的记录,否则为0，对方发送的记录
+        
+        returns:
+            chart_data: 词云数据
+            keyword: 关键词
+            max_num: 说的最多的数量
+            dialogs：部分关键词对话
+    '''
     import jieba
     txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT, year)
     if not txt_messages:
@@ -76,6 +88,19 @@ def wordcloud(wxid, year='all', who='1'):
 
 
 def calendar_chart(wxid, year='all'):
+    '''
+        日历图分析
+        parameters:
+            year: 默认分析全部年份，如果自定义，格式为'2023'
+        
+        returns:
+            chart_data: 图表数据
+            data_length: 和对方的聊天记录总数
+            max_date: 聊天最多的一天日期
+            max_num: 聊天最多的一天记录条数
+            date_num: 聊天天数
+            dialogs: 最早聊天记录
+    '''
     data_length = msg_db.get_messages_length_with_ta(wxid, year)  # 获取和他的聊天条数
     print(f'聊天总数：{data_length}')
     calendar_data = msg_db.get_messages_by_days(wxid, year)
@@ -132,14 +157,25 @@ def calendar_chart(wxid, year='all'):
         'max_date': formatted_date,
         'max_num': str(max_),
         'date_num': str(date_num),
-        'dialogs': msg_db.get_first_time_of_message(wxid)  # 非年度报告使用
+        'dialogs': msg_db.get_first_time_of_message(wxid)
     }
 
 
 def month_count(wxid, year='all'):
-    """
-    每月聊天条数
-    """
+    '''
+        每月聊天条数
+        parameters:
+            year: 默认分析全部年份，如果自定义，格式为'2023'，
+        
+        returns:
+            chart_data: 图表数据
+            txt: 文字描述,
+            month_average_num: 月平均聊天数量
+            max_num_month: 聊天最多的一个月
+            max_num: 聊天最多的月的记录条数
+            min_num_month: 聊天最少的一个月
+            min_num: 聊天最少的月的记录条数
+    '''
     msg_data = msg_db.get_messages_by_month(wxid, year)
     y_data = list(map(lambda x: x[1], msg_data))
     x_axis = list(map(lambda x: x[0], msg_data))
@@ -199,9 +235,18 @@ def month_count(wxid, year='all'):
 
 
 def hour_count(wxid, year='all'):
-    """
-    小时计数聊天条数
-    """
+    '''
+        小时计数聊天条数
+        parameters:
+            year: 默认分析全部年份，如果自定义，格式为'2023'，
+        
+        returns:
+            chart_data: 图表数据
+            max_num_hour: 聊天最多的时间段
+            max_num: 该时间段聊天条数
+            late_data: 聊天晚的时间和聊天数据
+            early_data: 聊天最早的时间和聊天数据
+    '''
     msg_data = msg_db.get_messages_by_hour(wxid, year)
     print(msg_data)
     y_data = list(map(lambda x: x[1], msg_data))
@@ -250,6 +295,19 @@ def hour_count(wxid, year='all'):
 
 
 def emoji_count(wxid, year='all'):
+    '''
+        表情和表情包统计
+        parameters:
+            year: 默认分析全部年份，如果自定义，格式为'2023'，
+        
+        returns:
+            ta_total_emoji_num: TA发送的表情数量
+            me_total_emoji_num: 我发送的表情数量
+            ta_max_emoji: 他发送的表情数量最多的10个：格式为 [(表情,数量)]
+            me_max_emoji: 我发送的表情数量最多的10个：格式为 [(表情,数量)]
+            MeImgDict: 我常发的3张表情包图片地址+数量，字典格式，path为key
+            MeImgDict: TA常发的3张表情包图片地址+数量，字典格式，path为key
+    '''
     # 最常发的表情
     txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT, year)
     me_txt_messages = ''.join(map(lambda x: x[7] if x[4] == 1 else '', txt_messages))
