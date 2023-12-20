@@ -8,8 +8,7 @@ description = [
     '2. 支持显示聊天界面<br>',
     '3. 支持导出聊天记录<br>&nbsp;&nbsp;&nbsp;&nbsp;* csv<br>&nbsp;&nbsp;&nbsp;&nbsp;* html<br>&nbsp;&nbsp;&nbsp;&nbsp;* '
     'txt<br>',
-    '4. 查找联系人<br>',
-    '5. 生成年度报告——圣诞特别版<br>',
+    '4. 生成年度报告——圣诞特别版<br>',
 ]
 about = f'''
     版本：{version}<br>
