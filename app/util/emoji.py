@@ -166,6 +166,8 @@ def get_most_emoji(messages):
     for msg in messages:
         str_content = msg[7]
         emoji_info = parser_xml(str_content)
+        if emoji_info is None:
+            continue
         md5 = emoji_info['md5']
         if not md5:
             continue
@@ -231,8 +233,9 @@ if __name__ == '__main__':
     # print(res1, res1['md5'])
     # download(res1['cdnurl'], "./data/emoji/", res1['md5'])
     # download(res1['thumburl'], "./data/emoji/", res1['md5'], True)
-    print(Emotion().get_emoji_url("144714f65c98844128ac3a1042445d9a", True))
-    print(Emotion().get_emoji_url("144714f65c98844128ac3a1042445d9a", False))
+    # print(Emotion().get_emoji_url("144714f65c98844128ac3a1042445d9a", True))
+    # print(Emotion().get_emoji_url("144714f65c98844128ac3a1042445d9a", False))
+    print(parser_xml(""))
     # print(get_emoji(xml_string, True))
     # print(get_emoji(xml_string, False))
 #     http://vweixinf.tc.qq.com/110/20403/stodownload?m=3a4d439aba02dce4834b2c54e9f15597&filekey=3043020101042f302d02016e0402534804203361346434333961626130326463653438333462326335346539663135353937020213f0040d00000004627466730000000131&hy=SH&storeid=323032313037323030373236313130303039653236646365316535316534383236386234306230303030303036653033303034666233&ef=3&bizid=1022
