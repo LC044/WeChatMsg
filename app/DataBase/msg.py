@@ -124,6 +124,33 @@ class Msg:
             lock.release()
         return result[0]
 
+    def get_messages_length_with_ta(self, username_, is_Annual_report_=False, year_='2023'):
+        if is_Annual_report_:
+            sql = '''
+                select count(*)
+                from MSG
+                WHERE StrTalker = ? AND strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ? 
+            '''
+        else:
+            sql = '''
+            select count(*)
+            from MSG
+        '''
+        if not self.open_flag:
+            return None
+        try:
+            lock.acquire(True)
+            if is_Annual_report_:
+                self.cursor.execute(sql, [username_,  year_])
+            else:
+                self.cursor.execute(sql, [username_])
+            result = self.cursor.fetchone()
+        except Exception as e:
+            result = None
+        finally:
+            lock.release()
+        return result[0]
+
     def get_message_by_num(self, username_, local_id):
         sql = '''
                 select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
@@ -346,6 +373,96 @@ class Msg:
                 self.cursor.execute(sql, [username_, year_])
             else:
                 self.cursor.execute(sql, [username_])
+            result = self.cursor.fetchall()
+        except sqlite3.DatabaseError:
+            logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
+        finally:
+            lock.release()
+        # result.sort(key=lambda x: x[5])
+        return result
+
+    def get_lateDay_messages(self, username_, is_Annual_report_=False, year_='2023'):
+        if is_Annual_report_:
+            sql = '''
+                SELECT strftime('%Y-%m-%d %H:%M:%S', CreateTime, 'unixepoch', 'localtime') as time, IsSender, Status, StrContent
+                from(
+                    SELECT CreateTime, strftime('%H:%M:%S', CreateTime, 'unixepoch', 'localtime') as time, IsSender, Status, StrContent
+                    FROM MSG
+                    WHERE StrTalker = ? AND strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ? 
+                        AND (strftime('%H:%M:%S', CreateTime, 'unixepoch', 'localtime') > ?
+                        or strftime('%H:%M:%S', CreateTime, 'unixepoch', 'localtime') < ? ) AND Type=1
+                    ORDER BY CASE
+                        WHEN strftime('%H:%M:%S', CreateTime, 'unixepoch', 'localtime') < ? THEN 0
+                        ELSE 1
+                    END, time DESC
+                    LIMIT 4
+                    )
+                '''
+        else:
+            sql = '''
+                SELECT strftime('%Y-%m-%d %H:%M:%S', CreateTime, 'unixepoch', 'localtime') as time, IsSender, Status, StrContent
+                from(
+                    SELECT CreateTime, strftime('%H:%M:%S', CreateTime, 'unixepoch', 'localtime') as time, IsSender, Status, StrContent
+                    FROM MSG
+                    WHERE StrTalker = ? AND (strftime('%H:%M:%S', CreateTime, 'unixepoch', 'localtime') > ?
+                        or strftime('%H:%M:%S', CreateTime, 'unixepoch', 'localtime') < ? ) AND Type=1
+                    ORDER BY CASE
+                        WHEN strftime('%H:%M:%S', CreateTime, 'unixepoch', 'localtime') < ? THEN 0
+                        ELSE 1
+                    END, time DESC
+                    LIMIT 4
+                    )
+            '''
+        result = None
+        if not self.open_flag:
+            return None
+        try:
+            lock.acquire(True)
+            if is_Annual_report_:
+                self.cursor.execute(sql, [username_, year_, '21:00:00', '05:00:00', '05:00:00'])
+            else:
+                self.cursor.execute(sql, [username_, '21:00:00', '05:00:00', '05:00:00'])
+            result = self.cursor.fetchall()
+        except sqlite3.DatabaseError:
+            logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
+        finally:
+            lock.release()
+        # result.sort(key=lambda x: x[5])
+        return result
+    
+    def get_earlyDay_messages(self, username_, is_Annual_report_=False, year_='2023'):
+        if is_Annual_report_:
+            sql = '''
+                SELECT strftime('%Y-%m-%d %H:%M:%S', CreateTime, 'unixepoch', 'localtime') as strtime, IsSender, Status, StrContent
+                from (
+                    SELECT CreateTime, strftime('%H:%M:%S', CreateTime, 'unixepoch', 'localtime') as time, IsSender, Status, StrContent
+                    FROM MSG
+                    WHERE StrTalker = ? AND strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ? 
+                        AND strftime('%H:%M:%S', CreateTime, 'unixepoch', 'localtime') > ? AND Type=1
+                    ORDER BY time
+                    LIMIT 4
+                    )
+                '''
+        else:
+            sql = '''
+                SELECT strftime('%Y-%m-%d %H:%M:%S', CreateTime, 'unixepoch', 'localtime') as strtime, IsSender, Status, StrContent
+                from (
+                    SELECT CreateTime, strftime('%H:%M:%S', CreateTime, 'unixepoch', 'localtime') as time, IsSender, Status, StrContent
+                    FROM MSG
+                    WHERE StrTalker = ? AND strftime('%H:%M:%S', CreateTime, 'unixepoch', 'localtime') > ? AND Type=1
+                    ORDER BY time
+                    LIMIT 4
+                    )
+            '''
+        result = None
+        if not self.open_flag:
+            return None
+        try:
+            lock.acquire(True)
+            if is_Annual_report_:
+                self.cursor.execute(sql, [username_, year_, '05:00:00'])
+            else:
+                self.cursor.execute(sql, [username_, '05:00:00'])
             result = self.cursor.fetchall()
         except sqlite3.DatabaseError:
             logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')

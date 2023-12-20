@@ -68,6 +68,33 @@ def one(who):
     return render_template('wordcloud.html', **world_cloud_data, who=who)
 
 
+@app.route('/calendar')
+def calendar():
+    wxid = contact.wxid
+    world_cloud_data = analysis.calendar_chart(wxid, is_Annual_report=True)  
+    with open('calendar.html', 'w', encoding='utf-8') as f:
+        f.write(render_template('calendar.html', **world_cloud_data))
+    return render_template('calendar.html', **world_cloud_data)
+
+
+@app.route('/month_count')
+def month():
+    wxid = contact.wxid
+    world_cloud_data = analysis.month_count(wxid, is_Annual_report=True) 
+    with open('month_count.html', 'w', encoding='utf-8') as f:
+        f.write(render_template('month_count.html', **world_cloud_data))
+    return render_template('month_count.html', **world_cloud_data)
+
+
+@app.route('/hour_count')
+def hour():
+    wxid = contact.wxid
+    world_cloud_data = analysis.month_count(wxid, is_Annual_report=True) 
+    with open('hour_count.html', 'w', encoding='utf-8') as f:
+        f.write(render_template('hour_count.html', **world_cloud_data))
+    return render_template('hour_count.html', **world_cloud_data)
+
+
 @app.route('/wordcloud')
 def cone():
     # wxid = contact.wxid
