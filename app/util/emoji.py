@@ -24,6 +24,7 @@ if not os.path.exists('./data'):
 if not os.path.exists(root_path):
     os.mkdir(root_path)
 
+
 @log
 def get_image_format(header):
     # 定义图片格式的 magic numbers
@@ -40,6 +41,7 @@ def get_image_format(header):
             return image_format
     # 如果无法识别格式，返回 None
     return None
+
 
 @log
 def parser_xml(xml_string):
@@ -69,8 +71,10 @@ def parser_xml(xml_string):
         'md5': (md5 if md5 else androidmd5).lower(),
     }
 
+
 lock = threading.Lock()
 db_path = "./app/Database/Msg/Emotion.db"
+
 
 class Emotion:
     def __init__(self):
@@ -137,6 +141,7 @@ class Emotion:
     def __del__(self):
         self.close()
 
+
 @log
 def download(url, output_dir, name, thumb=False):
     if not url:
@@ -154,6 +159,31 @@ def download(url, output_dir, name, thumb=False):
     with open(output_path, 'wb') as f:
         f.write(resp.content)
     return output_path
+
+
+def get_most_emoji(messages):
+    dic = {}
+    for msg in messages:
+        str_content = msg[7]
+        emoji_info = parser_xml(str_content)
+        md5 = emoji_info['md5']
+        if not md5:
+            continue
+        try:
+            dic[md5][0] += 1
+        except:
+            dic[md5] = [1, emoji_info]
+    md5_nums = [(num[0], key, num[1]) for key, num in dic.items()]
+    md5_nums.sort(key=lambda x: x[0],reverse=True)
+    if not md5_nums:
+        return ''
+    md5 = md5_nums[0][1]
+    num = md5_nums[0][0]
+    emoji_info = md5_nums[0][2]
+    url = emoji_info['cdnurl']
+    if not url or url == "":
+        url = Emotion().get_emoji_url(md5, False)
+    return url, num
 
 
 def get_emoji(xml_string, thumb=True, output_path=root_path) -> str:

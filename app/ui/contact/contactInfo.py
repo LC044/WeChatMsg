@@ -6,7 +6,7 @@ from app.DataBase.output_pc import Output
 from app.ui.Icon import Icon
 from .contactInfoUi import Ui_Form
 from .userinfo import userinfo
-from ...person import ContactPC
+from ...person import ContactPC, MePC
 from .export_dialog import ExportDialog
 
 
@@ -78,10 +78,11 @@ class ContactInfo(QWidget, Ui_Form):
             )
             return
         self.contact.save_avatar()
+        MePC().save_avatar()
         self.report_thread = ReportThread(self.contact)
         self.report_thread.okSignal.connect(lambda x: QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314")))
         self.report_thread.start()
-        QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314/"))
+        QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314/christmas"))
 
     def emotionale_Analysis(self):
         if 'room' in self.contact.wxid:

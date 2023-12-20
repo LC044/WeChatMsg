@@ -38,6 +38,18 @@ class MePC:
         else:
             self.avatar.loadFromData(img_bytes, format='jfif')
 
+    def save_avatar(self, path=None):
+        if not self.avatar:
+            return
+        if path:
+            save_path = path
+        else:
+            os.makedirs('./data/avatar', exist_ok=True)
+            save_path = os.path.join(f'data/avatar/', self.wxid + '.png')
+        self.avatar_path = save_path
+        self.avatar.save(save_path)
+        print('保存头像', save_path)
+
 
 class ContactPC:
     def __init__(self, contact_info: Dict):
