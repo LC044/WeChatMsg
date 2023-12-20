@@ -1,4 +1,4 @@
-version = '0.2.9'
+version = '1.0.0'
 contact = '701805520'
 github = 'https://github.com/LC044/WeChatMsg'
 website = 'https://memotrace.lc044.love/'
@@ -9,7 +9,7 @@ description = [
     '3. 支持导出聊天记录<br>&nbsp;&nbsp;&nbsp;&nbsp;* csv<br>&nbsp;&nbsp;&nbsp;&nbsp;* html<br>&nbsp;&nbsp;&nbsp;&nbsp;* '
     'txt<br>',
     '4. 查找联系人<br>',
-    '5. 生成年度报告<br>',
+    '5. 生成年度报告——圣诞特别版<br>',
 ]
 about = f'''
     版本：{version}<br>
