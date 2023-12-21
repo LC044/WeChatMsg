@@ -10,7 +10,7 @@ class ScrollBar(QScrollBar):
               border-width: 0px;
               border: none;
               background:rgba(133, 135, 138, 0);
-              width:2px;
+              width:4px;
               margin: 0px 0px 0px 0px;
           }
           QScrollBar::handle:vertical {

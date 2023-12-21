@@ -42,7 +42,7 @@ def christmas():
         '正常作息': {'06:00', "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00",
                      "17:00", "18:00", "19:00", "20:00", "21:00"},
     }
-    time_, num = msg_data[0]
+    time_, num = msg_data[0] if msg_data else '', 0
     chat_time = f"凌晨{time_}" if time_ in {'00:00', '01:00', '02:00', '03:00', '04:00', '05:00'} else time_
     label = '夜猫子'
     for key, item in desc.items():
@@ -63,28 +63,29 @@ def christmas():
         month_data.sort(key=lambda x: x[1])
         max_month, max_num = month_data[-1]
         min_month, min_num = month_data[0]
-        min_month = min_month[-2:].lstrip('0')+'月'
-        max_month = max_month[-2:].lstrip('0')+'月'
+        min_month = min_month[-2:].lstrip('0') + '月'
+        max_month = max_month[-2:].lstrip('0') + '月'
     else:
         max_month, max_num = '月份', 0
         min_month, min_num = '月份', 0
     month_data = {
-        'year':'2023',
-        'total_msg_num':msg_db.get_messages_number(contact.wxid,'2023'),
-        'max_month':max_month,
-        'min_month':min_month,
-        'max_month_num':max_num,
-        'min_month_num':min_num,
+        'year': '2023',
+        'total_msg_num': msg_db.get_messages_number(contact.wxid, '2023'),
+        'max_month': max_month,
+        'min_month': min_month,
+        'max_month_num': max_num,
+        'min_month_num': min_num,
     }
-    calendar_data = analysis.calendar_chart(contact.wxid,True,year='2023')
-    emoji_msgs = msg_db.get_messages_by_type(contact.wxid,47,year_='2023')
-    url,num = get_most_emoji(emoji_msgs)
+    calendar_data = analysis.calendar_chart(contact.wxid, True, year='2023')
+    emoji_msgs = msg_db.get_messages_by_type(contact.wxid, 47, year_='2023')
+    url, num = get_most_emoji(emoji_msgs)
     emoji_data = {
-        'emoji_total_num':len(emoji_msgs),
-        'emoji_url':url,
-        'emoji_num':num,
+        'emoji_total_num': len(emoji_msgs),
+        'emoji_url': url,
+        'emoji_num': num,
     }
-    return render_template("christmas.html", **data, **wordcloud_cloud_data, **time_data,**month_data,**calendar_data,**emoji_data)
+    return render_template("christmas.html", **data, **wordcloud_cloud_data, **time_data, **month_data, **calendar_data,
+                           **emoji_data)
 
 
 # @app.route("/")

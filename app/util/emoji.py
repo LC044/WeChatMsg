@@ -178,7 +178,7 @@ def get_most_emoji(messages):
     md5_nums = [(num[0], key, num[1]) for key, num in dic.items()]
     md5_nums.sort(key=lambda x: x[0],reverse=True)
     if not md5_nums:
-        return ''
+        return '',0
     md5 = md5_nums[0][1]
     num = md5_nums[0][0]
     emoji_info = md5_nums[0][2]

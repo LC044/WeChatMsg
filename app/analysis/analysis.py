@@ -117,13 +117,13 @@ def wordcloud_christmas(wxid, year='2023'):
         .add(series_name="聊天文字", data_pair=text_data, word_size_range=[5, 40])
     )
     # return w.render_embed()
-    dialogs = msg_db.get_messages_by_keyword(wxid, keyword, num=3, max_len=12,year_=year)
+    dialogs = msg_db.get_messages_by_keyword(wxid, keyword, num=3, max_len=12, year_=year)
 
     return {
         'wordcloud_chart_data': w.dump_options_with_quotes(),
         'keyword': keyword,
         'keyword_max_num': str(max_num),
-        'dialogs':dialogs ,
+        'dialogs': dialogs,
         'total_num': total_msg_len,
     }
 
@@ -133,11 +133,14 @@ def calendar_chart(wxid, is_Annual_report=False, year='2023'):
         calendar_data = msg_db.get_messages_by_days(wxid, is_Annual_report, year)
     except:
         return {
-        'calendar_chart_data': None,
-        'chat_days':0,
-    }
+            'calendar_chart_data': None,
+            'chat_days': 0,
+        }
     if not calendar_data:
-        return False
+        return {
+            'calendar_chart_data': None,
+            'chat_days': 0,
+        }
     min_ = min(map(lambda x: x[1], calendar_data))
     max_ = max(map(lambda x: x[1], calendar_data))
     start_date_ = calendar_data[0][0]
@@ -169,7 +172,7 @@ def calendar_chart(wxid, is_Annual_report=False, year='2023'):
     )
     return {
         'calendar_chart_data': c.dump_options_with_quotes(),
-        'chat_days':len(calendar_data),
+        'chat_days': len(calendar_data),
     }
 
 
