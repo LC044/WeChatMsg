@@ -1028,7 +1028,7 @@ input {
 </head>
 <body>
 <div class="container">
-    <div class="content" id="chat-container">
+    <div class="content" id="chat-container" onscroll="checkScroll()">
         <div class="item item-center"><span>昨天 12:35</span></div>
         <div class="item item-center"><span>你已添加了凡繁烦，现在可以开始聊天了。</span></div>
         <div class="item item-left">
@@ -1080,8 +1080,9 @@ html_end = '''
 
     const itemsPerPage = 100; // 每页显示的元素个数
     let currentPage = 1; // 当前页
-
+var reachedBottom = false; // 到达底部的标记
     function renderPage(page) {
+         reachedBottom = false;
         const container = document.getElementById('chat-container');
         container.innerHTML = ''; // 清空容器
 
@@ -1285,6 +1286,23 @@ html_end = '''
         }
     }
 
+
+  function checkScroll() {
+    var chatContainer = document.getElementById("chat-container");
+
+    // 检查滚动条是否滑到底部
+    if (chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight) {
+      // 如果滚动条在底部
+      if (!reachedBottom) {
+        // 设置标记并返回
+        reachedBottom = true;
+        return;
+      }
+      else{
+        nextPage();
+      }
+    }
+  }
     // 初始化页面
     renderPage(currentPage);
 
