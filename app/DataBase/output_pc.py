@@ -337,7 +337,7 @@ class ChildThread(QThread):
         if self.output_type == Output.HTML:
             emoji_path = get_emoji(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
             if emoji_path == "":
-                shutil.copy(f"{os.path.abspath('.')}/app/resources/icons/404.png", origin_docx_path + '/emoji/404.png')
+                # todo 改为网络404图片
                 emoji_path = "./emoji/404.png"
             else:
                 emoji_path = './emoji/' + os.path.basename(emoji_path)
