@@ -15,7 +15,7 @@ from ..util import path
 import shutil
 
 from ..util.compress_content import parser_reply
-from ..util.emoji import get_emoji
+from ..util.emoji import get_emoji, get_emoji_path
 
 os.makedirs('./data/聊天记录', exist_ok=True)
 
@@ -131,17 +131,33 @@ class Output(QThread):
             self.Child = ChildThread(self.contact, type_=self.output_type, message_types=self.message_types)
             self.Child.progressSignal.connect(self.progress)
             self.Child.rangeSignal.connect(self.rangeSignal)
-            self.Child.okSignal.connect(self.okSignal)
+            self.Child.okSignal.connect(self.count_finish_num)
             self.Child.start()
+            # 语音消息单独的线程
+            self.output_media = OutputMedia(self.contact)
+            self.output_media.okSingal.connect(self.count_finish_num)
+            self.output_media.progressSignal.connect(self.progress)
+            self.output_media.start()
+            # emoji消息单独的线程
+            self.output_emoji = OutputEmoji(self.contact)
+            self.output_emoji.okSingal.connect(self.count_finish_num)
+            self.output_emoji.progressSignal.connect(self.progress)
+            self.output_emoji.start()
+            self.total_num = 3
+
+    def count_finish_num(self, num):
+        self.num += 1
+        if self.num == self.total_num:
+            self.okSignal.emit(1)
 
     def cancel(self):
         self.requestInterruption()
 
 
-def modify_audio_metadata(audiofile, new_artist): # 修改音频元数据中的“创作者”标签
+def modify_audio_metadata(audiofile, new_artist):  # 修改音频元数据中的“创作者”标签
     return
     audiofile = load(audiofile)
-    
+
     # 检查文件是否有标签
     if audiofile.tag is None:
         audiofile.initTag()
@@ -246,7 +262,7 @@ class ChildThread(QThread):
             try:
                 os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
             except:
-                print("网络图片",image_path)
+                print("网络图片", image_path)
                 pass
             image_path = image_path.replace('\\', '/')
             doc.write(
@@ -280,7 +296,7 @@ class ChildThread(QThread):
         displayname = escape_js_and_html(displayname)
         if self.output_type == Output.HTML:
             try:
-                audio_path = media_msg_db.get_audio(msgSvrId, output_path=origin_docx_path + "/voice")
+                audio_path = media_msg_db.get_audio_path(msgSvrId, output_path=origin_docx_path + "/voice")
                 audio_path = audio_path.replace('/', '\\')
                 modify_audio_metadata(audio_path, displayname)
                 os.utime(audio_path, (timestamp, timestamp))
@@ -318,7 +334,7 @@ class ChildThread(QThread):
             displayname = MePC().name if is_send else self.contact.remark
         displayname = escape_js_and_html(displayname)
         if self.output_type == Output.HTML:
-            emoji_path = get_emoji(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
+            emoji_path = get_emoji_path(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
             emoji_path = './emoji/' + os.path.basename(emoji_path)
             doc.write(
                 f'''{{ type:{3}, text: '{emoji_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
@@ -388,7 +404,8 @@ class ChildThread(QThread):
         str_time = message[8]
         timestamp = message[5]
         is_chatroom = 1 if self.contact.is_chatroom else 0
-        str_content = str_content.replace('<![CDATA[', "").replace(' <a href="weixin://revoke_edit_click">重新编辑</a>]]>', "")
+        str_content = str_content.replace('<![CDATA[', "").replace(
+            ' <a href="weixin://revoke_edit_click">重新编辑</a>]]>', "")
         res = findall('(</{0,1}(img|revo|_wc_cus|a).*?>)', str_content)
         for xmlstr, b in res:
             str_content = str_content.replace(xmlstr, "")
@@ -495,13 +512,13 @@ class ChildThread(QThread):
             stream.setCodec('utf-8')
             content = stream.readAll()
             file.close()
-            html_head,html_end = content.split('/*注意看这是分割线*/')
+            html_head, html_end = content.split('/*注意看这是分割线*/')
         f = open(filename, 'w', encoding='utf-8')
         f.write(html_head.replace("<title>Chat Records</title>", f"<title>{self.contact.remark}</title>"))
         MePC().avatar.save(os.path.join(f"{origin_docx_path}/avatar/{MePC().wxid}.png"))
         if self.contact.is_chatroom:
             for message in messages:
-                if message[4]: # is_send
+                if message[4]:  # is_send
                     continue
                 try:
                     chatroom_avatar_path = f"{origin_docx_path}/avatar/{message[12].wxid}.png"
@@ -513,12 +530,12 @@ class ChildThread(QThread):
         else:
             self.contact.avatar.save(os.path.join(f"{origin_docx_path}/avatar/{self.contact.wxid}.png"))
         self.rangeSignal.emit(len(messages))
-        total_steps = len(messages)
         for index, message in enumerate(messages):
             type_ = message[2]
             sub_type = message[3]
             timestamp = message[5]
-            self.progressSignal.emit(int((index + 1) / total_steps * 100))
+            if type_ != 34 and type_ != 47:
+                self.progressSignal.emit(1)
             if self.is_5_min(timestamp):
                 str_time = message[8]
                 f.write(
@@ -583,3 +600,51 @@ class ChildThread(QThread):
 
     def cancel(self):
         self.requestInterruption()
+
+
+class OutputMedia(QThread):
+    okSingal = pyqtSignal(int)
+    progressSignal = pyqtSignal(int)
+
+    def __init__(self, contact):
+        super().__init__()
+        self.contact = contact
+
+    def run(self):
+        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        messages = msg_db.get_messages_by_type(self.contact.wxid, 34)
+        for message in messages:
+            is_send = message[4]
+            msgSvrId = message[9]
+            audio_path = media_msg_db.get_audio(msgSvrId, output_path=origin_docx_path + "/voice")
+            audio_path = audio_path.replace('/', '\\')
+            if self.contact.is_chatroom:
+                if is_send:
+                    displayname = MePC().name
+                else:
+                    displayname = message[12].remark
+            else:
+                displayname = MePC().name if is_send else self.contact.remark
+            displayname = escape_js_and_html(displayname)
+            modify_audio_metadata(audio_path, displayname)
+            # os.utime(audio_path, (timestamp, timestamp))
+            self.progressSignal.emit(1)
+        self.okSingal.emit(34)
+
+
+class OutputEmoji(QThread):
+    okSingal = pyqtSignal(int)
+    progressSignal = pyqtSignal(int)
+
+    def __init__(self, contact):
+        super().__init__()
+        self.contact = contact
+
+    def run(self):
+        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        messages = msg_db.get_messages_by_type(self.contact.wxid, 47)
+        for message in messages:
+            str_content = message[7]
+            emoji_path = get_emoji(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
+            self.progressSignal.emit(1)
+        self.okSingal.emit(34)

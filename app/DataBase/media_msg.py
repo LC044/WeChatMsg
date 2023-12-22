@@ -55,12 +55,16 @@ class MediaMsg:
         try:
             lock.acquire(True)
             self.cursor.execute(sql, [reserved0])
-            return self.cursor.fetchone()[0]
+            result = self.cursor.fetchone()
+
         finally:
             lock.release()
+        return result[0] if result else None
 
     def get_audio(self, reserved0, output_path):
         buf = self.get_media_buffer(reserved0)
+        if not buf:
+            return ''
         silk_path = f"{output_path}\\{reserved0}.silk"
         pcm_path = f"{output_path}\\{reserved0}.pcm"
         mp3_path = f"{output_path}\\{reserved0}.mp3"
@@ -76,10 +80,10 @@ class MediaMsg:
         try:
             # 调用系统上的 ffmpeg 可执行文件
             # 获取 FFmpeg 可执行文件的路径
-            ffmpeg_path = get_ffmpeg_path()
-            # 调用 FFmpeg
-            cmd = f'''{ffmpeg_path} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
-            system(cmd)
+            # ffmpeg_path = get_ffmpeg_path()
+            # # 调用 FFmpeg
+            # cmd = f'''{ffmpeg_path} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
+            # system(cmd)
             # 源码运行的时候下面的有效
             # 这里不知道怎么捕捉异常
             cmd = f'''{os.path.join(os.getcwd(), 'app', 'resources', 'ffmpeg.exe')} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
@@ -88,11 +92,14 @@ class MediaMsg:
             print(f"Error: {e}")
             cmd = f'''{os.path.join(os.getcwd(),'app','resources','ffmpeg.exe')} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
             system(cmd)
-        system(f'del {silk_path}')
-        system(f'del {pcm_path}')
+        # system(f'del {silk_path}')
+        # system(f'del {pcm_path}')
         print(mp3_path)
         return mp3_path
-
+    def get_audio_path(self, reserved0, output_path):
+        mp3_path = f"{output_path}\\{reserved0}.mp3"
+        mp3_path = mp3_path.replace("/", "\\")
+        return mp3_path
     def get_audio_text(self, content):
         try:
             root = ET.fromstring(content)

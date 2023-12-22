@@ -1,3 +1,6 @@
+import time
+
+from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QDialog, QVBoxLayout, QCheckBox, QHBoxLayout, \
     QProgressBar, QLabel, QMessageBox
 
@@ -20,6 +23,7 @@ QPushButton:hover {
 }
 """
 
+
 class ExportDialog(QDialog):
     def __init__(self, contact=None, title="选择导出的类型", file_type="csv", parent=None):
         super(ExportDialog, self).__init__(parent)
@@ -27,14 +31,15 @@ class ExportDialog(QDialog):
         self.contact = contact
         if file_type == 'html':
             self.export_type = Output.HTML
-            self.export_choices = {"文本": True, "图片": True, "语音": True, "视频": True, "表情包": True,
+            self.export_choices = {"文本": True, "图片": True, "语音": False, "视频": False, "表情包": False,
                                    '拍一拍等系统消息': True}  # 定义导出的数据类型，默认全部选择
         elif file_type == 'csv':
             self.export_type = Output.CSV
             self.export_choices = {"文本": True, "图片": True, "视频": True, "表情包": True}  # 定义导出的数据类型，默认全部选择
         elif file_type == 'txt':
             self.export_type = Output.TXT
-            self.export_choices = {"文本": True, "图片": True, "语音": True, "视频": True, "表情包": True}  # 定义导出的数据类型，默认全部选择
+            self.export_choices = {"文本": True, "图片": True, "语音": True, "视频": True,
+                                   "表情包": True}  # 定义导出的数据类型，默认全部选择
         else:
             self.export_choices = {"文本": True, "图片": True, "视频": True, "表情包": True}  # 定义导出的数据类型，默认全部选择
         self.setWindowTitle(title)
@@ -43,14 +48,17 @@ class ExportDialog(QDialog):
         self.worker = None  # 导出线程
         self.progress_bar = QProgressBar(self)
         self.progress_label = QLabel(self)
+        self.time_label = QLabel(self)
         for export_type, default_state in self.export_choices.items():
             checkbox = QCheckBox(export_type)
             checkbox.setChecked(default_state)
             layout.addWidget(checkbox)
         layout.addWidget(self.progress_bar)
         layout.addWidget(self.progress_label)
+        layout.addWidget(self.time_label)
         self.notice_label = QLabel(self)
-        self.notice_label.setText("注意:导出HTML时选择图片、视频、语音、表情包（特别是表情包）\n会导致大大影响导出速度，请合理选择导出的类型")
+        self.notice_label.setText(
+            "注意:导出HTML时选择图片、视频、语音、表情包（特别是表情包）\n会导致大大影响导出速度，请合理选择导出的类型")
         layout.addWidget(self.notice_label)
         hlayout = QHBoxLayout(self)
         self.export_button = QPushButton("导出")
@@ -62,6 +70,11 @@ class ExportDialog(QDialog):
         hlayout.addWidget(self.cancel_button)
         layout.addLayout(hlayout)
         self.setLayout(layout)
+        self.timer = QTimer(self)
+        self.time = 0
+        self.total_msg_num = 100  # 总的消息个数
+        self.num = 0  # 当前完成的消息个数
+        self.timer.timeout.connect(self.update_elapsed_time)
 
     def export_data(self):
         self.export_button.setEnabled(False)
@@ -75,12 +88,22 @@ class ExportDialog(QDialog):
         self.worker = Output(self.contact, type_=self.export_type, message_types=selected_types)
         self.worker.progressSignal.connect(self.update_progress)
         self.worker.okSignal.connect(self.export_finished)
+        self.worker.rangeSignal.connect(self.set_total_msg_num)
         self.worker.start()
+        # 启动定时器，每1000毫秒更新一次任务进度
+        self.timer.start(1000)
+        self.start_time = time.time()
         # self.accept()  # 使用accept关闭对话框
+
+    def set_total_msg_num(self, num):
+        self.total_msg_num = num
 
     def export_finished(self):
         self.export_button.setEnabled(True)
         self.cancel_button.setEnabled(True)
+        self.time = 0
+        end_time = time.time()
+        print(f'总耗时:{end_time - self.start_time}s')
         reply = QMessageBox(self)
         reply.setIcon(QMessageBox.Information)
         reply.setWindowTitle('OK')
@@ -90,7 +113,13 @@ class ExportDialog(QDialog):
         api = reply.exec_()
         self.accept()
 
+    def update_elapsed_time(self):
+        self.time += 1
+        self.time_label.setText(f"耗时: {self.time}s")
+
     def update_progress(self, progress_percentage):
+        self.num += 1
+        progress_percentage = int((self.num) / self.total_msg_num * 100)
         self.progress_bar.setValue(progress_percentage)
         self.progress_label.setText(f"导出进度: {progress_percentage}%")
 

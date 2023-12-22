@@ -154,15 +154,15 @@ class Msg:
             sql = '''
                         select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
                         from MSG
-                        where StrTalker=? and Type=?
+                        where StrTalker=? and Type=? 
                         order by CreateTime
                     '''
             try:
                 lock.acquire(True)
                 self.cursor.execute(sql, [username_, type_])
+                result = self.cursor.fetchall()
             finally:
                 lock.release()
-                result = self.cursor.fetchall()
         else:
             sql = '''
                             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
@@ -610,3 +610,4 @@ if __name__ == '__main__':
     msg.init_database()
     print(msg.get_latest_time_of_message('wxid_0o18ef858vnu22', year_='2023'))
     print(msg.get_messages_number('wxid_0o18ef858vnu22', year_='2023'))
+    print(msg.get_messages_by_type('wxid_0o18ef858vnu22',34))
