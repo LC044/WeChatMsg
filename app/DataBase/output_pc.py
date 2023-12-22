@@ -336,11 +336,7 @@ class ChildThread(QThread):
         displayname = escape_js_and_html(displayname)
         if self.output_type == Output.HTML:
             emoji_path = get_emoji(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
-            if emoji_path == "":
-                # todo 改为网络404图片
-                emoji_path = "./emoji/404.png"
-            else:
-                emoji_path = './emoji/' + os.path.basename(emoji_path)
+            emoji_path = './emoji/' + os.path.basename(emoji_path)
             if self.is_5_min(timestamp):
                 doc.write(
                     f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:'',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''

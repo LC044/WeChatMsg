@@ -13,7 +13,7 @@ import traceback
 import xml.etree.ElementTree as ET
 import sqlite3
 import threading
-
+from PyQt5.QtGui import QPixmap
 import requests
 
 from app.log import log, logger
@@ -144,8 +144,6 @@ class Emotion:
 
 @log
 def download(url, output_dir, name, thumb=False):
-    if not url:
-        return ':/icons/icons/404.png'
     resp = requests.get(url)
     byte = resp.content
     image_format = get_image_format(byte[:8])
@@ -221,10 +219,16 @@ def get_emoji(xml_string, thumb=True, output_path=root_path) -> str:
             return output_path
         else:
             print("！！！未知表情包数据，信息：", xml_string, emoji_info, url)
-            return ""
+            output_path = os.path.join(output_path, '404.png')
+            if not os.path.exists(output_path):
+                QPixmap(':/icons/icons/404.png').save(output_path)
+            return output_path
     except:
         logger.error(traceback.format_exc())
-        return ""
+        output_path = os.path.join(output_path, "404.png")
+        if not os.path.exists(output_path):
+            QPixmap(':/icons/icons/404.png').save(output_path)
+        return output_path
 
 
 if __name__ == '__main__':
