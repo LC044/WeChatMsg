@@ -549,6 +549,7 @@ class ChildThread(QThread):
                     if not os.path.exists(chatroom_avatar_path):
                         message[12].avatar.save(chatroom_avatar_path)
                 except:
+                    print(message)
                     pass
         else:
             self.contact.avatar.save(os.path.join(f"{origin_docx_path}/avatar/{self.contact.wxid}.png"))

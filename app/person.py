@@ -89,6 +89,40 @@ class ContactPC:
         self.avatar.save(save_path)
         print('保存头像', save_path)
 
+class ContactDefault:
+    def __init__(self, wxid=""):
+        self.avatar = QPixmap(Icon.Default_avatar_path)
+        self.avatar_path = ':/icons/icons/default_avatar.svg'
+        self.wxid = wxid
+        self.remark = wxid
+        self.alias = wxid
+        self.nickName = wxid
+        self.smallHeadImgUrl = ""
+        self.smallHeadImgBLOG = b''
+        self.is_chatroom = False
+    
+    def set_avatar(self, img_bytes):
+        if not img_bytes:
+            self.avatar.load(Icon.Default_avatar_path)
+            return
+        if img_bytes[:4] == b'\x89PNG':
+            self.avatar.loadFromData(img_bytes, format='PNG')
+        else:
+            self.avatar.loadFromData(img_bytes, format='jfif')
+        self.avatar.scaled(60, 60, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
+
+    def save_avatar(self, path=None):
+        if not self.avatar:
+            return
+        if path:
+            save_path = path
+        else:
+            os.makedirs('./data/avatar', exist_ok=True)
+            save_path = os.path.join(f'data/avatar/', self.wxid + '.png')
+        self.avatar_path = save_path
+        self.avatar.save(save_path)
+        print('保存头像', save_path)
+
 
 if __name__ == '__main__':
     p1 = MePC()

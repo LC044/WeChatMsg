@@ -3,7 +3,7 @@ import threading
 from app.DataBase import msg_db, micro_msg_db, misc_db
 from app.util.protocbuf.msg_pb2 import MessageBytesExtra
 from app.util.protocbuf.roomdata_pb2 import ChatRoomData
-from app.person import ContactPC, MePC
+from app.person import ContactPC, MePC, ContactDefault
 
 lock = threading.Lock()
 
@@ -107,12 +107,11 @@ class PackageMsg:
             a[9]: msgSvrId,
             a[10]: BytesExtra,
             a[11]: CompressContent,
-            a[12]: msg_sender, （ContactPC类型，这个才是群聊里的信息发送人，不是群聊或者自己是发送者没有这个字段）
+            a[12]: msg_sender, （ContactPC 或 ContactDefault 类型，这个才是群聊里的信息发送人，不是群聊或者自己是发送者没有这个字段）
         '''
         updated_messages = []  # 用于存储修改后的消息列表
 
         messages = msg_db.get_messages(chatroom_wxid)
-        
         for row in messages:
             message = list(row)
             if message[4] == 1: # 自己发送的就没必要解析了
@@ -120,6 +119,7 @@ class PackageMsg:
                 updated_messages.append(message)
                 continue
             if message[10] is None: # BytesExtra是空的跳过
+                message.append(ContactDefault(wxid))
                 updated_messages.append(message)
                 continue
             msgbytes = MessageBytesExtra()
@@ -130,9 +130,14 @@ class PackageMsg:
                     continue
                 wxid = tmp.field2
             if wxid == "": # 系统消息里面 wxid 不存在
+                message.append(ContactDefault(wxid))
                 updated_messages.append(message)
                 continue
             contact_info_list = micro_msg_db.get_contact_by_username(wxid)
+            if contact_info_list is None: # 群聊中已退群的联系人不会保存在数据库里
+                message.append(ContactDefault(wxid))
+                updated_messages.append(message)
+                continue
             contact_info = {
                 'UserName': contact_info_list[0],
                 'Alias': contact_info_list[1],
@@ -145,7 +150,7 @@ class PackageMsg:
             contact.smallHeadImgBLOG = misc_db.get_avatar_buffer(contact.wxid)
             contact.set_avatar(contact.smallHeadImgBLOG)
             message.append(contact)
-            updated_messages.append(tuple(message))
+            updated_messages.append(message)
         return updated_messages
 
     def get_chatroom_member_list(self, strtalker):
@@ -175,4 +180,4 @@ class PackageMsg:
 
 if __name__ == "__main__":
     p = PackageMsg()
-    print(p.get_package_message_by_wxid("44326600419@chatroom"))
+    print(p.get_package_message_by_wxid("48615079469@chatroom"))
