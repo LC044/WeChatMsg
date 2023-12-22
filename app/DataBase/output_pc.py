@@ -1080,11 +1080,16 @@ html_end = '''
 
     const itemsPerPage = 100; // 每页显示的元素个数
     let currentPage = 1; // 当前页
-var reachedBottom = false; // 到达底部的标记
+    var reachedBottom = false; // 到达底部的标记
+    var lastScrollTop = 0;
     function renderPage(page) {
-         reachedBottom = false;
         const container = document.getElementById('chat-container');
-        container.innerHTML = ''; // 清空容器
+        if (!reachedBottom) {
+            container.innerHTML = ''; // 清空容器
+            lastScrollTop = 0;
+        } else {
+            reachedBottom = false;
+        }
 
         // 计算当前页应该显示的元素范围
         const startIndex = (page - 1) * itemsPerPage;
@@ -1141,7 +1146,7 @@ var reachedBottom = false; // 到达底部的标记
             return messageAudioTag;
         }
         
-            // 从数据列表中取出对应范围的元素并添加到容器中
+        // 从数据列表中取出对应范围的元素并添加到容器中
         for (let i = startIndex; i < endIndex && i < chatMessages.length; i++) {
             const message = chatMessages[i];
             if (i == startIndex) { // 判断一下在页面顶部多加一个时间
@@ -1249,7 +1254,7 @@ var reachedBottom = false; // 到达底部的标记
             }
             chatContainer.appendChild(messageElement);
         }
-        document.querySelector("#chat-container").scrollTop = 0;
+        document.querySelector("#chat-container").scrollTop = lastScrollTop;
         updatePaginationInfo();
         refreshMediaListener();
     }
@@ -1287,22 +1292,22 @@ var reachedBottom = false; // 到达底部的标记
     }
 
 
-  function checkScroll() {
-    var chatContainer = document.getElementById("chat-container");
+    function checkScroll() {
+        var chatContainer = document.getElementById("chat-container");
 
-    // 检查滚动条是否滑到底部
-    if (chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight) {
-      // 如果滚动条在底部
-      if (!reachedBottom) {
-        // 设置标记并返回
-        reachedBottom = true;
-        return;
-      }
-      else{
-        nextPage();
-      }
+        // 检查滚动条是否滑到底部
+        if (chatContainer.scrollHeight - chatContainer.scrollTop - 10 <= chatContainer.clientHeight) {
+            // 如果滚动条在底部
+            if (!reachedBottom) {
+                // 设置标记并返回
+                reachedBottom = true;
+                lastScrollTop = chatContainer.scrollTop;
+            }
+            if (reachedBottom) {
+                nextPage();
+            }
+        }
     }
-  }
     // 初始化页面
     renderPage(currentPage);
 
