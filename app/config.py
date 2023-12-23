@@ -1,8 +1,8 @@
-version = '1.0.0'
+version = '1.0.1'
 contact = '701805520'
 github = 'https://github.com/LC044/WeChatMsg'
 website = 'https://memotrace.lc044.love/'
-copyright = '©2023-2023 ShuaikangZhou'
+copyright = '©2022-2023 ShuaikangZhou'
 description = [
     '1. 支持获取个人信息<br>',
     '2. 支持显示聊天界面<br>',
