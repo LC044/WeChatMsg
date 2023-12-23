@@ -161,7 +161,7 @@ body{
     color: darkgray;
 }
 
-.chat-image img{
+.chat-image img,.chat-file img{
     margin-right: 18px;
     margin-left: 18px;
     max-width: 300px;
@@ -183,6 +183,29 @@ body{
 audio{
     margin-left: 9px;
     margin-right: 9px;
+}
+
+.chat-file {
+    width: 300px;
+    background-color: #fff;
+    margin-right: 20px;
+}
+.chat-file a ,.chat-file div{
+    display: flex;
+    color: #000;
+    outline: none;
+    text-decoration: none;
+    margin: 0 20px 20px 20px;
+}
+.chat-file div{
+    margin: 20px;
+}
+.chat-file a span ,.chat-file div span{
+    /* flex-grow: 1; */
+    width: 200px;
+}
+.chat-file a img,.chat-file div img{
+    width: 100px;
 }
 .input-area{
     border-top:0.5px solid #e0e0e0;
@@ -361,9 +384,9 @@ input {
         // 计算当前页应该显示的元素范围
         const startIndex = (page - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
-        
+
         function replaceEmoji(text){
-            
+
             // 定义替换规则，可以根据需要添加更多规则
             var replacementRules = [
                 { pattern: /\[微笑\]/g, replacement: '<img src="https://res.wx.qq.com/t/wx_fed/we-emoji/res/v1.2.8/assets/Expression/Expression_1@2x.png" id="微笑" class="emoji_img">' },
@@ -534,8 +557,19 @@ input {
             messageAudioTag.innerHTML = `<audio src="${message.text}" controls></audio>`;
             return messageAudioTag;
         }
+        function messageFileBox(message) {
+            const messageFileTag = document.createElement('div');
+            messageFileTag.className = `chat-file`;
+            if (message.link !== ''){
+                messageFileTag.innerHTML  = `
+                <a href="${message.link}" target="_blank"><span>${message.file_name}</span><img src="${message.text}"/></a>`
+            }else{
+                messageFileTag.innerHTML = `<div><span>文件已丢失</span><img src="${message.text}"/></div>`;
+            }
+            return messageFileTag;
+        }
 
-        // 从数据列表中取出对应范围的元素并添加到容器中
+            // 从数据列表中取出对应范围的元素并添加到容器中
         for (let i = startIndex; i < endIndex && i < chatMessages.length; i++) {
             const message = chatMessages[i];
             if (i == startIndex) { // 判断一下在页面顶部多加一个时间
@@ -618,6 +652,19 @@ input {
                     if (message.refer_text) {
                         messageContent.appendChild(messageElementReferText(message, side));
                     }
+
+                    // 整合
+                    messageElement.className = `item item-${side}`;
+                    messageElement.appendChild(message.is_send ? messageContent : avatarTag);
+                    messageElement.appendChild(message.is_send ? avatarTag : messageContent);
+                }
+                if (message.sub_type == 6) {
+                    // displayname 和 file
+                    messageContent.className = `content-wrapper content-wrapper-${side}`;
+                    if (message.is_chatroom && !message.is_send) {
+                        messageContent.appendChild(displayNameBox(message));
+                    }
+                    messageContent.appendChild(messageFileBox(message));
 
                     // 整合
                     messageElement.className = `item item-${side}`;
