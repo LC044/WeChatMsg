@@ -9,7 +9,9 @@ types = {
     '语音': 34,
     '视频': 43,
     '表情包': 47,
+    '文件': 49_06,
     '拍一拍等系统消息': 10000
+
 }
 Stylesheet = """
 QPushButton{
@@ -28,6 +30,7 @@ class ExportDialog(QDialog):
         if file_type == 'html':
             self.export_type = Output.HTML
             self.export_choices = {"文本": True, "图片": True, "语音": True, "视频": True, "表情包": True,
+                                   '文件': True,
                                    '拍一拍等系统消息': True}  # 定义导出的数据类型，默认全部选择
         elif file_type == 'csv':
             self.export_type = Output.CSV

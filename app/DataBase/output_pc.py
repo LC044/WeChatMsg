@@ -16,6 +16,7 @@ import shutil
 
 from ..util.compress_content import parser_reply
 from ..util.emoji import get_emoji
+from ..util.file import get_file
 
 os.makedirs('./data/聊天记录', exist_ok=True)
 
@@ -138,10 +139,10 @@ class Output(QThread):
         self.requestInterruption()
 
 
-def modify_audio_metadata(audiofile, new_artist): # 修改音频元数据中的“创作者”标签
+def modify_audio_metadata(audiofile, new_artist):  # 修改音频元数据中的“创作者”标签
     return
     audiofile = load(audiofile)
-    
+
     # 检查文件是否有标签
     if audiofile.tag is None:
         audiofile.initTag()
@@ -254,7 +255,7 @@ class ChildThread(QThread):
             try:
                 os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
             except:
-                print("网络图片",image_path)
+                print("网络图片", image_path)
                 pass
             image_path = image_path.replace('\\', '/')
             # print(f"tohtml:---{image_path}")
@@ -354,8 +355,41 @@ class ChildThread(QThread):
                 f'''{str_time} {name}\n[表情包]\n\n'''
             )
 
-    def wx_file(self, doc, isSend, content, status):
-        return
+    def file(self, doc, message):
+        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        bytesExtra = message[10]
+        str_time = message[8]
+        is_send = message[4]
+        timestamp = message[5]
+        is_chatroom = 1 if self.contact.is_chatroom else 0
+        if is_chatroom:
+            avatar = f"./avatar/{message[12].wxid}.png"
+        else:
+            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
+        if is_chatroom:
+            if is_send:
+                displayname = MePC().name
+            else:
+                displayname = message[12].remark
+        else:
+            displayname = MePC().name if is_send else self.contact.remark
+        displayname = escape_js_and_html(displayname)
+        if self.output_type == Output.HTML:
+            link = get_file(bytesExtra, thumb=True, output_path=origin_docx_path + '/file')
+            file_name = ''
+            shutil.copy(f"{os.path.abspath('.')}/app/resources/icons/file.png", origin_docx_path + '/file/file.png')
+            file_path = './file/file.png'
+            if link != "":
+                file_name = os.path.basename(link)
+                link = './file/' + file_name
+
+            if self.is_5_min(timestamp):
+                doc.write(
+                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:'',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
+                )
+            doc.write(
+                f'''{{ type:49, text: '{file_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}',link: '{link}',sub_type:6,file_name: '{file_name}'}},'''
+            )
 
     def retract_message(self, doc, isSend, content, status):
         return
@@ -424,7 +458,8 @@ class ChildThread(QThread):
         str_time = message[8]
         timestamp = message[5]
         is_chatroom = 1 if self.contact.is_chatroom else 0
-        str_content = str_content.replace('<![CDATA[', "").replace(' <a href="weixin://revoke_edit_click">重新编辑</a>]]>', "")
+        str_content = str_content.replace('<![CDATA[', "").replace(
+            ' <a href="weixin://revoke_edit_click">重新编辑</a>]]>', "")
         res = findall('(</{0,1}(img|revo|_wc_cus|a).*?>)', str_content)
         for xmlstr, b in res:
             str_content = str_content.replace(xmlstr, "")
@@ -542,7 +577,7 @@ class ChildThread(QThread):
         MePC().avatar.save(os.path.join(f"{origin_docx_path}/avatar/{MePC().wxid}.png"))
         if self.contact.is_chatroom:
             for message in messages:
-                if message[4]: # is_send
+                if message[4]:  # is_send
                     continue
                 try:
                     chatroom_avatar_path = f"{origin_docx_path}/avatar/{message[12].wxid}.png"
@@ -572,6 +607,8 @@ class ChildThread(QThread):
                 self.system_msg(f, message)
             elif type_ == 49 and sub_type == 57 and self.message_types.get(1):
                 self.refermsg(f, message)
+            elif type_ == 49 and sub_type == 6 and self.message_types.get(4906):
+                self.file(f, message)
         f.write(html_end)
         f.close()
         self.okSignal.emit(1)
@@ -893,7 +930,7 @@ body{
     color: darkgray;
 }
 
-.chat-image img{
+.chat-image img,.chat-file img{
     margin-right: 18px;
     margin-left: 18px;
     max-width: 300px;
@@ -915,6 +952,29 @@ body{
 audio{
     margin-left: 9px;
     margin-right: 9px;
+}
+
+.chat-file {
+    width: 300px;
+    background-color: #fff;
+    margin-right: 20px;
+}
+.chat-file a ,.chat-file div{
+    display: flex;
+    color: #000;
+    outline: none;
+    text-decoration: none;
+    margin: 0 20px 20px 20px;
+}
+.chat-file div{
+    margin: 20px;
+}
+.chat-file a span ,.chat-file div span{
+    /* flex-grow: 1; */
+    width: 200px;
+}
+.chat-file a img,.chat-file div img{
+    width: 100px;
 }
 .input-area{
     border-top:0.5px solid #e0e0e0;
@@ -1139,6 +1199,17 @@ html_end = '''
             messageAudioTag.innerHTML = `<audio src="${message.text}" controls></audio>`;
             return messageAudioTag;
         }
+        function messageFileBox(message) {
+            const messageFileTag = document.createElement('div');
+            messageFileTag.className = `chat-file`;
+            if (message.link !== ''){
+                messageFileTag.innerHTML  = `
+                <a href="${message.link}" target="_blank"><span>${message.file_name}</span><img src="${message.text}"/></a>`
+            }else{
+                messageFileTag.innerHTML = `<div><span>文件已丢失</span><img src="${message.text}"/></div>`;
+            }
+            return messageFileTag;
+        }
         
             // 从数据列表中取出对应范围的元素并添加到容器中
         for (let i = startIndex; i < endIndex && i < chatMessages.length; i++) {
@@ -1224,6 +1295,19 @@ html_end = '''
                         messageContent.appendChild(messageElementReferText(message, side));
                     }
 
+                    // 整合
+                    messageElement.className = `item item-${side}`;
+                    messageElement.appendChild(message.is_send ? messageContent : avatarTag);
+                    messageElement.appendChild(message.is_send ? avatarTag : messageContent);
+                }
+                if (message.sub_type == 6) {
+                    // displayname 和 file
+                    messageContent.className = `content-wrapper content-wrapper-${side}`;
+                    if (message.is_chatroom && !message.is_send) {
+                        messageContent.appendChild(displayNameBox(message));
+                    }
+                    messageContent.appendChild(messageFileBox(message));
+    
                     // 整合
                     messageElement.className = `item item-${side}`;
                     messageElement.appendChild(message.is_send ? messageContent : avatarTag);
