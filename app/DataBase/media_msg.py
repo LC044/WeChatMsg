@@ -80,20 +80,22 @@ class MediaMsg:
         try:
             # 调用系统上的 ffmpeg 可执行文件
             # 获取 FFmpeg 可执行文件的路径
-            # ffmpeg_path = get_ffmpeg_path()
+            ffmpeg_path = get_ffmpeg_path()
             # # 调用 FFmpeg
-            # cmd = f'''{ffmpeg_path} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
-            # system(cmd)
-            # 源码运行的时候下面的有效
-            # 这里不知道怎么捕捉异常
-            cmd = f'''{os.path.join(os.getcwd(), 'app', 'resources', 'ffmpeg.exe')} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
-            system(cmd)
+            if os.path.exists(ffmpeg_path):
+                cmd = f'''{ffmpeg_path} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
+                system(cmd)
+            else:
+                # 源码运行的时候下面的有效
+                # 这里不知道怎么捕捉异常
+                cmd = f'''{os.path.join(os.getcwd(), 'app', 'resources', 'ffmpeg.exe')} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
+                system(cmd)
         except subprocess.CalledProcessError as e:
             print(f"Error: {e}")
             cmd = f'''{os.path.join(os.getcwd(),'app','resources','ffmpeg.exe')} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
             system(cmd)
-        # system(f'del {silk_path}')
-        # system(f'del {pcm_path}')
+        system(f'del {silk_path}')
+        system(f'del {pcm_path}')
         print(mp3_path)
         return mp3_path
     def get_audio_path(self, reserved0, output_path):

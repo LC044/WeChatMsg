@@ -1,19 +1,20 @@
 import csv
 import html
 import os
+import sys
+import traceback
 from re import findall
-from PyQt5.QtCore import pyqtSignal, QThread, QFile, QIODevice, QTextStream
+from PyQt5.QtCore import pyqtSignal, QThread
 from PyQt5.QtWidgets import QFileDialog
-# from eyed3 import load
 
 from . import msg_db, micro_msg_db
 from .package_msg import PackageMsg
 from ..DataBase import hard_link_db
 from ..DataBase import media_msg_db
+from ..log import logger
 from ..person import MePC
 from ..util import path
 import shutil
-
 from ..util.compress_content import parser_reply
 from ..util.emoji import get_emoji, get_emoji_path
 
@@ -506,12 +507,12 @@ class ChildThread(QThread):
         else:
             messages = msg_db.get_messages(self.contact.wxid)
         filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}.html"
-        file = QFile(':/data/template.html')
-        if file.open(QIODevice.ReadOnly | QIODevice.Text):
-            stream = QTextStream(file)
-            stream.setCodec('utf-8')
-            content = stream.readAll()
-            file.close()
+        file_path = './app/resources/template.html'
+        if not os.path.exists(file_path):
+            resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
+            file_path = os.path.join(resource_dir, 'app', 'resources', 'template.html')
+        with open(file_path, "r", encoding="utf-8") as f:
+            content = f.read()
             html_head, html_end = content.split('/*注意看这是分割线*/')
         f = open(filename, 'w', encoding='utf-8')
         f.write(html_head.replace("<title>Chat Records</title>", f"<title>{self.contact.remark}</title>"))
@@ -616,17 +617,20 @@ class OutputMedia(QThread):
         for message in messages:
             is_send = message[4]
             msgSvrId = message[9]
-            audio_path = media_msg_db.get_audio(msgSvrId, output_path=origin_docx_path + "/voice")
-            audio_path = audio_path.replace('/', '\\')
-            if self.contact.is_chatroom:
-                if is_send:
-                    displayname = MePC().name
+            try:
+                audio_path = media_msg_db.get_audio(msgSvrId, output_path=origin_docx_path + "/voice")
+                audio_path = audio_path.replace('/', '\\')
+                if self.contact.is_chatroom:
+                    if is_send:
+                        displayname = MePC().name
+                    else:
+                        displayname = message[12].remark
                 else:
-                    displayname = message[12].remark
-            else:
-                displayname = MePC().name if is_send else self.contact.remark
-            displayname = escape_js_and_html(displayname)
-            modify_audio_metadata(audio_path, displayname)
+                    displayname = MePC().name if is_send else self.contact.remark
+                displayname = escape_js_and_html(displayname)
+                modify_audio_metadata(audio_path, displayname)
+            except:
+                logger.error(traceback.format_exc())
             # os.utime(audio_path, (timestamp, timestamp))
             self.progressSignal.emit(1)
         self.okSingal.emit(34)
@@ -645,6 +649,9 @@ class OutputEmoji(QThread):
         messages = msg_db.get_messages_by_type(self.contact.wxid, 47)
         for message in messages:
             str_content = message[7]
-            emoji_path = get_emoji(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
+            try:
+                emoji_path = get_emoji(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
+            except:
+                logger.error(traceback.format_exc())
             self.progressSignal.emit(1)
         self.okSingal.emit(34)

@@ -1,5 +1,6 @@
 import json
 import os.path
+import sys
 import time
 import traceback
 
@@ -49,14 +50,12 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog):
     # @log
     def get_info(self):
         try:
-            file = QFile(':/data/version_list.json')
-            if file.open(QIODevice.ReadOnly | QIODevice.Text):
-                stream = QTextStream(file)
-                content = stream.readAll()
-                file.close()
-                VERSION_LIST = json.loads(content)
-            else:
-                return
+            file_path = './app/resources/version_list.json'
+            if not os.path.exists(file_path):
+                resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
+                file_path = os.path.join(resource_dir, 'app', 'resources', 'version_list.json')
+            with open(file_path, "r", encoding="utf-8") as f:
+                VERSION_LIST = json.loads(f.read())
             result = get_wx_info.get_info(VERSION_LIST)
             print(result)
             if result == -1:

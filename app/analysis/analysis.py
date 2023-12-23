@@ -1,3 +1,4 @@
+import os
 from collections import Counter
 
 from PyQt5.QtCore import QFile, QTextStream, QIODevice
@@ -93,17 +94,17 @@ def wordcloud_christmas(wxid, year='2023'):
     stopwords_file = './app/data/stopwords.txt'
     with open(stopwords_file, "r", encoding="utf-8") as stopword_file:
         stopwords1 = set(stopword_file.read().splitlines())
-    file = QFile(':/data/stopwords.txt')
+    # 构建 FFmpeg 可执行文件的路径
     stopwords = set()
-    if file.open(QIODevice.ReadOnly | QIODevice.Text):
-        stream = QTextStream(file)
-        stream.setCodec('utf-8')
-        content = stream.readAll()
-        file.close()
-        stopwords = set(content.splitlines())
+    stopwords_file = './app/resources/stopwords.txt'
+    if not os.path.exists(stopwords_file):
+        resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
+        stopwords_file = os.path.join(resource_dir, 'app', 'resources', 'stopwords.txt')
+    with open(stopwords_file, "r", encoding="utf-8") as stopword_file:
+        stopwords = set(stopword_file.read().splitlines())
         stopwords = stopwords.union(stopwords1)
-    filtered_word_count = {word: count for word, count in word_count.items() if len(word) > 1 and word not in stopwords}
 
+    filtered_word_count = {word: count for word, count in word_count.items() if len(word) > 1 and word not in stopwords}
     # 转换为词云数据格式
     data = [(word, count) for word, count in filtered_word_count.items()]
     # text_data = data
