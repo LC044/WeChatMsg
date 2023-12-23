@@ -72,7 +72,7 @@ class ExportDialog(QDialog):
         self.setLayout(layout)
         self.timer = QTimer(self)
         self.time = 0
-        self.total_msg_num = 100  # 总的消息个数
+        self.total_msg_num = 99999  # 总的消息个数
         self.num = 0  # 当前完成的消息个数
         self.timer.timeout.connect(self.update_elapsed_time)
 

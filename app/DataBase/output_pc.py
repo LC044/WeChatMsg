@@ -17,6 +17,7 @@ from ..util import path
 import shutil
 from ..util.compress_content import parser_reply
 from ..util.emoji import get_emoji, get_emoji_path
+from ..util.image import get_image_path, get_image
 
 os.makedirs('./data/聊天记录', exist_ok=True)
 
@@ -74,7 +75,7 @@ class Output(QThread):
         self.ta_username = contact.wxid if contact else ''
         self.msg_id = 0
         self.output_type = type_
-        self.total_num = 0
+        self.total_num = 1
         self.num = 0
 
     def progress(self, value):
@@ -128,23 +129,40 @@ class Output(QThread):
             self.to_csv_all()
         elif self.output_type == self.CONTACT_CSV:
             self.contact_to_csv()
-        else:
+        elif self.output_type == self.CSV:
             self.Child = ChildThread(self.contact, type_=self.output_type, message_types=self.message_types)
             self.Child.progressSignal.connect(self.progress)
             self.Child.rangeSignal.connect(self.rangeSignal)
+            self.Child.okSignal.connect(self.okSignal)
+            self.Child.start()
+        elif self.output_type == self.HTML:
+            self.Child = ChildThread(self.contact, type_=self.output_type, message_types=self.message_types)
+            self.Child.progressSignal.connect(self.progressSignal)
+            self.Child.rangeSignal.connect(self.rangeSignal)
             self.Child.okSignal.connect(self.count_finish_num)
             self.Child.start()
-            # 语音消息单独的线程
-            self.output_media = OutputMedia(self.contact)
-            self.output_media.okSingal.connect(self.count_finish_num)
-            self.output_media.progressSignal.connect(self.progress)
-            self.output_media.start()
-            # emoji消息单独的线程
-            self.output_emoji = OutputEmoji(self.contact)
-            self.output_emoji.okSingal.connect(self.count_finish_num)
-            self.output_emoji.progressSignal.connect(self.progress)
-            self.output_emoji.start()
-            self.total_num = 3
+            if self.message_types.get(34):
+                # 语音消息单独的线程
+                self.total_num += 1
+                self.output_media = OutputMedia(self.contact)
+                self.output_media.okSingal.connect(self.count_finish_num)
+                self.output_media.progressSignal.connect(self.progressSignal)
+                self.output_media.start()
+
+            if self.message_types.get(47):
+                # emoji消息单独的线程
+                self.total_num += 1
+                self.output_emoji = OutputEmoji(self.contact)
+                self.output_emoji.okSingal.connect(self.count_finish_num)
+                self.output_emoji.progressSignal.connect(self.progressSignal)
+                self.output_emoji.start()
+            if self.message_types.get(3):
+                # emoji消息单独的线程
+                self.total_num += 1
+                self.output_image = OutputImage(self.contact)
+                self.output_image.okSingal.connect(self.count_finish_num)
+                self.output_image.progressSignal.connect(self.progressSignal)
+                self.output_image.start()
 
     def count_finish_num(self, num):
         self.num += 1
@@ -249,22 +267,14 @@ class ChildThread(QThread):
         if self.output_type == Output.HTML:
             str_content = escape_js_and_html(str_content)
             image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
-            image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
+            image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
             if not os.path.exists(os.path.join(MePC().wx_dir, image_path)):
-                image_path = None
-            if not os.path.exists(os.path.join(MePC().wx_dir, image_thumb_path)):
-                image_thumb_path = None
-            if image_path is None and image_thumb_path is not None:
+                image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
+                if not os.path.exists(os.path.join(MePC().wx_dir, image_thumb_path)):
+                    return
                 image_path = image_thumb_path
-            if image_path is None and image_thumb_path is None:
-                return
-            image_path = path.get_relative_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
+            image_path = get_image_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
             image_path = image_path.replace('/', '\\')
-            try:
-                os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
-            except:
-                print("网络图片", image_path)
-                pass
             image_path = image_path.replace('\\', '/')
             doc.write(
                 f'''{{ type:{type_}, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
@@ -535,8 +545,11 @@ class ChildThread(QThread):
             type_ = message[2]
             sub_type = message[3]
             timestamp = message[5]
-            if type_ != 34 and type_ != 47:
+            if (type_ == 3 and self.message_types.get(3)) or (type_ == 34 and self.message_types.get(34)) or (type_ == 47 and self.message_types.get(47)):
+                pass
+            else:
                 self.progressSignal.emit(1)
+
             if self.is_5_min(timestamp):
                 str_time = message[8]
                 f.write(
@@ -629,10 +642,11 @@ class OutputMedia(QThread):
                     displayname = MePC().name if is_send else self.contact.remark
                 displayname = escape_js_and_html(displayname)
                 modify_audio_metadata(audio_path, displayname)
+                # os.utime(audio_path, (timestamp, timestamp))
             except:
                 logger.error(traceback.format_exc())
-            # os.utime(audio_path, (timestamp, timestamp))
-            self.progressSignal.emit(1)
+            finally:
+                self.progressSignal.emit(1)
         self.okSingal.emit(34)
 
 
@@ -653,5 +667,97 @@ class OutputEmoji(QThread):
                 emoji_path = get_emoji(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
             except:
                 logger.error(traceback.format_exc())
-            self.progressSignal.emit(1)
-        self.okSingal.emit(34)
+            finally:
+                self.progressSignal.emit(1)
+        self.okSingal.emit(47)
+
+
+class OutputImage(QThread):
+    okSingal = pyqtSignal(int)
+    progressSignal = pyqtSignal(int)
+
+    def __init__(self, contact):
+        super().__init__()
+        self.contact = contact
+        self.child_thread_num = 2
+        self.child_threads = [0]*(self.child_thread_num+1)
+        self.num = 0
+
+    def count1(self, num):
+        self.num += 1
+        print('图片导出完成一个')
+        if self.num == self.child_thread_num:
+            self.okSingal.emit(47)
+            print('图片导出完成')
+
+    def run(self):
+        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        messages = msg_db.get_messages_by_type(self.contact.wxid, 3)
+        for message in messages:
+            str_content = message[7]
+            BytesExtra = message[10]
+            timestamp = message[5]
+            try:
+                image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
+                if not os.path.exists(os.path.join(MePC().wx_dir, image_path)):
+                    image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
+                    if not os.path.exists(os.path.join(MePC().wx_dir, image_thumb_path)):
+                        continue
+                    image_path = image_thumb_path
+                image_path = get_image(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
+                try:
+                    os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
+                except:
+                    pass
+            except:
+                logger.error(traceback.format_exc())
+            finally:
+                self.progressSignal.emit(1)
+        self.okSingal.emit(47)
+        # sublist_length = len(messages) // self.child_thread_num
+        # index = 0
+        # for i in range(0, len(messages), sublist_length):
+        #     child_messages = messages[i:i + sublist_length]
+        #     self.child_threads[index] = OutputImageChild(self.contact, child_messages)
+        #     self.child_threads[index].okSingal.connect(self.count1)
+        #     self.child_threads[index].progressSignal.connect(self.progressSignal)
+        #     self.child_threads[index].start()
+        #     print('开启一个新线程')
+        #     index += 1
+
+
+
+
+class OutputImageChild(QThread):
+    okSingal = pyqtSignal(int)
+    progressSignal = pyqtSignal(int)
+
+    def __init__(self, contact, messages):
+        super().__init__()
+        self.contact = contact
+        self.messages = messages
+
+    def run(self):
+        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        for message in self.messages:
+            str_content = message[7]
+            BytesExtra = message[10]
+            timestamp = message[5]
+            try:
+                image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
+                if not os.path.exists(os.path.join(MePC().wx_dir, image_path)):
+                    image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
+                    if not os.path.exists(os.path.join(MePC().wx_dir, image_thumb_path)):
+                        continue
+                    image_path = image_thumb_path
+                image_path = get_image(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
+                try:
+                    os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
+                except:
+                    pass
+            except:
+                logger.error(traceback.format_exc())
+            finally:
+                self.progressSignal.emit(1)
+        self.okSingal.emit(47)
+        print('图片子线程完成')
