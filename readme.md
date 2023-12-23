@@ -16,7 +16,7 @@
 </div>
 
 <div align="center">
-<a href="http://memotrace.lc044.love/"><img src="https://blog.lc044.love/static/img/91cadaae3a6f7ee133dafd4f9b5d8680.logo.webp" height="240"/></a>
+<a href="https://memotrace.lc044.love/"><img src="https://www.freeimg.cn/i/2023/12/23/6586a50ab7dc5.png" height="240"/></a>
 </div>
 <blockquote>
 <div style="background-color: #eaf7ea; border-radius: 10px; padding: 20px; position: relative;">
@@ -24,7 +24,7 @@
     <div style="position: absolute;top: 0;bottom: 0;left: 0;width: 2px;background-color: #000000;"></div>
     <h2>前言</h2>
     <div style="text-indent: 2em;">
-        <a align="center" href="http://memotrace.lc044.love/"><img src="https://blog.lc044.love/static/img/6428156ae35a53d2f41433a1b27712ee.logo2.0-99.webp"/></a>
+        <a align="center" href="https://memotrace.lc044.love/"><img src="https://blog.lc044.love/static/img/6428156ae35a53d2f41433a1b27712ee.logo2.0-99.webp"/></a>
         <p style="text-indent:2em;">我深信有意义的不是微信，而是隐藏在对话框背后的一个个<strong>深刻故事</strong>。未来，每个人都能拥有AI的陪伴，而你的数据能够赋予它有关于你过去的珍贵记忆。我希望每个人都有将自己的生活痕迹👨‍👩‍👦👚🥗🏠️🚴🧋⛹️🛌🛀留存的权利，而不是遗忘💀。</p>
         <p style="text-indent:2em;">AI的发展不仅仅是技术的提升，更是情感💞的延续。每一个对话、每一个互动都是生活中独一无二的片段，是真实而动人的情感交流。因此，我希望AI工作者们能够<strong>善用这些自己的数据</strong>，用于培训独特的、属于个体的人工智能。让<strong>个人AI成为生活中的朋友</strong>，能够理解、记录并分享我们的欢笑、泪水和成长。</p>
         <p style="text-indent:2em;">那天，AI不再是高不可攀的存在，而是融入寻常百姓家的一部分。因为<strong>每个人能拥有自己的AI</strong>，将科技的力量融入生活的方方面面。这是一场关于真情实感的革命，一场让技术变得更加人性化的探索，让我们共同见证未来的美好。</p>
@@ -69,17 +69,17 @@
 
 ![image-20230520235351749](https://blog.lc044.love/static/img/beb1500f349ce289406e0e8accac63c0.clipboard-2023-12-12.webp)
 
-![image-20230520235351749](https://blog.lc044.love/static/img/c0e17f989978f843147fa9b8d32949b8.clipboard-2023-12-12.webp)
+![image-20230520235351749](https://www.freeimg.cn/i/2023/12/23/6586a4923efd6.png)
 
-![image-20230520235351749](https://blog.lc044.love/static/img/47b4476a522f79286b71438bc78a1304.clipboard-2023-12-12.webp)
+![image-20230520235351749](https://www.freeimg.cn/i/2023/12/23/6586a49224852.png)
 
-![image-20230520235400772](https://blog.lc044.love/static/img/526e20e1b8cbcd9a20ea48e242433f0a.clipboard-2023-12-12.webp)
+![image-20230520235400772](https://www.freeimg.cn/i/2023/12/23/6586a4957d2da.png)
 
-![image-20230520235409112](https://blog.lc044.love/static/img/e74f9747bf9e686ae5bccc678fe0c7ad.clipboard-2023-12-12.webp)
+![image-20230520235409112](https://www.freeimg.cn/i/2023/12/23/6586a498d17a1.png)
 
-![image-20230520235422128](https://blog.lc044.love/static/img/22edd25fc32a7a11c13d1f36f6421997.clipboard-2023-12-12.webp)
+![image-20230520235422128](https://www.freeimg.cn/i/2023/12/23/6586a49bd8a7b.png)
 
-![image-20230520235431091](https://blog.lc044.love/static/img/f3f88205d4596c2d098996d86e5ede7e.clipboard-2023-12-12.webp)
+![image-20230520235431091](https://www.freeimg.cn/i/2023/12/23/6586a49f2a8c9.png)
 
 </details>
 
