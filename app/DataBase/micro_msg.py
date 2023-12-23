@@ -47,7 +47,7 @@ class MicroMsg:
             sql = '''SELECT UserName, Alias, Type, Remark, NickName, PYInitial, RemarkPYInitial, ContactHeadImgUrl.smallHeadImgUrl, ContactHeadImgUrl.bigHeadImgUrl
                     FROM Contact
                     INNER JOIN ContactHeadImgUrl ON Contact.UserName = ContactHeadImgUrl.usrName
-                    WHERE (Type % 2 = 1 OR Type=2)
+                    WHERE (Type!=4)
                         AND NickName != ''
                     ORDER BY 
                         CASE

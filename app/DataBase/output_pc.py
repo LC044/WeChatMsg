@@ -632,17 +632,6 @@ class OutputMedia(QThread):
             msgSvrId = message[9]
             try:
                 audio_path = media_msg_db.get_audio(msgSvrId, output_path=origin_docx_path + "/voice")
-                audio_path = audio_path.replace('/', '\\')
-                if self.contact.is_chatroom:
-                    if is_send:
-                        displayname = MePC().name
-                    else:
-                        displayname = message[12].remark
-                else:
-                    displayname = MePC().name if is_send else self.contact.remark
-                displayname = escape_js_and_html(displayname)
-                modify_audio_metadata(audio_path, displayname)
-                # os.utime(audio_path, (timestamp, timestamp))
             except:
                 logger.error(traceback.format_exc())
             finally:
@@ -692,7 +681,7 @@ class OutputImage(QThread):
 
     def run(self):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-        messages = msg_db.get_messages_by_type(self.contact.wxid, 3)
+        messages = msg_db.get_messages_by_type(self.contact.wxid,3)
         for message in messages:
             str_content = message[7]
             BytesExtra = message[10]
