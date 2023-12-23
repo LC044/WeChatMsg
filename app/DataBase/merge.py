@@ -12,21 +12,22 @@ def merge_MediaMSG_databases(source_paths, target_path):
             if not os.path.exists(source_path):
                 break
             db = sqlite3.connect(source_path)
-            db.text_factory = str 
+            db.text_factory = str
             cursor = db.cursor()
-            sql = '''
-            SELECT Key,Reserved0,Buf,Reserved1,Reserved2 FROM Media;
-            '''
-            cursor.execute(sql)
-            result = cursor.fetchall()
             # 附加源数据库
             try:
+                sql = '''SELECT Key,Reserved0,Buf,Reserved1,Reserved2 FROM Media;'''
+                cursor.execute(sql)
+                result = cursor.fetchall()
+
                 target_cursor.executemany(
                     "INSERT INTO Media (Key,Reserved0,Buf,Reserved1,Reserved2)"
                     "VALUES(?,?,?,?,?)",
                     result)
             except sqlite3.IntegrityError:
                 print("有重复key", "跳过")
+            except sqlite3.OperationalError:
+                print("no such table: Media", "跳过")
             cursor.close()
             db.close()
         # 提交事务
