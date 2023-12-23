@@ -28,6 +28,14 @@
         <file>icons/folder.svg</file>
         <file>icons/start.svg</file>
         <file>icons/decrypt.svg</file>
+        <file>icons/Cursors/0.png</file>
+        <file>icons/Cursors/1.png</file>
+        <file>icons/Cursors/2.png</file>
+        <file>icons/Cursors/3.png</file>
+        <file>icons/Cursors/4.png</file>
+        <file>icons/Cursors/5.png</file>
+        <file>icons/Cursors/6.png</file>
+        <file>icons/Cursors/7.png</file>
     </qresource>
     <qresource prefix="/data">
 

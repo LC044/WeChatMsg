@@ -10,6 +10,7 @@ from pilk import decode
 lock = threading.Lock()
 db_path = "./app/Database/Msg/MediaMSG.db"
 
+
 def get_ffmpeg_path():
     # 获取打包后的资源目录
     resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
@@ -18,6 +19,8 @@ def get_ffmpeg_path():
     ffmpeg_path = os.path.join(resource_dir, 'app', 'resources', 'ffmpeg.exe')
 
     return ffmpeg_path
+
+
 def singleton(cls):
     _instance = {}
 
@@ -27,6 +30,7 @@ def singleton(cls):
         return _instance[cls]
 
     return inner
+
 
 @singleton
 class MediaMsg:
@@ -76,8 +80,8 @@ class MediaMsg:
         with open(silk_path, "wb") as f:
             f.write(buf)
         # open(silk_path, "wb").write()
-        decode(silk_path, pcm_path, 44100)
         try:
+            decode(silk_path, pcm_path, 44100)
             # 调用系统上的 ffmpeg 可执行文件
             # 获取 FFmpeg 可执行文件的路径
             ffmpeg_path = get_ffmpeg_path()
@@ -90,18 +94,20 @@ class MediaMsg:
                 # 这里不知道怎么捕捉异常
                 cmd = f'''{os.path.join(os.getcwd(), 'app', 'resources', 'ffmpeg.exe')} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
                 system(cmd)
-        except subprocess.CalledProcessError as e:
+        except Exception as e:
             print(f"Error: {e}")
-            cmd = f'''{os.path.join(os.getcwd(),'app','resources','ffmpeg.exe')} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
+            cmd = f'''{os.path.join(os.getcwd(), 'app', 'resources', 'ffmpeg.exe')} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
             system(cmd)
         system(f'del {silk_path}')
         system(f'del {pcm_path}')
         print(mp3_path)
         return mp3_path
+
     def get_audio_path(self, reserved0, output_path):
         mp3_path = f"{output_path}\\{reserved0}.mp3"
         mp3_path = mp3_path.replace("/", "\\")
         return mp3_path
+
     def get_audio_text(self, content):
         try:
             root = ET.fromstring(content)
@@ -109,6 +115,7 @@ class MediaMsg:
             return transtext
         except:
             return ""
+
     def close(self):
         if self.open_flag:
             try:
@@ -120,6 +127,7 @@ class MediaMsg:
 
     def __del__(self):
         self.close()
+
 
 if __name__ == '__main__':
     db_path = './Msg/MediaMSG.db'

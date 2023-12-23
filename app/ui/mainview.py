@@ -22,6 +22,7 @@ from .chat import ChatWindow
 from .contact import ContactWindow
 from .tool.tool_window import ToolWindow
 from ..DataBase.output_pc import Output
+from ..components.QCursorGif import QCursorGif
 from ..person import MePC
 
 # 美化样式表
@@ -69,7 +70,7 @@ HistoryPanel::item:hover {
 """
 
 
-class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
+class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
     exitSignal = pyqtSignal(bool)
     okSignal = pyqtSignal(bool)
 
@@ -79,6 +80,10 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
         self.outputThread0 = None
         self.outputThread = None
         self.setupUi(self)
+        # 设置忙碌光标图片数组
+        self.initCursor([':/icons/icons/Cursors/%d.png' %
+                         i for i in range(8)], self)
+        self.setCursorTimeout(100)
         # self.setWindowIcon(Icon.MainWindow_Icon)
         pixmap = QPixmap(Icon.logo_ico_path)
         icon = QIcon(pixmap)
@@ -208,6 +213,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
                 self.stackedWidget.setCurrentIndex(0)
 
     def output(self):
+        self.startBusy()
         if self.sender() == self.action_output_CSV:
             self.outputThread = Output(None, type_=Output.CSV_ALL)
             self.outputThread.okSignal.connect(
@@ -220,6 +226,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow):
             self.outputThread.start()
 
     def message(self, msg):
+        self.stopBusy()
         QMessageBox.about(self, "提醒", msg)
 
     def about(self):
