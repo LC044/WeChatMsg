@@ -18,6 +18,7 @@ from app import config
 from app.DataBase import msg_db, misc_db, micro_msg_db, hard_link_db, close_db
 from app.ui.Icon import Icon
 from . import mainwindow
+from .about_dialog import AboutDialog
 from .chat import ChatWindow
 from .contact import ContactWindow
 from .tool.tool_window import ToolWindow
@@ -233,7 +234,9 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
         """
         关于
         """
-        QMessageBox.about(self, "关于",config.about)
+        # QMessageBox.about(self, "关于",config.about)
+        about_view = AboutDialog(self)
+        about_view.show()
 
     def decrypt_success(self):
         QMessageBox.about(self, "解密成功", "请重新启动")

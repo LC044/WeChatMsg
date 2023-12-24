@@ -36,6 +36,7 @@
         <file>icons/Cursors/5.png</file>
         <file>icons/Cursors/6.png</file>
         <file>icons/Cursors/7.png</file>
+        <file>icons/weixin.png</file>
     </qresource>
     <qresource prefix="/data">
 
