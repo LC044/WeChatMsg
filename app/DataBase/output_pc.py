@@ -18,6 +18,7 @@ import shutil
 from ..util.compress_content import parser_reply
 from ..util.emoji import get_emoji, get_emoji_path, get_emoji_url
 from ..util.image import get_image_path, get_image
+from ..util.file import get_file
 
 os.makedirs('./data/聊天记录', exist_ok=True)
 
@@ -360,6 +361,37 @@ class ChildThread(QThread):
     def wx_file(self, doc, isSend, content, status):
         return
 
+    def file(self, doc, message):
+        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        bytesExtra = message[10]
+        str_time = message[8]
+        is_send = message[4]
+        timestamp = message[5]
+        is_chatroom = 1 if self.contact.is_chatroom else 0
+        if is_chatroom:
+            avatar = f"./avatar/{message[12].wxid}.png"
+        else:
+            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
+        if is_chatroom:
+            if is_send:
+                displayname = MePC().name
+            else:
+                displayname = message[12].remark
+        else:
+            displayname = MePC().name if is_send else self.contact.remark
+        displayname = escape_js_and_html(displayname)
+        if self.output_type == Output.HTML:
+            link = get_file(bytesExtra, thumb=True, output_path=origin_docx_path + '/file')
+            file_name = ''
+            shutil.copy(f"{os.path.abspath('.')}/app/resources/icons/file.png", origin_docx_path + '/file/file.png')
+            file_path = './file/file.png'
+            if link != "":
+                file_name = os.path.basename(link)
+                link = './file/' + file_name
+            doc.write(
+                f'''{{ type:49, text: '{file_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}',link: '{link}',sub_type:6,file_name: '{file_name}'}},'''
+            )
+
     def retract_message(self, doc, isSend, content, status):
         return
 
@@ -570,6 +602,8 @@ class ChildThread(QThread):
                 self.system_msg(f, message)
             elif type_ == 49 and sub_type == 57 and self.message_types.get(1):
                 self.refermsg(f, message)
+            elif type_ == 49 and sub_type == 6 and self.message_types.get(4906):
+                self.file(f, message)
         f.write(html_end)
         f.close()
         self.okSignal.emit(1)
