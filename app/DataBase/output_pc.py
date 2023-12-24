@@ -16,7 +16,7 @@ from ..person import MePC
 from ..util import path
 import shutil
 from ..util.compress_content import parser_reply
-from ..util.emoji import get_emoji, get_emoji_path
+from ..util.emoji import get_emoji, get_emoji_path, get_emoji_url
 from ..util.image import get_image_path, get_image
 
 os.makedirs('./data/聊天记录', exist_ok=True)
@@ -345,8 +345,9 @@ class ChildThread(QThread):
             displayname = MePC().name if is_send else self.contact.remark
         displayname = escape_js_and_html(displayname)
         if self.output_type == Output.HTML:
-            emoji_path = get_emoji_path(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
-            emoji_path = './emoji/' + os.path.basename(emoji_path)
+            # emoji_path = get_emoji_path(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
+            # emoji_path = './emoji/' + os.path.basename(emoji_path)
+            emoji_path = get_emoji_url(str_content, thumb=True)
             doc.write(
                 f'''{{ type:{3}, text: '{emoji_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
             )
@@ -750,3 +751,28 @@ class OutputImageChild(QThread):
                 self.progressSignal.emit(1)
         self.okSingal.emit(47)
         print('图片子线程完成')
+
+
+if __name__ == "__main__":
+    from app.DataBase import micro_msg_db, misc_db
+    from app.person import ContactPC
+    from PyQt5.QtGui import QGuiApplication
+    app = QGuiApplication([])
+    contact_info_list = micro_msg_db.get_contact_by_username("wxid_lhbdvh3cnn4h22")
+    contact_info = {
+        'UserName': contact_info_list[0],
+        'Alias': contact_info_list[1],
+        'Type': contact_info_list[2],
+        'Remark': contact_info_list[3],
+        'NickName': contact_info_list[4],
+        'smallHeadImgUrl': contact_info_list[7]
+    }
+    contact = ContactPC(contact_info)
+    contact.smallHeadImgBLOG = misc_db.get_avatar_buffer(contact.wxid)
+    contact.set_avatar(contact.smallHeadImgBLOG)
+    mess = {1: True, 3: True, 34: True, 43: True, 47: True, 10000: True}
+    MePC().name = "无题"
+    MePC().wx_dir = r"C:\Users\HUAWEI\Documents\WeChat Files\wxid_05rvkbftizq822"
+    MePC().wxid = "wxid_05rvkbftizq822"
+    ChildThread(contact, 2, mess).to_html_()
+    app.quit()
