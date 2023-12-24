@@ -93,7 +93,8 @@ class Emotion:
                 if lock.locked():
                     lock.release()
 
-    def get_emoji_url(self, md5: str, thumb: bool):
+    def get_emoji_url(self, md5: str, thumb: bool) -> str | bytes:
+        '''供下载用，返回可能是url可能是bytes'''
         if thumb:
             sql = '''
                 select
@@ -126,6 +127,33 @@ class Emotion:
                 return self.cursor.fetchone()[0]
             except:
                 return ""
+        finally:
+            lock.release()
+
+    def get_emoji_URL(self, md5: str, thumb: bool):
+        '''只管url，另外的不管'''
+        if thumb:
+            sql = '''
+                select
+                    case
+                        when thumburl is NULL or thumburl = '' then cdnurl
+                        else thumburl
+                    end as selected_url
+                from CustomEmotion
+                where md5 = ?
+            '''
+        else:
+            sql = '''
+                select CDNUrl
+                from CustomEmotion
+                where md5 = ?
+            '''
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql, [md5])
+            return self.cursor.fetchone()[0]
+        except:
+            return ""
         finally:
             lock.release()
 
@@ -187,6 +215,7 @@ def get_most_emoji(messages):
 
 
 def get_emoji(xml_string, thumb=True, output_path=root_path) -> str:
+    """供下载用"""
     try:
         emoji_info = parser_xml(xml_string)
         md5 = emoji_info['md5']
@@ -239,6 +268,20 @@ def get_emoji_path(xml_string, thumb=True, output_path=root_path) -> str:
             prefix = 'th_' if thumb else ''
             file_path = os.path.join(output_path, prefix + md5 + f)
             return file_path
+    except:
+        logger.error(traceback.format_exc())
+        output_path = os.path.join(output_path, "404.png")
+        return output_path
+    
+def get_emoji_url(xml_string, thumb=True) -> str:
+    """不管下载，只返回url"""
+    try:
+        emoji_info = parser_xml(xml_string)
+        md5 = emoji_info['md5']
+        url = emoji_info["thumburl" if thumb else "cdnurl"]
+        if not url or url == '':
+            url = Emotion().get_emoji_URL(md5=md5, thumb=thumb)
+        return url
     except:
         logger.error(traceback.format_exc())
         output_path = os.path.join(output_path, "404.png")
