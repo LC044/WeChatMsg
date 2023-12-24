@@ -267,10 +267,10 @@ class MyThread(QThread):
         pass
 
     def run(self):
-        file_path = './app/resources/version_list.json'
+        file_path = './app/resources/data/version_list.json'
         if not os.path.exists(file_path):
             resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
-            file_path = os.path.join(resource_dir, 'app', 'resources', 'version_list.json')
+            file_path = os.path.join(resource_dir, 'app', 'resources', 'data','version_list.json')
         with open(file_path, "r", encoding="utf-8") as f:
             VERSION_LIST = json.loads(f.read())
         try:

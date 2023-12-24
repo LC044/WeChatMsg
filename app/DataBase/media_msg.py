@@ -16,7 +16,7 @@ def get_ffmpeg_path():
     resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
 
     # 构建 FFmpeg 可执行文件的路径
-    ffmpeg_path = os.path.join(resource_dir, 'app', 'resources', 'ffmpeg.exe')
+    ffmpeg_path = os.path.join(resource_dir, 'app', 'resources','data', 'ffmpeg.exe')
 
     return ffmpeg_path
 
@@ -92,11 +92,11 @@ class MediaMsg:
             else:
                 # 源码运行的时候下面的有效
                 # 这里不知道怎么捕捉异常
-                cmd = f'''{os.path.join(os.getcwd(), 'app', 'resources', 'ffmpeg.exe')} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
+                cmd = f'''{os.path.join(os.getcwd(), 'app', 'resources', 'data','ffmpeg.exe')} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
                 system(cmd)
         except Exception as e:
             print(f"Error: {e}")
-            cmd = f'''{os.path.join(os.getcwd(), 'app', 'resources', 'ffmpeg.exe')} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
+            cmd = f'''{os.path.join(os.getcwd(), 'app', 'resources', 'data', 'ffmpeg.exe')} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
             system(cmd)
         system(f'del {silk_path}')
         system(f'del {pcm_path}')

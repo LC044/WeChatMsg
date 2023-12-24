@@ -96,10 +96,10 @@ def wordcloud_christmas(wxid, year='2023'):
         stopwords1 = set(stopword_file.read().splitlines())
     # 构建 FFmpeg 可执行文件的路径
     stopwords = set()
-    stopwords_file = './app/resources/stopwords.txt'
+    stopwords_file = './app/resources/data/stopwords.txt'
     if not os.path.exists(stopwords_file):
         resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
-        stopwords_file = os.path.join(resource_dir, 'app', 'resources', 'stopwords.txt')
+        stopwords_file = os.path.join(resource_dir, 'app', 'resources', 'data','stopwords.txt')
     with open(stopwords_file, "r", encoding="utf-8") as stopword_file:
         stopwords = set(stopword_file.read().splitlines())
         stopwords = stopwords.union(stopwords1)

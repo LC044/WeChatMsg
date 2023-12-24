@@ -31,6 +31,11 @@ def makedirs(path):
     os.makedirs(os.path.join(path, 'voice'), exist_ok=True)
     os.makedirs(os.path.join(path, 'file'), exist_ok=True)
     os.makedirs(os.path.join(path, 'avatar'), exist_ok=True)
+    file = './app/resources/data/file.png'
+    if not os.path.exists(file):
+        resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
+        file = os.path.join(resource_dir, 'app', 'resources', 'data','file.png')
+    shutil.copy(file, path + '/file/file.png')
 
 
 def escape_js_and_html(input_str):
@@ -383,7 +388,6 @@ class ChildThread(QThread):
         if self.output_type == Output.HTML:
             link = get_file(bytesExtra, thumb=True, output_path=origin_docx_path + '/file')
             file_name = ''
-            shutil.copy(f"{os.path.abspath('.')}/app/resources/icons/file.png", origin_docx_path + '/file/file.png')
             file_path = './file/file.png'
             if link != "":
                 file_name = os.path.basename(link)
@@ -544,16 +548,18 @@ class ChildThread(QThread):
     def to_html_(self):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         makedirs(origin_docx_path)
+
         if self.contact.is_chatroom:
             packagemsg = PackageMsg()
             messages = packagemsg.get_package_message_by_wxid(self.contact.wxid)
         else:
             messages = msg_db.get_messages(self.contact.wxid)
         filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}.html"
-        file_path = './app/resources/template.html'
+        file_path = './app/resources/data/template.html'
         if not os.path.exists(file_path):
             resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
-            file_path = os.path.join(resource_dir, 'app', 'resources', 'template.html')
+            file_path = os.path.join(resource_dir, 'app', 'resources', 'data','template.html')
+
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
             html_head, html_end = content.split('/*注意看这是分割线*/')
@@ -688,7 +694,8 @@ class OutputEmoji(QThread):
         for message in messages:
             str_content = message[7]
             try:
-                emoji_path = get_emoji(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
+                pass
+                # emoji_path = get_emoji(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
             except:
                 logger.error(traceback.format_exc())
             finally:

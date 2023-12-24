@@ -284,7 +284,7 @@ def get_emoji_url(xml_string, thumb=True) -> str:
         return url
     except:
         logger.error(traceback.format_exc())
-        output_path = os.path.join(output_path, "404.png")
+        output_path = os.path.join("./emoji/404.png")
         return output_path
 
 
