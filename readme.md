@@ -16,7 +16,7 @@
 </div>
 
 <div align="center">
-<a href="https://memotrace.lc044.love/"><img src="https://www.freeimg.cn/i/2023/12/23/6586a50ab7dc5.png" height="240"/></a>
+<a href="https://memotrace.lc044.love/"><img src="https://memotrace.lc044.love/img/logo%20-%20%E5%89%AF%E6%9C%AC.png" height="240"/></a>
 </div>
 <blockquote>
 <div style="background-color: #eaf7ea; border-radius: 10px; padding: 20px; position: relative;">
