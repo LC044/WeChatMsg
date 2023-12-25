@@ -8,6 +8,8 @@ emoji.py
 所以禁止任何人以任何方式修改或间接修改该文件，违者后果自负
 """
 
+from typing import Union
+
 import os
 import traceback
 import xml.etree.ElementTree as ET
@@ -93,7 +95,7 @@ class Emotion:
                 if lock.locked():
                     lock.release()
 
-    def get_emoji_url(self, md5: str, thumb: bool) -> str | bytes:
+    def get_emoji_url(self, md5: str, thumb: bool) -> Union[str, bytes]:
         '''供下载用，返回可能是url可能是bytes'''
         if thumb:
             sql = '''
