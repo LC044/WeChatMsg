@@ -11,7 +11,7 @@ def merge_MediaMSG_databases(source_paths, target_path):
         target_conn.execute("BEGIN;")
         for i, source_path in enumerate(source_paths):
             if not os.path.exists(source_path):
-                break
+                continue
             db = sqlite3.connect(source_path)
             db.text_factory = str
             cursor = db.cursor()
@@ -52,7 +52,7 @@ def merge_databases(source_paths, target_path):
         target_conn.execute("BEGIN;")
         for i, source_path in enumerate(source_paths):
             if not os.path.exists(source_path):
-                break
+                continue
             db = sqlite3.connect(source_path)
             db.text_factory = str
             cursor = db.cursor()

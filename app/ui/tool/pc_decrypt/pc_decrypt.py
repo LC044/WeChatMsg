@@ -230,7 +230,7 @@ class DecryptThread(QThread):
         # 目标数据库文件
         target_database = "app/DataBase/Msg/MSG.db"
         # 源数据库文件列表
-        source_databases = [f"app/DataBase/Msg/MSG{i}.db" for i in range(1, 200)]
+        source_databases = [f"app/DataBase/Msg/MSG{i}.db" for i in range(1, 50)]
         import shutil
         if os.path.exists(target_database):
             os.remove(target_database)
@@ -246,7 +246,7 @@ class DecryptThread(QThread):
         # 源数据库文件列表
         if os.path.exists(target_database):
             os.remove(target_database)
-        source_databases = [f"app/DataBase/Msg/MediaMSG{i}.db" for i in range(1, 200)]
+        source_databases = [f"app/DataBase/Msg/MediaMSG{i}.db" for i in range(1, 50)]
         shutil.copy2("app/DataBase/Msg/MediaMSG0.db", target_database)  # 使用一个数据库文件作为模板
         # 合并数据库
         try:
