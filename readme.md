@@ -1,17 +1,27 @@
 <h1 align="center">我的数据我做主</h1>
 <div align="center">
-<img src="https://img.shields.io/badge/WeChat-留痕-blue.svg">
+<a href="https://memotrace.lc044.love/" target="_blank">
+    <img src="https://img.shields.io/badge/WeChat-留痕-blue.svg">
+</a>
 <a href="https://github.com/LC044/WeChatMsg/stargazers">
     <img src="https://img.shields.io/github/stars/LC044/WeChatMsg.svg" />
 </a>
-<a href="https://github.com/LC044/WeChatMsg/issues">
+    
+<!-- <a href="https://github.com/LC044/WeChatMsg/issues">
       <img alt="Issues" src="https://img.shields.io/github/issues/LC044/WeChatMsg?color=0088ff" />
-    </a>
-<a href="./doc/readme.md">
-    <img src="https://img.shields.io/badge/文档-最新-brightgreen.svg" />
+</a> -->
+
+<a>
+    <img alt="GitHub forks" src="https://img.shields.io/github/forks/LC044/WeChatMsg?color=eb6ea5">
 </a>
-<a href="LICENSE">
+<a href="https://memotrace.lc044.love/" target="_blank">
     <img src="https://img.shields.io/github/license/LC044/WeChatMsg" />
+</a>
+<a href="https://github.com/LC044/WeChatMsg/releases" target="_blank">
+    <img alt="GitHub release (with filter)" src="https://img.shields.io/github/v/release/LC044/WeChatMsg">
+</a>
+<a href="https://memotrace.lc044.love/" target="_blank">
+    <img alt="GitHub all releases" src="https://img.shields.io/github/downloads/LC044/WeChatMsg/total?color=3eb370">
 </a>
 </div>
 
