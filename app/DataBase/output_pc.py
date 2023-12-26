@@ -103,7 +103,7 @@ class Output(QThread):
         packagemsg = PackageMsg()
         messages = packagemsg.get_package_message_all()
         # 写入CSV文件
-        with open(filename, mode='w', newline='', encoding='utf-8') as file:
+        with open(filename, mode='w', newline='', encoding='utf-8-sig') as file:
             writer = csv.writer(file)
             writer.writerow(columns)
             # 写入数据
@@ -121,7 +121,7 @@ class Output(QThread):
                    'bigHeadImgUrl']
         contacts = micro_msg_db.get_contact()
         # 写入CSV文件
-        with open(filename, mode='w', newline='', encoding='utf-8') as file:
+        with open(filename, mode='w', newline='', encoding='utf-8-sig') as file:
             writer = csv.writer(file)
             writer.writerow(columns)
             # 写入数据
@@ -135,7 +135,7 @@ class Output(QThread):
             self.to_csv_all()
         elif self.output_type == self.CONTACT_CSV:
             self.contact_to_csv()
-        elif self.output_type == self.CSV:
+        elif self.output_type == self.CSV or self.output_type == self.TXT:
             self.Child = ChildThread(self.contact, type_=self.output_type, message_types=self.message_types)
             self.Child.progressSignal.connect(self.progress)
             self.Child.rangeSignal.connect(self.rangeSignal)
@@ -244,7 +244,7 @@ class ChildThread(QThread):
                 f'''{{ type:{1}, text: '{str_content}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
             )
         elif self.output_type == Output.TXT:
-            name = '你' if is_send else self.contact.remark
+            name = displayname
             doc.write(
                 f'''{str_time} {name}\n{str_content}\n\n'''
             )
@@ -286,7 +286,7 @@ class ChildThread(QThread):
                 f'''{{ type:{type_}, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
             )
         elif self.output_type == Output.TXT:
-            name = '你' if is_send else self.contact.remark
+            name = displayname
             doc.write(
                 f'''{str_time} {name}\n[图片]\n\n'''
             )
@@ -326,7 +326,7 @@ class ChildThread(QThread):
                 f'''{{ type:34, text:'{audio_path}',is_send:{is_send},avatar_path:'{avatar}',voice_to_text:'{voice_to_text}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
             )
         if self.output_type == Output.TXT:
-            name = '你' if is_send else self.contact.remark
+            name = displayname
             doc.write(
                 f'''{str_time} {name}\n[语音]\n\n'''
             )
@@ -358,7 +358,7 @@ class ChildThread(QThread):
                 f'''{{ type:{3}, text: '{emoji_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
             )
         elif self.output_type == Output.TXT:
-            name = '你' if is_send else self.contact.remark
+            name = displayname
             doc.write(
                 f'''{str_time} {name}\n[表情包]\n\n'''
             )
@@ -436,7 +436,7 @@ class ChildThread(QThread):
                     f'''{{ type:49, text: '{contentText}',is_send:{is_send},sub_type:{content.get('type')},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
                 )
         elif self.output_type == Output.TXT:
-            name = '你' if is_send else self.contact.remark
+            name = displayname
             if refer_msg:
                 doc.write(
                     f'''{str_time} {name}\n{content.get('title')}\n引用:{refer_msg.get('displayname')}:{refer_msg.get('content')}\n\n'''
@@ -452,20 +452,28 @@ class ChildThread(QThread):
         str_time = message[8]
         timestamp = message[5]
         is_chatroom = 1 if self.contact.is_chatroom else 0
+        if is_chatroom:
+            if is_send:
+                displayname = MePC().name
+            else:
+                displayname = message[12].remark
+        else:
+            displayname = MePC().name if is_send else self.contact.remark
         str_content = str_content.replace('<![CDATA[', "").replace(
             ' <a href="weixin://revoke_edit_click">重新编辑</a>]]>', "")
         res = findall('(</{0,1}(img|revo|_wc_cus|a).*?>)', str_content)
         for xmlstr, b in res:
             str_content = str_content.replace(xmlstr, "")
         str_content = escape_js_and_html(str_content)
+
         if self.output_type == Output.HTML:
             doc.write(
                 f'''{{ type:0, text: '{str_content}',is_send:{is_send},avatar_path:'',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:''}},'''
             )
         elif self.output_type == Output.TXT:
-            name = '你' if is_send else self.contact.remark
+
             doc.write(
-                f'''{str_time} {name}\n{str_content}\n\n'''
+                f'''{str_time} {displayname}\n{str_content}\n\n'''
             )
 
     def video(self, doc, message):
@@ -523,9 +531,15 @@ class ChildThread(QThread):
                 f'''{{ type:{type_}, text: '{video_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
             )
         elif self.output_type == Output.TXT:
-            name = '你' if is_send else self.contact.remark
+            if is_chatroom:
+                if is_send:
+                    displayname = MePC().name
+                else:
+                    displayname = message[12].remark
+            else:
+                displayname = MePC().name if is_send else self.contact.remark
             doc.write(
-                f'''{str_time} {name}\n[视频]\n\n'''
+                f'''{str_time} {displayname}\n[视频]\n\n'''
             )
 
     def to_csv(self):
@@ -538,7 +552,7 @@ class ChildThread(QThread):
                    'StrTime']
         messages = msg_db.get_messages(self.contact.wxid)
         # 写入CSV文件
-        with open(filename, mode='w', newline='', encoding='utf-8') as file:
+        with open(filename, mode='w', newline='', encoding='utf-8-sig') as file:
             writer = csv.writer(file)
             writer.writerow(columns)
             # 写入数据
@@ -618,7 +632,11 @@ class ChildThread(QThread):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         os.makedirs(origin_docx_path, exist_ok=True)
         filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}.txt"
-        messages = msg_db.get_messages(self.contact.wxid)
+        if self.contact.is_chatroom:
+            packagemsg = PackageMsg()
+            messages = packagemsg.get_package_message_by_wxid(self.contact.wxid)
+        else:
+            messages = msg_db.get_messages(self.contact.wxid)
         total_steps = len(messages)
         with open(filename, mode='w', newline='', encoding='utf-8') as f:
             for index, message in enumerate(messages):

@@ -15,10 +15,12 @@ def decompress_CompressContent(data):
     try:
         dst = lz4.block.decompress(data, uncompressed_size=len(data) << 10)
         decoded_string = dst.decode().replace('\x00', '')  # Remove any null characters
-    except lz4.block.LZ4BlockError:
+    except :
         print("Decompression failed: potentially corrupt input or insufficient buffer size.")
         return ''
     return decoded_string
+
+
 def escape_js_and_html(input_str):
     # 转义HTML特殊字符
     html_escaped = html.escape(input_str, quote=False)
@@ -35,6 +37,7 @@ def escape_js_and_html(input_str):
     )
 
     return js_escaped
+
 
 def parser_reply(data: bytes):
     xml_content = decompress_CompressContent(data)

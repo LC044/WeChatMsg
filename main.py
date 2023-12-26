@@ -62,9 +62,6 @@ class ViewController(QWidget):
 
 
 if __name__ == '__main__':
-    import cgitb
-
-    cgitb.enable(format='text')
     app = QApplication(sys.argv)
     font = QFont('微软雅黑', 12)  # 使用 Times New Roman 字体，字体大小为 14
     app.setFont(font)
