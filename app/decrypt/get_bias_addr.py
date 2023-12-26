@@ -270,9 +270,3 @@ def get_info_without_key(h_process, address, n_size=64):
     array = bytes(array).split(b"\x00")[0] if b"\x00" in array else bytes(array)
     text = array.decode('utf-8', errors='ignore')
     return text.strip() if text.strip() != "" else "None"
-
-
-if __name__ == '__main__':
-    account, mobile, name, key, db_path = "ShuaikangZhou044", "19103803009", "Shuaikang Zhou",None, r"test"
-    bias_addr = BiasAddr(account, mobile, name, key, db_path)
-    bias_addr.run(logging_path=True)
