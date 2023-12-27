@@ -7,6 +7,7 @@ import traceback
 from re import findall
 from PyQt5.QtCore import pyqtSignal, QThread
 from PyQt5.QtWidgets import QFileDialog
+from docx.oxml.ns import qn
 
 from . import msg_db, micro_msg_db
 from .package_msg import PackageMsg
@@ -27,7 +28,16 @@ from docx.enum.text import WD_COLOR_INDEX, WD_PARAGRAPH_ALIGNMENT
 
 os.makedirs('./data/聊天记录', exist_ok=True)
 
+def set_global_font(doc, font_name):
+    # 创建一个新样式
+    style = doc.styles['Normal']
 
+    # 设置字体名称
+    style.font.name = font_name
+    # 遍历文档中的所有段落，将样式应用到每个段落
+    for paragraph in doc.paragraphs:
+        for run in paragraph.runs:
+            run.font.name = font_name
 def makedirs(path):
     os.makedirs(path, exist_ok=True)
     os.makedirs(os.path.join(path, 'image'), exist_ok=True)
@@ -808,6 +818,8 @@ class ChildThread(QThread):
         filename = os.path.join(origin_docx_path,f"{self.contact.remark}.docx")
         makedirs(origin_docx_path)
         doc = docx.Document()
+        doc.styles['Normal'].font.name = u'Cambria'
+        doc.styles['Normal']._element.rPr.rFonts.set(qn('w:eastAsia'), u'宋体')
         if self.contact.is_chatroom:
             packagemsg = PackageMsg()
             messages = packagemsg.get_package_message_by_wxid(self.contact.wxid)
