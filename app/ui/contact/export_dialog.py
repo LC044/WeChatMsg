@@ -42,6 +42,10 @@ class ExportDialog(QDialog):
             self.export_type = Output.TXT
             self.export_choices = {"文本": True, "图片": True, "语音": True, "视频": True,
                                    "表情包": True}  # 定义导出的数据类型，默认全部选择
+        elif file_type == 'docx':
+            self.export_type = Output.DOCX
+            self.export_choices = {"文本": True, "图片": False, "语音": False, "视频": False,
+                                   "表情包": False,'拍一拍等系统消息': True}  # 定义导出的数据类型，默认全部选择
         else:
             self.export_choices = {"文本": True, "图片": True, "视频": True, "表情包": True}  # 定义导出的数据类型，默认全部选择
         self.setWindowTitle(title)

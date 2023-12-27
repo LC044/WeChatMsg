@@ -140,7 +140,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
         self.thread2.signal.connect(self.progressBar_view)
         self.thread2.okSignal.connect(self.btnExitClicked)
         self.thread2.errorSignal.connect(
-            lambda x: QMessageBox.critical(self, "错误", "密钥错误\n请检查微信版本是否为最新和微信路径是否正确")
+            lambda x: QMessageBox.critical(self, "错误", "错误\n请检查微信版本是否为最新和微信路径是否正确\n或者关闭微信多开")
         )
         self.thread2.start()
 
@@ -232,7 +232,10 @@ class DecryptThread(QThread):
         import shutil
         if os.path.exists(target_database):
             os.remove(target_database)
-        shutil.copy2("app/DataBase/Msg/MSG0.db", target_database)  # 使用一个数据库文件作为模板
+        try:
+            shutil.copy2("app/DataBase/Msg/MSG0.db", target_database)  # 使用一个数据库文件作为模板
+        except FileNotFoundError:
+            self.errorSignal.emit(True)
         # 合并数据库
         try:
             merge_databases(source_databases, target_database)
@@ -245,7 +248,10 @@ class DecryptThread(QThread):
         if os.path.exists(target_database):
             os.remove(target_database)
         source_databases = [f"app/DataBase/Msg/MediaMSG{i}.db" for i in range(1, 50)]
-        shutil.copy2("app/DataBase/Msg/MediaMSG0.db", target_database)  # 使用一个数据库文件作为模板
+        try:
+            shutil.copy2("app/DataBase/Msg/MediaMSG0.db", target_database)  # 使用一个数据库文件作为模板
+        except FileNotFoundError:
+            self.errorSignal.emit(True)
         # 合并数据库
         try:
             merge_MediaMSG_databases(source_databases, target_database)

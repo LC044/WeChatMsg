@@ -118,6 +118,15 @@ def get_image(path, base_path) -> str:
         return ':/icons/icons/404.png'
 
 
+def get_image_abs_path(path, base_path) -> str:
+    if path:
+        base_path = os.getcwd() + base_path
+        output_path = decode_dat(os.path.join(MePC().wx_dir, path), base_path)
+        return output_path
+    else:
+        return ':/icons/icons/404.png'
+
+
 def get_image_path(path, base_path) -> str:
     if path:
         base_path = os.getcwd() + base_path

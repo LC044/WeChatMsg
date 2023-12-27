@@ -113,13 +113,8 @@ class ContactInfo(QWidget, Ui_Form):
         """
         self.stackedWidget.setCurrentWidget(self.view_userinfo)
         if self.sender() == self.toDocxAct:
-            print('功能暂未实现')
-            QMessageBox.warning(self,
-                                "别急别急",
-                                "马上就实现该功能"
-                                )
-            return
-            self.outputThread = Output(self.Me, self.contact.wxid)
+            dialog = ExportDialog(self.contact, title='选择导出的消息类型', file_type='docx', parent=self)
+            result = dialog.exec_()  # 使用exec_()获取用户的操作结果
         elif self.sender() == self.toCSVAct:
             # self.outputThread = Output(self.contact, type_=Output.CSV)
             dialog = ExportDialog(self.contact,title='选择导出的消息类型', file_type='csv', parent=self)
