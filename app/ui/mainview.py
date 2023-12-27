@@ -35,8 +35,8 @@ QWidget{
 QListWidget, QListView, QTreeWidget, QTreeView {
     outline: 0px;
 }
-QPushButton:menu-indicator {
-}
+
+
 QMenu::item:selected {
       color: black;
       background: rgb(230, 235, 240);

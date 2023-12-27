@@ -1,9 +1,7 @@
 import json
 import os.path
 import sys
-import time
 import traceback
-from typing import List
 
 from PyQt5.QtCore import pyqtSignal, QThread, QUrl
 from PyQt5.QtGui import QDesktopServices

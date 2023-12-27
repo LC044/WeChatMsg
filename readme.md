@@ -34,7 +34,7 @@
     <div style="position: absolute;top: 0;bottom: 0;left: 0;width: 2px;background-color: #000000;"></div>
     <h2>前言</h2>
     <div style="text-indent: 2em;">
-        <a align="center" href="https://memotrace.lc044.love/"><img src="https://blog.lc044.love/static/img/6428156ae35a53d2f41433a1b27712ee.logo2.0-99.webp"/></a>
+        <a align="center" href="https://memotrace.lc044.love/"><img src="./doc/images/logo99.png"/></a>
         <p style="text-indent:2em;">我深信有意义的不是微信，而是隐藏在对话框背后的一个个<strong>深刻故事</strong>。未来，每个人都能拥有AI的陪伴，而你的数据能够赋予它有关于你过去的珍贵记忆。我希望每个人都有将自己的生活痕迹👨‍👩‍👦👚🥗🏠️🚴🧋⛹️🛌🛀留存的权利，而不是遗忘💀。</p>
         <p style="text-indent:2em;">AI的发展不仅仅是技术的提升，更是情感💞的延续。每一个对话、每一个互动都是生活中独一无二的片段，是真实而动人的情感交流。因此，我希望AI工作者们能够<strong>善用这些自己的数据</strong>，用于培训独特的、属于个体的人工智能。让<strong>个人AI成为生活中的朋友</strong>，能够理解、记录并分享我们的欢笑、泪水和成长。</p>
         <p style="text-indent:2em;">那天，AI不再是高不可攀的存在，而是融入寻常百姓家的一部分。因为<strong>每个人能拥有自己的AI</strong>，将科技的力量融入生活的方方面面。这是一场关于真情实感的革命，一场让技术变得更加人性化的探索，让我们共同见证未来的美好。</p>
@@ -75,21 +75,21 @@
 
 <details>
 
-<img alt="聊天界面" src="https://blog.lc044.love/static/img/b355c16c4a4037deec96fd87efecb74b.image.webp"/>
+<img alt="聊天界面" src="./doc/images/chat.png"/>
 
-![image-20230520235351749](https://blog.lc044.love/static/img/beb1500f349ce289406e0e8accac63c0.clipboard-2023-12-12.webp)
+![image-20230520235351749](./doc/images/20231227211149.png)
 
-![image-20230520235351749](https://www.freeimg.cn/i/2023/12/23/6586a4923efd6.png)
+![image-20230520235351749](./doc/images/20231227211215.png)
 
-![image-20230520235351749](https://www.freeimg.cn/i/2023/12/23/6586a49224852.png)
+![image-20230520235351749](./doc/images/20231227211228.png)
 
-![image-20230520235400772](https://www.freeimg.cn/i/2023/12/23/6586a4957d2da.png)
+![image-20230520235400772](./doc/images/20231227211240.png)
 
-![image-20230520235409112](https://www.freeimg.cn/i/2023/12/23/6586a498d17a1.png)
+![image-20230520235409112](./doc/images/20231227211250.png)
 
-![image-20230520235422128](https://www.freeimg.cn/i/2023/12/23/6586a49bd8a7b.png)
+![image-20230520235422128](./doc/images/image-20230520235338305.png)
 
-![image-20230520235431091](https://www.freeimg.cn/i/2023/12/23/6586a49f2a8c9.png)
+![image-20230520235431091](./doc/images/image-20230520235351749.png)
 
 </details>
 
@@ -145,8 +145,8 @@ python main.py
 
 ![](./doc/images/path_select.png)
 
-5. 获取到密钥和微信路径之后点击开始解密
-6. 解密后的数据库文件保存在./app/DataBase/Msg路径下
+5. 获取到key和微信路径之后点击开始启动
+6. 数据库文件保存在./app/DataBase/Msg路径下
 
 ### 3. 查看
 
@@ -162,8 +162,6 @@ python main.py
 
 ### 4. pc端功能展示
 
-恭喜你解密成功，来看看效果吧~
-
 #### 4.1 最上方导航栏
 
 可以点击获取教程，相关信息，导出全部信息的csv文件。
@@ -173,8 +171,7 @@ python main.py
 #### 4.2 聊天界面
 
 点击**左侧导航栏——>聊天**
-，会随机跳转到某一个好友的界面，滚轮滚动，可以向上翻看更早的聊天记录（温馨提示：可能在翻的时候会有卡顿的现象，是因为数据加载需要时间，后期我们会继续优化嗷~
-）。目前聊天记录中文字、图片、表情包基本可以正常显示~
+，会随机跳转到某一个好友的界面，滚轮滚动，可以向上翻看更早的聊天记录。目前聊天记录中文字、图片基本可以正常显示~
 
 ![](./doc/images/chat_window1.png)
 
@@ -185,7 +182,7 @@ python main.py
 
 #### 4.3 好友界面
 
-点击**左侧导航栏——>好友**，会跳转到好友的界面，同样可以选择好友，右上方导航栏中有（1）统计信息（2）情感分析（3）年度报告（4）退出（5）导出聊天记录：可选择导出为word、csv、html格式。
+点击**左侧导航栏——>好友**，会跳转到好友的界面，同样可以选择好友，右上方导航栏中有（1）统计信息（2）情感分析（3）年度报告（4）退出（5）导出聊天记录：可选择导出为word、csv、html、txt格式。
 
 ![](./doc/images/contact_window.png)
 
@@ -209,7 +206,7 @@ python main.py
 ![](./doc/images/exe_file.png)
 
 如果您在获取信息的时候，`wxid`
-显示none，但是密钥是存在的，需要在微信文件保存的路径中选择该文件夹路径下的带有wxid_xxx的名字，填到wxid位置并继续点击`开始启动`
+显示none，但是key是存在的，需要在微信文件保存的路径中选择该文件夹路径下的带有wxid_xxx的名字，填到wxid位置并继续点击`开始启动`
 
 ![](./doc/images/with_wxid_name.png)
 
@@ -222,17 +219,12 @@ python main.py
 
 ![](./doc/images/message.png)
 
-
-#### 🤔注意
-
-解密一个微信数据库之后，登录新的微信并不会实时更改
-
 </details>
 
 
 # 🏆致谢
 
-* PC微信解密工具:[https://github.com/xaoyaoo/PyWxDump](https://github.com/xaoyaoo/PyWxDump)
+* PC微信工具:[https://github.com/xaoyaoo/PyWxDump](https://github.com/xaoyaoo/PyWxDump)
 * PyQt组件库:[https://github.com/PyQt5/CustomWidgets](https://github.com/PyQt5/CustomWidgets)
 * 我的得力助手:[ChatGPT](https://chat.openai.com/)
 
@@ -304,4 +296,4 @@ python main.py
 
 后续更新将会在公众号同步发布
 
-![](https://blog.lc044.love/static/img/3fd32f1732a2c8f53a7eb923472b8f19.clipboard-2023-12-18.webp)
+![](./doc/images/weixin.png)
