@@ -158,7 +158,7 @@ python main.py
 
 显示效果
 
-<img alt="聊天界面" src="doc/images/chat_.png"/>
+<img alt="聊天界面" src="doc/images/chat.png"/>
 
 ### 4. pc端功能展示
 

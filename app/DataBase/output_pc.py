@@ -315,12 +315,11 @@ class ChildThread(QThread):
             try:
                 audio_path = media_msg_db.get_audio_path(msgSvrId, output_path=origin_docx_path + "/voice")
                 audio_path = audio_path.replace('/', '\\')
-                modify_audio_metadata(audio_path, displayname)
-                os.utime(audio_path, (timestamp, timestamp))
                 audio_path = audio_path.replace('\\', '/')
                 audio_path = "./voice/" + os.path.basename(audio_path)
                 voice_to_text = escape_js_and_html(media_msg_db.get_audio_text(str_content))
             except:
+                logger.error(traceback.format_exc())
                 return
             doc.write(
                 f'''{{ type:34, text:'{audio_path}',is_send:{is_send},avatar_path:'{avatar}',voice_to_text:'{voice_to_text}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''

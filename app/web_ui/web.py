@@ -17,7 +17,7 @@ contact: ContactPC = None
 @app.route("/")
 def index():
     # 渲染模板，并传递图表的 HTML 到模板中
-    return render_template("index.html")
+    return "index.html"
 
 
 @app.route("/christmas")
@@ -86,13 +86,6 @@ def christmas():
     }
     return render_template("christmas.html", **data, **wordcloud_cloud_data, **time_data, **month_data, **calendar_data,
                            **emoji_data)
-
-
-# @app.route("/")
-# def cindex():
-#     # 渲染模板，并传递图表的 HTML 到模板中
-#     return render_template("cindex.html")
-
 
 @app.route('/home')
 def home():
