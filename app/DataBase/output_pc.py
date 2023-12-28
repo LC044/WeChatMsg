@@ -542,7 +542,7 @@ class ChildThread(QThread):
             content_cell.paragraphs[0].add_run(content.get('title'))
             content_cell.paragraphs[0].font_size = shared.Inches(0.5)
             reply_p = content_cell.add_paragraph()
-            reply_content = f'{refer_msg.get('displayname')}:{refer_msg.get('content')}' if refer_msg else '未知引用'
+            reply_content = f"{refer_msg.get('displayname')}:{refer_msg.get('content')}" if refer_msg else '未知引用'
             run = content_cell.paragraphs[1].add_run(reply_content)
             '''设置被回复内容格式'''
             run.font.color.rgb = shared.RGBColor(121, 121, 121)
