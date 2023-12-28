@@ -12,6 +12,7 @@ Stylesheet = """
 QPushButton{
     background-color: rgb(250,252,253);
     border-radius: 5px;
+    padding: 8px;
     border-right: 2px solid #888888;  /* 按钮边框，2px宽，白色 */
     border-bottom: 2px solid #888888;  /* 按钮边框，2px宽，白色 */
     border-left: 1px solid #ffffff;  /* 按钮边框，2px宽，白色 */
