@@ -245,7 +245,7 @@ class ChildThread(QThread):
         if self.contact.is_chatroom:
             avatar = message[12].smallHeadImgUrl
         else:
-            avatar = f"{MePC().wxid+'.png' if is_send else self.contact.smallHeadImgUrl}"
+            avatar = MePC().smallHeadImgUrl if is_send else self.contact.smallHeadImgUrl
         if is_absolute_path:
             avatar = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"+avatar
         return avatar
