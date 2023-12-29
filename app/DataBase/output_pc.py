@@ -9,7 +9,7 @@ from PyQt5.QtCore import pyqtSignal, QThread
 from PyQt5.QtWidgets import QFileDialog
 from docx.oxml.ns import qn
 
-from . import msg_db, micro_msg_db
+from . import msg_db
 from .package_msg import PackageMsg
 from ..DataBase import hard_link_db
 from ..DataBase import media_msg_db
@@ -18,7 +18,7 @@ from ..person import MePC
 from ..util import path
 import shutil
 from ..util.compress_content import parser_reply
-from ..util.emoji import get_emoji, get_emoji_path, get_emoji_url
+from ..util.emoji import  get_emoji_url
 from ..util.image import get_image_path, get_image, get_image_abs_path
 from ..util.file import get_file
 import docx
@@ -311,8 +311,6 @@ class ChildThread(QThread):
                     return
                 image_path = image_thumb_path
             image_path = get_image_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
-            image_path = image_path.replace('/', '\\')
-            image_path = image_path.replace('\\', '/')
             doc.write(
                 f'''{{ type:{type_}, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
             )
@@ -367,8 +365,6 @@ class ChildThread(QThread):
         if self.output_type == Output.HTML:
             try:
                 audio_path = media_msg_db.get_audio_path(msgSvrId, output_path=origin_docx_path + "/voice")
-                audio_path = audio_path.replace('/', '\\')
-                audio_path = audio_path.replace('\\', '/')
                 audio_path = "./voice/" + os.path.basename(audio_path)
                 voice_to_text = escape_js_and_html(media_msg_db.get_audio_text(str_content))
             except:
@@ -403,8 +399,6 @@ class ChildThread(QThread):
             displayname = MePC().name if is_send else self.contact.remark
         displayname = escape_js_and_html(displayname)
         if self.output_type == Output.HTML:
-            # emoji_path = get_emoji_path(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
-            # emoji_path = './emoji/' + os.path.basename(emoji_path)
             emoji_path = get_emoji_url(str_content, thumb=True)
             doc.write(
                 f'''{{ type:{3}, text: '{emoji_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
@@ -428,8 +422,6 @@ class ChildThread(QThread):
                 p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT
             doc.add_paragraph()
 
-    def wx_file(self, doc, isSend, content, status):
-        return
 
     def file(self, doc, message):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
@@ -615,9 +607,6 @@ class ChildThread(QThread):
                     # todo 网络图片问题
                     print(origin_docx_path + image_path[1:])
                     os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
-                    image_path = image_path.replace('\\', '/')
-                    # print(f"tohtml:---{image_path}")
-
                     doc.write(
                         f'''{{ type:3, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
                     )
@@ -635,7 +624,6 @@ class ChildThread(QThread):
                     shutil.copy(video_path, os.path.join(origin_docx_path, 'video'))
                 os.utime(new_path, (timestamp, timestamp))
                 video_path = f'./video/{os.path.basename(video_path)}'
-            video_path = video_path.replace('\\', '/')
             doc.write(
                 f'''{{ type:{type_}, text: '{video_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
             )

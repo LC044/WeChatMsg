@@ -69,12 +69,9 @@ class MediaMsg:
         buf = self.get_media_buffer(reserved0)
         if not buf:
             return ''
-        silk_path = f"{output_path}\\{reserved0}.silk"
-        pcm_path = f"{output_path}\\{reserved0}.pcm"
-        mp3_path = f"{output_path}\\{reserved0}.mp3"
-        silk_path = silk_path.replace("/", "\\")
-        pcm_path = pcm_path.replace("/", "\\")
-        mp3_path = mp3_path.replace("/", "\\")
+        silk_path = f"{output_path}/{reserved0}.silk"
+        pcm_path = f"{output_path}/{reserved0}.pcm"
+        mp3_path = f"{output_path}/{reserved0}.mp3"
         if os.path.exists(mp3_path):
             return mp3_path
         with open(silk_path, "wb") as f:
@@ -98,8 +95,8 @@ class MediaMsg:
             print(f"Error: {e}")
             cmd = f'''{os.path.join(os.getcwd(), 'app', 'resources', 'data', 'ffmpeg.exe')} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
             system(cmd)
-        system(f'del {silk_path}')
-        system(f'del {pcm_path}')
+        os.remove(silk_path)
+        os.remove(pcm_path)
         print(mp3_path)
         return mp3_path
 
