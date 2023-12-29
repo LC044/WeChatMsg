@@ -10,13 +10,13 @@
     margin: 0;
 }
 body{
-    height: 100vh;
-    width: 100%;
     display: flex;
+    flex-direction: row;
+    height: 100vh;
+    margin: 0;
     align-items: center;
     justify-content: center;
 }
-
 .modal {
     display: none;
     position: fixed;
@@ -38,14 +38,16 @@ body{
     transform: translate(-50%, -50%);
 }
 .container{
-    height: 99%;
-    width: 900px;
+    height: 80vh;
+    width: 100%;
+    max-width: 900px;
     border-radius: 4px;
     border: 0.5px solid #e0e0e0;
     background-color: #f5f5f5;
     display: flex;
-    flex-flow: column;
+    /* flex-flow: column; */
     overflow: hidden;
+    justify-content: center; /* 在主轴上居中 */
 }
 .content{
     width: calc(100% - 40px);
@@ -262,8 +264,9 @@ textarea{
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 0px;
     margin-left: 20px; /* 新增的左边距 */
+    justify-content: center; /* 在主轴上居中 */
 }
 
 .button-row,
@@ -307,55 +310,102 @@ input {
     color: #555;
     font-size: 14px;
 }
+@media screen and (max-width: 768px) {
+    body{
+        display: flex; /* 使用 Flex 布局 */
+        flex-direction: column; /* 设置主轴方向为垂直方向 */
+        align-items: center; /* 在交叉轴上居中 */
+    }  
+    /* 在屏幕宽度小于等于 768px 时应用的样式 */
+      .pagination-container {
+       display: flex; /* 使用 Flex 布局 */
+       justify-content: center; /* 在主轴上居中 */
+       flex-direction: row;
+    }
+    .button-row,
+    .jump-row,
+    #paginationInfo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 0px;
+    }
 
+    button {
+        padding: 5px 10px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 0 5px;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #2980b9;
+    }
+
+    input {
+        padding: 8px;
+        width: 120px;
+        box-sizing: border-box;
+        margin-right: 0px;
+        margin-left: 5px;
+    }
+}
 .emoji_img {
     width: 22px;
     height: 22px;
     vertical-align: middle;
     margin-top: -4.4px;
 }
-
   </style>
 </head>
 <body>
-<div class="container">
-    <div class="content" id="chat-container" onscroll="checkScroll()">
-        <div class="item item-center"><span>昨天 12:35</span></div>
-        <div class="item item-center"><span>你已添加了凡繁烦，现在可以开始聊天了。</span></div>
-        <div class="item item-left">
-            <div class="avatar">
-                <img src="https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=25668084,2889217189&fm=26&gp=0.jpg" />
+    <div>
+        <div class="pagination-container">
+            <div class="button-row">
+                <button onclick="prevPage()">上一页</button>
+                <button onclick="nextPage()">下一页</button>
             </div>
-            <div class="bubble bubble-left">您好,我在武汉，你可以直接送过来吗，我有时间的话，可以自己过去拿<br/>！！！<br/>123
+            <div class="jump-row">
+                <input type="number" id="gotoPageInput" onkeydown="checkEnter(event)" placeholder="跳转到第几页">
+                <button onclick="gotoPage()">跳转</button>
             </div>
+            
         </div>
+        <div id="paginationInfo"></div>
+    </div>
+    
+    <div class="container">
+        <div class="content" id="chat-container" onscroll="checkScroll()">
+            <div class="item item-center"><span>昨天 12:35</span></div>
+            <div class="item item-center"><span>你已添加了凡繁烦，现在可以开始聊天了。</span></div>
+            <div class="item item-left">
+                <div class="avatar">
+                    <img src="https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=25668084,2889217189&fm=26&gp=0.jpg" />
+                </div>
+                <div class="bubble bubble-left">您好,我在武汉，你可以直接送过来吗，我有时间的话，可以自己过去拿<br/>！！！<br/>123
+                </div>
+            </div>
 
-        <div class="item item-right">
-            <div class="bubble bubble-right">hello<br/>你好呀</div>
-            <div class="avatar">
-                <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3313909130,2406410525&fm=15&gp=0.jpg" />
+            <div class="item item-right">
+                <div class="bubble bubble-right">hello<br/>你好呀</div>
+                <div class="avatar">
+                    <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3313909130,2406410525&fm=15&gp=0.jpg" />
+                </div>
+            </div>
+            <div class="item item-center">
+                <span>昨天 13:15</span>
             </div>
         </div>
-        <div class="item item-center">
-            <span>昨天 13:15</span>
-        </div>
     </div>
-</div>
-<div></div>
-<div id="modal" class="modal" onclick="hideModal()">
-    <img id="modal-image" class="modal-image">
-</div>
-<div class="pagination-container">
-    <div class="button-row">
-        <button onclick="prevPage()">上一页</button>
-        <button onclick="nextPage()">下一页</button>
+    <div></div>
+    <div id="modal" class="modal" onclick="hideModal()">
+        <img id="modal-image" class="modal-image">
     </div>
-    <div class="jump-row">
-        <input type="number" id="gotoPageInput" onkeydown="checkEnter(event)" placeholder="跳转到第几页">
-        <button onclick="gotoPage()">跳转</button>
-    </div>
-    <div id="paginationInfo"></div>
-</div>
+    
 <script>
     const chatContainer = document.getElementById('chat-container');
     // Sample chat messages (replace this with your actual data)
