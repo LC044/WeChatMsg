@@ -190,8 +190,10 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
         else:
             self.avatar.loadFromData(img_bytes, format='jfif')
         self.avatar.scaled(60, 60)
+        contact_info_list = micro_msg_db.get_contact_by_username(wxid)
         me = MePC()
         me.set_avatar(img_bytes)
+        me.smallHeadImgUrl = contact_info_list[7]
         self.myavatar.setScaledContents(True)
         self.myavatar.setPixmap(self.avatar)
 

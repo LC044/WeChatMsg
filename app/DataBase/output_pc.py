@@ -18,7 +18,7 @@ from ..person import MePC
 from ..util import path
 import shutil
 from ..util.compress_content import parser_reply
-from ..util.emoji import  get_emoji_url
+from ..util.emoji import get_emoji_url
 from ..util.image import get_image_path, get_image, get_image_abs_path
 from ..util.file import get_file
 import docx
@@ -27,6 +27,7 @@ from docx.enum.table import WD_ALIGN_VERTICAL
 from docx.enum.text import WD_COLOR_INDEX, WD_PARAGRAPH_ALIGNMENT
 
 os.makedirs('./data/聊天记录', exist_ok=True)
+
 
 def set_global_font(doc, font_name):
     # 创建一个新样式
@@ -38,6 +39,8 @@ def set_global_font(doc, font_name):
     for paragraph in doc.paragraphs:
         for run in paragraph.runs:
             run.font.name = font_name
+
+
 def makedirs(path):
     os.makedirs(path, exist_ok=True)
     os.makedirs(os.path.join(path, 'image'), exist_ok=True)
@@ -232,11 +235,30 @@ class ChildThread(QThread):
         self.msg_id = 0
         self.output_type = type_
 
-    def is_5_min(self, timestamp):
+    def is_5_min(self, timestamp) -> bool:
         if abs(timestamp - self.last_timestamp) > 300:
             self.last_timestamp = timestamp
             return True
         return False
+
+    def get_avatar_path(self, is_send, message,is_absolute_path=False) -> str:
+        if self.contact.is_chatroom:
+            avatar = message[12].smallHeadImgUrl
+        else:
+            avatar = f"{MePC().wxid+'.png' if is_send else self.contact.smallHeadImgUrl}"
+        if is_absolute_path:
+            avatar = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"+avatar
+        return avatar
+
+    def get_display_name(self, is_send, message) -> str:
+        if self.contact.is_chatroom:
+            if is_send:
+                display_name = MePC().name
+            else:
+                display_name = message[12].remark
+        else:
+            display_name = MePC().name if is_send else self.contact.remark
+        return escape_js_and_html(display_name)
 
     def text(self, doc, message):
         type_ = message[2]
@@ -245,34 +267,21 @@ class ChildThread(QThread):
         is_send = message[4]
         timestamp = message[5]
         is_chatroom = 1 if self.contact.is_chatroom else 0
-        if is_chatroom:
-            avatar = f"./avatar/{message[12].wxid}.png"
-        else:
-            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
-        if is_chatroom:
-            if is_send:
-                displayname = MePC().name
-            else:
-                displayname = message[12].remark
-        else:
-            displayname = MePC().name if is_send else self.contact.remark
-        displayname = escape_js_and_html(displayname)
+
+        display_name = self.get_display_name(is_send,message)
         if self.output_type == Output.HTML:
+            avatar = self.get_avatar_path(is_send, message)
             str_content = escape_js_and_html(str_content)
             doc.write(
-                f'''{{ type:{1}, text: '{str_content}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
+                f'''{{ type:{1}, text: '{str_content}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}'}},'''
             )
         elif self.output_type == Output.TXT:
-            name = displayname
+            name = display_name
             doc.write(
                 f'''{str_time} {name}\n{str_content}\n\n'''
             )
         elif self.output_type == Output.DOCX:
-            origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-            if is_chatroom:
-                avatar = f"{origin_docx_path}/avatar/{message[12].wxid}.png"
-            else:
-                avatar = f"{origin_docx_path}/avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
+            avatar = self.get_avatar_path(is_send,message,True)
             content_cell = self.create_table(doc, is_send, avatar)
             content_cell.paragraphs[0].add_run(str_content)
             content_cell.paragraphs[0].font_size = shared.Inches(0.5)
@@ -290,18 +299,8 @@ class ChildThread(QThread):
         BytesExtra = message[10]
         timestamp = message[5]
         is_chatroom = 1 if self.contact.is_chatroom else 0
-        if is_chatroom:
-            avatar = f"./avatar/{message[12].wxid}.png"
-        else:
-            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
-        if is_chatroom:
-            if is_send:
-                displayname = MePC().name
-            else:
-                displayname = message[12].remark
-        else:
-            displayname = MePC().name if is_send else self.contact.remark
-        displayname = escape_js_and_html(displayname)
+        avatar = self.get_avatar_path(is_send, message)
+        display_name = self.get_display_name(is_send,message)
         if self.output_type == Output.HTML:
             str_content = escape_js_and_html(str_content)
             image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
@@ -312,20 +311,15 @@ class ChildThread(QThread):
                 image_path = image_thumb_path
             image_path = get_image_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
             doc.write(
-                f'''{{ type:{type_}, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
+                f'''{{ type:{type_}, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}'}},'''
             )
         elif self.output_type == Output.TXT:
-            name = displayname
             doc.write(
-                f'''{str_time} {name}\n[图片]\n\n'''
+                f'''{str_time} {display_name}\n[图片]\n\n'''
             )
         elif self.output_type == Output.DOCX:
-            origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-            if is_chatroom:
-                avatar = f"{origin_docx_path}/avatar/{message[12].wxid}.png"
-            else:
-                avatar = f"{origin_docx_path}/avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
-            content = self.create_table(doc, is_send,avatar)
+            avatar = self.get_avatar_path(is_send,message,True)
+            content = self.create_table(doc, is_send, avatar)
             run = content.paragraphs[0].add_run()
             str_content = escape_js_and_html(str_content)
             image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
@@ -335,7 +329,6 @@ class ChildThread(QThread):
                     return
                 image_path = image_thumb_path
             image_path = get_image_abs_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
-
             try:
                 run.add_picture(image_path, height=shared.Inches(2))
                 doc.add_paragraph()
@@ -350,18 +343,8 @@ class ChildThread(QThread):
         msgSvrId = message[9]
         timestamp = message[5]
         is_chatroom = 1 if self.contact.is_chatroom else 0
-        if is_chatroom:
-            avatar = f"./avatar/{message[12].wxid}.png"
-        else:
-            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
-        if is_chatroom:
-            if is_send:
-                displayname = MePC().name
-            else:
-                displayname = message[12].remark
-        else:
-            displayname = MePC().name if is_send else self.contact.remark
-        displayname = escape_js_and_html(displayname)
+        avatar = self.get_avatar_path(is_send, message)
+        display_name = self.get_display_name(is_send, message)
         if self.output_type == Output.HTML:
             try:
                 audio_path = media_msg_db.get_audio_path(msgSvrId, output_path=origin_docx_path + "/voice")
@@ -371,49 +354,40 @@ class ChildThread(QThread):
                 logger.error(traceback.format_exc())
                 return
             doc.write(
-                f'''{{ type:34, text:'{audio_path}',is_send:{is_send},avatar_path:'{avatar}',voice_to_text:'{voice_to_text}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
+                f'''{{ type:34, text:'{audio_path}',is_send:{is_send},avatar_path:'{avatar}',voice_to_text:'{voice_to_text}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}'}},'''
             )
-        if self.output_type == Output.TXT:
-            name = displayname
+        elif self.output_type == Output.TXT:
             doc.write(
-                f'''{str_time} {name}\n[语音]\n\n'''
+                f'''{str_time} {display_name}\n[语音]\n\n'''
             )
-
+        elif self.output_type == Output.DOCX:
+            avatar = self.get_avatar_path(is_send,message,True)
+            content_cell = self.create_table(doc, is_send, avatar)
+            content_cell.paragraphs[0].add_run('【表情包】')
+            content_cell.paragraphs[0].font_size = shared.Inches(0.5)
+            if is_send:
+                p = content_cell.paragraphs[0]
+                p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT
+            doc.add_paragraph()
     def emoji(self, doc, message):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         str_content = message[7]
         str_time = message[8]
         is_send = message[4]
         timestamp = message[5]
         is_chatroom = 1 if self.contact.is_chatroom else 0
-        if is_chatroom:
-            avatar = f"./avatar/{message[12].wxid}.png"
-        else:
-            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
-        if is_chatroom:
-            if is_send:
-                displayname = MePC().name
-            else:
-                displayname = message[12].remark
-        else:
-            displayname = MePC().name if is_send else self.contact.remark
-        displayname = escape_js_and_html(displayname)
+        avatar = self.get_avatar_path(is_send, message)
+        display_name = self.get_display_name(is_send, message)
         if self.output_type == Output.HTML:
             emoji_path = get_emoji_url(str_content, thumb=True)
             doc.write(
-                f'''{{ type:{3}, text: '{emoji_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
+                f'''{{ type:{3}, text: '{emoji_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}'}},'''
             )
         elif self.output_type == Output.TXT:
-            name = displayname
             doc.write(
-                f'''{str_time} {name}\n[表情包]\n\n'''
+                f'''{str_time} {display_name}\n[表情包]\n\n'''
             )
         elif self.output_type == Output.DOCX:
-            origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-            if is_chatroom:
-                avatar = f"{origin_docx_path}/avatar/{message[12].wxid}.png"
-            else:
-                avatar = f"{origin_docx_path}/avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
+            avatar = self.get_avatar_path(is_send,message,True)
             content_cell = self.create_table(doc, is_send, avatar)
             content_cell.paragraphs[0].add_run('【表情包】')
             content_cell.paragraphs[0].font_size = shared.Inches(0.5)
@@ -422,7 +396,6 @@ class ChildThread(QThread):
                 p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT
             doc.add_paragraph()
 
-
     def file(self, doc, message):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         bytesExtra = message[10]
@@ -430,18 +403,8 @@ class ChildThread(QThread):
         is_send = message[4]
         timestamp = message[5]
         is_chatroom = 1 if self.contact.is_chatroom else 0
-        if is_chatroom:
-            avatar = f"./avatar/{message[12].wxid}.png"
-        else:
-            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
-        if is_chatroom:
-            if is_send:
-                displayname = MePC().name
-            else:
-                displayname = message[12].remark
-        else:
-            displayname = MePC().name if is_send else self.contact.remark
-        displayname = escape_js_and_html(displayname)
+        avatar = self.get_avatar_path(is_send, message)
+        display_name = self.get_display_name(is_send, message)
         if self.output_type == Output.HTML:
             link = get_file(bytesExtra, thumb=True, output_path=origin_docx_path + '/file')
             file_name = ''
@@ -450,25 +413,14 @@ class ChildThread(QThread):
                 file_name = os.path.basename(link)
                 link = './file/' + file_name
             doc.write(
-                f'''{{ type:49, text: '{file_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}',link: '{link}',sub_type:6,file_name: '{file_name}'}},'''
+                f'''{{ type:49, text: '{file_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',link: '{link}',sub_type:6,file_name: '{file_name}'}},'''
             )
         elif self.output_type == Output.TXT:
-            if is_chatroom:
-                if is_send:
-                    displayname = MePC().name
-                else:
-                    displayname = message[12].remark
-            else:
-                displayname = MePC().name if is_send else self.contact.remark
             doc.write(
-                f'''{str_time} {displayname}\n[文件]\n\n'''
+                f'''{str_time} {display_name}\n[文件]\n\n'''
             )
         elif self.output_type == Output.DOCX:
-            origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-            if is_chatroom:
-                avatar = f"{origin_docx_path}/avatar/{message[12].wxid}.png"
-            else:
-                avatar = f"{origin_docx_path}/avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
+            avatar = self.get_avatar_path(is_send,message,True)
             content_cell = self.create_table(doc, is_send, avatar)
             content_cell.paragraphs[0].add_run('【文件】')
             content_cell.paragraphs[0].font_size = shared.Inches(0.5)
@@ -490,47 +442,31 @@ class ChildThread(QThread):
         refer_msg = content.get('refer')
         timestamp = message[5]
         is_chatroom = 1 if self.contact.is_chatroom else 0
-        if is_chatroom:
-            avatar = f"./avatar/{message[12].wxid}.png"
-        else:
-            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
-        if is_chatroom:
-            if is_send:
-                displayname = MePC().name
-            else:
-                displayname = message[12].remark
-        else:
-            displayname = MePC().name if is_send else self.contact.remark
-        displayname = escape_js_and_html(displayname)
+        avatar = self.get_avatar_path(is_send, message)
+        display_name = self.get_display_name(is_send, message)
         if self.output_type == Output.HTML:
             contentText = escape_js_and_html(content.get('title'))
             if refer_msg:
                 referText = f"{escape_js_and_html(refer_msg.get('displayname'))}：{escape_js_and_html(refer_msg.get('content'))}"
                 doc.write(
-                    f'''{{ type:49, text: '{contentText}',is_send:{is_send},sub_type:{content.get('type')},refer_text: '{referText}',avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
+                    f'''{{ type:49, text: '{contentText}',is_send:{is_send},sub_type:{content.get('type')},refer_text: '{referText}',avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}'}},'''
                 )
             else:
                 doc.write(
-                    f'''{{ type:49, text: '{contentText}',is_send:{is_send},sub_type:{content.get('type')},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
+                    f'''{{ type:49, text: '{contentText}',is_send:{is_send},sub_type:{content.get('type')},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}'}},'''
                 )
         elif self.output_type == Output.TXT:
-            name = displayname
             if refer_msg:
                 doc.write(
-                    f'''{str_time} {name}\n{content.get('title')}\n引用:{refer_msg.get('displayname')}:{refer_msg.get('content')}\n\n'''
+                    f'''{str_time} {display_name}\n{content.get('title')}\n引用:{refer_msg.get('displayname')}:{refer_msg.get('content')}\n\n'''
                 )
             else:
                 doc.write(
-                    f'''{str_time} {name}\n{content.get('title')}\n引用:未知\n\n'''
+                    f'''{str_time} {display_name}\n{content.get('title')}\n引用:未知\n\n'''
                 )
         elif self.output_type == Output.DOCX:
-            origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-            if is_chatroom:
-                avatar = f"{origin_docx_path}/avatar/{message[12].wxid}.png"
-            else:
-                avatar = f"{origin_docx_path}/avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
+            avatar = self.get_avatar_path(is_send,message,True)
             content_cell = self.create_table(doc, is_send, avatar)
-
             content_cell.paragraphs[0].add_run(content.get('title'))
             content_cell.paragraphs[0].font_size = shared.Inches(0.5)
             reply_p = content_cell.add_paragraph()
@@ -546,19 +482,14 @@ class ChildThread(QThread):
                 p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT
                 reply_p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT
             doc.add_paragraph()
+
     def system_msg(self, doc, message):
         str_content = message[7]
         is_send = message[4]
         str_time = message[8]
         timestamp = message[5]
         is_chatroom = 1 if self.contact.is_chatroom else 0
-        if is_chatroom:
-            if is_send:
-                displayname = MePC().name
-            else:
-                displayname = message[12].remark
-        else:
-            displayname = MePC().name if is_send else self.contact.remark
+
         str_content = str_content.replace('<![CDATA[', "").replace(
             ' <a href="weixin://revoke_edit_click">重新编辑</a>]]>', "")
         res = findall('(</{0,1}(img|revo|_wc_cus|a).*?>)', str_content)
@@ -570,9 +501,8 @@ class ChildThread(QThread):
                 f'''{{ type:0, text: '{str_content}',is_send:{is_send},avatar_path:'',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:''}},'''
             )
         elif self.output_type == Output.TXT:
-
             doc.write(
-                f'''{str_time} {displayname}\n{str_content}\n\n'''
+                f'''{str_time} {str_content}\n\n'''
             )
         elif self.output_type == Output.DOCX:
             doc.add_paragraph(str_content).alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
@@ -586,18 +516,8 @@ class ChildThread(QThread):
         BytesExtra = message[10]
         timestamp = message[5]
         is_chatroom = 1 if self.contact.is_chatroom else 0
-        if is_chatroom:
-            avatar = f"./avatar/{message[12].wxid}.png"
-        else:
-            avatar = f"./avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
-        if is_chatroom:
-            if is_send:
-                displayname = MePC().name
-            else:
-                displayname = message[12].remark
-        else:
-            displayname = MePC().name if is_send else self.contact.remark
-        displayname = escape_js_and_html(displayname)
+        avatar = self.get_avatar_path(is_send, message)
+        display_name = self.get_display_name(is_send, message)
         if self.output_type == Output.HTML:
             video_path = hard_link_db.get_video(str_content, BytesExtra, thumb=False)
             image_path = hard_link_db.get_video(str_content, BytesExtra, thumb=True)
@@ -608,11 +528,11 @@ class ChildThread(QThread):
                     print(origin_docx_path + image_path[1:])
                     os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
                     doc.write(
-                        f'''{{ type:3, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
+                        f'''{{ type:3, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}'}},'''
                     )
                 except:
                     doc.write(
-                        f'''{{ type:1, text: '视频丢失',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
+                        f'''{{ type:1, text: '视频丢失',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}'}},'''
                     )
                 return
             if video_path is None and image_path is None:
@@ -625,25 +545,14 @@ class ChildThread(QThread):
                 os.utime(new_path, (timestamp, timestamp))
                 video_path = f'./video/{os.path.basename(video_path)}'
             doc.write(
-                f'''{{ type:{type_}, text: '{video_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{displayname}'}},'''
+                f'''{{ type:{type_}, text: '{video_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}'}},'''
             )
         elif self.output_type == Output.TXT:
-            if is_chatroom:
-                if is_send:
-                    displayname = MePC().name
-                else:
-                    displayname = message[12].remark
-            else:
-                displayname = MePC().name if is_send else self.contact.remark
             doc.write(
-                f'''{str_time} {displayname}\n[视频]\n\n'''
+                f'''{str_time} {display_name}\n[视频]\n\n'''
             )
         elif self.output_type == Output.DOCX:
-            origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-            if is_chatroom:
-                avatar = f"{origin_docx_path}/avatar/{message[12].wxid}.png"
-            else:
-                avatar = f"{origin_docx_path}/avatar/{MePC().wxid if is_send else self.contact.wxid}.png"
+            avatar = self.get_avatar_path(is_send,message,True)
             content_cell = self.create_table(doc, is_send, avatar)
             content_cell.paragraphs[0].add_run('【视频】')
             content_cell.paragraphs[0].font_size = shared.Inches(0.5)
@@ -651,6 +560,7 @@ class ChildThread(QThread):
                 p = content_cell.paragraphs[0]
                 p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT
             doc.add_paragraph()
+
     def create_table(self, doc, is_send, avatar_path):
         '''
         #! 创建一个1*2表格
@@ -686,11 +596,14 @@ class ChildThread(QThread):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         os.makedirs(origin_docx_path, exist_ok=True)
         filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}_utf8.csv"
-        # columns = ["用户名", "消息内容", "发送时间", "发送状态", "消息类型", "isSend", "msgId"]
         columns = ['localId', 'TalkerId', 'Type', 'SubType',
                    'IsSender', 'CreateTime', 'Status', 'StrContent',
-                   'StrTime']
-        messages = msg_db.get_messages(self.contact.wxid)
+                   'StrTime', 'Remark', 'NickName', 'Sender']
+        if self.contact.is_chatroom:
+            packagemsg = PackageMsg()
+            messages = packagemsg.get_package_message_by_wxid(self.contact.wxid)
+        else:
+            messages = msg_db.get_messages(self.contact.wxid)
         # 写入CSV文件
         with open(filename, mode='w', newline='', encoding='utf-8-sig') as file:
             writer = csv.writer(file)
@@ -698,6 +611,7 @@ class ChildThread(QThread):
             # 写入数据
             writer.writerows(messages)
         self.okSignal.emit('ok')
+
 
     def to_html_(self):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
@@ -719,20 +633,6 @@ class ChildThread(QThread):
             html_head, html_end = content.split('/*注意看这是分割线*/')
         f = open(filename, 'w', encoding='utf-8')
         f.write(html_head.replace("<title>Chat Records</title>", f"<title>{self.contact.remark}</title>"))
-        MePC().avatar.save(os.path.join(f"{origin_docx_path}/avatar/{MePC().wxid}.png"))
-        if self.contact.is_chatroom:
-            for message in messages:
-                if message[4]:  # is_send
-                    continue
-                try:
-                    chatroom_avatar_path = f"{origin_docx_path}/avatar/{message[12].wxid}.png"
-                    if not os.path.exists(chatroom_avatar_path):
-                        message[12].avatar.save(chatroom_avatar_path)
-                except:
-                    print(message)
-                    pass
-        else:
-            self.contact.avatar.save(os.path.join(f"{origin_docx_path}/avatar/{self.contact.wxid}.png"))
         self.rangeSignal.emit(len(messages))
         for index, message in enumerate(messages):
             type_ = message[2]
@@ -803,7 +703,7 @@ class ChildThread(QThread):
     def to_docx(self):
         print('导出docx')
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-        filename = os.path.join(origin_docx_path,f"{self.contact.remark}.docx")
+        filename = os.path.join(origin_docx_path, f"{self.contact.remark}.docx")
         makedirs(origin_docx_path)
         doc = docx.Document()
         doc.styles['Normal'].font.name = u'Cambria'
@@ -856,7 +756,7 @@ class ChildThread(QThread):
         try:
             doc.save(filename)
         except PermissionError:
-            filename = filename[:-5]+f'{time.time()}'+'.docx'
+            filename = filename[:-5] + f'{time.time()}' + '.docx'
             doc.save(filename)
         self.okSignal.emit(1)
 

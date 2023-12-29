@@ -4,9 +4,9 @@ import sqlite3
 import threading
 import traceback
 
-
 from app.log import logger
 from app.util.compress_content import parser_reply
+from app.util.protocbuf.msg_pb2 import MessageBytesExtra
 
 db_path = "./app/Database/Msg/MSG.db"
 lock = threading.Lock()
@@ -53,8 +53,30 @@ class Msg:
                 if lock.locked():
                     lock.release()
 
+    def add_sender(self, messages):
+        """
+        @param messages:
+        @return:
+        """
+        new_messages = []
+        for message in messages:
+            is_sender = message[4]
+            wxid = ''
+            if is_sender:
+                pass
+            else:
+                msgbytes = MessageBytesExtra()
+                msgbytes.ParseFromString(message[10])
+                for tmp in msgbytes.message2:
+                    if tmp.field1 != 1:
+                        continue
+                    wxid = tmp.field2
+            new_message = (*message, wxid)
+            new_messages.append(new_message)
+        return new_messages
+
     def get_messages(self, username_):
-        '''
+        """
         return list
             a[0]: localId,
             a[1]: talkerId, （和strtalker对应的，不是群聊信息发送人）
@@ -68,7 +90,7 @@ class Msg:
             a[9]: msgSvrId,
             a[10]: BytesExtra,
             a[11]: CompressContent,
-        '''
+        """
         if not self.open_flag:
             return None
         sql = '''
@@ -83,8 +105,9 @@ class Msg:
             result = self.cursor.fetchall()
         finally:
             lock.release()
-        result.sort(key=lambda x: x[5])
         return result
+        # result.sort(key=lambda x: x[5])
+        # return self.add_sender(result)
 
     def get_messages_all(self):
         sql = '''
@@ -458,7 +481,7 @@ class Msg:
             return None
         try:
             lock.acquire(True)
-            self.cursor.execute(sql, [username_,year_] if year_ != "all" else [username_])
+            self.cursor.execute(sql, [username_, year_] if year_ != "all" else [username_])
             result = self.cursor.fetchone()
         except sqlite3.DatabaseError:
             logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
@@ -604,6 +627,6 @@ if __name__ == '__main__':
     db_path = "./app/database/Msg/MSG.db"
     msg = Msg()
     msg.init_database()
-    print(msg.get_latest_time_of_message('wxid_0o18ef858vnu22', year_='2023'))
-    print(msg.get_messages_number('wxid_0o18ef858vnu22', year_='2023'))
-    print(msg.get_messages_by_type('wxid_0o18ef858vnu22',34))
+    wxid = 'wxid_0o18ef858vnu22'
+    wxid = '24521163022@chatroom'
+    print(msg.get_messages(wxid)[0])

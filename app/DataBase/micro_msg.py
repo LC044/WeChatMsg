@@ -67,11 +67,12 @@ class MicroMsg:
             return None
         try:
             lock.acquire(True)
-            sql = '''SELECT UserName, Alias, Type, Remark, NickName, PYInitial, RemarkPYInitial, ContactHeadImgUrl.smallHeadImgUrl, ContactHeadImgUrl.bigHeadImgUrl
-                               FROM Contact
-                               INNER JOIN ContactHeadImgUrl ON Contact.UserName = ContactHeadImgUrl.usrName
-                               WHERE UserName = ?
-                             '''
+            sql = '''
+                   SELECT UserName, Alias, Type, Remark, NickName, PYInitial, RemarkPYInitial, ContactHeadImgUrl.smallHeadImgUrl, ContactHeadImgUrl.bigHeadImgUrl
+                   FROM Contact
+                   INNER JOIN ContactHeadImgUrl ON Contact.UserName = ContactHeadImgUrl.usrName
+                   WHERE UserName = ?
+                '''
             self.cursor.execute(sql, [username])
             result = self.cursor.fetchone()
         finally:

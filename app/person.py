@@ -28,6 +28,7 @@ class MePC:
         self.wx_dir = ''
         self.name = ''
         self.mobile = ''
+        self.smallHeadImgUrl = ''
 
     def set_avatar(self, img_bytes):
         if not img_bytes:
