@@ -5,13 +5,13 @@ from flask import Flask, render_template, send_file
 
 from app.DataBase import msg_db
 from app.analysis import analysis
-from app.person import ContactPC, MePC
+from app.person import Contact, Me
 from app.util.emoji import get_most_emoji
 
 app = Flask(__name__)
 
 wxid = ''
-contact: ContactPC = None
+contact: Contact = None
 
 
 @app.route("/")
@@ -29,9 +29,9 @@ def christmas():
         first_time = '2023-01-01 00:00:00'
     data = {
         'ta_avatar_path': contact.avatar_path,
-        'my_avatar_path': MePC().avatar_path,
+        'my_avatar_path': Me().avatar_path,
         'ta_nickname': contact.remark,
-        'my_nickname': MePC().name,
+        'my_nickname': Me().name,
         'first_time': first_time,
     }
     wordcloud_cloud_data = analysis.wordcloud_christmas(contact.wxid)

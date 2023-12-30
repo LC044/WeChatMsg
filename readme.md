@@ -292,8 +292,11 @@ python main.py
 
 ## 加群方式
 
-关注官方公众号，回复：联系方式
+1. 关注官方公众号，回复：联系方式
+2. QQ扫码入群
 
 后续更新将会在公众号同步发布
-
-![](./doc/images/weixin.png)
+<div>
+  <img src="./doc/images/weixin.png">
+  <img src="./doc/images/qq.jpg" height="200">
+</div>

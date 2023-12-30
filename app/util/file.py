@@ -6,7 +6,7 @@ import requests
 
 from app.log import log, logger
 from app.util.protocbuf.msg_pb2 import MessageBytesExtra
-from ..person import MePC
+from ..person import Me
 
 root_path = './data/files/'
 if not os.path.exists('./data'):
@@ -33,7 +33,7 @@ def get_file(bytes_extra, thumb=False, output_path=root_path) -> str:
             if file_field.find('sec_msg_node') == -1:
                 file_original_path = file_field
                 file_name = os.path.basename(file_original_path)
-                if file_name != '' and file_name != MePC().wxid:
+                if file_name != '' and file_name != Me().wxid:
                     file_path = os.path.join(output_path, file_name)
                     if os.path.exists(file_path):
                         print('文件' + file_path + '已存在')
@@ -43,13 +43,13 @@ def get_file(bytes_extra, thumb=False, output_path=root_path) -> str:
                             real_path = file_original_path
                         else:  # 如果没找到再判断一次是否是迁移了目录
                             if file_original_path.find(r"FileStorage") != -1:
-                                real_path = MePC().wx_dir + file_original_path[
+                                real_path = Me().wx_dir + file_original_path[
                                                             file_original_path.find("FileStorage") - 1:]
                     else:
-                        if file_original_path.find(MePC().wxid) != -1:
-                            real_path = MePC().wx_dir + file_original_path.replace(MePC().wxid, '')
+                        if file_original_path.find(Me().wxid) != -1:
+                            real_path = Me().wx_dir + file_original_path.replace(Me().wxid, '')
                         else:
-                            real_path = MePC().wx_dir + file_original_path
+                            real_path = Me().wx_dir + file_original_path
                     if real_path != "":
                         if os.path.exists(real_path):
                             print('开始获取文件' + real_path)

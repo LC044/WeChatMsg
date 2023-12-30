@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QWidget, QMessageBox, QAction, QLineEdit
 
 from app.DataBase import micro_msg_db, misc_db, msg_db
 from app.components import ContactQListWidgetItem, ScrollBar
-from app.person import ContactPC
+from app.person import Contact
 from app.ui.Icon import Icon
 from app.util import search
 from .chatUi import Ui_Form
@@ -126,7 +126,7 @@ class ChatWindow(QWidget, Ui_Form):
 
 
 class ShowContactThread(QThread):
-    showSingal = pyqtSignal(ContactPC)
+    showSingal = pyqtSignal(Contact)
     load_finish_signal = pyqtSignal(bool)
 
     # heightSingal = pyqtSignal(int)
@@ -145,7 +145,7 @@ class ShowContactThread(QThread):
                 'NickName': contact_info_list[4],
                 'smallHeadImgUrl': contact_info_list[7]
             }
-            contact = ContactPC(contact_info)
+            contact = Contact(contact_info)
             contact.smallHeadImgBLOG = misc_db.get_avatar_buffer(contact.wxid)
             contact.set_avatar(contact.smallHeadImgBLOG)
             self.showSingal.emit(contact)
@@ -154,7 +154,7 @@ class ShowContactThread(QThread):
 
 
 class ShowThread(QThread):
-    showSingal = pyqtSignal(ContactPC)
+    showSingal = pyqtSignal(Contact)
     load_finish_signal = pyqtSignal(bool)
 
     # heightSingal = pyqtSignal(int)

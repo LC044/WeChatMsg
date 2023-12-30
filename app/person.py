@@ -1,10 +1,11 @@
+"""
+定义各种联系人
+"""
+
 import os.path
 import re
 from typing import Dict
-
-from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
-
 from app.ui.Icon import Icon
 
 
@@ -20,6 +21,11 @@ def singleton(cls):
 
 
 class Person:
+    def __init__(self):
+        self.avatar_path = None
+        self.avatar = None
+        self.avatar_path_qt = Icon.Default_avatar_path
+
     def set_avatar(self, img_bytes):
         if not img_bytes:
             self.avatar.load(Icon.Default_avatar_path)
@@ -46,7 +52,7 @@ class Person:
 
 
 @singleton
-class MePC(Person):
+class Me(Person):
     def __init__(self):
         self.avatar = QPixmap(Icon.Default_avatar_path)
         self.avatar_path = ':/icons/icons/default_avatar.svg'
@@ -57,7 +63,7 @@ class MePC(Person):
         self.smallHeadImgUrl = ''
 
 
-class ContactPC(Person):
+class Contact(Person):
     def __init__(self, contact_info: Dict):
         self.wxid = contact_info.get('UserName')
         self.remark = contact_info.get('Remark')
@@ -87,7 +93,29 @@ class ContactDefault(Person):
         self.is_chatroom = False
 
 
+class Contacts:
+    def __init__(self):
+        self.contacts: Dict[str:Contact] = {}
+
+    def add(self, wxid, contact: Contact):
+        if wxid not in contact:
+            self.contacts[wxid] = contact
+
+    def get(self, wxid: str) -> Contact:
+        return self.contacts.get(wxid)
+
+    def remove(self, wxid: str):
+        return self.contacts.pop(wxid)
+
+    def save_avatar(self, avatar_dir: str = './data/avatar/'):
+        for wxid, contact in self.contacts.items():
+            avatar_path = os.path.join(avatar_dir, wxid + '.png')
+            if os.path.exists(avatar_path):
+                continue
+            contact.save_avatar(avatar_path)
+
+
 if __name__ == '__main__':
-    p1 = MePC()
-    p2 = MePC()
+    p1 = Me()
+    p2 = Me()
     print(p1 == p2)

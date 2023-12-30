@@ -24,7 +24,7 @@ from .contact import ContactWindow
 from .tool.tool_window import ToolWindow
 from ..DataBase.output_pc import Output
 from ..components.QCursorGif import QCursorGif
-from ..person import MePC
+from ..person import Me
 
 # 美化样式表
 Stylesheet = """
@@ -106,7 +106,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
                 dic = json.loads(f.read())
                 wxid = dic.get('wxid')
                 if wxid:
-                    me = MePC()
+                    me = Me()
                     me.wxid = dic.get('wxid')
                     me.name = dic.get('name')
                     me.mobile = dic.get('mobile')
@@ -191,7 +191,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
             self.avatar.loadFromData(img_bytes, format='jfif')
         self.avatar.scaled(60, 60)
         contact_info_list = micro_msg_db.get_contact_by_username(wxid)
-        me = MePC()
+        me = Me()
         me.set_avatar(img_bytes)
         me.smallHeadImgUrl = contact_info_list[7]
         self.myavatar.setScaledContents(True)

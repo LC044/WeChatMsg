@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QWidget, QMessageBox, QAction, QLineEdit
 
 from app.DataBase import micro_msg_db, misc_db
 from app.components import ContactQListWidgetItem, ScrollBar
-from app.person import ContactPC
+from app.person import Contact
 from app.ui.Icon import Icon
 from .contactInfo import ContactInfo
 from .contactUi import Ui_Form
@@ -75,6 +75,10 @@ class ContactWindow(QWidget, Ui_Form):
         self.stackedWidget.setCurrentIndex(0)
 
     def show_contacts(self):
+        """
+        创建一个子线程来获取联系人并通过信号传递联系人信息
+        @return:
+        """
         # return
         if self.ok_flag:
             return
@@ -94,13 +98,22 @@ class ContactWindow(QWidget, Ui_Form):
         self.ok_flag = True
 
     def search_contact(self):
+        """
+        搜索联系人
+        @return:
+        """
         keyword = self.lineEdit.text()
         if keyword:
             index = search.search_by_content(keyword, self.contacts)
             self.listWidget.setCurrentRow(index)
             self.stackedWidget.setCurrentIndex(index)
 
-    def show_contact(self, contact: ContactPC):
+    def show_contact(self, contact: Contact):
+        """
+        显示联系人
+        @param contact:联系人对象
+        @return:
+        """
         self.contacts[0].append(contact.remark)
         self.contacts[1].append(contact.nickName)
         contact_item = ContactQListWidgetItem(contact.remark, contact.smallHeadImgUrl, contact.smallHeadImgBLOG)
@@ -121,7 +134,7 @@ class ContactWindow(QWidget, Ui_Form):
 
 
 class ShowContactThread(QThread):
-    showSingal = pyqtSignal(ContactPC)
+    showSingal = pyqtSignal(Contact)
     load_finish_signal = pyqtSignal(bool)
 
     # heightSingal = pyqtSignal(int)
@@ -140,7 +153,7 @@ class ShowContactThread(QThread):
                 'NickName': contact_info_list[4],
                 'smallHeadImgUrl': contact_info_list[7]
             }
-            contact = ContactPC(contact_info)
+            contact = Contact(contact_info)
             contact.smallHeadImgBLOG = misc_db.get_avatar_buffer(contact.wxid)
             contact.set_avatar(contact.smallHeadImgBLOG)
             self.showSingal.emit(contact)
@@ -149,7 +162,7 @@ class ShowContactThread(QThread):
 
 
 class ShowThread(QThread):
-    showSingal = pyqtSignal(ContactPC)
+    showSingal = pyqtSignal(Contact)
     load_finish_signal = pyqtSignal(bool)
 
     # heightSingal = pyqtSignal(int)

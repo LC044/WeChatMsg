@@ -18,7 +18,7 @@ from docx.oxml.ns import qn
 from .package_msg import PackageMsg
 from ..DataBase import media_msg_db, hard_link_db, micro_msg_db, msg_db
 from ..log import logger
-from ..person import MePC
+from ..person import Me
 from ..util import path
 from ..util.compress_content import parser_reply
 from ..util.emoji import get_emoji_url
@@ -270,22 +270,22 @@ class ChildThread(QThread):
         if self.contact.is_chatroom:
             avatar = message[12].smallHeadImgUrl
         else:
-            avatar = MePC().smallHeadImgUrl if is_send else self.contact.smallHeadImgUrl
+            avatar = Me().smallHeadImgUrl if is_send else self.contact.smallHeadImgUrl
         if is_absolute_path:
             if self.contact.is_chatroom:
                 avatar = message[12].avatar_path
             else:
-                avatar = MePC().avatar_path if is_send else self.contact.avatar_path
+                avatar = Me().avatar_path if is_send else self.contact.avatar_path
         return avatar
 
     def get_display_name(self, is_send, message) -> str:
         if self.contact.is_chatroom:
             if is_send:
-                display_name = MePC().name
+                display_name = Me().name
             else:
                 display_name = message[12].remark
         else:
-            display_name = MePC().name if is_send else self.contact.remark
+            display_name = Me().name if is_send else self.contact.remark
         return escape_js_and_html(display_name)
 
     def text(self, doc, message):
@@ -332,9 +332,9 @@ class ChildThread(QThread):
         if self.output_type == Output.HTML:
             str_content = escape_js_and_html(str_content)
             image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
-            if not os.path.exists(os.path.join(MePC().wx_dir, image_path)):
+            if not os.path.exists(os.path.join(Me().wx_dir, image_path)):
                 image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
-                if not os.path.exists(os.path.join(MePC().wx_dir, image_thumb_path)):
+                if not os.path.exists(os.path.join(Me().wx_dir, image_thumb_path)):
                     return
                 image_path = image_thumb_path
             image_path = get_image_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
@@ -351,9 +351,9 @@ class ChildThread(QThread):
             run = content.paragraphs[0].add_run()
             str_content = escape_js_and_html(str_content)
             image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
-            if not os.path.exists(os.path.join(MePC().wx_dir, image_path)):
+            if not os.path.exists(os.path.join(Me().wx_dir, image_path)):
                 image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
-                if not os.path.exists(os.path.join(MePC().wx_dir, image_thumb_path)):
+                if not os.path.exists(os.path.join(Me().wx_dir, image_thumb_path)):
                     return
                 image_path = image_thumb_path
             image_path = get_image_abs_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
@@ -566,7 +566,7 @@ class ChildThread(QThread):
                 return
             if video_path is None and image_path is None:
                 return
-            video_path = f'{MePC().wx_dir}/{video_path}'
+            video_path = f'{Me().wx_dir}/{video_path}'
             if os.path.exists(video_path):
                 new_path = origin_docx_path + '/video/' + os.path.basename(video_path)
                 if not os.path.exists(new_path):
@@ -741,9 +741,7 @@ class ChildThread(QThread):
             messages = packagemsg.get_package_message_by_wxid(self.contact.wxid)
         else:
             messages = msg_db.get_messages(self.contact.wxid)
-
-        MePC().avatar.save(os.path.join(f"{origin_docx_path}/avatar/{MePC().wxid}.png"))
-        MePC().save_avatar(os.path.join(f"{origin_docx_path}/avatar/{MePC().wxid}.png"))
+        Me().save_avatar(os.path.join(f"{origin_docx_path}/avatar/{Me().wxid}.png"))
         if self.contact.is_chatroom:
             for message in messages:
                 if message[4]:  # is_send
@@ -884,9 +882,9 @@ class OutputImage(QThread):
             timestamp = message[5]
             try:
                 image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
-                if not os.path.exists(os.path.join(MePC().wx_dir, image_path)):
+                if not os.path.exists(os.path.join(Me().wx_dir, image_path)):
                     image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
-                    if not os.path.exists(os.path.join(MePC().wx_dir, image_thumb_path)):
+                    if not os.path.exists(os.path.join(Me().wx_dir, image_thumb_path)):
                         continue
                     image_path = image_thumb_path
                 image_path = get_image(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
@@ -928,9 +926,9 @@ class OutputImageChild(QThread):
             timestamp = message[5]
             try:
                 image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
-                if not os.path.exists(os.path.join(MePC().wx_dir, image_path)):
+                if not os.path.exists(os.path.join(Me().wx_dir, image_path)):
                     image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
-                    if not os.path.exists(os.path.join(MePC().wx_dir, image_thumb_path)):
+                    if not os.path.exists(os.path.join(Me().wx_dir, image_thumb_path)):
                         continue
                     image_path = image_thumb_path
                 image_path = get_image(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')

@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
 from app.DataBase import msg_db, hard_link_db
 from app.components.bubble_message import BubbleMessage, ChatWidget, Notice
-from app.person import MePC
+from app.person import Me
 from app.util import get_abs_path
 from app.util.emoji import get_emoji
 
@@ -86,7 +86,7 @@ class ChatInfo(QWidget):
             str_time = message[8]
             # print(type_, type(type_))
             is_send = message[4]
-            avatar = MePC().avatar if is_send else self.contact.avatar
+            avatar = Me().avatar if is_send else self.contact.avatar
             timestamp = message[5]
             BytesExtra = message[10]
             if type_ == 1:
