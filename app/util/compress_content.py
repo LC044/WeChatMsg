@@ -1,7 +1,7 @@
 import html
 import xml.etree.ElementTree as ET
 
-import lz4
+import lz4.block
 
 
 def decompress_CompressContent(data):
