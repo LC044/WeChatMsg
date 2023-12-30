@@ -19,17 +19,7 @@ def singleton(cls):
     return inner
 
 
-@singleton
-class MePC:
-    def __init__(self):
-        self.avatar = QPixmap(Icon.Default_avatar_path)
-        self.avatar_path = ':/icons/icons/default_avatar.svg'
-        self.wxid = ''
-        self.wx_dir = ''
-        self.name = ''
-        self.mobile = ''
-        self.smallHeadImgUrl = ''
-
+class Person:
     def set_avatar(self, img_bytes):
         if not img_bytes:
             self.avatar.load(Icon.Default_avatar_path)
@@ -44,6 +34,9 @@ class MePC:
             return
         if path:
             save_path = path
+            if os.path.exists(save_path):
+                self.avatar_path = save_path
+                return save_path
         else:
             os.makedirs('./data/avatar', exist_ok=True)
             save_path = os.path.join(f'data/avatar/', self.wxid + '.png')
@@ -52,7 +45,19 @@ class MePC:
         print('保存头像', save_path)
 
 
-class ContactPC:
+@singleton
+class MePC(Person):
+    def __init__(self):
+        self.avatar = QPixmap(Icon.Default_avatar_path)
+        self.avatar_path = ':/icons/icons/default_avatar.svg'
+        self.wxid = ''
+        self.wx_dir = ''
+        self.name = ''
+        self.mobile = ''
+        self.smallHeadImgUrl = ''
+
+
+class ContactPC(Person):
     def __init__(self, contact_info: Dict):
         self.wxid = contact_info.get('UserName')
         self.remark = contact_info.get('Remark')
@@ -68,29 +73,8 @@ class ContactPC:
         self.avatar_path = Icon.Default_avatar_path
         self.is_chatroom = self.wxid.__contains__('@chatroom')
 
-    def set_avatar(self, img_bytes):
-        if not img_bytes:
-            self.avatar.load(Icon.Default_avatar_path)
-            return
-        if img_bytes[:4] == b'\x89PNG':
-            self.avatar.loadFromData(img_bytes, format='PNG')
-        else:
-            self.avatar.loadFromData(img_bytes, format='jfif')
-        self.avatar.scaled(60, 60, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
 
-    def save_avatar(self, path=None):
-        if not self.avatar:
-            return
-        if path:
-            save_path = path
-        else:
-            os.makedirs('./data/avatar', exist_ok=True)
-            save_path = os.path.join(f'data/avatar/', self.wxid + '.png')
-        self.avatar_path = save_path
-        self.avatar.save(save_path)
-        print('保存头像', save_path)
-
-class ContactDefault:
+class ContactDefault(Person):
     def __init__(self, wxid=""):
         self.avatar = QPixmap(Icon.Default_avatar_path)
         self.avatar_path = ':/icons/icons/default_avatar.svg'
@@ -101,28 +85,6 @@ class ContactDefault:
         self.smallHeadImgUrl = ""
         self.smallHeadImgBLOG = b''
         self.is_chatroom = False
-    
-    def set_avatar(self, img_bytes):
-        if not img_bytes:
-            self.avatar.load(Icon.Default_avatar_path)
-            return
-        if img_bytes[:4] == b'\x89PNG':
-            self.avatar.loadFromData(img_bytes, format='PNG')
-        else:
-            self.avatar.loadFromData(img_bytes, format='jfif')
-        self.avatar.scaled(60, 60, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
-
-    def save_avatar(self, path=None):
-        if not self.avatar:
-            return
-        if path:
-            save_path = path
-        else:
-            os.makedirs('./data/avatar', exist_ok=True)
-            save_path = os.path.join(f'data/avatar/', self.wxid + '.png')
-        self.avatar_path = save_path
-        self.avatar.save(save_path)
-        print('保存头像', save_path)
 
 
 if __name__ == '__main__':

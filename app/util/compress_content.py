@@ -3,7 +3,6 @@ import xml.etree.ElementTree as ET
 
 import lz4.block
 
-
 def decompress_CompressContent(data):
     """
     解压缩Msg：CompressContent内容

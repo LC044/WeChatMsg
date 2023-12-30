@@ -133,8 +133,6 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
             QMessageBox.critical(self, "错误",
                                  "密钥错误\n将软件放在桌面上试试\n如果还不可以的话我也我能为力，您可以等待后续版本解决该问题")
         close_db()
-        self.label_tip.setVisible(True)
-        self.label_tip.setText('点我之后没有反应那就多等儿吧,不要再点了')
         self.thread2 = DecryptThread(db_dir, self.info['key'])
         self.thread2.maxNumSignal.connect(self.setProgressBarMaxNum)
         self.thread2.signal.connect(self.progressBar_view)
