@@ -12,6 +12,7 @@ app/data/avatar
 app/data/image2
 app/data/emoji
 app/DataBase/Msg/*
+server
 *.db
 *.ui
 *.pyc
