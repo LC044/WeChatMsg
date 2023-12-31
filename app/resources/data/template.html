@@ -209,6 +209,86 @@ audio{
 .chat-file a img,.chat-file div img{
     width: 100px;
 }
+
+.chat-music-audio {
+    width: 300px;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 100px;
+    margin-left: 10px;
+}
+
+.chat-music-audio .player-box {
+    width: 300px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    height: 80px;
+}
+
+.chat-music-audio .player-original {
+    border-top: 1px solid #ede3e3;
+}
+
+.chat-music-audio .player-original p {
+    margin-top: 5px;
+    color: #888;
+}
+
+.chat-music-audio .player-controls {
+    display: flex;
+    align-items: center;;
+}
+
+.chat-music-audio .flex1 {
+    flex: 1;
+    justify-content: start;
+}
+
+.chat-music-audio .flex2 {
+    flex: 2;
+    justify-content: end;
+}
+
+.chat-music-audio .player-info {
+    width: 200px;
+    height: 80px;
+    white-space: normal;
+    flex-basis: 200px;
+}
+
+.chat-music-audio .song-title {
+    font-weight: bold;
+    overflow-wrap: break-word;
+}
+
+.chat-music-audio .artist {
+    margin-top: 10px;
+    color: #888;
+}
+
+.chat-music-audio .play-button {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.chat-music-audio .play-button.playing {
+    background: url("./icon/pause.png");
+}
+
+.chat-music-audio .play-button.paused {
+    background: url("./icon/play.png");
+}
 .input-area{
     border-top:0.5px solid #e0e0e0;
     height: 150px;
@@ -619,6 +699,53 @@ input {
             return messageFileTag;
         }
 
+        function messageMusicAudioBox(message) {
+            const messageMusicAudioTag = document.createElement('div');
+            messageMusicAudioTag.className = `chat-music-audio`;
+            messageMusicAudioTag.dataset.link = message.link_url;
+            messageMusicAudioTag.onclick = function (event) {
+                if (!event.target.classList.contains('play-button')) {
+                    window.open(message.link_url, '_blank');
+                }
+            }
+            if (message.title.length >= 39) {
+                message.title = message.title.slice(0, 38) + '...'
+            }
+            messageMusicAudioTag.innerHTML = `<div class="player-box">
+                <div class="player-info flex1">
+                    <div class="song-title">${message.title}</div>
+                </div>
+                <div class="player-controls flex2">
+                </div>
+                </div>
+                <div class="player-original"><p>${message.website_name}</p></div>
+
+                `
+            if (message.text != '') {
+                var audio = document.createElement('audio');
+                audio.src = message.text;
+                messageMusicAudioTag.querySelector('.player-controls').append(audio)
+            };
+            var artist = document.createElement('div');
+            artist.className = 'artist';
+            artist.innerHTML = message.artist
+            if (message.title.length < 26) {
+                messageMusicAudioTag.querySelector('.player-info').append(artist)
+            }
+            var playButton = document.createElement('button');
+            playButton.className = 'play-button paused';
+            playButton.onclick = function (event) {
+                event.stopPropagation(); // 阻止点击播放按钮时触发父级的点击事件
+                toggleAudio(event.target);
+            };
+            if (message.is_send) {
+                messageMusicAudioTag.querySelector('.player-controls').append(playButton)
+            } else {
+                messageMusicAudioTag.querySelector('.player-controls').prepend(playButton)
+            }
+            return messageMusicAudioTag;
+        }
+
             // 从数据列表中取出对应范围的元素并添加到容器中
         for (let i = startIndex; i < endIndex && i < chatMessages.length; i++) {
             const message = chatMessages[i];
@@ -721,6 +848,20 @@ input {
                     messageElement.appendChild(message.is_send ? messageContent : avatarTag);
                     messageElement.appendChild(message.is_send ? avatarTag : messageContent);
                 }
+                 if (message.sub_type == 3) {
+                    // displayname 和 file
+                    messageContent.className = `content-wrapper content-wrapper-${side}`;
+                    if (message.is_chatroom && !message.is_send) {
+                        messageContent.appendChild(displayNameBox(message));
+                    }
+                    messageContent.appendChild(messageMusicAudioBox(message));
+
+                    // 整合
+                    messageElement.className = `item item-${side}`;
+                    messageElement.appendChild(message.is_send ? messageContent : avatarTag);
+                    messageElement.appendChild(message.is_send ? avatarTag : messageContent);
+                }
+
             }
             else if (message.type == 34) {
                 // displayname 和 转的文字 和 audio
@@ -843,6 +984,26 @@ input {
     function hideModal() {
         var modal = document.getElementById("modal");
         modal.style.display = "none";
+    }
+
+
+    function toggleAudio(buttonElm) {
+        var audioPlayer = buttonElm.parentNode;
+        var audio = audioPlayer.querySelector('audio');
+        if (audio == null){
+            alert("该音频已失效或无法直接播放，有需要请点击音频链接查看")
+        }else{
+            if (audio.paused) {
+            audio.play();
+            buttonElm.classList.remove('paused');
+            buttonElm.classList.add('playing');
+        } else {
+            audio.pause();
+            buttonElm.classList.remove('playing');
+            buttonElm.classList.add('paused');
+        }
+        }
+
     }
 </script>
 </body>
