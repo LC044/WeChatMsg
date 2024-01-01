@@ -20,7 +20,7 @@ from ..DataBase import media_msg_db, hard_link_db, micro_msg_db, msg_db
 from ..log import logger
 from ..person import Me
 from ..util import path
-from ..util.compress_content import parser_reply, music_share
+from ..util.compress_content import parser_reply, music_share, share_card
 from ..util.emoji import get_emoji_url
 from ..util.file import get_file
 from ..util.music import get_music_path
@@ -123,12 +123,14 @@ class Output(QThread):
         @return:
         """
         return
+
     def output_emoji(self):
         """
         导出全部表情包
         @return:
         """
         return
+
     def to_csv_all(self):
         """
         导出全部聊天记录到CSV
@@ -658,6 +660,41 @@ class ChildThread(QThread):
                     artist:'{content.get('artist')}', website_name:'{content.get('website_name')}'}},'''
                 )
 
+    def share_card(self, doc, message):
+        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        is_send = message[4]
+        timestamp = message[5]
+        bytesExtra = message[10]
+        compress_content_ = message[11]
+        card_data = share_card(bytesExtra, compress_content_)
+        is_chatroom = 1 if self.contact.is_chatroom else 0
+        avatar = self.get_avatar_path(is_send, message)
+        display_name = self.get_display_name(is_send, message)
+        thumbnail = ''
+        if card_data.get('thumbnail'):
+            thumbnail = os.path.join(Me().wx_dir, card_data.get('thumbnail'))
+            if os.path.exists(thumbnail):
+                shutil.copy(thumbnail, os.path.join(origin_docx_path, 'image', os.path.basename(thumbnail)))
+                thumbnail = './image/' + os.path.basename(thumbnail)
+            else:
+                thumbnail = ''
+        app_logo = ''
+        if card_data.get('app_logo'):
+            app_logo = os.path.join(Me().wx_dir, card_data.get('app_logo'))
+            if os.path.exists(app_logo):
+                shutil.copy(app_logo, os.path.join(origin_docx_path, 'image', os.path.basename(app_logo)))
+                app_logo = './image/' + os.path.basename(app_logo)
+            else:
+                app_logo = ''
+        if self.output_type == Output.HTML:
+            doc.write(
+                f'''{{ type:49,sub_type:5, text:'',is_send:{is_send},avatar_path:'{avatar}',url:'{card_data.get('url')}',
+                        timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',title:'{card_data.get('title')}',
+                        description:'{card_data.get('description')}',thumbnail:'{thumbnail}',app_logo:'{app_logo}',
+                        app_name:'{card_data.get('app_name')}'
+                        }},\n'''
+            )
+
     def to_csv(self):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         os.makedirs(origin_docx_path, exist_ok=True)
@@ -732,6 +769,8 @@ class ChildThread(QThread):
                 self.file(f, message)
             elif type_ == 49 and sub_type == 3 and self.message_types.get(4903):
                 self.music_share(f, message)
+            elif type_ == 49 and sub_type == 5 and self.message_types.get(4905):
+                self.share_card(f, message)
         f.write(html_end)
         f.close()
         self.okSignal.emit(1)

@@ -4,6 +4,7 @@ import sqlite3
 import threading
 import traceback
 
+from app.DataBase.hard_link import parseBytes
 from app.log import logger
 from app.util.compress_content import parser_reply
 from app.util.protocbuf.msg_pb2 import MessageBytesExtra
@@ -629,4 +630,33 @@ if __name__ == '__main__':
     msg.init_database()
     wxid = 'wxid_0o18ef858vnu22'
     wxid = '24521163022@chatroom'
-    print(msg.get_messages(wxid)[0])
+    wxid = 'wxid_vtz9jk9ulzjt22' # si
+    print()
+    from app.util import compress_content
+    import xml.etree.ElementTree as ET
+    msgs = msg.get_messages(wxid)
+
+    for msg in msgs:
+        if msg[2]==49 and msg[3]==5:
+            xml = compress_content.decompress_CompressContent(msg[11])
+            root = ET.XML(xml)
+            appmsg = root.find('appmsg')
+            title = appmsg.find('title').text
+            des = appmsg.find('des').text
+            url = appmsg.find('url').text
+            appinfo = root.find('appinfo')
+            show_display_name = appmsg.find('sourcedisplayname')
+            if show_display_name is not None:
+                show_display_name = show_display_name.text
+            else:
+                show_display_name = appinfo.find('appname').text
+            print(title, des, url, show_display_name)
+            bytesDict = parseBytes(msg[10])
+            for msginfo in bytesDict[3]:
+                print(msginfo)
+                if msginfo[1][1][1] == 3:
+                    thumb = msginfo[1][2][1]
+                    print(thumb)
+                if msginfo[1][1][1] == 4:
+                    app_logo = msginfo[1][2][1]
+                    print('logo',app_logo)

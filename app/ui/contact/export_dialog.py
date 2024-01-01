@@ -14,6 +14,7 @@ types = {
     '表情包': 47,
     '音乐与音频': 4903,
     '文件': 4906,
+    '分享卡片':4905,
     '拍一拍等系统消息': 10000
 }
 Stylesheet = """
@@ -34,7 +35,7 @@ class ExportDialog(QDialog):
         if file_type == 'html':
             self.export_type = Output.HTML
             self.export_choices = {"文本": True, "图片": True, "语音": False, "视频": False, "表情包": False,
-                                   '音乐与音频': False,'文件': False,
+                                   '音乐与音频': False,'分享卡片':False,'文件': False,
                                    '拍一拍等系统消息': True}  # 定义导出的数据类型，默认全部选择
         elif file_type == 'csv':
             self.export_type = Output.CSV

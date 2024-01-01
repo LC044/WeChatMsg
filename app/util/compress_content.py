@@ -7,6 +7,7 @@ import requests
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 
+from app.DataBase.hard_link import parseBytes
 
 
 def decompress_CompressContent(data):
@@ -20,13 +21,15 @@ def decompress_CompressContent(data):
     try:
         dst = lz4.block.decompress(data, uncompressed_size=len(data) << 10)
         decoded_string = dst.decode().replace('\x00', '')  # Remove any null characters
-    except :
+    except:
         print("Decompression failed: potentially corrupt input or insufficient buffer size.")
         return ''
     return decoded_string
 
 
 def escape_js_and_html(input_str):
+    if not input_str:
+        return ''
     # 转义HTML特殊字符
     html_escaped = html.escape(input_str, quote=False)
 
@@ -125,6 +128,40 @@ def music_share(data: bytes):
         }
 
 
+def share_card(bytesExtra, compress_content_):
+    xml = decompress_CompressContent(compress_content_)
+    root = ET.XML(xml)
+    appmsg = root.find('appmsg')
+    title = appmsg.find('title').text
+    des = appmsg.find('des').text
+    url = appmsg.find('url').text
+    appinfo = root.find('appinfo')
+    show_display_name = appmsg.find('sourcedisplayname')
+    if show_display_name is not None:
+        show_display_name = show_display_name.text
+    else:
+        if appinfo is not None:
+            show_display_name = appinfo.find('appname').text
+    bytesDict = parseBytes(bytesExtra)
+    app_logo = ''
+    thumbnail = ''
+    for msginfo in bytesDict[3]:
+        if msginfo[1][1][1] == 3:
+            thumbnail = msginfo[1][2][1]
+            thumbnail = "\\".join(thumbnail.split('\\')[1:])
+        if msginfo[1][1][1] == 4:
+            app_logo = msginfo[1][2][1]
+            app_logo = "\\".join(app_logo.split('\\')[1:])
+    return {
+        'title': escape_js_and_html(title),
+        'description': escape_js_and_html(des),
+        'url': url,
+        'app_name': escape_js_and_html(show_display_name),
+        'thumbnail': thumbnail,
+        'app_logo': app_logo
+    }
+
+
 def get_website_name(url):
     parsed_url = urlparse(url)
     domain = f"{parsed_url.scheme}://{parsed_url.netloc}"
@@ -146,7 +183,7 @@ def get_website_name(url):
                 website_name = soup.title.string.strip()
                 index = website_name.find("-")
                 if index != -1:  # 如果找到了 "-"
-                    website_name = website_name[index+1:].strip()
+                    website_name = website_name[index + 1:].strip()
     except Exception as e:
         print(f"Get Website Info Error: {e}")
     return website_name
@@ -162,7 +199,7 @@ def get_audio_url(url):
         elif response.status_code == 200:
             print('音乐文件已失效,url:' + url)
         else:
-            print('音乐文件地址获取失败,url:' + url +',状态码' + str(response.status_code))
+            print('音乐文件地址获取失败,url:' + url + ',状态码' + str(response.status_code))
     except Exception as e:
         print(f"Get Audio Url Error: {e}")
     return path

@@ -390,6 +390,57 @@ input {
     color: #555;
     font-size: 14px;
 }
+
+/* 分享的卡片 */
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin: 20px;
+}
+.card a {
+    text-decoration: none; /* 去掉链接的下划线 */
+    color: inherit; /* 继承父元素的文字颜色 */
+
+}
+.card-content {
+    padding: 20px;
+    flex: 1;
+}
+
+.thumbnail {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+.description{
+    display: flex;
+    justify-content: space-between;
+}
+.link-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+}
+
+.app-logo {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.app-name {
+    font-weight: bold;
+}
 @media screen and (max-width: 768px) {
     body{
         display: flex; /* 使用 Flex 布局 */
@@ -498,7 +549,7 @@ input {
         }
     }
 
-    const itemsPerPage = 100; // 每页显示的元素个数
+    const itemsPerPage = 1000; // 每页显示的元素个数
     let currentPage = 1; // 当前页
     var reachedBottom = false; // 到达底部的标记
     var lastScrollTop = 0;
@@ -638,6 +689,7 @@ input {
             }
             return text;
         }
+        
         // 生成各类标签的函数
         function messageBubble(message, side) {
             const messageBubbleTag = document.createElement('div');
@@ -686,6 +738,12 @@ input {
             messageAudioTag.className = `chat-audio`;
             messageAudioTag.innerHTML = `<audio src="${message.text}" controls></audio>`;
             return messageAudioTag;
+        }
+        function messageCard(message) {
+            const messageTag = document.createElement('div');
+            messageTag.className = `card`;
+            messageTag.innerHTML = `<a href="${message.url}" target="_blank"><div class="card-content"><h2>${message.title}</h2><div class="description"><p>${message.description}</p><img class="thumbnail" src="${message.thumbnail}" alt="Thumbnail"></div></div><div class="link-info"><img class="app-logo" src="${message.app_logo}" alt="App Logo"><span class="app-name">${message.app_name}</span></div></a>`;
+            return messageTag;
         }
         function messageFileBox(message) {
             const messageFileTag = document.createElement('div');
@@ -835,7 +893,7 @@ input {
                     messageElement.appendChild(message.is_send ? messageContent : avatarTag);
                     messageElement.appendChild(message.is_send ? avatarTag : messageContent);
                 }
-                if (message.sub_type == 6) {
+                else if (message.sub_type == 6) {
                     // displayname 和 file
                     messageContent.className = `content-wrapper content-wrapper-${side}`;
                     if (message.is_chatroom && !message.is_send) {
@@ -848,13 +906,26 @@ input {
                     messageElement.appendChild(message.is_send ? messageContent : avatarTag);
                     messageElement.appendChild(message.is_send ? avatarTag : messageContent);
                 }
-                 if (message.sub_type == 3) {
+                else if (message.sub_type == 3) {
                     // displayname 和 file
                     messageContent.className = `content-wrapper content-wrapper-${side}`;
                     if (message.is_chatroom && !message.is_send) {
                         messageContent.appendChild(displayNameBox(message));
                     }
                     messageContent.appendChild(messageMusicAudioBox(message));
+
+                    // 整合
+                    messageElement.className = `item item-${side}`;
+                    messageElement.appendChild(message.is_send ? messageContent : avatarTag);
+                    messageElement.appendChild(message.is_send ? avatarTag : messageContent);
+                }
+                else if(message.sub_type == 5){
+                    // displayname 和 file
+                    messageContent.className = `content-wrapper content-wrapper-${side}`;
+                    if (message.is_chatroom && !message.is_send) {
+                        messageContent.appendChild(displayNameBox(message));
+                    }
+                    messageContent.appendChild(messageCard(message));
 
                     // 整合
                     messageElement.className = `item item-${side}`;
