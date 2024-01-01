@@ -1,13 +1,13 @@
 <h1 align="center">我的数据我做主</h1>
 <div align="center">
-    <a href="https://memotrace.lc044.love/" target="_blank">
-        <img src="https://img.shields.io/badge/WeChat-留痕-blue.svg">
-    </a>
     <a href="https://github.com/LC044/WeChatMsg/stargazers">
         <img src="https://img.shields.io/github/stars/LC044/WeChatMsg.svg" />
     </a>
     <a href="https://memotrace.lc044.love/" target="_blank">
         <img alt="GitHub forks" src="https://img.shields.io/github/forks/LC044/WeChatMsg?color=eb6ea5">
+    </a>
+    <a href="https://memotrace.lc044.love/" target="_blank">
+        <img src="https://img.shields.io/badge/WeChat-留痕-blue.svg">
     </a>
     <a target="_blank" href="https://memotrace.lc044.love/">
         <img alt="Hits" src="https://hits.b3log.org/LC044/memotrace.svg">
@@ -51,14 +51,14 @@
     - 🗨文本✅
     - 🏝图片✅
     - 🐻‍❄️表情包✅ 
-    - 拍一拍等系统消息✅
+    - 拍一拍等系统消息✅ 
 - 导出聊天记录
-    - sqlite数据库✅
-    - HTML(文本、图片、视频、表情包、语音、文件、系统消息)✅
-    - CSV文档✅
+    - sqlite数据库✅ 
+    - HTML(文本、图片、视频、表情包、语音、文件、系统消息)✅ 
+    - CSV文档✅ 
     - TXT文档✅ 
     - Word文档✅ 
-- 分析聊天数据，做成可视化年报(急需前端大佬提供优质模板)
+- 分析聊天数据，做成可视化年报
 - 🔥**项目持续更新中**
 - 开发计划
   - 自主选择年度报告年份
@@ -69,7 +69,7 @@
   - 群组年度报告
   - 按日期、关键词索引
 - 小伙伴们想要其他功能可以留言哦📬
-- 🔥项目正处于并将长期处于发展阶段，给我一些时间♾️，你所期望的未来都会实现，可关注文末公众号持续关注项目更新动态
+- 🔥项目正处于并将长期处于发展阶段，给我一些时间♾️，你所期望的未来都会实现（养成系开发者），可关注文末公众号持续获取项目更新动态
 
 ## 🥤效果
 
@@ -195,6 +195,14 @@ python main.py
 <details>
 
 #### 🤔如果您在pc端使用的时候出现问题，可以先参考以下方面，如果仍未解决，可以在群里交流~
+
+* 不支持Win7(可自行下载代码构建可执行程序)
+* 不支持Mac(未来或许会实现)
+* 遇到问题四大法宝
+  * 重启微信
+  * 重启exe程序
+  * 重启电脑
+  * 换电脑
 
 如果您遇到下图所示的问题，是由于没有在电脑端登录微信
 
