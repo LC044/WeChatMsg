@@ -20,9 +20,10 @@ from ..DataBase import media_msg_db, hard_link_db, micro_msg_db, msg_db
 from ..log import logger
 from ..person import Me
 from ..util import path
-from ..util.compress_content import parser_reply
+from ..util.compress_content import parser_reply, music_share
 from ..util.emoji import get_emoji_url
 from ..util.file import get_file
+from ..util.music import get_music_path
 from ..util.image import get_image_path, get_image, get_image_abs_path
 
 os.makedirs('./data/聊天记录', exist_ok=True)
@@ -48,11 +49,23 @@ def makedirs(path):
     os.makedirs(os.path.join(path, 'voice'), exist_ok=True)
     os.makedirs(os.path.join(path, 'file'), exist_ok=True)
     os.makedirs(os.path.join(path, 'avatar'), exist_ok=True)
+    os.makedirs(os.path.join(path, 'music'), exist_ok=True)
+    os.makedirs(os.path.join(path, 'icon'), exist_ok=True)
     file = './app/resources/data/file.png'
     if not os.path.exists(file):
         resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
         file = os.path.join(resource_dir, 'app', 'resources', 'data', 'file.png')
-    shutil.copy(file, path + '/file/file.png')
+    shutil.copy(file, path + '/icon/file.png')
+    play_file = './app/resources/data/play.png'
+    if not os.path.exists(play_file):
+        resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
+        play_file = os.path.join(resource_dir, 'app', 'resources', 'data', 'play.png')
+    shutil.copy(play_file, path + '/icon/play.png')
+    pause_file = './app/resources/data/pause.png'
+    if not os.path.exists(pause_file):
+        resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
+        pause_file = os.path.join(resource_dir, 'app', 'resources', 'data', 'pause.png')
+    shutil.copy(pause_file, path + '/icon/pause.png')
 
 
 def escape_js_and_html(input_str):
@@ -437,7 +450,7 @@ class ChildThread(QThread):
         if self.output_type == Output.HTML:
             link = get_file(bytesExtra, thumb=True, output_path=origin_docx_path + '/file')
             file_name = ''
-            file_path = './file/file.png'
+            file_path = './icon/file.png'
             if link != "":
                 file_name = os.path.basename(link)
                 link = './file/' + file_name
@@ -621,6 +634,30 @@ class ChildThread(QThread):
         content_cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
         return content_cell
 
+    def music_share(self, doc, message):
+        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        is_send = message[4]
+        timestamp = message[5]
+        content = music_share(message[11])
+        music_path = ''
+        if content.get('audio_url') != '':
+            music_path = get_music_path(content.get('audio_url'), content.get('title'),
+                                        output_path=origin_docx_path + '/music')
+            if music_path != '':
+                music_path = f'./music/{os.path.basename(music_path)}'
+                music_path = music_path.replace('\\', '/')
+        is_chatroom = 1 if self.contact.is_chatroom else 0
+        avatar = self.get_avatar_path(is_send, message)
+        display_name = self.get_display_name(is_send, message)
+
+        if self.output_type == Output.HTML:
+            if content.get('is_error') == False:
+                doc.write(
+                    f'''{{ type:49, text:'{music_path}',is_send:{is_send},avatar_path:'{avatar}',link_url:'{content.get('link_url')}',
+                    timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',sub_type:3,title:'{content.get('title')}',
+                    artist:'{content.get('artist')}', website_name:'{content.get('website_name')}'}},'''
+                )
+
     def to_csv(self):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         os.makedirs(origin_docx_path, exist_ok=True)
@@ -693,6 +730,8 @@ class ChildThread(QThread):
                 self.refermsg(f, message)
             elif type_ == 49 and sub_type == 6 and self.message_types.get(4906):
                 self.file(f, message)
+            elif type_ == 49 and sub_type == 3 and self.message_types.get(4903):
+                self.music_share(f, message)
         f.write(html_end)
         f.close()
         self.okSignal.emit(1)

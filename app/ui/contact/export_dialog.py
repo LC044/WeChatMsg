@@ -12,6 +12,7 @@ types = {
     '语音': 34,
     '视频': 43,
     '表情包': 47,
+    '音乐与音频': 4903,
     '文件': 4906,
     '拍一拍等系统消息': 10000
 }
@@ -33,7 +34,7 @@ class ExportDialog(QDialog):
         if file_type == 'html':
             self.export_type = Output.HTML
             self.export_choices = {"文本": True, "图片": True, "语音": False, "视频": False, "表情包": False,
-                                   '文件': True,
+                                   '音乐与音频': False,'文件': False,
                                    '拍一拍等系统消息': True}  # 定义导出的数据类型，默认全部选择
         elif file_type == 'csv':
             self.export_type = Output.CSV
@@ -64,7 +65,7 @@ class ExportDialog(QDialog):
         layout.addWidget(self.time_label)
         self.notice_label = QLabel(self)
         self.notice_label.setText(
-            "注意:导出HTML时选择图片、视频、语音、表情包（特别是表情包）\n会导致大大影响导出速度，请合理选择导出的类型")
+            "注意:导出HTML时选择图片、视频、语音、文件、音乐与音频、表情包（特别是表情包）\n会导致大大影响导出速度，请合理选择导出的类型")
         layout.addWidget(self.notice_label)
         hlayout = QHBoxLayout(self)
         self.export_button = QPushButton("导出")

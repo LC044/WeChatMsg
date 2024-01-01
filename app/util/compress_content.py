@@ -3,6 +3,12 @@ import xml.etree.ElementTree as ET
 
 import lz4.block
 
+import requests
+from urllib.parse import urlparse
+from bs4 import BeautifulSoup
+
+
+
 def decompress_CompressContent(data):
     """
     解压缩Msg：CompressContent内容
@@ -80,3 +86,83 @@ def parser_reply(data: bytes):
             },
             "is_error": True
         }
+
+
+def music_share(data: bytes):
+    xml_content = decompress_CompressContent(data)
+    if not xml_content:
+        return {
+            'type': 3,
+            'title': "发生错误",
+            "is_error": True
+        }
+    try:
+        root = ET.XML(xml_content)
+        appmsg = root.find('appmsg')
+        msg_type = int(appmsg.find('type').text)
+        title = appmsg.find('title').text
+        if len(title) >= 39:
+            title = title[:38] + '...'
+        artist = appmsg.find('des').text
+        link_url = appmsg.find('url').text  # 链接地址
+        audio_url = get_audio_url(appmsg.find('dataurl').text)  # 播放地址
+        website_name = get_website_name(link_url)
+        return {
+            'type': msg_type,
+            'title': title,
+            'artist': artist,
+            'link_url': link_url,
+            'audio_url': audio_url,
+            'website_name': website_name,
+            "is_error": False
+        }
+    except Exception as e:
+        print(f"Music Share Error: {e}")
+        return {
+            'type': 3,
+            'title': "发生错误",
+            "is_error": True
+        }
+
+
+def get_website_name(url):
+    parsed_url = urlparse(url)
+    domain = f"{parsed_url.scheme}://{parsed_url.netloc}"
+    website_name = ''
+    try:
+        response = requests.get(domain, allow_redirects=False)
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.content, 'html.parser')
+            website_name = soup.title.string.strip()
+        elif response.status_code == 302:
+            domain = response.headers['Location']
+            response = requests.get(domain, allow_redirects=False)
+            soup = BeautifulSoup(response.content, 'html.parser')
+            website_name = soup.title.string.strip()
+        else:
+            response = requests.get(url, allow_redirects=False)
+            if response.status_code == 200:
+                soup = BeautifulSoup(response.content, 'html.parser')
+                website_name = soup.title.string.strip()
+                index = website_name.find("-")
+                if index != -1:  # 如果找到了 "-"
+                    website_name = website_name[index+1:].strip()
+    except Exception as e:
+        print(f"Get Website Info Error: {e}")
+    return website_name
+
+
+def get_audio_url(url):
+    path = ''
+    try:
+        response = requests.get(url, allow_redirects=False)
+        # 检查响应状态码
+        if response.status_code == 302:
+            path = response.headers['Location']
+        elif response.status_code == 200:
+            print('音乐文件已失效,url:' + url)
+        else:
+            print('音乐文件地址获取失败,url:' + url +',状态码' + str(response.status_code))
+    except Exception as e:
+        print(f"Get Audio Url Error: {e}")
+    return path
