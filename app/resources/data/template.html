@@ -549,7 +549,7 @@ input {
         }
     }
 
-    const itemsPerPage = 1000; // 每页显示的元素个数
+    const itemsPerPage = 100; // 每页显示的元素个数
     let currentPage = 1; // 当前页
     var reachedBottom = false; // 到达底部的标记
     var lastScrollTop = 0;
@@ -706,13 +706,13 @@ input {
         function avatarBox(message) {
             const avatarTag = document.createElement('div');
             avatarTag.className = "avatar";
-            avatarTag.innerHTML = `<img src="${message.avatar_path}" />`
+            avatarTag.innerHTML = `<img src="${message.avatar_path}" loading="lazy" />`
             return avatarTag;
         }
         function messageImgBox(message) {
             const messageImgTag = document.createElement('div');
             messageImgTag.className = `chat-image`;
-            messageImgTag.innerHTML = `<img src="${message.text}" onclick="showModal(this)"/>`;
+            messageImgTag.innerHTML = `<img src="${message.text}" onclick="showModal(this)" loading="lazy"/>`;
             return messageImgTag;
         }
         function messageVideoBox(message) {
@@ -742,7 +742,7 @@ input {
         function messageCard(message) {
             const messageTag = document.createElement('div');
             messageTag.className = `card`;
-            messageTag.innerHTML = `<a href="${message.url}" target="_blank"><div class="card-content"><h2>${message.title}</h2><div class="description"><p>${message.description}</p><img class="thumbnail" src="${message.thumbnail}" alt="Thumbnail"></div></div><div class="link-info"><img class="app-logo" src="${message.app_logo}" alt="App Logo"><span class="app-name">${message.app_name}</span></div></a>`;
+            messageTag.innerHTML = `<a href="${message.url}" target="_blank"><div class="card-content"><h2>${message.title}</h2><div class="description"><p>${message.description}</p><img loading="lazy" class="thumbnail" src="${message.thumbnail}" alt="Thumbnail"></div></div><div class="link-info"><img loading="lazy" class="app-logo" src="${message.app_logo}" alt="App Logo"><span class="app-name">${message.app_name}</span></div></a>`;
             return messageTag;
         }
         function messageFileBox(message) {
@@ -750,9 +750,9 @@ input {
             messageFileTag.className = `chat-file`;
             if (message.link !== ''){
                 messageFileTag.innerHTML  = `
-                <a href="${message.link}" target="_blank"><span>${message.file_name}</span><img src="${message.text}"/></a>`
+                <a href="${message.link}" target="_blank"><span>${message.file_name}</span><img loading="lazy" src="${message.text}"/></a>`
             }else{
-                messageFileTag.innerHTML = `<div><span>文件已丢失</span><img src="${message.text}"/></div>`;
+                messageFileTag.innerHTML = `<div><span>文件已丢失</span><img loading="lazy" src="${message.text}"/></div>`;
             }
             return messageFileTag;
         }

@@ -21,7 +21,6 @@ def is_database_exist():
     return os.path.exists(db_path)
 
 
-@singleton
 class MicroMsg:
     def __init__(self):
         self.DB = None
@@ -68,7 +67,7 @@ class MicroMsg:
         try:
             lock.acquire(True)
             sql = '''
-                   SELECT UserName, Alias, Type, Remark, NickName, PYInitial, RemarkPYInitial, ContactHeadImgUrl.smallHeadImgUrl, ContactHeadImgUrl.bigHeadImgUrl
+                   SELECT UserName, Alias, Type, Remark, NickName, PYInitial, RemarkPYInitial, ContactHeadImgUrl.smallHeadImgUrl, ContactHeadImgUrl.bigHeadImgUrl,ExTraBuf
                    FROM Contact
                    INNER JOIN ContactHeadImgUrl ON Contact.UserName = ContactHeadImgUrl.usrName
                    WHERE UserName = ?
@@ -109,4 +108,3 @@ class MicroMsg:
 
 if __name__ == '__main__':
     pass
-    # get_contact()
