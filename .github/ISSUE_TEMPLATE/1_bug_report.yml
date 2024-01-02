@@ -5,23 +5,27 @@ labels: '🐛 Bug'
 body:
   - type: dropdown
     attributes:
-      label: '💻 系统环境 | Operating System'
+      label: '👌 是否检查过没有类似issue'
       options:
-        - Windows
-        - macOS
-        - Ubuntu
-        - Other Linux
+        - 是
+        - 否
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: '💻 Python版本'
+      options:
+        - 3.12
+        - 3.11
+        - 3.10
         - Other
     validations:
       required: true
   - type: dropdown
     attributes:
-      label: '🌐 浏览器 | Browser'
+      label: '软件版本 | EXE Version'
       options:
-        - Chrome
-        - Edge
-        - Safari
-        - Firefox
+        - 最新版
         - Other
     validations:
       required: true
