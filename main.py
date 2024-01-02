@@ -16,8 +16,22 @@ from app.config import version
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("WeChatReport")
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
+widget = None
+def excepthook(exc_type, exc_value, traceback_):
+    # 将异常信息转为字符串
 
+    # 在这里处理全局异常
 
+    error_message = ''.join(traceback.format_exception(exc_type, exc_value, traceback_))
+    msg = f"Exception Type: {exc_type.__name__}\nException Value: {exc_value}\ndetails: {error_message}"
+    logger.error(f'程序发生了错误:\n\n{msg}')
+    QMessageBox.critical(widget, "Unhandled Exception", msg, QMessageBox.Ok)
+
+    # 调用原始的 excepthook，以便程序正常退出
+    sys.__excepthook__(exc_type, exc_value, traceback_)
+
+# 设置 excepthook
+sys.excepthook = excepthook
 class ViewController(QWidget):
     def __init__(self):
         super().__init__()
@@ -66,6 +80,7 @@ if __name__ == '__main__':
     font = QFont('微软雅黑', 12)  # 使用 Times New Roman 字体，字体大小为 14
     app.setFont(font)
     view = ViewController()
+    widget = view
     try:
         # view.loadPCDecryptView()
         view.loadMainWinView()
