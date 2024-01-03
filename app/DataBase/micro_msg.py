@@ -2,6 +2,8 @@ import os.path
 import sqlite3
 import threading
 
+
+
 lock = threading.Lock()
 db_path = "./app/Database/Msg/MicroMsg.db"
 
@@ -43,9 +45,10 @@ class MicroMsg:
             return None
         try:
             lock.acquire(True)
-            sql = '''SELECT UserName, Alias, Type, Remark, NickName, PYInitial, RemarkPYInitial, ContactHeadImgUrl.smallHeadImgUrl, ContactHeadImgUrl.bigHeadImgUrl
+            sql = '''SELECT UserName, Alias, Type, Remark, NickName, PYInitial, RemarkPYInitial, ContactHeadImgUrl.smallHeadImgUrl, ContactHeadImgUrl.bigHeadImgUrl,ExTraBuf,COALESCE(ContactLabel.LabelName, 'None') AS labelName
                     FROM Contact
                     INNER JOIN ContactHeadImgUrl ON Contact.UserName = ContactHeadImgUrl.usrName
+                    LEFT JOIN ContactLabel ON Contact.LabelIDList = ContactLabel.LabelId
                     WHERE (Type!=4)
                         AND NickName != ''
                     ORDER BY 
@@ -67,15 +70,17 @@ class MicroMsg:
         try:
             lock.acquire(True)
             sql = '''
-                   SELECT UserName, Alias, Type, Remark, NickName, PYInitial, RemarkPYInitial, ContactHeadImgUrl.smallHeadImgUrl, ContactHeadImgUrl.bigHeadImgUrl,ExTraBuf
+                   SELECT UserName, Alias, Type, Remark, NickName, PYInitial, RemarkPYInitial, ContactHeadImgUrl.smallHeadImgUrl, ContactHeadImgUrl.bigHeadImgUrl,ExTraBuf,ContactLabel.LabelName
                    FROM Contact
                    INNER JOIN ContactHeadImgUrl ON Contact.UserName = ContactHeadImgUrl.usrName
+                   LEFT JOIN ContactLabel ON Contact.LabelIDList = ContactLabel.LabelId
                    WHERE UserName = ?
                 '''
             self.cursor.execute(sql, [username])
             result = self.cursor.fetchone()
         finally:
             lock.release()
+
         return result
 
     def get_chatroom_info(self, chatroomname):
@@ -107,4 +112,13 @@ class MicroMsg:
 
 
 if __name__ == '__main__':
-    pass
+    db_path = "./app/database/Msg/MicroMsg.db"
+    msg = MicroMsg()
+    msg.init_database()
+    contacts = msg.get_contact()
+    from app.DataBase.hard_link import decodeExtraBuf
+    for contact in contacts:
+        print(contact[-2])
+        buf = contact[9]
+        info = decodeExtraBuf(buf)
+        print(info['个性签名'],info['国家'],info['省份'],info['市'])

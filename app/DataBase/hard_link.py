@@ -41,7 +41,7 @@ class tencent_struct:
     def __readString(self):
         try:
             length = self.__readUleb()
-            res = self.__data[self.__off : self.__off + length]
+            res = self.__data[self.__off: self.__off + length]
             self.__add(length)
         except:
             raise
@@ -78,7 +78,7 @@ class tencent_struct:
     def __readData(self):
         try:
             length = self.__readUleb()
-            data = self.__data[self.__off : self.__off + length]
+            data = self.__data[self.__off: self.__off + length]
             self.__add(length)
             return data
         except:
@@ -197,50 +197,54 @@ def decodeExtraBuf(extra_buf_content: bytes):
         "0E719F13": "备注图片",
         "759378AD": "手机号",
     }
-    res = {}
+    res = {'手机号': {'18':''}}
     while off < len(extra_buf_content):
         length = 4  # 块头
-        trunk_head = extra_buf_content[off : off + length]
+        trunk_head = extra_buf_content[off: off + length]
         off += length
         trunk_head = binascii.hexlify(trunk_head).decode().upper()
         if trunk_head in trunkName:
             trunk_head = trunkName[trunk_head]
         res[trunk_head] = {}
-        char = extra_buf_content[off : off + 1]
+        char = extra_buf_content[off: off + 1]
         off += 1
         field = binascii.hexlify(char).decode()
         if char == b"\x04":  # 四个字节的int，小端序
             length = 4
-            intContent = extra_buf_content[off : off + length]
+            intContent = extra_buf_content[off: off + length]
             off += 4
             intContent = int.from_bytes(intContent, "little")
             res[trunk_head][field] = intContent
         elif char == b"\x18":  # utf-16字符串
             length = 4
-            lengthContent = extra_buf_content[off : off + length]
+            lengthContent = extra_buf_content[off: off + length]
             off += 4
             lengthContent = int.from_bytes(lengthContent, "little")
-            strContent = extra_buf_content[off : off + lengthContent]
+            strContent = extra_buf_content[off: off + lengthContent]
             off += lengthContent
             res[trunk_head][field] = strContent.decode("utf-16").rstrip("\x00")
         elif char == b"\x17":  # utf-8 protobuf
             length = 4
-            lengthContent = extra_buf_content[off : off + length]
+            lengthContent = extra_buf_content[off: off + length]
             off += 4
             lengthContent = int.from_bytes(lengthContent, "little")
-            strContent = extra_buf_content[off : off + lengthContent]
+            strContent = extra_buf_content[off: off + lengthContent]
             off += lengthContent
             res[trunk_head][field] = parseExtraBuf(strContent)
         elif char == b"\x02":  # 一个字节的int
-            content = extra_buf_content[off : off + 1]
+            content = extra_buf_content[off: off + 1]
             off += 1
             res[trunk_head][field] = int.from_bytes(content, "little")
         elif char == b"\x05":  # 暂时不知道有啥用，固定8个字节，先当int处理
             length = 8
-            content = extra_buf_content[off : off + length]
+            content = extra_buf_content[off: off + length]
             off += length
             res[trunk_head][field] = int.from_bytes(content, "little")
-    return res
+    return {
+        'region': (res['国家']['18'], res['省份']['18'], res['市']['18']),
+        'signature': res['个性签名']['18'],
+        'telephone': res['手机号']['18'],
+    }
 
 
 def singleton(cls):

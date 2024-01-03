@@ -78,6 +78,8 @@ class Contact(Person):
         self.avatar = QPixmap()
         self.avatar_path = Icon.Default_avatar_path
         self.is_chatroom = self.wxid.__contains__('@chatroom')
+        self.detail = contact_info.get('detail')
+        self.label_name = contact_info.get('label_name')
 
 
 class ContactDefault(Person):

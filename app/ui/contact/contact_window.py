@@ -7,6 +7,7 @@ from app.person import Contact
 from app.ui.Icon import Icon
 from .contactInfo import ContactInfo
 from .contactUi import Ui_Form
+from ...DataBase.hard_link import decodeExtraBuf
 from ...util import search
 
 # 美化样式表
@@ -144,14 +145,17 @@ class ShowContactThread(QThread):
     def run(self) -> None:
         contact_info_lists = micro_msg_db.get_contact()
         for contact_info_list in contact_info_lists:
-            # UserName, Alias,Type,Remark,NickName,PYInitial,RemarkPYInitial,ContactHeadImgUrl.smallHeadImgUrl,ContactHeadImgUrl,bigHeadImgUrl
+            # UserName, Alias,Type,Remark,NickName,PYInitial,RemarkPYInitial,ContactHeadImgUrl.smallHeadImgUrl,ContactHeadImgUrl,bigHeadImgUrl,ExtraBuf
+            detail = decodeExtraBuf(contact_info_list[9])
             contact_info = {
                 'UserName': contact_info_list[0],
                 'Alias': contact_info_list[1],
                 'Type': contact_info_list[2],
                 'Remark': contact_info_list[3],
                 'NickName': contact_info_list[4],
-                'smallHeadImgUrl': contact_info_list[7]
+                'smallHeadImgUrl': contact_info_list[7],
+                'detail': detail,
+                'label_name': contact_info_list[10],
             }
             contact = Contact(contact_info)
             contact.smallHeadImgBLOG = misc_db.get_avatar_buffer(contact.wxid)
