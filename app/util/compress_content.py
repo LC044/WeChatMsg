@@ -4,10 +4,13 @@ import xml.etree.ElementTree as ET
 import lz4.block
 
 import requests
+import re
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 
 from app.DataBase.hard_link import parseBytes
+from ..util.file import get_file
+
 
 
 def decompress_CompressContent(data):
@@ -206,3 +209,58 @@ def get_audio_url(url):
     except Exception as e:
         print(f"Get Audio Url Error: {e}")
     return path
+
+
+def file(bytes_extra, compress_content, output_path):
+    xml_content = decompress_CompressContent(compress_content)
+    if not xml_content:
+        return {
+            'type': 6,
+            'title': "发生错误",
+            "is_error": True
+        }
+    try:
+        root = ET.XML(xml_content)
+        appmsg = root.find('appmsg')
+        msg_type = int(appmsg.find('type').text)
+        file_name = appmsg.find('title').text
+        pattern = r'[\\/:*?"<>|\r\n]+'
+        file_name = re.sub(pattern, "_", file_name)
+        appattach = appmsg.find('appattach')
+        file_len = int(appattach.find('totallen').text)
+        app_name = ''
+        file_len = format_bytes(file_len)
+        file_ext = appattach.find('fileext').text
+        if root.find("appinfo") is not None:
+            app_info = root.find('appinfo')
+            app_name = app_info.find('appname').text
+            if app_name is None:
+                app_name = ''
+        file_path = get_file(bytes_extra, file_name, output_path)
+        return {
+            'type': msg_type,
+            'file_name': file_name,
+            'file_len': file_len,
+            'file_ext': file_ext,
+            'file_path': file_path,
+            'app_name': app_name,
+            "is_error": False
+        }
+    except Exception as e:
+        print(f"File Get Info Error: {e}")
+        return {
+            'type': 6,
+            'title': "发生错误",
+            "is_error": True
+        }
+
+
+def format_bytes(size):
+    units = ["B", "KB", "MB", "GB"]
+
+    def convert_bytes(size, unit_index):
+        if size < 1024 or unit_index >= len(units) - 1:
+            return size, unit_index
+        return convert_bytes(size / 1024, unit_index + 1)
+    final_size, final_unit_index = convert_bytes(size, 0)
+    return f"{final_size:.2f} {units[final_unit_index]}"

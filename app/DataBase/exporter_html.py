@@ -12,11 +12,22 @@ from app.DataBase.package_msg import PackageMsg
 from app.log import logger
 from app.person import Me
 from app.util import path
-from app.util.compress_content import parser_reply, share_card, music_share
+from app.util.compress_content import parser_reply, share_card, music_share, file
 from app.util.emoji import get_emoji_url
-from app.util.file import get_file
 from app.util.image import get_image_path, get_image
 from app.util.music import get_music_path
+
+
+icon_files = {
+    './icon/word.png': ['doc', 'docx'],
+    './icon/excel.png': ['xls', 'xlsx'],
+    './icon/csv.png': ['csv'],
+    './icon/txt.png': ['txt'],
+    './icon/zip.png': ['zip', '7z','rar'],
+    './icon/ppt.png': ['ppt', 'pptx'],
+    './icon/pdf.png': ['pdf'],
+}
+
 
 
 class HtmlExporter(ExporterBase):
@@ -95,21 +106,33 @@ class HtmlExporter(ExporterBase):
     def file(self, doc, message):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         bytesExtra = message[10]
+        compress_content = message[11]
         str_time = message[8]
         is_send = message[4]
         timestamp = message[5]
         is_chatroom = 1 if self.contact.is_chatroom else 0
         avatar = self.get_avatar_path(is_send, message)
         display_name = self.get_display_name(is_send, message)
-        link = get_file(bytesExtra, thumb=True, output_path=origin_docx_path + '/file')
-        file_name = ''
-        file_path = './icon/file.png'
-        if link != "":
-            file_name = os.path.basename(link)
-            link = './file/' + file_name
-        doc.write(
-            f'''{{ type:49, text: '{file_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',link: '{link}',sub_type:6,file_name: '{file_name}'}},'''
-        )
+        file_info = file(bytesExtra, compress_content, output_path=origin_docx_path + '/file')
+        if file_info.get('is_error') == False:
+            icon_path = None
+            for icon, extensions in icon_files.items():
+                if file_info.get('file_ext') in extensions:
+                    icon_path = icon
+                    break
+            # 如果没有与文件后缀匹配的图标，则使用默认图标
+            if icon_path is None:
+                default_icon = './icon/file.png'
+                icon_path = default_icon
+            file_path = file_info.get('file_path')
+            if file_path != "":
+                file_path = './file/' + file_info.get('file_name')
+            doc.write(
+                f'''{{ type:49, text: '{file_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp}
+                            ,is_chatroom:{is_chatroom},displayname:'{display_name}',icon_path: '{icon_path}'
+                            ,sub_type:6,file_name: '{file_info.get('file_name')}',file_size: '{file_info.get('file_len')}'
+                            ,app_name: '{file_info.get('app_name')}'}},'''
+            )
 
     def refermsg(self, doc, message):
         """
@@ -200,16 +223,16 @@ class HtmlExporter(ExporterBase):
         timestamp = message[5]
         content = music_share(message[11])
         music_path = ''
-        if content.get('audio_url') != '':
-            music_path = get_music_path(content.get('audio_url'), content.get('title'),
-                                        output_path=origin_docx_path + '/music')
-            if music_path != '':
-                music_path = f'./music/{os.path.basename(music_path)}'
-                music_path = music_path.replace('\\', '/')
-        is_chatroom = 1 if self.contact.is_chatroom else 0
-        avatar = self.get_avatar_path(is_send, message)
-        display_name = self.get_display_name(is_send, message)
         if content.get('is_error') == False:
+            if content.get('audio_url') != '':
+                music_path = get_music_path(content.get('audio_url'), content.get('title'),
+                                            output_path=origin_docx_path + '/music')
+                if music_path != '':
+                    music_path = f'./music/{os.path.basename(music_path)}'
+                    music_path = music_path.replace('\\', '/')
+            is_chatroom = 1 if self.contact.is_chatroom else 0
+            avatar = self.get_avatar_path(is_send, message)
+            display_name = self.get_display_name(is_send, message)
             doc.write(
                 f'''{{ type:49, text:'{music_path}',is_send:{is_send},avatar_path:'{avatar}',link_url:'{content.get('link_url')}',
                 timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',sub_type:3,title:'{content.get('title')}',

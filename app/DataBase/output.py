@@ -5,6 +5,7 @@ import shutil
 import sys
 import time
 import traceback
+import filecmp
 from re import findall
 
 import docx
@@ -51,21 +52,24 @@ def makedirs(path):
     os.makedirs(os.path.join(path, 'avatar'), exist_ok=True)
     os.makedirs(os.path.join(path, 'music'), exist_ok=True)
     os.makedirs(os.path.join(path, 'icon'), exist_ok=True)
-    file = './app/resources/data/file.png'
-    if not os.path.exists(file):
-        resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
-        file = os.path.join(resource_dir, 'app', 'resources', 'data', 'file.png')
-    shutil.copy(file, path + '/icon/file.png')
-    play_file = './app/resources/data/play.png'
-    if not os.path.exists(play_file):
-        resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
-        play_file = os.path.join(resource_dir, 'app', 'resources', 'data', 'play.png')
-    shutil.copy(play_file, path + '/icon/play.png')
-    pause_file = './app/resources/data/pause.png'
-    if not os.path.exists(pause_file):
-        resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
-        pause_file = os.path.join(resource_dir, 'app', 'resources', 'data', 'pause.png')
-    shutil.copy(pause_file, path + '/icon/pause.png')
+    resource_dir = os.path.join('app', 'resources', 'data', 'icons')
+    target_folder = os.path.join(path, 'icon')
+    # 拷贝一些必备的图标
+    for root, dirs, files in os.walk(resource_dir):
+        relative_path = os.path.relpath(root, resource_dir)
+        target_path = os.path.join(target_folder, relative_path)
+
+        # 遍历文件夹中的文件
+        for file in files:
+            source_file_path = os.path.join(root, file)
+            target_file_path = os.path.join(target_path, file)
+            if not os.path.exists(target_file_path):
+                shutil.copy(source_file_path, target_file_path)
+            else:
+                # 比较文件内容
+                if not filecmp.cmp(source_file_path, target_file_path, shallow=False):
+                    # 文件内容不一致，进行覆盖拷贝
+                    shutil.copy(source_file_path, target_file_path)
 
 
 def escape_js_and_html(input_str):
