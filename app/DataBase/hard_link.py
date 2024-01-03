@@ -196,8 +196,9 @@ def decodeExtraBuf(extra_buf_content: bytes):
         "4EB96D85": "企业微信属性",
         "0E719F13": "备注图片",
         "759378AD": "手机号",
+        "74752C06": "性别",
     }
-    res = {'手机号': {'18':''}}
+    res = {'手机号': {'18': ''}}
     while off < len(extra_buf_content):
         length = 4  # 块头
         trunk_head = extra_buf_content[off: off + length]
@@ -241,10 +242,12 @@ def decodeExtraBuf(extra_buf_content: bytes):
             off += length
             res[trunk_head][field] = int.from_bytes(content, "little")
     # print(res)
+
     return {
         'region': (res['国家']['18'], res['省份']['18'], res['市']['18']),
         'signature': res['个性签名']['18'],
         'telephone': res['手机号']['18'],
+        'gender': res['性别']['04']
     }
 
 

@@ -2,8 +2,6 @@ import os.path
 import sqlite3
 import threading
 
-
-
 lock = threading.Lock()
 db_path = "./app/Database/Msg/MicroMsg.db"
 
@@ -117,8 +115,11 @@ if __name__ == '__main__':
     msg.init_database()
     contacts = msg.get_contact()
     from app.DataBase.hard_link import decodeExtraBuf
+
+    s = {'wxid_vtz9jk9ulzjt22','wxid_zu9l4wxdv1pa22', 'wxid_0o18ef858vnu22','wxid_8piw6sb4hvfm22','wxid_e7ypfycxpnu322','wxid_oxmg02c8kwxu22','wxid_7pp2fblq7hkq22','wxid_h1n9niofgyci22'}
     for contact in contacts:
-        print(contact[-2])
-        buf = contact[9]
-        info = decodeExtraBuf(buf)
-        print(info)
+        if contact[0] in s:
+            print(contact[:7])
+            buf = contact[9]
+            info = decodeExtraBuf(buf)
+            print(info)
