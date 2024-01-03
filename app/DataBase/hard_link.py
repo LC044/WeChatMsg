@@ -235,7 +235,7 @@ def decodeExtraBuf(extra_buf_content: bytes):
             content = extra_buf_content[off : off + 1]
             off += 1
             res[trunk_head][field] = int.from_bytes(content, "little")
-        elif char == b"\x05":  # 暂时不知道有啥用，固定8个字节
+        elif char == b"\x05":  # 暂时不知道有啥用，固定8个字节，先当int处理
             length = 8
             content = extra_buf_content[off : off + length]
             off += length
