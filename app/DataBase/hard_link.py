@@ -137,7 +137,7 @@ class tencent_struct:
 
     __bytesExtra__ = {
         1: ("", __struct1__),
-        3: ("msg_info_struct", "s"),
+        3: ("msg_info_struct", __msgInfo__),
     }
 
     __struct2__ = {1: ("", "s"), 2: ("", "s")}
