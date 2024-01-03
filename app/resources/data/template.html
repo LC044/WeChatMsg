@@ -187,30 +187,7 @@ audio{
     margin-right: 9px;
 }
 
-.chat-file {
-    width: 300px;
-    background-color: #fff;
-    margin-right: 20px;
-}
-.chat-file a ,.chat-file div{
-    display: flex;
-    color: #000;
-    outline: none;
-    text-decoration: none;
-    margin: 0 20px 20px 20px;
-}
-.chat-file div{
-    margin: 20px;
-}
-.chat-file a span ,.chat-file div span{
-    /* flex-grow: 1; */
-    width: 200px;
-}
-.chat-file a img,.chat-file div img{
-    width: 100px;
-}
-
-.chat-music-audio {
+.chat-music-audio, .chat-file{
     width: 300px;
     margin-right: 20px;
     display: flex;
@@ -222,8 +199,11 @@ audio{
     height: 100px;
     margin-left: 10px;
 }
+.chat-file img{
+    width: 50px;
+}
 
-.chat-music-audio .player-box {
+.chat-music-audio .player-box,.chat-file .file-box {
     width: 300px;
     display: flex;
     align-items: center;
@@ -231,43 +211,43 @@ audio{
     height: 80px;
 }
 
-.chat-music-audio .player-original {
+.chat-music-audio .player-original ,.chat-file .app-info{
     border-top: 1px solid #ede3e3;
 }
 
-.chat-music-audio .player-original p {
+.chat-music-audio .player-original p ,.chat-file .app-info p{
     margin-top: 5px;
     color: #888;
 }
 
-.chat-music-audio .player-controls {
+.chat-music-audio .player-controls, .chat-file .file-img{
     display: flex;
     align-items: center;;
 }
 
-.chat-music-audio .flex1 {
+.chat-music-audio .flex1,.chat-file .flex1 {
     flex: 1;
     justify-content: start;
 }
 
-.chat-music-audio .flex2 {
+.chat-music-audio .flex2 ,.chat-file .flex2{
     flex: 2;
     justify-content: end;
 }
 
-.chat-music-audio .player-info {
+.chat-music-audio .player-info ,.chat-file .file-info{
     width: 200px;
     height: 80px;
     white-space: normal;
     flex-basis: 200px;
 }
 
-.chat-music-audio .song-title {
+.chat-music-audio .song-title,.chat-file .file-name {
     font-weight: bold;
     overflow-wrap: break-word;
 }
 
-.chat-music-audio .artist {
+.chat-music-audio .artist ,.chat-file .file-size{
     margin-top: 10px;
     color: #888;
 }
@@ -749,12 +729,26 @@ input {
         function messageFileBox(message) {
             const messageFileTag = document.createElement('div');
             messageFileTag.className = `chat-file`;
-            if (message.link !== ''){
-                messageFileTag.innerHTML  = `
-                <a href="${message.link}" target="_blank"><span>${message.file_name}</span><img loading="lazy" src="${message.text}"/></a>`
-            }else{
-                messageFileTag.innerHTML = `<div><span>文件已丢失</span><img loading="lazy" src="${message.text}"/></div>`;
+            messageFileTag.onclick = function (event) {
+                if (message.text !== '') {
+                    window.open(message.text, '_blank');
+                }else{
+                    alert("文件可能丢失、过期或不存放在该主机上")
+                }
             }
+            if (message.file_name.length >= 26) {
+                message.file_name = message.file_name.slice(0, 25) + '...'
+            }
+            messageFileTag.innerHTML = `<div class="file-box">
+                    <div class="file-info flex1">
+                        <div class="file-title">${message.file_name}</div>
+                        <div class="file-size">${message.file_size}</div>
+                    </div>
+                    <div class="file-img flex2">
+                        <img src="${message.icon_path}"/>
+                    </div>
+                </div>
+                <div class="app-info"><p>${message.app_name}</p></div>`
             return messageFileTag;
         }
 
