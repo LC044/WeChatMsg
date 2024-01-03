@@ -53,6 +53,11 @@ def makedirs(path):
     os.makedirs(os.path.join(path, 'music'), exist_ok=True)
     os.makedirs(os.path.join(path, 'icon'), exist_ok=True)
     resource_dir = os.path.join('app', 'resources', 'data', 'icons')
+    if not os.path.exists(resource_dir):
+        # 获取打包后的资源目录
+        resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
+        # 构建 FFmpeg 可执行文件的路径
+        resource_dir = os.path.join(resource_dir, 'app', 'resources', 'data', 'icons')
     target_folder = os.path.join(path, 'icon')
     # 拷贝一些必备的图标
     for root, dirs, files in os.walk(resource_dir):

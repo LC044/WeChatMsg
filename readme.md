@@ -308,3 +308,9 @@ python main.py
   <img src="./doc/images/weixin.png">
   <img src="./doc/images/qq.jpg" height="200">
 </div>
+
+## License
+
+WeChatMsg is licensed under [GPLv3](./LICENSE).
+
+Copyright © 2022-2024 by SiYuan.
