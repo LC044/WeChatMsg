@@ -133,7 +133,10 @@ def share_card(bytesExtra, compress_content_):
     root = ET.XML(xml)
     appmsg = root.find('appmsg')
     title = appmsg.find('title').text
-    des = appmsg.find('des').text
+    try:
+        des = appmsg.find('des').text
+    except:
+        des = ''
     url = appmsg.find('url').text
     appinfo = root.find('appinfo')
     show_display_name = appmsg.find('sourcedisplayname')
