@@ -9,7 +9,7 @@ class Icon:
     Default_avatar_path = ':/icons/icons/default_avatar.svg'
     Default_image_path = ':/icons/icons/404.png'
     logo_path = ':/icons/icons/logo99.png'
-    logo_ico_path = ':/icons/icons/logo.ico'
+    logo_ico_path = ':/icons/icons/logo3.0.ico'
     MainWindow_Icon = QIcon(':/icons/icons/logo.svg')
     Default_avatar = QIcon(Default_avatar_path)
     Output = QIcon(':/icons/icons/output.svg')

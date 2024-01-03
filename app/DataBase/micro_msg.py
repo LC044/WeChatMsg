@@ -121,4 +121,4 @@ if __name__ == '__main__':
         print(contact[-2])
         buf = contact[9]
         info = decodeExtraBuf(buf)
-        print(info['个性签名'],info['国家'],info['省份'],info['市'])
+        print(info)

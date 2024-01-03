@@ -240,6 +240,7 @@ def decodeExtraBuf(extra_buf_content: bytes):
             content = extra_buf_content[off: off + length]
             off += length
             res[trunk_head][field] = int.from_bytes(content, "little")
+    # print(res)
     return {
         'region': (res['国家']['18'], res['省份']['18'], res['市']['18']),
         'signature': res['个性签名']['18'],
