@@ -140,6 +140,7 @@ def share_card(bytesExtra, compress_content_):
     url = appmsg.find('url').text
     appinfo = root.find('appinfo')
     show_display_name = appmsg.find('sourcedisplayname')
+    sourceusername = appmsg.find('sourceusername')
     if show_display_name is not None:
         show_display_name = show_display_name.text
     else:
@@ -155,6 +156,11 @@ def share_card(bytesExtra, compress_content_):
         if msginfo[1][1][1] == 4:
             app_logo = msginfo[1][2][1]
             app_logo = "\\".join(app_logo.split('\\')[1:])
+    if sourceusername is not None:
+        from app.DataBase import micro_msg_db  # 放上面会导致循环依赖
+        contact = micro_msg_db.get_contact_by_username(sourceusername.text)
+        if contact:
+            app_logo = contact[7]
     return {
         'title': escape_js_and_html(title),
         'description': escape_js_and_html(des),

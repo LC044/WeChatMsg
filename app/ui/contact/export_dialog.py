@@ -106,7 +106,7 @@ class ExportDialog(QDialog):
 
     def set_total_msg_num(self, num):
         self.total_msg_num = num
-        b''+num +(1,1)
+        # b''+num +(1,1)
 
     def export_finished(self):
         self.export_button.setEnabled(True)

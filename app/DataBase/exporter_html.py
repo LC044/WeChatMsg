@@ -241,7 +241,7 @@ class HtmlExporter(ExporterBase):
                 shutil.copy(app_logo, os.path.join(origin_docx_path, 'image', os.path.basename(app_logo)))
                 app_logo = './image/' + os.path.basename(app_logo)
             else:
-                app_logo = ''
+                app_logo = card_data.get('app_logo')
         doc.write(
             f'''{{ type:49,sub_type:5, text:'',is_send:{is_send},avatar_path:'{avatar}',url:'{card_data.get('url')}',
                     timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',title:'{card_data.get('title')}',
