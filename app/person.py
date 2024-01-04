@@ -61,6 +61,8 @@ class Me(Person):
         self.name = ''
         self.mobile = ''
         self.smallHeadImgUrl = ''
+        self.nickName = self.name
+        self.remark = self.nickName
 
 
 class Contact(Person):
@@ -79,7 +81,7 @@ class Contact(Person):
         self.avatar_path = Icon.Default_avatar_path
         self.is_chatroom = self.wxid.__contains__('@chatroom')
         self.detail = contact_info.get('detail')
-        self.label_name = contact_info.get('label_name') # 联系人的标签分类
+        self.label_name = contact_info.get('label_name')  # 联系人的标签分类
 
         """
         detail存储了联系人的详细信息，是个字典
