@@ -45,7 +45,6 @@
 
 ## 🍉功能
 - [官网](https://memotrace.lc044.love/)
-- [点击预览](https://memotrace.lc044.love/demo.html)
 - 🔒️🔑🔓️Windows本地微信数据库
 - 还原微信聊天界面
     - 🗨文本✅
@@ -58,7 +57,7 @@
     - CSV文档✅ 
     - TXT文档✅ 
     - Word文档✅ 
-- 分析聊天数据，做成可视化年报
+- 分析聊天数据，做成可视化年报[点击预览](https://memotrace.lc044.love/demo.html)
 - 🔥**项目持续更新中**
 - 开发计划
   - 自主选择年度报告年份
@@ -94,6 +93,8 @@
 </details>
 
 # ⌛使用
+
+网络有问题可移步国内网站Gitee:[https://gitee.com/lc044/WeChatMsg](https://gitee.com/lc044/WeChatMsg)
 
 小白可以先点个star⭐(💘项目不断更新中),然后去旁边[Release](https://github.com/LC044/WeChatMsg/releases)
 下载打包好的exe可执行文件，双击即可运行
