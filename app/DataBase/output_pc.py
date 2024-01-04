@@ -5,11 +5,11 @@ import traceback
 from PyQt5.QtCore import pyqtSignal, QThread
 from PyQt5.QtWidgets import QFileDialog
 
-
 from app.DataBase.exporter_csv import CSVExporter
 from app.DataBase.exporter_docx import DocxExporter
 from app.DataBase.exporter_html import HtmlExporter
 from app.DataBase.exporter_txt import TxtExporter
+from app.DataBase.hard_link import decodeExtraBuf
 from .package_msg import PackageMsg
 from ..DataBase import media_msg_db, hard_link_db, micro_msg_db, msg_db
 from ..log import logger
@@ -18,10 +18,12 @@ from ..util.image import get_image
 
 os.makedirs('./data/聊天记录', exist_ok=True)
 
+
 class Output(QThread):
     """
     发送信息线程
     """
+    startSignal = pyqtSignal(int)
     progressSignal = pyqtSignal(int)
     rangeSignal = pyqtSignal(int)
     okSignal = pyqtSignal(int)
@@ -74,6 +76,7 @@ class Output(QThread):
                                                "csv files (*.csv);;all files(*.*)")
         if not filename[0]:
             return
+        self.startSignal.emit(1)
         filename = filename[0]
         # columns = ["用户名", "消息内容", "发送时间", "发送状态", "消息类型", "isSend", "msgId"]
         columns = ['localId', 'TalkerId', 'Type', 'SubType',
@@ -99,17 +102,29 @@ class Output(QThread):
                                                "csv files (*.csv);;all files(*.*)")
         if not filename[0]:
             return
+        self.startSignal.emit(1)
         filename = filename[0]
         # columns = ["用户名", "消息内容", "发送时间", "发送状态", "消息类型", "isSend", "msgId"]
         columns = ['UserName', 'Alias', 'Type', 'Remark', 'NickName', 'PYInitial', 'RemarkPYInitial', 'smallHeadImgUrl',
-                   'bigHeadImgUrl']
+                   'bigHeadImgUrl', 'label', 'gender', 'telephone', 'signature', 'country/region', 'province', 'city']
         contacts = micro_msg_db.get_contact()
         # 写入CSV文件
         with open(filename, mode='w', newline='', encoding='utf-8-sig') as file:
             writer = csv.writer(file)
             writer.writerow(columns)
             # 写入数据
-            writer.writerows(contacts)
+            # writer.writerows(contacts)
+            for contact in contacts:
+                detail = decodeExtraBuf(contact[9])
+                gender_code = detail.get('gender')
+                if gender_code == 0:
+                    gender = '未知'
+                elif gender_code == 1:
+                    gender = '男'
+                else:
+                    gender = '女'
+                writer.writerow([*contact[:9], contact[10], gender,detail.get('telephone'),detail.get('signature'),*detail.get('region')])
+
         self.okSignal.emit(1)
 
     def run(self):

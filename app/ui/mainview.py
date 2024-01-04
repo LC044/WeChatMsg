@@ -216,14 +216,16 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
                 self.stackedWidget.setCurrentIndex(0)
 
     def output(self):
-        self.startBusy()
+        # self.startBusy()
         if self.sender() == self.action_output_CSV:
             self.outputThread = Output(None, type_=Output.CSV_ALL)
+            self.outputThread.startSignal.connect(lambda x:self.startBusy())
             self.outputThread.okSignal.connect(
                 lambda x: self.message('聊天记录导出成功'))
             self.outputThread.start()
         elif self.sender() == self.action_output_contacts:
             self.outputThread = Output(None, type_=Output.CONTACT_CSV)
+            self.outputThread.startSignal.connect(lambda x: self.startBusy())
             self.outputThread.okSignal.connect(
                 lambda x: self.message('联系人导出成功'))
             self.outputThread.start()
