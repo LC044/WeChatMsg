@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QSize
+from PyQt5.QtCore import QSize, QUrl
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QDialog
 
@@ -26,7 +26,13 @@ class AboutDialog(QDialog, Ui_Dialog):
         self.label_weixin.setPixmap(pixmap)
         self.label_version.setText('《留痕》')
         self.textBrowser.setHtml(config.about)
+        self.textBrowser.setOpenExternalLinks(True)
+        self.textBrowser.anchorClicked.connect(self.handleAnchorClicked)
 
+
+    def handleAnchorClicked(self, url):
+        # 打开默认浏览器
+        QUrl(url).openUrl(url)
 if __name__ == '__main__':
     import sys
 

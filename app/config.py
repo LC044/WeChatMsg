@@ -17,6 +17,6 @@ about = f'''
     地址：<a href='{github}'>{github}</a><br>
     官网：<a href='{website}'>{website}</a><br>
     新特性:<br>{''.join(['' + i for i in description])}<br>
-    License <a href='https://github.com/LC044/WeChatMsg/blob/master/LICENSE'>{license}</a><br>
+    License <a href='https://github.com/LC044/WeChatMsg/blob/master/LICENSE' target='_blank'>{license}</a><br>
     Copyright {copyright}
 '''
