@@ -5,7 +5,7 @@ import shutil
 import requests
 
 from app.log import log, logger
-from app.util.protocbuf.msg_pb2 import MessageBytesExtra
+from app.DataBase.hard_link import parseBytesExtra
 from ..person import Me
 
 root_path = './data/files/'
@@ -22,14 +22,13 @@ class File:
 
 def get_file(bytes_extra, file_name, output_path=root_path) -> str:
     try:
-        msg_bytes = MessageBytesExtra()
-        msg_bytes.ParseFromString(bytes_extra)
+        msg_bytes = parseBytesExtra(bytes_extra)
         file_path = ''
         real_path = ''
-        if len(msg_bytes.message2) > 0:
-            for filed in msg_bytes.message2:
-                if filed.field1 == 4:
-                    file_original_path = filed.field2
+        if len(msg_bytes[3]) > 0:
+            for filed in msg_bytes[3]:
+                if filed[1] == 4:
+                    file_original_path = filed[2]
                     file_path = os.path.join(output_path, file_name)
                     if os.path.exists(file_path):
                         # print('文件' + file_path + '已存在')

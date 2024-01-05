@@ -3,7 +3,7 @@ import traceback
 import shutil
 
 from app.log import log, logger
-from app.util.protocbuf.msg_pb2 import MessageBytesExtra
+from app.DataBase.hard_link import parseBytesExtra
 import requests
 from urllib.parse import urlparse, parse_qs
 import re

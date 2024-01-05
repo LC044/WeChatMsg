@@ -4,10 +4,10 @@ import sqlite3
 import threading
 import traceback
 
-from app.DataBase.hard_link import parseBytes
+from app.DataBase.hard_link import parseBytesExtra
 from app.log import logger
 from app.util.compress_content import parser_reply
-from app.util.protocbuf.msg_pb2 import MessageBytesExtra
+from app.DataBase.hard_link import parseBytesExtra
 
 db_path = "./app/Database/Msg/MSG.db"
 lock = threading.Lock()
@@ -66,12 +66,11 @@ class Msg:
             if is_sender:
                 pass
             else:
-                msgbytes = MessageBytesExtra()
-                msgbytes.ParseFromString(message[10])
-                for tmp in msgbytes.message2:
-                    if tmp.field1 != 1:
+                msgbytes = parseBytesExtra(message[10])
+                for tmp in msgbytes[3]:
+                    if tmp[1] != 1:
                         continue
-                    wxid = tmp.field2
+                    wxid = tmp[2]
             new_message = (*message, wxid)
             new_messages.append(new_message)
         return new_messages
@@ -651,12 +650,12 @@ if __name__ == '__main__':
             else:
                 show_display_name = appinfo.find('appname').text
             print(title, des, url, show_display_name)
-            bytesDict = parseBytes(msg[10])
+            bytesDict = parseBytesExtra(msg[10])
             for msginfo in bytesDict[3]:
                 print(msginfo)
-                if msginfo[1][1][1] == 3:
-                    thumb = msginfo[1][2][1]
+                if msginfo[1] == 3:
+                    thumb = msginfo[2]
                     print(thumb)
-                if msginfo[1][1][1] == 4:
-                    app_logo = msginfo[1][2][1]
+                if msginfo[1] == 4:
+                    app_logo = msginfo[2]
                     print('logo',app_logo)
