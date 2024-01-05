@@ -12,7 +12,6 @@ from app.util.protocbuf.msg_pb2 import MessageBytesExtra
 from ..util.file import get_file
 
 
-
 def decompress_CompressContent(data):
     """
     解压缩Msg：CompressContent内容
@@ -132,47 +131,50 @@ def music_share(data: bytes):
 
 
 def share_card(bytesExtra, compress_content_):
-    xml = decompress_CompressContent(compress_content_)
-    root = ET.XML(xml)
-    appmsg = root.find('appmsg')
-    title = appmsg.find('title').text
+    title, des, url, show_display_name, thumbnail, app_logo = '', '', '', '', '', ''
     try:
-        des = appmsg.find('des').text
-    except:
-        des = ''
-    url = appmsg.find('url').text
-    appinfo = root.find('appinfo')
-    show_display_name = appmsg.find('sourcedisplayname')
-    sourceusername = appmsg.find('sourceusername')
-    if show_display_name is not None:
-        show_display_name = show_display_name.text
-    else:
-        if appinfo is not None:
-            show_display_name = appinfo.find('appname').text
-    msg_bytes = MessageBytesExtra()
-    msg_bytes.ParseFromString(bytesExtra)
-    app_logo = ''
-    thumbnail = ''
-    for tmp in msg_bytes.message2:
-        if tmp.field1 == 3:
-            thumbnail = tmp.field2
-            thumbnail = "\\".join(thumbnail.split('\\')[1:])
-        if tmp.field2 == 4:
-            app_logo = tmp.field2
-            app_logo = "\\".join(app_logo.split('\\')[1:])
-    if sourceusername is not None:
-        from app.DataBase import micro_msg_db  # 放上面会导致循环依赖
-        contact = micro_msg_db.get_contact_by_username(sourceusername.text)
-        if contact:
-            app_logo = contact[7]
-    return {
-        'title': escape_js_and_html(title),
-        'description': escape_js_and_html(des),
-        'url': url,
-        'app_name': escape_js_and_html(show_display_name),
-        'thumbnail': thumbnail,
-        'app_logo': app_logo
-    }
+        xml = decompress_CompressContent(compress_content_)
+        root = ET.XML(xml)
+        appmsg = root.find('appmsg')
+        title = appmsg.find('title').text
+        try:
+            des = appmsg.find('des').text
+        except:
+            des = ''
+        url = appmsg.find('url').text
+        appinfo = root.find('appinfo')
+        show_display_name = appmsg.find('sourcedisplayname')
+        sourceusername = appmsg.find('sourceusername')
+        if show_display_name is not None:
+            show_display_name = show_display_name.text
+        else:
+            if appinfo is not None:
+                show_display_name = appinfo.find('appname').text
+        msg_bytes = MessageBytesExtra()
+        msg_bytes.ParseFromString(bytesExtra)
+        app_logo = ''
+        thumbnail = ''
+        for tmp in msg_bytes.message2:
+            if tmp.field1 == 3:
+                thumbnail = tmp.field2
+                thumbnail = "\\".join(thumbnail.split('\\')[1:])
+            if tmp.field2 == 4:
+                app_logo = tmp.field2
+                app_logo = "\\".join(app_logo.split('\\')[1:])
+        if sourceusername is not None:
+            from app.DataBase import micro_msg_db  # 放上面会导致循环依赖
+            contact = micro_msg_db.get_contact_by_username(sourceusername.text)
+            if contact:
+                app_logo = contact[7]
+    finally:
+        return {
+            'title': escape_js_and_html(title),
+            'description': escape_js_and_html(des),
+            'url': url,
+            'app_name': escape_js_and_html(show_display_name),
+            'thumbnail': thumbnail,
+            'app_logo': app_logo
+        }
 
 
 def get_website_name(url):
@@ -269,5 +271,6 @@ def format_bytes(size):
         if size < 1024 or unit_index >= len(units) - 1:
             return size, unit_index
         return convert_bytes(size / 1024, unit_index + 1)
+
     final_size, final_unit_index = convert_bytes(size, 0)
     return f"{final_size:.2f} {units[final_unit_index]}"

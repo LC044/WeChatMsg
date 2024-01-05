@@ -3,7 +3,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QDialog
 
 try:
-    from .dialog import Ui_Dialog
+    from app.ui.menu.dialog import Ui_Dialog
     from app import config
     from app.resources import resource_rc
 except:

@@ -99,6 +99,7 @@ class ChatWindow(QWidget, Ui_Form):
         self.listWidget.setCurrentRow(index)
 
     def show_chat(self, contact):
+        # return
         self.contacts[0].append(contact.remark)
         self.contacts[1].append(contact.nickName)
         contact_item = ContactQListWidgetItem(contact.remark, contact.smallHeadImgUrl, contact.smallHeadImgBLOG)
