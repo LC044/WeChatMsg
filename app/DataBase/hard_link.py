@@ -41,7 +41,7 @@ class tencent_struct:
     def __readString(self):
         try:
             length = self.__readUleb()
-            res = self.__data[self.__off : self.__off + length]
+            res = self.__data[self.__off: self.__off + length]
             self.__add(length)
         except:
             raise
@@ -78,35 +78,11 @@ class tencent_struct:
     def __readData(self):
         try:
             length = self.__readUleb()
-            data = self.__data[self.__off : self.__off + length]
+            data = self.__data[self.__off: self.__off + length]
             self.__add(length)
             return data
         except:
             raise
-
-    def __readChar(self):
-        c = None
-        try:
-            c = self.__data[self.__off]
-            self.__add()
-        except:
-            raise
-        return c
-
-    def __readUlong(self):
-        i = 0
-        j = 0
-        l = 0
-        while True:
-            assert i < 64
-            try:
-                j = self.__readChar()
-            except:
-                raise
-            l = l | (j & 0x7F) << i
-            if (j & 0x80) == 0:
-                return l
-            i = i + 7
 
     def __init__(self, data=None, off=0):
         self.__data = data
@@ -135,8 +111,10 @@ class tencent_struct:
                 if key == 0:
                     break
                 op = None
+                fieldName = ""
                 if key in current_dict:
-                    op = current_dict[key]
+                    op = current_dict[key][1]
+                    fieldName = current_dict[key][0]
                 else:
                     break
                 if isinstance(op, dict):
@@ -144,56 +122,31 @@ class tencent_struct:
                         res[key] = []
                     current_struct = self.__readData()
                     recursion = tencent_struct(current_struct)
-                    res[key].append(recursion.readStruct(op))
+                    res[key].append((fieldName, recursion.readStruct(op)))
                 elif op != "":
-                    res[key] = self.__contenttype__[op](self)
+                    res[key] = (fieldName, self.__contenttype__[op](self))
                 else:
                     break
         except:
             raise
         return res
 
-    __bytesExtraStruct1__ = {1: "I", 2: "I"}
+    __struct1__ = {1: ("", "I"), 2: ("", "I")}
 
-    __bytesExtraMsgInfo__ = {1: "I", 2: "s"}
+    __msgInfo__ = {1: ("", "I"), 2: ("msg_info", "s")}
 
     __bytesExtra__ = {
-        1: __bytesExtraStruct1__,
-        3: __bytesExtraMsgInfo__,
+        1: ("", __struct1__),
+        3: ("msg_info_struct", __msgInfo__),
     }
 
-    __extraBufStruct1__ = {1: "s", 2: "s"}
+    __struct2__ = {1: ("", "s"), 2: ("", "s")}
 
     __extraBuf__ = {
-        1: __extraBufStruct1__,
+        1: ("", __struct2__),
     }
 
-    __chatRoomMember__ = {
-        1: "s",
-        2: "s",
-        3: "I",
-    }
-    """
-    field1: wxid,
-    field2: displayName,
-    field3: state
-    """
-
-    __chatRoomData__ = {
-        1: __chatRoomMember__,
-        2: "I",
-        3: "I",
-        4: "I",
-        5: "I",
-        6: "L",
-        7: "L",
-        8: "L",
-    }
-    """
-    field5: roomCapacity
-    """
-
-    def get_bytesExtra_Content(self, data=None, off=0):
+    def get_bytesExta_Content(self, data=None, off=0):
         self.__setVals__(data, off)
         try:
             return self.readStruct("__bytesExtra__")
@@ -207,24 +160,16 @@ class tencent_struct:
         except:
             raise
 
-    def get_chatRoomData_Content(self, data=None, off=0):
-        self.__setVals__(data, off)
-        try:
-            return self.readStruct("__chatRoomData__")
-        except:
-            raise
-
     __contenttype__ = {
         "s": __readString,
         "I": __readUleb,
         "P": __readData,
-        "L": __readUlong,
     }
 
 
-def parseBytesExtra(content: bytes):
+def parseBytes(content: bytes):
     try:
-        bytesExtra = tencent_struct().get_bytesExtra_Content(content)
+        bytesExtra = tencent_struct().get_bytesExta_Content(content)
         return bytesExtra
     except:
         pass
@@ -233,30 +178,6 @@ def parseBytesExtra(content: bytes):
 def parseExtraBuf(content: bytes):
     try:
         extraBuf = tencent_struct().get_extraBuf_Content(content)
-        return extraBuf
-    except:
-        pass
-
-
-def parseChatRoomData(content: bytes):
-    """
-    return {
-        1: {
-            1: wxid,
-            2: displayName,
-            3: state
-        }, # chatRoomMember
-        2: int,
-        3: int,
-        4: int,
-        5: int, # roomCapacity
-        6: long,
-        7: long,
-        8: long,
-    }
-    """
-    try:
-        extraBuf = tencent_struct().get_chatRoomData_Content(content)
         return extraBuf
     except:
         pass
@@ -277,56 +198,56 @@ def decodeExtraBuf(extra_buf_content: bytes):
         "759378AD": "手机号",
         "74752C06": "性别",
     }
-    res = {"手机号": {"18": ""}}
+    res = {'手机号': {'18': ''}}
     while off < len(extra_buf_content):
         length = 4  # 块头
-        trunk_head = extra_buf_content[off : off + length]
+        trunk_head = extra_buf_content[off: off + length]
         off += length
         trunk_head = binascii.hexlify(trunk_head).decode().upper()
         if trunk_head in trunkName:
             trunk_head = trunkName[trunk_head]
         res[trunk_head] = {}
-        char = extra_buf_content[off : off + 1]
+        char = extra_buf_content[off: off + 1]
         off += 1
         field = binascii.hexlify(char).decode()
         if char == b"\x04":  # 四个字节的int，小端序
             length = 4
-            intContent = extra_buf_content[off : off + length]
+            intContent = extra_buf_content[off: off + length]
             off += 4
             intContent = int.from_bytes(intContent, "little")
             res[trunk_head][field] = intContent
         elif char == b"\x18":  # utf-16字符串
             length = 4
-            lengthContent = extra_buf_content[off : off + length]
+            lengthContent = extra_buf_content[off: off + length]
             off += 4
             lengthContent = int.from_bytes(lengthContent, "little")
-            strContent = extra_buf_content[off : off + lengthContent]
+            strContent = extra_buf_content[off: off + lengthContent]
             off += lengthContent
             res[trunk_head][field] = strContent.decode("utf-16").rstrip("\x00")
         elif char == b"\x17":  # utf-8 protobuf
             length = 4
-            lengthContent = extra_buf_content[off : off + length]
+            lengthContent = extra_buf_content[off: off + length]
             off += 4
             lengthContent = int.from_bytes(lengthContent, "little")
-            strContent = extra_buf_content[off : off + lengthContent]
+            strContent = extra_buf_content[off: off + lengthContent]
             off += lengthContent
             res[trunk_head][field] = parseExtraBuf(strContent)
         elif char == b"\x02":  # 一个字节的int
-            content = extra_buf_content[off : off + 1]
+            content = extra_buf_content[off: off + 1]
             off += 1
             res[trunk_head][field] = int.from_bytes(content, "little")
         elif char == b"\x05":  # 暂时不知道有啥用，固定8个字节，先当int处理
             length = 8
-            content = extra_buf_content[off : off + length]
+            content = extra_buf_content[off: off + length]
             off += length
             res[trunk_head][field] = int.from_bytes(content, "little")
     # print(res)
 
     return {
-        "region": (res["国家"]["18"], res["省份"]["18"], res["市"]["18"]),
-        "signature": res["个性签名"]["18"],
-        "telephone": res["手机号"]["18"],
-        "gender": res["性别"]["04"],
+        'region': (res['国家']['18'], res['省份']['18'], res['市']['18']),
+        'signature': res['个性签名']['18'],
+        'telephone': res['手机号']['18'],
+        'gender': res['性别']['04']
     }
 
 
@@ -416,10 +337,10 @@ class HardLink:
             video_db_lock.release()
 
     def get_image(self, content, bytesExtra, thumb=False):
-        bytesDict = parseBytesExtra(bytesExtra)
+        bytesDict = parseBytes(bytesExtra)
         for msginfo in bytesDict[3]:
-            if msginfo[1] == (3 if thumb else 4):
-                pathh = msginfo[2]  # wxid\FileStorage\...
+            if msginfo[1][1][1] == (3 if thumb else 4):
+                pathh = msginfo[1][2][1]  # wxid\FileStorage\...
                 pathh = "\\".join(pathh.split("\\")[1:])
                 return pathh
         md5 = get_md5_from_xml(content)
@@ -436,10 +357,10 @@ class HardLink:
             return dat_image
 
     def get_video(self, content, bytesExtra, thumb=False):
-        bytesDict = parseBytesExtra(bytesExtra)
+        bytesDict = parseBytes(bytesExtra)
         for msginfo in bytesDict[3]:
-            if msginfo[1] == (3 if thumb else 4):
-                pathh = msginfo[2]  # wxid\FileStorage\...
+            if msginfo[1][1][1] == (3 if thumb else 4):
+                pathh = msginfo[1][2][1]  # wxid\FileStorage\...
                 pathh = "\\".join(pathh.split("\\")[1:])
                 return pathh
         md5 = get_md5_from_xml(content, type_="video")
