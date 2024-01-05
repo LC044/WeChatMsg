@@ -47,7 +47,7 @@ class MicroMsg:
                     FROM Contact
                     INNER JOIN ContactHeadImgUrl ON Contact.UserName = ContactHeadImgUrl.usrName
                     LEFT JOIN ContactLabel ON Contact.LabelIDList = ContactLabel.LabelId
-                    WHERE (Type!=4)
+                    WHERE (Type!=4 AND VerifyFlag=0)
                         AND NickName != ''
                     ORDER BY 
                         CASE

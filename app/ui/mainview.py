@@ -14,11 +14,10 @@ from PyQt5.QtCore import pyqtSignal, QUrl, Qt, QThread, QSize
 from PyQt5.QtGui import QPixmap, QFont, QDesktopServices, QIcon
 from PyQt5.QtWidgets import QMainWindow, QLabel, QListWidgetItem, QMessageBox
 
-from app import config
-from app.DataBase import msg_db, misc_db, micro_msg_db, hard_link_db, close_db
+from app.DataBase import misc_db, micro_msg_db, close_db
 from app.ui.Icon import Icon
 from . import mainwindow
-from .about_dialog import AboutDialog
+from app.ui.menu.about_dialog import AboutDialog
 from .chat import ChatWindow
 from .contact import ContactWindow
 from .tool.tool_window import ToolWindow
@@ -121,6 +120,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
             )
 
     def init_ui(self):
+        self.startBusy()
         self.menu_output.setIcon(Icon.Output)
         self.action_output_CSV.setIcon(Icon.ToCSV)
         self.action_output_CSV.triggered.connect(self.output)
@@ -199,6 +199,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
 
     def stop_loading(self, a0):
         self.label.setVisible(False)
+        self.stopBusy()
 
     def loading(self, a0):
         self.load_num += 1
@@ -208,6 +209,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
             self.okSignal.emit(True)
             self.listWidget.setVisible(True)
             self.stackedWidget.setVisible(True)
+            self.stopBusy()
             if self.load_flag:
                 self.listWidget.setCurrentRow(1)
                 self.stackedWidget.setCurrentIndex(1)

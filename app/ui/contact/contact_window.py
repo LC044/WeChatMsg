@@ -119,6 +119,7 @@ class ContactWindow(QWidget, Ui_Form):
         @param contact:联系人对象
         @return:
         """
+        # return
         self.contacts[0].append(contact.remark)
         self.contacts[1].append(contact.nickName)
         contact_item = ContactQListWidgetItem(contact.remark, contact.smallHeadImgUrl, contact.smallHeadImgBLOG)
