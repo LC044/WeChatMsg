@@ -5,7 +5,6 @@ import threading
 import xml.etree.ElementTree as ET
 
 from app.log import log
-from app.util.protocbuf.extrabuf_pb2 import ExtraBuf
 from app.util.protocbuf.msg_pb2 import MessageBytesExtra
 
 image_db_lock = threading.Lock()
