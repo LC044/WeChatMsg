@@ -1,5 +1,7 @@
+from typing import List
+
 from PyQt5.QtCore import QThread, pyqtSignal
-from PyQt5.QtWidgets import QWidget, QMessageBox, QAction, QLineEdit
+from PyQt5.QtWidgets import QWidget, QMessageBox, QAction, QLineEdit, QLabel
 
 from app.DataBase import micro_msg_db, misc_db
 from app.components import ContactQListWidgetItem, ScrollBar
@@ -62,7 +64,9 @@ class ContactWindow(QWidget, Ui_Form):
         self.setStyleSheet(Stylesheet)
         self.init_ui()
         self.contacts = [[], []]
+        self.contacts_list:List[Contact] = []
         self.show_contacts()
+        self.contact_info_window = None
 
     def init_ui(self):
         search_action = QAction(self.lineEdit)
@@ -120,8 +124,10 @@ class ContactWindow(QWidget, Ui_Form):
         contact_item = ContactQListWidgetItem(contact.remark, contact.smallHeadImgUrl, contact.smallHeadImgBLOG)
         self.listWidget.addItem(contact_item)
         self.listWidget.setItemWidget(contact_item, contact_item.widget)
-        contact_info_window = ContactInfo(contact)
-        self.stackedWidget.addWidget(contact_info_window)
+        self.contacts_list.append(contact)
+        if self.contact_info_window is None:
+            self.contact_info_window = ContactInfo(contact)
+            self.stackedWidget.addWidget(self.contact_info_window)
 
     def setCurrentIndex(self, row):
         # print(row)
@@ -131,7 +137,8 @@ class ContactWindow(QWidget, Ui_Form):
         item = self.listWidget.item(row)
         item.select()
         self.now_index = row
-        self.stackedWidget.setCurrentIndex(row)
+        # self.stackedWidget.setCurrentIndex(row)
+        self.contact_info_window.set_contact(self.contacts_list[row])
 
 
 class ShowContactThread(QThread):

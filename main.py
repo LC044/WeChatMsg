@@ -66,8 +66,9 @@ class ViewController(QWidget):
             self.viewMainWindow.setWindowTitle(f"留痕-{version}")
             self.viewMainWindow.show()
             end = time.time()
-            print('ok', '本次加载用了', end - start, 's')
             self.viewMainWindow.init_ui()
+            print('ok', '本次加载用了', end - start, 's')
+
         except Exception as e:
             print(f"Exception: {e}")
             logger.error(traceback.print_exc())

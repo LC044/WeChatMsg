@@ -54,7 +54,9 @@ class ContactInfo(QWidget, Ui_Form):
         self.toDocxAct.triggered.connect(self.output)
         self.toCSVAct.triggered.connect(self.output)
         self.toTxtAct.triggered.connect(self.output)
-
+    def set_contact(self,contact:Contact):
+        self.view_userinfo.set_contact(contact)
+        self.contact = contact
     def toolButton_show(self):
         self.toolButton_output.showMenu()
 
