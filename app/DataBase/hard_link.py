@@ -5,6 +5,7 @@ import threading
 import xml.etree.ElementTree as ET
 
 from app.log import log
+from app.util.protocbuf.msg_pb2 import MessageBytesExtra
 
 image_db_lock = threading.Lock()
 video_db_lock = threading.Lock()
@@ -30,224 +31,47 @@ def get_md5_from_xml(content, type_="img"):
         return None
 
 
-class tencent_struct:
-    def __setVals__(self, data, off):
-        if data:
-            self.__data = data
-        if self.__data:
-            self.__size = len(self.__data)
-        self.__off = off
-
-    def __readString(self):
-        try:
-            length = self.__readUleb()
-            res = self.__data[self.__off: self.__off + length]
-            self.__add(length)
-        except:
-            raise
-        return res.decode("utf-8")
-
-    def __readUleb(self):
-        try:
-            i = self.__data[self.__off]
-            self.__add()
-            if i & 0x80:
-                j = self.__data[self.__off]
-                i = i & 0x7F
-                i = i | (j << 7)
-                self.__add()
-                if i & 0x4000:
-                    j = self.__data[self.__off]
-                    i = i & 0x3FFF
-                    i = i | (j << 14)
-                    self.__add()
-                    if i & 0x200000:
-                        j = self.__data[self.__off]
-                        i = i & 0x1FFFFF
-                        i = i | (j << 21)
-                        self.__add()
-                        if i & 0x10000000:
-                            j = self.__data[self.__off]
-                            i = i & 0xFFFFFFF
-                            i = i | (j << 28)
-                            self.__add()
-            return i
-        except:
-            raise
-
-    def __readData(self):
-        try:
-            length = self.__readUleb()
-            data = self.__data[self.__off: self.__off + length]
-            self.__add(length)
-            return data
-        except:
-            raise
-
-    def __init__(self, data=None, off=0):
-        self.__data = data
-        self.__off = off
-        if self.__data:
-            self.__size = len(self.__data)
-        else:
-            self.__size = 0
-
-    def __add(self, value=1):
-        self.__off += value
-        if self.__off > self.__size:
-            raise "偏移量超出size"
-
-    def readStruct(self, struct_type):
-        current_dict = None
-        if isinstance(struct_type, str):
-            current_dict = getattr(self, struct_type)
-        else:
-            current_dict = struct_type
-        res = {}
-        try:
-            while self.__off < self.__size:
-                key = self.__readUleb()
-                key = key >> 3
-                if key == 0:
-                    break
-                op = None
-                fieldName = ""
-                if key in current_dict:
-                    op = current_dict[key][1]
-                    fieldName = current_dict[key][0]
-                else:
-                    break
-                if isinstance(op, dict):
-                    if not key in res:
-                        res[key] = []
-                    current_struct = self.__readData()
-                    recursion = tencent_struct(current_struct)
-                    res[key].append((fieldName, recursion.readStruct(op)))
-                elif op != "":
-                    res[key] = (fieldName, self.__contenttype__[op](self))
-                else:
-                    break
-        except:
-            raise
-        return res
-
-    __struct1__ = {1: ("", "I"), 2: ("", "I")}
-
-    __msgInfo__ = {1: ("", "I"), 2: ("msg_info", "s")}
-
-    __bytesExtra__ = {
-        1: ("", __struct1__),
-        3: ("msg_info_struct", __msgInfo__),
-    }
-
-    __struct2__ = {1: ("", "s"), 2: ("", "s")}
-
-    __extraBuf__ = {
-        1: ("", __struct2__),
-    }
-
-    def get_bytesExta_Content(self, data=None, off=0):
-        self.__setVals__(data, off)
-        try:
-            return self.readStruct("__bytesExtra__")
-        except:
-            raise
-
-    def get_extraBuf_Content(self, data=None, off=0):
-        self.__setVals__(data, off)
-        try:
-            return self.readStruct("__extraBuf__")
-        except:
-            raise
-
-    __contenttype__ = {
-        "s": __readString,
-        "I": __readUleb,
-        "P": __readData,
-    }
-
-
-def parseBytes(content: bytes):
-    try:
-        bytesExtra = tencent_struct().get_bytesExta_Content(content)
-        return bytesExtra
-    except:
-        pass
-
-
-def parseExtraBuf(content: bytes):
-    try:
-        extraBuf = tencent_struct().get_extraBuf_Content(content)
-        return extraBuf
-    except:
-        pass
-
-
 def decodeExtraBuf(extra_buf_content: bytes):
-    off = 0
-    types = [b"\x04", b"\x18", b"\x17", b"\x02", b"\x05"]
     trunkName = {
-        "46CF10C4": "个性签名",
-        "A4D9024A": "国家",
-        "E2EAA8D1": "省份",
-        "1D025BBF": "市",
-        "81AE19B4": "朋友圈背景url",
-        "F917BCC0": "公司名称",
-        "4EB96D85": "企业微信属性",
-        "0E719F13": "备注图片",
-        "759378AD": "手机号",
-        "74752C06": "性别",
+        b"\x46\xCF\x10\xC4": "个性签名",
+        b"\xA4\xD9\x02\x4A": "国家",
+        b"\xE2\xEA\xA8\xD1": "省份",
+        b"\x1D\x02\x5B\xBF": "市",
+        # b"\x81\xAE\x19\xB4": "朋友圈背景url",
+        # b"\xF9\x17\xBC\xC0": "公司名称",
+        # b"\x4E\xB9\x6D\x85": "企业微信属性",
+        # b"\x0E\x71\x9F\x13": "备注图片",
+        b"\x75\x93\x78\xAD": "手机号",
+        b"\x74\x75\x2C\x06": "性别",
     }
-    res = {'手机号': {'18': ''}}
-    while off < len(extra_buf_content):
-        length = 4  # 块头
-        trunk_head = extra_buf_content[off: off + length]
-        off += length
-        trunk_head = binascii.hexlify(trunk_head).decode().upper()
-        if trunk_head in trunkName:
-            trunk_head = trunkName[trunk_head]
-        res[trunk_head] = {}
-        char = extra_buf_content[off: off + 1]
+    res = {"手机号": ""}
+    off = 0
+    for key in trunkName:
+        trunk_head = trunkName[key]
+        try:
+            off = extra_buf_content.index(key) + 4
+        except:
+            pass
+        char = extra_buf_content[off : off + 1]
         off += 1
-        field = binascii.hexlify(char).decode()
         if char == b"\x04":  # 四个字节的int，小端序
-            length = 4
-            intContent = extra_buf_content[off: off + length]
+            intContent = extra_buf_content[off : off + 4]
             off += 4
             intContent = int.from_bytes(intContent, "little")
-            res[trunk_head][field] = intContent
+            res[trunk_head] = intContent
         elif char == b"\x18":  # utf-16字符串
-            length = 4
-            lengthContent = extra_buf_content[off: off + length]
+            lengthContent = extra_buf_content[off : off + 4]
             off += 4
             lengthContent = int.from_bytes(lengthContent, "little")
-            strContent = extra_buf_content[off: off + lengthContent]
+            strContent = extra_buf_content[off : off + lengthContent]
             off += lengthContent
-            res[trunk_head][field] = strContent.decode("utf-16").rstrip("\x00")
-        elif char == b"\x17":  # utf-8 protobuf
-            length = 4
-            lengthContent = extra_buf_content[off: off + length]
-            off += 4
-            lengthContent = int.from_bytes(lengthContent, "little")
-            strContent = extra_buf_content[off: off + lengthContent]
-            off += lengthContent
-            res[trunk_head][field] = parseExtraBuf(strContent)
-        elif char == b"\x02":  # 一个字节的int
-            content = extra_buf_content[off: off + 1]
-            off += 1
-            res[trunk_head][field] = int.from_bytes(content, "little")
-        elif char == b"\x05":  # 暂时不知道有啥用，固定8个字节，先当int处理
-            length = 8
-            content = extra_buf_content[off: off + length]
-            off += length
-            res[trunk_head][field] = int.from_bytes(content, "little")
-    # print(res)
+            res[trunk_head] = strContent.decode("utf-16").rstrip("\x00")
 
     return {
-        'region': (res['国家']['18'], res['省份']['18'], res['市']['18']),
-        'signature': res['个性签名']['18'],
-        'telephone': res['手机号']['18'],
-        'gender': res['性别']['04']
+        "region": (res["国家"], res["省份"], res["市"]),
+        "signature": res["个性签名"],
+        "telephone": res["手机号"],
+        "gender": res["性别"],
     }
 
 
@@ -337,12 +161,14 @@ class HardLink:
             video_db_lock.release()
 
     def get_image(self, content, bytesExtra, thumb=False):
-        bytesDict = parseBytes(bytesExtra)
-        for msginfo in bytesDict[3]:
-            if msginfo[1][1][1] == (3 if thumb else 4):
-                pathh = msginfo[1][2][1]  # wxid\FileStorage\...
-                pathh = "\\".join(pathh.split("\\")[1:])
-                return pathh
+        msg_bytes = MessageBytesExtra()
+        msg_bytes.ParseFromString(bytesExtra)
+        for tmp in msg_bytes.message2:
+            if tmp.field1 != (3 if thumb else 4):
+                continue
+            pathh = tmp.field2  # wxid\FileStorage\...
+            pathh = "\\".join(pathh.split("\\")[1:])
+            return pathh
         md5 = get_md5_from_xml(content)
         if not md5:
             return None
@@ -357,12 +183,14 @@ class HardLink:
             return dat_image
 
     def get_video(self, content, bytesExtra, thumb=False):
-        bytesDict = parseBytes(bytesExtra)
-        for msginfo in bytesDict[3]:
-            if msginfo[1][1][1] == (3 if thumb else 4):
-                pathh = msginfo[1][2][1]  # wxid\FileStorage\...
-                pathh = "\\".join(pathh.split("\\")[1:])
-                return pathh
+        msg_bytes = MessageBytesExtra()
+        msg_bytes.ParseFromString(bytesExtra)
+        for tmp in msg_bytes.message2:
+            if tmp.field1 != (3 if thumb else 4):
+                continue
+            pathh = tmp.field2  # wxid\FileStorage\...
+            pathh = "\\".join(pathh.split("\\")[1:])
+            return pathh
         md5 = get_md5_from_xml(content, type_="video")
         if not md5:
             return None

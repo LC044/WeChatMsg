@@ -173,6 +173,7 @@ body{
     width: 42px;
     height: 42px;
     border-radius: 50%;
+    user-select: none;
 }
 .chat-video video{
     margin-right: 18px;
@@ -465,6 +466,12 @@ input {
         margin-left: 5px;
     }
 }
+
+.system-msg>.emoji_img {
+    width: 18px;
+    height: 18px;
+}
+
 .emoji_img {
     width: 22px;
     height: 22px;
@@ -802,7 +809,7 @@ input {
             // 从数据列表中取出对应范围的元素并添加到容器中
         for (let i = startIndex; i < endIndex && i < chatMessages.length; i++) {
             const message = chatMessages[i];
-            if (i == startIndex) { // 判断一下在页面顶部多加一个时间
+            if (i == startIndex && (reachedBottom ? !/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(chatMessages[i - 1].text) : 1)) { // 判断一下在页面顶部多加一个时间
                 if (!/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(message.text)) {
                     // 时间戳转成时间
                     function timestampToTime(timestamp) {
@@ -843,7 +850,7 @@ input {
             }
             else if (message.type == 0) {
                 messageElement.className = "item item-center";
-                messageElement.innerHTML = `<span>${message.text}</span>`;
+                messageElement.innerHTML = `<span class="system-msg">${replaceEmoji(message.text)}</span>`;
             }
             else if (message.type == 3) {
                 // displayname 和 img
