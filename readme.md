@@ -310,7 +310,15 @@ python main.py
   <img src="./doc/images/qq.jpg" height="200">
 </div>
 
-## License
+## AI交流
+
+欢迎对“前言”中AI感兴趣的加入QQ群（不负责任何答疑），让我们一起探讨新技术，钻研新方案，将科技的力量融入生活，打造出一个真正具有情感的个人AI
+
+<div>
+  <img src="doc/images/ai_qq.jpg" height="200">
+</div>
+
+# License
 
 WeChatMsg is licensed under [GPLv3](./LICENSE).
 
