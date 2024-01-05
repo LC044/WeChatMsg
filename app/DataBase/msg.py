@@ -4,7 +4,6 @@ import sqlite3
 import threading
 import traceback
 
-from app.DataBase.hard_link import parseBytes
 from app.log import logger
 from app.util.compress_content import parser_reply
 from app.util.protocbuf.msg_pb2 import MessageBytesExtra
@@ -651,12 +650,12 @@ if __name__ == '__main__':
             else:
                 show_display_name = appinfo.find('appname').text
             print(title, des, url, show_display_name)
-            bytesDict = parseBytes(msg[10])
-            for msginfo in bytesDict[3]:
-                print(msginfo)
-                if msginfo[1][1][1] == 3:
-                    thumb = msginfo[1][2][1]
+            msg_bytes = MessageBytesExtra()
+            msg_bytes.ParseFromString(msg[10])
+            for tmp in msg_bytes.message2:
+                if tmp.field1 == 3:
+                    thumb = tmp.field2
                     print(thumb)
-                if msginfo[1][1][1] == 4:
-                    app_logo = msginfo[1][2][1]
+                if tmp.field2 == 4:
+                    app_logo = tmp.field2
                     print('logo',app_logo)

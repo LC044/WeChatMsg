@@ -8,7 +8,7 @@ import re
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 
-from app.DataBase.hard_link import parseBytes
+from app.util.protocbuf.msg_pb2 import MessageBytesExtra
 from ..util.file import get_file
 
 
@@ -149,15 +149,16 @@ def share_card(bytesExtra, compress_content_):
     else:
         if appinfo is not None:
             show_display_name = appinfo.find('appname').text
-    bytesDict = parseBytes(bytesExtra)
+    msg_bytes = MessageBytesExtra()
+    msg_bytes.ParseFromString(bytesExtra)
     app_logo = ''
     thumbnail = ''
-    for msginfo in bytesDict[3]:
-        if msginfo[1][1][1] == 3:
-            thumbnail = msginfo[1][2][1]
+    for tmp in msg_bytes.message2:
+        if tmp.field1 == 3:
+            thumbnail = tmp.field2
             thumbnail = "\\".join(thumbnail.split('\\')[1:])
-        if msginfo[1][1][1] == 4:
-            app_logo = msginfo[1][2][1]
+        if tmp.field2 == 4:
+            app_logo = tmp.field2
             app_logo = "\\".join(app_logo.split('\\')[1:])
     if sourceusername is not None:
         from app.DataBase import micro_msg_db  # 放上面会导致循环依赖
