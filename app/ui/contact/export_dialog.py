@@ -2,7 +2,7 @@ import time
 
 from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QDialog, QVBoxLayout, QCheckBox, QHBoxLayout, \
-    QProgressBar, QLabel, QMessageBox
+    QProgressBar, QLabel, QMessageBox, QComboBox
 
 from app.DataBase.output_pc import Output
 

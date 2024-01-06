@@ -114,11 +114,11 @@ def music_share(data: bytes):
         website_name = get_website_name(link_url)
         return {
             'type': msg_type,
-            'title': title,
-            'artist': artist,
+            'title': escape_js_and_html(title),
+            'artist': escape_js_and_html(artist),
             'link_url': link_url,
             'audio_url': audio_url,
-            'website_name': website_name,
+            'website_name': escape_js_and_html(website_name),
             "is_error": False
         }
     except Exception as e:
@@ -248,11 +248,11 @@ def file(bytes_extra, compress_content, output_path):
         file_path = get_file(bytes_extra, file_name, output_path)
         return {
             'type': msg_type,
-            'file_name': file_name,
+            'file_name': escape_js_and_html(file_path),
             'file_len': file_len,
             'file_ext': file_ext,
             'file_path': file_path,
-            'app_name': app_name,
+            'app_name': escape_js_and_html(app_name),
             "is_error": False
         }
     except Exception as e:
