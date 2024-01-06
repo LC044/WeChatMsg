@@ -217,7 +217,7 @@ audio{
 }
 
 .chat-music-audio .player-original p ,.chat-file .app-info p{
-    margin-top: 5px;
+    margin-top: 3px;
     color: #888;
 }
 
@@ -239,8 +239,11 @@ audio{
 .chat-music-audio .player-info ,.chat-file .file-info{
     width: 200px;
     height: 80px;
+    margin-left: 4px;
+    margin-top: 15px;
     white-space: normal;
     flex-basis: 200px;
+    word-break: break-word;
 }
 
 .chat-music-audio .song-title,.chat-file .file-name {
@@ -249,8 +252,18 @@ audio{
 }
 
 .chat-music-audio .artist ,.chat-file .file-size{
-    margin-top: 10px;
+    margin-top: 5px;
     color: #888;
+}
+
+.app-info {
+    font-size: 13px;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.file-size {
+    font-size: 14px;
 }
 
 .chat-music-audio .play-button {
@@ -754,8 +767,8 @@ input {
                     <div class="file-img flex2">
                         <img src="${message.icon_path}"/>
                     </div>
-                </div>
-                <div class="app-info"><p>${message.app_name}</p></div>`
+                </div>` + 
+                (message.app_name ? `<div class="app-info"><p>${message.app_name}</p></div>` : "");
             return messageFileTag;
         }
 
