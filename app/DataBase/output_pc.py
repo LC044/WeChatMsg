@@ -1,6 +1,7 @@
 import csv
 import os
 import traceback
+from typing import List
 
 from PyQt5.QtCore import pyqtSignal, QThread
 from PyQt5.QtWidgets import QFileDialog
@@ -27,6 +28,8 @@ class Output(QThread):
     progressSignal = pyqtSignal(int)
     rangeSignal = pyqtSignal(int)
     okSignal = pyqtSignal(int)
+    batchOkSignal = pyqtSignal(int)
+    nowContact = pyqtSignal(str)
     i = 1
     CSV = 0
     DOCX = 1
@@ -34,17 +37,18 @@ class Output(QThread):
     CSV_ALL = 3
     CONTACT_CSV = 4
     TXT = 5
+    Batch = 10086
 
-    def __init__(self, contact, type_=DOCX, message_types={}, parent=None):
+    def __init__(self, contact, type_=DOCX, message_types={}, sub_type=[], parent=None):
         super().__init__(parent)
-        self.Child0 = None
+        self.children = []
         self.last_timestamp = 0
+        self.sub_type = sub_type
         self.message_types = message_types
         self.sec = 2  # 默认1000秒
         self.contact = contact
-        self.ta_username = contact.wxid if contact else ''
         self.msg_id = 0
-        self.output_type = type_
+        self.output_type: int | List[int] = type_
         self.total_num = 1
         self.num = 0
 
@@ -123,60 +127,115 @@ class Output(QThread):
                     gender = '男'
                 else:
                     gender = '女'
-                writer.writerow([*contact[:9], contact[10], gender,detail.get('telephone'),detail.get('signature'),*detail.get('region')])
+                writer.writerow([*contact[:9], contact[10], gender, detail.get('telephone'), detail.get('signature'),
+                                 *detail.get('region')])
 
         self.okSignal.emit(1)
 
+    def batch_export(self):
+        print('开始批量导出')
+        print(self.sub_type, self.message_types)
+        print(len(self.contact))
+        print([contact.remark for contact in self.contact])
+        self.batch_num_total = len(self.contact)*len(self.sub_type)
+        self.batch_num = 0
+        self.rangeSignal.emit(self.batch_num_total)
+        for contact in self.contact:
+            # print('联系人', contact.remark)
+            for type_ in self.sub_type:
+                # print('导出类型', type_)
+                if type_ == self.DOCX:
+                    self.to_docx(contact, self.message_types,True)
+                elif type_ == self.TXT:
+                    # print('批量导出txt')
+                    self.to_txt(contact, self.message_types,True)
+                elif type_ == self.CSV:
+                    self.to_csv(contact, self.message_types,True)
+                elif type_ == self.HTML:
+                    self.to_html(contact, self.message_types,True)
+
+    def batch_finish_one(self, num):
+        self.nowContact.emit(self.contact[self.batch_num//len(self.sub_type)].remark)
+        self.batch_num += 1
+        if self.batch_num == self.batch_num_total:
+            self.okSignal.emit(1)
+
+    def to_docx(self, contact, message_types, is_batch=False):
+        Child = DocxExporter(contact, type_=self.DOCX, message_types=message_types)
+        self.children.append(Child)
+        Child.progressSignal.connect(self.progress)
+        if not is_batch:
+            Child.rangeSignal.connect(self.rangeSignal)
+        Child.okSignal.connect(self.okSignal if not is_batch else self.batch_finish_one)
+        Child.start()
+
+    def to_txt(self, contact, message_types, is_batch=False):
+        Child = TxtExporter(contact, type_=self.TXT, message_types=message_types)
+        self.children.append(Child)
+        Child.progressSignal.connect(self.progress)
+        if not is_batch:
+            Child.rangeSignal.connect(self.rangeSignal)
+        Child.okSignal.connect(self.okSignal if not is_batch else self.batch_finish_one)
+        Child.start()
+
+    def to_html(self, contact, message_types, is_batch=False):
+        Child = HtmlExporter(contact, type_=self.output_type, message_types=message_types)
+        self.children.append(Child)
+        Child.progressSignal.connect(self.progress)
+        if not is_batch:
+            Child.rangeSignal.connect(self.rangeSignal)
+        Child.okSignal.connect(self.count_finish_num)
+        Child.start()
+        self.total_num = 1
+        if message_types.get(34):
+            # 语音消息单独的线程
+            self.total_num += 1
+            output_media = OutputMedia(contact)
+            self.children.append(output_media)
+            output_media.okSingal.connect(self.count_finish_num)
+            output_media.progressSignal.connect(self.progressSignal)
+            output_media.start()
+        if message_types.get(47):
+            # emoji消息单独的线程
+            self.total_num += 1
+            output_emoji = OutputEmoji(contact)
+            self.children.append(output_emoji)
+            output_emoji.okSingal.connect(self.count_finish_num)
+            output_emoji.progressSignal.connect(self.progressSignal)
+            output_emoji.start()
+        if message_types.get(3):
+            # 图片消息单独的线程
+            self.total_num += 1
+            output_image = OutputImage(contact)
+            self.children.append(output_image)
+            output_image.okSingal.connect(self.count_finish_num)
+            output_image.progressSignal.connect(self.progressSignal)
+            output_image.start()
+
+    def to_csv(self, contact, message_types, is_batch=False):
+        Child = CSVExporter(contact, type_=self.CSV, message_types=message_types)
+        self.children.append(Child)
+        Child.progressSignal.connect(self.progress)
+        if not is_batch:
+            Child.rangeSignal.connect(self.rangeSignal)
+        Child.okSignal.connect(self.okSignal if not is_batch else self.batch_finish_one)
+        Child.start()
+
     def run(self):
         if self.output_type == self.DOCX:
-            self.Child = DocxExporter(self.contact, type_=self.output_type, message_types=self.message_types)
-            self.Child.progressSignal.connect(self.progress)
-            self.Child.rangeSignal.connect(self.rangeSignal)
-            self.Child.okSignal.connect(self.okSignal)
-            self.Child.start()
+            self.to_docx(self.contact, self.message_types)
         elif self.output_type == self.CSV_ALL:
             self.to_csv_all()
         elif self.output_type == self.CONTACT_CSV:
             self.contact_to_csv()
         elif self.output_type == self.TXT:
-            self.Child = TxtExporter(self.contact, type_=self.output_type, message_types=self.message_types)
-            self.Child.progressSignal.connect(self.progress)
-            self.Child.rangeSignal.connect(self.rangeSignal)
-            self.Child.okSignal.connect(self.okSignal)
-            self.Child.start()
+            self.to_txt(self.contact, self.message_types)
         elif self.output_type == self.CSV:
-            self.Child = CSVExporter(self.contact, type_=self.output_type, message_types=self.message_types)
-            self.Child.progressSignal.connect(self.progress)
-            self.Child.rangeSignal.connect(self.rangeSignal)
-            self.Child.okSignal.connect(self.okSignal)
-            self.Child.start()
+            self.to_csv(self.contact, self.message_types)
         elif self.output_type == self.HTML:
-            self.Child = HtmlExporter(self.contact, type_=self.output_type, message_types=self.message_types)
-            self.Child.progressSignal.connect(self.progress)
-            self.Child.rangeSignal.connect(self.rangeSignal)
-            self.Child.okSignal.connect(self.count_finish_num)
-            self.Child.start()
-            if self.message_types.get(34):
-                # 语音消息单独的线程
-                self.total_num += 1
-                self.output_media = OutputMedia(self.contact)
-                self.output_media.okSingal.connect(self.count_finish_num)
-                self.output_media.progressSignal.connect(self.progressSignal)
-                self.output_media.start()
-            if self.message_types.get(47):
-                # emoji消息单独的线程
-                self.total_num += 1
-                self.output_emoji = OutputEmoji(self.contact)
-                self.output_emoji.okSingal.connect(self.count_finish_num)
-                self.output_emoji.progressSignal.connect(self.progressSignal)
-                self.output_emoji.start()
-            if self.message_types.get(3):
-                # 图片消息单独的线程
-                self.total_num += 1
-                self.output_image = OutputImage(self.contact)
-                self.output_image.okSingal.connect(self.count_finish_num)
-                self.output_image.progressSignal.connect(self.progressSignal)
-                self.output_image.start()
+            self.to_html(self.contact, self.message_types)
+        elif self.output_type == self.Batch:
+            self.batch_export()
 
     def count_finish_num(self, num):
         """
@@ -187,7 +246,11 @@ class Output(QThread):
         self.num += 1
         if self.num == self.total_num:
             # 所有子线程都完成之后就发送完成信号
-            self.okSignal.emit(1)
+            if self.output_type == self.Batch:
+                self.batch_finish_one(1)
+            else:
+                self.okSignal.emit(1)
+            self.num = 0
 
     def cancel(self):
         self.requestInterruption()

@@ -3,7 +3,6 @@ from datetime import datetime
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtCore import *
 
-import app.DataBase.data as data
 from app import person
 
 
