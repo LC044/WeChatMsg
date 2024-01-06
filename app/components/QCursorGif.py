@@ -38,25 +38,34 @@ class QCursorGif:
         self._cursorTimeout = 200
         self._cursorTimer = QTimer(parent)
         self._cursorTimer.timeout.connect(self._doBusy)
+        self.num = 0
 
     def _doBusy(self):
         if self._cursorIndex > self._cursorCount:
             self._cursorIndex = 0
-        QApplication.instance().setOverrideCursor(
+        QApplication.setOverrideCursor(
             self._cursorImages[self._cursorIndex])
         self._cursorIndex += 1
+        self.num += 1
 
     def startBusy(self):
+        # QApplication.setOverrideCursor(Qt.WaitCursor)
         if not self._cursorTimer.isActive():
             self._cursorTimer.start(self._cursorTimeout)
 
     def stopBusy(self):
         self._cursorTimer.stop()
-        QApplication.instance().setOverrideCursor(self._oldCursor)
+        QApplication.restoreOverrideCursor()
+        # 将光标出栈，恢复至原始状态
+        for i in range(self.num):
+            QApplication.restoreOverrideCursor()
+        self.num = 0
+
 
     def setCursorTimeout(self, timeout):
         self._cursorTimeout = timeout
 
     def setOldCursor(self, parent=None):
-        self._oldCursor = (parent.cursor() or Qt.ArrowCursor) if parent else (
-                QApplication.instance().overrideCursor() or Qt.ArrowCursor)
+        QApplication.overrideCursor()
+        self._oldCursor = (QApplication.overrideCursor() or parent.cursor() or Qt.ArrowCursor or Qt.IBeamCursor) if parent else (
+                QApplication.overrideCursor() or Qt.ArrowCursor)

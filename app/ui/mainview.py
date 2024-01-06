@@ -35,8 +35,6 @@ QWidget{
 QListWidget, QListView, QTreeWidget, QTreeView {
     outline: 0px;
 }
-
-
 QMenu::item:selected {
       color: black;
       background: rgb(230, 235, 240);
@@ -83,7 +81,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
         self.setupUi(self)
         # 设置忙碌光标图片数组
         self.initCursor([':/icons/icons/Cursors/%d.png' %
-                         i for i in range(8)], self)
+                         i for i in range(8)])
         self.setCursorTimeout(100)
         # self.setWindowIcon(Icon.MainWindow_Icon)
         pixmap = QPixmap(Icon.logo_ico_path)
