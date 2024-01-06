@@ -303,11 +303,6 @@ class HtmlExporter(ExporterBase):
             else:
                 self.progressSignal.emit(1)
 
-            if self.is_5_min(timestamp):
-                str_time = message[8]
-                f.write(
-                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:'',timestamp:{timestamp}}},'''
-                )
             if type_ == 1 and self.message_types.get(type_):
                 self.text(f, message)
             elif type_ == 3 and self.message_types.get(type_):

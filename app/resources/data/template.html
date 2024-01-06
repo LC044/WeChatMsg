@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Records</title>
-    <style>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Chat Records</title>
+        <style>
 *{
     padding: 0;
     margin: 0;
@@ -59,6 +59,7 @@ body{
     background:rgba(0,0,0,0.1);
 }
 .bubble{
+    white-space: pre-wrap;
     max-width: 400px;
     padding: 10px;
     border-radius: 5px;
@@ -115,7 +116,6 @@ body{
     right: -20px;
 }
 .item {
-    white-space: pre-wrap;
     margin-top: 15px;
     display: flex;
     width: 100%;
@@ -225,6 +225,21 @@ audio{
     display: flex;
     align-items: center;;
 }
+
+.file-title, .card-content>h2, .description>p {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+}
+.file-title, .card-content>h2 {
+    -webkit-line-clamp: 2;
+}
+.description>p {
+    -webkit-line-clamp: 3;
+    margin-top: 2px;
+}
+
 
 .chat-music-audio .flex1,.chat-file .flex1 {
     flex: 1;
@@ -491,53 +506,67 @@ input {
     vertical-align: middle;
     margin-top: -4.4px;
 }
-  </style>
-</head>
-<body>
-    <div>
-        <div class="pagination-container">
-            <div class="button-row">
-                <button onclick="prevPage()">上一页</button>
-                <button onclick="nextPage()">下一页</button>
+        </style>
+    </head>
+    <body>
+        <div>
+            <div class="pagination-container">
+                <div class="button-row">
+                    <button onclick="prevPage()">上一页</button>
+                    <button onclick="nextPage()">下一页</button>
+                </div>
+                <div class="jump-row">
+                    <input
+                        type="number"
+                        id="gotoPageInput"
+                        onkeydown="checkEnter(event)"
+                        placeholder="跳转到第几页"
+                    >
+                    <button onclick="gotoPage()">跳转</button>
+                </div>
             </div>
-            <div class="jump-row">
-                <input type="number" id="gotoPageInput" onkeydown="checkEnter(event)" placeholder="跳转到第几页">
-                <button onclick="gotoPage()">跳转</button>
-            </div>
-            
+            <div id="paginationInfo"></div>
         </div>
-        <div id="paginationInfo"></div>
-    </div>
-    
-    <div class="container">
-        <div class="content" id="chat-container" onscroll="checkScroll()">
-            <div class="item item-center"><span>昨天 12:35</span></div>
-            <div class="item item-center"><span>你已添加了凡繁烦，现在可以开始聊天了。</span></div>
-            <div class="item item-left">
-                <div class="avatar">
-                    <img src="https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=25668084,2889217189&fm=26&gp=0.jpg" />
+        <div class="container">
+            <div class="content" id="chat-container" onscroll="checkScroll()">
+                <div class="item item-center">
+                    <span>昨天 12:35</span>
                 </div>
-                <div class="bubble bubble-left">您好,我在武汉，你可以直接送过来吗，我有时间的话，可以自己过去拿<br/>！！！<br/>123
+                <div class="item item-center">
+                    <span>你已添加了凡繁烦，现在可以开始聊天了。</span>
                 </div>
-            </div>
-
-            <div class="item item-right">
-                <div class="bubble bubble-right">hello<br/>你好呀</div>
-                <div class="avatar">
-                    <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3313909130,2406410525&fm=15&gp=0.jpg" />
+                <div class="item item-left">
+                    <div class="avatar">
+                        <img src="https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=25668084,2889217189&fm=26&gp=0.jpg">
+                    </div>
+                    <div class="bubble bubble-left">
+                        您好,我在武汉，你可以直接送过来吗，我有时间的话，可以自己过去拿
+                        <br>
+                        ！！！
+                        <br>
+                        123
+                    </div>
                 </div>
-            </div>
-            <div class="item item-center">
-                <span>昨天 13:15</span>
+                <div class="item item-right">
+                    <div class="bubble bubble-right">
+                        hello
+                        <br>
+                        你好呀
+                    </div>
+                    <div class="avatar">
+                        <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3313909130,2406410525&fm=15&gp=0.jpg">
+                    </div>
+                </div>
+                <div class="item item-center">
+                    <span>昨天 13:15</span>
+                </div>
             </div>
         </div>
-    </div>
-    <div></div>
-    <div id="modal" class="modal" onclick="hideModal()">
-        <img id="modal-image" class="modal-image">
-    </div>
-    
-<script>
+        <div></div>
+        <div id="modal" class="modal" onclick="hideModal()">
+            <img id="modal-image" class="modal-image">
+        </div>
+        <script>
     const chatContainer = document.getElementById('chat-container');
     // Sample chat messages (replace this with your actual data)
     const chatMessages = [
@@ -553,11 +582,13 @@ input {
     let currentPage = 1; // 当前页
     var reachedBottom = false; // 到达底部的标记
     var lastScrollTop = 0;
+    var lastTimeStamp = 0;
     function renderPage(page) {
         const container = document.getElementById('chat-container');
         if (!reachedBottom) {
             container.innerHTML = ''; // 清空容器
             lastScrollTop = 0;
+            lastTimeStamp = 0;
         } else {
             reachedBottom = false;
         }
@@ -566,6 +597,7 @@ input {
         const startIndex = (page - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
 
+        // 工具类函数
         function replaceEmoji(text){
 
             // 定义替换规则，可以根据需要添加更多规则
@@ -690,8 +722,28 @@ input {
             }
             return text;
         }
+        function timestampToTime(timestamp) {
+            let date = new Date(timestamp * 1000);
+            let year = date.getFullYear() + '-';
+            let month = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+            let day = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+            let hour = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+            let minute = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+            let second = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+            return year + month + day + hour + minute + second;
+        }
         
         // 生成各类标签的函数
+        function add5MinTimeTag(message) {
+            if (message.timestamp - lastTimeStamp > 300) {
+                const newTimeMessage = document.createElement('div');
+                newTimeMessage.className = "item item-center";
+                newTimeMessage.innerHTML = `<span>${timestampToTime(message.timestamp)}</span>`;
+                chatContainer.appendChild(newTimeMessage);
+                lastTimeStamp = message.timestamp;
+                console.log("增加时间元素", timestampToTime(message.timestamp));
+            }
+        }
         function messageBubble(message, side) {
             const messageBubbleTag = document.createElement('div');
             messageBubbleTag.className = `bubble bubble-${side}`;
@@ -743,7 +795,19 @@ input {
         function messageCard(message) {
             const messageTag = document.createElement('div');
             messageTag.className = `card`;
-            messageTag.innerHTML = `<a href="${message.url}" target="_blank"><div class="card-content"><h2>${message.title}</h2><div class="description"><p>${message.description}</p><img loading="lazy" class="thumbnail" src="${message.thumbnail}" alt="Thumbnail"></div></div><div class="link-info"><img loading="lazy" class="app-logo" src="${message.app_logo}" alt="App Logo"><span class="app-name">${message.app_name}</span></div></a>`;
+            messageTag.innerHTML = `<a href="${message.url}" target="_blank">
+                        <div class="card-content">
+                            <h2 title="${message.title}">${message.title}</h2>
+                            <div class="description">
+                                <p title="${message.description}">${message.description}</p>
+                                <img loading="lazy" class="thumbnail" src="${message.thumbnail}" alt="Thumbnail">
+                            </div>
+                        </div>
+                        <div class="link-info">
+                            <img loading="lazy" class="app-logo" src="${message.app_logo}" alt="App Logo">
+                            <span class="app-name">${message.app_name}</span>
+                        </div>
+                    </a>`;
             return messageTag;
         }
         function messageFileBox(message) {
@@ -756,12 +820,9 @@ input {
                     alert("文件可能丢失、过期或不存放在该主机上")
                 }
             }
-            if (message.file_name.length >= 26) {
-                message.file_name = message.file_name.slice(0, 25) + '...'
-            }
             messageFileTag.innerHTML = `<div class="file-box">
                     <div class="file-info flex1">
-                        <div class="file-title">${message.file_name}</div>
+                        <div class="file-title" title="${message.file_name}">${message.file_name}</div>
                         <div class="file-size">${message.file_size}</div>
                     </div>
                     <div class="file-img flex2">
@@ -771,7 +832,6 @@ input {
                 (message.app_name ? `<div class="app-info"><p>${message.app_name}</p></div>` : "");
             return messageFileTag;
         }
-
         function messageMusicAudioBox(message) {
             const messageMusicAudioTag = document.createElement('div');
             messageMusicAudioTag.className = `chat-music-audio`;
@@ -822,28 +882,7 @@ input {
             // 从数据列表中取出对应范围的元素并添加到容器中
         for (let i = startIndex; i < endIndex && i < chatMessages.length; i++) {
             const message = chatMessages[i];
-            if (i == startIndex && (reachedBottom ? !/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(chatMessages[i - 1].text) : 1)) { // 判断一下在页面顶部多加一个时间
-                if (!/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(message.text)) {
-                    // 时间戳转成时间
-                    function timestampToTime(timestamp) {
-                        let date = new Date(timestamp * 1000);
-                        let year = date.getFullYear() + '-';
-                        let month = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-                        let day = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
-                        let hour = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
-                        let minute = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
-                        let second = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
-                        return year + month + day + hour + minute + second;
-                    }
-
-                    // 添加div
-                    const newTimeMessage = document.createElement('div');
-                    newTimeMessage.className = "item item-center";
-                    newTimeMessage.innerHTML = `<span>${timestampToTime(message.timestamp)}</span>`;
-                    chatContainer.appendChild(newTimeMessage);
-                    console.log("增加时间元素", timestampToTime(message.timestamp));
-                }
-            }
+            add5MinTimeTag(message);
             const messageElement = document.createElement('div'); // 下面那俩的合体
             const avatarTag = avatarBox(message); // 头像
             const messageContent = document.createElement('div'); // 除了avatar之外的所有
@@ -1056,9 +1095,8 @@ input {
     }
 
     refreshMediaListener();
-</script>
-
-<script>
+        </script>
+        <script>
     function showModal(image) {
         var modal = document.getElementById("modal");
         var modalImage = document.getElementById("modal-image");
@@ -1091,6 +1129,6 @@ input {
         }
 
     }
-</script>
-</body>
+        </script>
+    </body>
 </html>
