@@ -16,6 +16,7 @@ from app.util.compress_content import parser_reply, share_card, music_share, fil
 from app.util.emoji import get_emoji_url
 from app.util.image import get_image_path, get_image
 from app.util.music import get_music_path
+from app.util.file import escape_single_quotes
 
 
 icon_files = {
@@ -127,10 +128,12 @@ class HtmlExporter(ExporterBase):
             file_path = file_info.get('file_path')
             if file_path != "":
                 file_path = './file/' + file_info.get('file_name')
+            file_path = escape_single_quotes(file_path)
+            file_name = escape_single_quotes(file_info.get('file_name'))
             doc.write(
                 f'''{{ type:49, text: '{file_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp}
                             ,is_chatroom:{is_chatroom},displayname:'{display_name}',icon_path: '{icon_path}'
-                            ,sub_type:6,file_name: '{file_info.get('file_name')}',file_size: '{file_info.get('file_len')}'
+                            ,sub_type:6,file_name: '{file_name}',file_size: '{file_info.get('file_len')}'
                             ,app_name: '{file_info.get('app_name')}'}},'''
             )
 

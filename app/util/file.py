@@ -57,3 +57,6 @@ def get_file(bytes_extra, file_name, output_path=root_path) -> str:
     except:
         logger.error(traceback.format_exc())
         return ""
+
+def escape_single_quotes(path_str:str) -> str:
+    return path_str.replace("'",r"\'")
