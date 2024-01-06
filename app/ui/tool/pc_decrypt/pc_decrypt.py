@@ -38,7 +38,6 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
         self.btn_db_dir.setIcon(Icon.Folder_Icon)
         self.btn_start.setIcon(Icon.Start_Icon)
         self.btn_help.setIcon(Icon.Help_Icon)
-        self.label_tip.setVisible(False)
         self.info = {}
         self.lineEdit.setFocus()
         self.ready = False
