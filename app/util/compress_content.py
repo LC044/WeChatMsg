@@ -248,7 +248,7 @@ def file(bytes_extra, compress_content, output_path):
         file_path = get_file(bytes_extra, file_name, output_path)
         return {
             'type': msg_type,
-            'file_name': escape_js_and_html(file_path),
+            'file_name': escape_js_and_html(file_name),
             'file_len': file_len,
             'file_ext': file_ext,
             'file_path': file_path,
