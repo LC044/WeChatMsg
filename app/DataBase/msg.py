@@ -272,7 +272,7 @@ class Msg:
             else:
                 contacts[i].append(0)
         contacts.sort(key=lambda cur_contact: cur_contact[-1], reverse=True)
-        return contacts
+        return contacts[:20]
 
     def get_messages_by_days(self, username_, is_Annual_report_=False, year_='2023'):
         if is_Annual_report_:
