@@ -303,11 +303,7 @@ class HtmlExporter(ExporterBase):
             else:
                 self.progressSignal.emit(1)
 
-            if self.is_5_min(timestamp):
-                str_time = message[8]
-                f.write(
-                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:'',timestamp:{timestamp}}},'''
-                )
+            flag = True  # 如果选的种类很少会出现大量冗余的时间信息，如果当前消息并未被选中那么不分析时间
             if type_ == 1 and self.message_types.get(type_):
                 self.text(f, message)
             elif type_ == 3 and self.message_types.get(type_):
@@ -328,6 +324,13 @@ class HtmlExporter(ExporterBase):
                 self.music_share(f, message)
             elif type_ == 49 and sub_type == 5 and self.message_types.get(4905):
                 self.share_card(f, message)
+            else:
+                flag = False
+            if flag and self.is_5_min(timestamp):
+                str_time = message[8]
+                f.write(
+                    f'''{{ type:0, text: '{str_time}',is_send:0,avatar_path:'',timestamp:{timestamp}}},'''
+                )
         f.write(html_end)
         f.close()
         self.count_finish_num(1)
