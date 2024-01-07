@@ -79,10 +79,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
         self.outputThread0 = None
         self.outputThread = None
         self.setupUi(self)
-        # 设置忙碌光标图片数组
-        self.initCursor([':/icons/icons/Cursors/%d.png' %
-                         i for i in range(8)])
-        self.setCursorTimeout(100)
+
         # self.setWindowIcon(Icon.MainWindow_Icon)
         pixmap = QPixmap(Icon.logo_ico_path)
         icon = QIcon(pixmap)
@@ -97,6 +94,14 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
         self.label = QLabel(self)
         self.label.setGeometry((self.width() - 300) // 2, (self.height() - 100) // 2, 300, 100)
         self.label.setPixmap(QPixmap(':/icons/icons/loading.svg'))
+        self.menu_output.setIcon(Icon.Output)
+        self.action_output_CSV.setIcon(Icon.ToCSV)
+        self.action_output_CSV.triggered.connect(self.output)
+        self.action_output_contacts.setIcon(Icon.Output)
+        self.action_output_contacts.triggered.connect(self.output)
+        self.action_batch_export.setIcon(Icon.Output)
+        self.action_batch_export.triggered.connect(self.output)
+        self.action_desc.setIcon(Icon.Help_Icon)
 
     def load_data(self, flag=True):
         if os.path.exists('./app/data/info.json'):
@@ -119,15 +124,15 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
             )
 
     def init_ui(self):
+
+        # 设置忙碌光标图片数组
+        self.initCursor([':/icons/icons/Cursors/%d.png' %
+                         i for i in range(8)])
+        self.setCursorTimeout(100)
+
         self.startBusy()
-        self.menu_output.setIcon(Icon.Output)
-        self.action_output_CSV.setIcon(Icon.ToCSV)
-        self.action_output_CSV.triggered.connect(self.output)
-        self.action_output_contacts.setIcon(Icon.Output)
-        self.action_output_contacts.triggered.connect(self.output)
-        self.action_batch_export.setIcon(Icon.Output)
-        self.action_batch_export.triggered.connect(self.output)
-        self.action_desc.setIcon(Icon.Help_Icon)
+
+
         self.action_help_contact.triggered.connect(
             lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/5")))
         self.action_help_chat.triggered.connect(

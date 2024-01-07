@@ -110,7 +110,6 @@ class PackageMsg:
             a[12]: msg_sender, （ContactPC 或 ContactDefault 类型，这个才是群聊里的信息发送人，不是群聊或者自己是发送者没有这个字段）
         '''
         updated_messages = []  # 用于存储修改后的消息列表
-        chatroom_members = self.get_chatroom_member_list(chatroom_wxid)
         messages = msg_db.get_messages(chatroom_wxid)
         for row in messages:
             message = list(row)
@@ -150,7 +149,7 @@ class PackageMsg:
             contact.smallHeadImgBLOG = misc_db.get_avatar_buffer(contact.wxid)
             contact.set_avatar(contact.smallHeadImgBLOG)
             message.append(contact)
-            updated_messages.append(message)
+            updated_messages.append(tuple(message))
         return updated_messages
 
     def get_chatroom_member_list(self, strtalker):

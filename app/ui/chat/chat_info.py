@@ -36,6 +36,8 @@ class ChatInfo(QWidget):
         self.setLayout(self.vBoxLayout)
 
     def show_chats(self):
+        # Me().save_avatar()
+        # self.contact.save_avatar()
         self.show_chat_thread = ShowChatThread(self.contact)
         self.show_chat_thread.showSingal.connect(self.add_message)
         self.show_chat_thread.finishSingal.connect(self.show_finish)
@@ -79,6 +81,29 @@ class ChatInfo(QWidget):
             return True
         return False
 
+    def get_avatar_path(self, is_send, message, is_absolute_path=False) -> str:
+        if self.contact.is_chatroom:
+            avatar = message[12].smallHeadImgUrl
+        else:
+            avatar = Me().smallHeadImgUrl if is_send else self.contact.smallHeadImgUrl
+        if is_absolute_path:
+            if self.contact.is_chatroom:
+                # message[12].save_avatar()
+                avatar = message[12].avatar
+            else:
+                avatar = Me().avatar if is_send else self.contact.avatar
+        return avatar
+
+    def get_display_name(self, is_send, message) -> str:
+        if self.contact.is_chatroom:
+            if is_send:
+                display_name = Me().name
+            else:
+                display_name = message[12].remark
+        else:
+            display_name = None
+        return display_name
+
     def add_message(self, message):
         try:
             type_ = message[2]
@@ -86,7 +111,8 @@ class ChatInfo(QWidget):
             str_time = message[8]
             # print(type_, type(type_))
             is_send = message[4]
-            avatar = Me().avatar if is_send else self.contact.avatar
+            avatar = self.get_avatar_path(is_send, message,True)
+            display_name = self.get_display_name(is_send, message)
             timestamp = message[5]
             BytesExtra = message[10]
             if type_ == 1:
@@ -98,7 +124,8 @@ class ChatInfo(QWidget):
                     str_content,
                     avatar,
                     type_,
-                    is_send
+                    is_send,
+                    display_name=display_name
                 )
                 self.chat_window.add_message_item(bubble_message, 0)
             elif type_ == 3:
@@ -107,7 +134,7 @@ class ChatInfo(QWidget):
                     time_message = Notice(self.last_str_time)
                     self.last_str_time = str_time
                     self.chat_window.add_message_item(time_message, 0)
-                image_path = hard_link_db.get_image(content=str_content,bytesExtra=BytesExtra, thumb=False)
+                image_path = hard_link_db.get_image(content=str_content, bytesExtra=BytesExtra, thumb=False)
                 image_path = get_abs_path(image_path)
                 bubble_message = BubbleMessage(
                     image_path,
@@ -132,7 +159,7 @@ class ChatInfo(QWidget):
                 self.chat_window.add_message_item(bubble_message, 0)
             elif type_ == 10000:
                 str_content = str_content.lstrip('<revokemsg>').rstrip('</revokemsg>')
-                message = Notice(str_content )
+                message = Notice(str_content)
                 self.chat_window.add_message_item(message, 0)
         except:
             print(message)

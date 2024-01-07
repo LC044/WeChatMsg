@@ -114,11 +114,7 @@ class TxtExporter(ExporterBase):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         os.makedirs(origin_docx_path, exist_ok=True)
         filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}.txt"
-        if self.contact.is_chatroom:
-            packagemsg = PackageMsg()
-            messages = packagemsg.get_package_message_by_wxid(self.contact.wxid)
-        else:
-            messages = msg_db.get_messages(self.contact.wxid)
+        messages = msg_db.get_messages(self.contact.wxid)
         total_steps = len(messages)
         with open(filename, mode='w', newline='', encoding='utf-8') as f:
             for index, message in enumerate(messages):

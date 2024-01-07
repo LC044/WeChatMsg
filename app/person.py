@@ -47,8 +47,9 @@ class Person:
             os.makedirs('./data/avatar', exist_ok=True)
             save_path = os.path.join(f'data/avatar/', self.wxid + '.png')
         self.avatar_path = save_path
-        self.avatar.save(save_path)
-        print('保存头像', save_path)
+        if not os.path.exists(save_path):
+            self.avatar.save(save_path)
+            print('保存头像', save_path)
 
 
 @singleton

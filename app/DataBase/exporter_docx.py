@@ -1,27 +1,20 @@
 import os
 import shutil
-import sys
 import time
-import traceback
 from re import findall
 
 import docx
-from PyQt5.QtCore import pyqtSignal, QThread
 from docx import shared
 from docx.enum.table import WD_ALIGN_VERTICAL
 from docx.enum.text import WD_COLOR_INDEX, WD_PARAGRAPH_ALIGNMENT
 from docx.oxml.ns import qn
 
-from app.DataBase import msg_db, hard_link_db, media_msg_db
+from app.DataBase import msg_db, hard_link_db
 from app.DataBase.output import ExporterBase, escape_js_and_html
 from app.DataBase.package_msg import PackageMsg
-from app.log import logger
 from app.person import Me
-from app.util import path
 from app.util.compress_content import parser_reply, share_card, music_share
-from app.util.emoji import get_emoji_url
-from app.util.file import get_file
-from app.util.image import get_image_path, get_image, get_image_abs_path
+from app.util.image import get_image_abs_path
 from app.util.music import get_music_path
 
 
@@ -296,11 +289,7 @@ class DocxExporter(ExporterBase):
         doc = docx.Document()
         doc.styles['Normal'].font.name = u'Cambria'
         doc.styles['Normal']._element.rPr.rFonts.set(qn('w:eastAsia'), u'宋体')
-        if self.contact.is_chatroom:
-            packagemsg = PackageMsg()
-            messages = packagemsg.get_package_message_by_wxid(self.contact.wxid)
-        else:
-            messages = msg_db.get_messages(self.contact.wxid)
+        messages = msg_db.get_messages(self.contact.wxid)
         Me().save_avatar(os.path.join(f"{origin_docx_path}/avatar/{Me().wxid}.png"))
         if self.contact.is_chatroom:
             for message in messages:

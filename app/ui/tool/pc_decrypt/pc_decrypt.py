@@ -130,7 +130,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
                 return
         if self.info.get('key') == 'None':
             QMessageBox.critical(self, "错误",
-                                 "密钥错误\n将软件放在桌面上试试\n如果还不可以的话我也我能为力，您可以等待后续版本解决该问题")
+                                 "密钥错误\n请查看教程解决相关问题")
         close_db()
         self.thread2 = DecryptThread(db_dir, self.info['key'])
         self.thread2.maxNumSignal.connect(self.setProgressBarMaxNum)
@@ -232,11 +232,13 @@ class DecryptThread(QThread):
         try:
             shutil.copy2("app/DataBase/Msg/MSG0.db", target_database)  # 使用一个数据库文件作为模板
         except FileNotFoundError:
+            logger.error(traceback.format_exc())
             self.errorSignal.emit(True)
         # 合并数据库
         try:
             merge_databases(source_databases, target_database)
         except FileNotFoundError:
+            logger.error(traceback.format_exc())
             QMessageBox.critical("错误", "数据库不存在\n请检查微信版本是否为最新")
 
         # 音频数据库文件
@@ -248,11 +250,13 @@ class DecryptThread(QThread):
         try:
             shutil.copy2("app/DataBase/Msg/MediaMSG0.db", target_database)  # 使用一个数据库文件作为模板
         except FileNotFoundError:
+            logger.error(traceback.format_exc())
             self.errorSignal.emit(True)
         # 合并数据库
         try:
             merge_MediaMSG_databases(source_databases, target_database)
         except FileNotFoundError:
+            logger.error(traceback.format_exc())
             QMessageBox.critical("错误", "数据库不存在\n请检查微信版本是否为最新")
         self.okSignal.emit('ok')
         # self.signal.emit('100')

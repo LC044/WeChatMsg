@@ -93,6 +93,7 @@ class MicroMsg:
             self.cursor.execute(sql, [username])
             result = self.cursor.fetchone()
         except sqlite3.OperationalError:
+            # 解决ContactLabel表不存在的问题
             # lock.acquire(True)
             sql = '''
                    SELECT UserName, Alias, Type, Remark, NickName, PYInitial, RemarkPYInitial, ContactHeadImgUrl.smallHeadImgUrl, ContactHeadImgUrl.bigHeadImgUrl,ExTraBuf,"None"

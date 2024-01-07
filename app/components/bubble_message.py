@@ -1,11 +1,12 @@
 import os.path
+import subprocess
+import platform
 
-from PIL import Image
 from PyQt5 import QtGui
 from PyQt5.QtCore import QSize, pyqtSignal, Qt, QThread
 from PyQt5.QtGui import QPainter, QFont, QColor, QPixmap, QPolygon, QFontMetrics
 from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QSizePolicy, QVBoxLayout, QSpacerItem, \
-    QScrollArea, QScrollBar
+    QScrollArea
 
 from app.components.scroll_bar import ScrollBar
 
@@ -83,7 +84,7 @@ class Notice(QLabel):
     def __init__(self, text, type_=3, parent=None):
         super().__init__(text, parent)
         self.type_ = type_
-        self.setFont(QFont('微软雅黑', 12))
+        self.setFont(QFont('微软雅黑', 10))
         self.setWordWrap(True)
         self.setTextInteractionFlags(Qt.TextSelectableByMouse)
         self.setAlignment(Qt.AlignCenter)
@@ -100,6 +101,19 @@ class Avatar(QLabel):
         self.setFixedSize(QSize(45, 45))
 
 
+def open_image_viewer(file_path):
+    system_platform = platform.system()
+
+    if system_platform == "Darwin":  # macOS
+        subprocess.run(["open", file_path])
+    elif system_platform == "Windows":
+        subprocess.run(["start", " ", file_path], shell=True)
+    elif system_platform == "Linux":
+        subprocess.run(["xdg-open", file_path])
+    else:
+        print("Unsupported platform")
+
+
 class OpenImageThread(QThread):
     def __init__(self, image_path):
         super().__init__()
@@ -107,8 +121,7 @@ class OpenImageThread(QThread):
 
     def run(self) -> None:
         if os.path.exists(self.image_path):
-            image = Image.open(self.image_path)
-            image.show()
+            open_image_viewer(self.image_path)
 
 
 class ImageMessage(QLabel):
@@ -121,6 +134,9 @@ class ImageMessage(QLabel):
         self.image = QLabel(self)
         self.max_width = max_width
         self.max_height = max_height
+        # self.setFixedSize(self.max_width,self.max_height)
+        self.setMaximumWidth(self.max_width)
+        self.setMaximumHeight(self.max_height)
         if isinstance(image, str):
             pixmap = QPixmap(image)
             self.image_path = image
@@ -129,8 +145,7 @@ class ImageMessage(QLabel):
         self.set_image(pixmap)
         if image_link:
             self.image_path = image_link
-        self.setMaximumWidth(self.max_width)
-        self.setMaximumHeight(self.max_height)
+
         if is_send:
             self.setAlignment(Qt.AlignCenter | Qt.AlignRight)
         # self.setScaledContents(True)
@@ -151,7 +166,7 @@ class ImageMessage(QLabel):
 
 
 class BubbleMessage(QWidget):
-    def __init__(self, str_content, avatar, Type, is_send=False, parent=None):
+    def __init__(self, str_content, avatar, Type,is_send=False, display_name=None, parent=None):
         super().__init__(parent)
         self.isSend = is_send
         # self.set
@@ -173,17 +188,30 @@ class BubbleMessage(QWidget):
             self.message = ImageMessage(str_content, is_send)
         else:
             raise ValueError("未知的消息类型")
-
+        if display_name:
+            label_name = QLabel(display_name,self)
+            if is_send:
+                label_name.setAlignment(Qt.AlignRight)
+            vlayout = QVBoxLayout()
+            vlayout.setSpacing(0)
+            vlayout.addWidget(label_name)
+            vlayout.addWidget(self.message)
         self.spacerItem = QSpacerItem(45 + 6, 45, QSizePolicy.Expanding, QSizePolicy.Minimum)
         if is_send:
             layout.addItem(self.spacerItem)
-            layout.addWidget(self.message, 1)
+            if display_name:
+                layout.addLayout(vlayout,1)
+            else:
+                layout.addWidget(self.message, 1)
             layout.addWidget(triangle, 0, Qt.AlignTop | Qt.AlignLeft)
             layout.addWidget(self.avatar, 0, Qt.AlignTop | Qt.AlignLeft)
         else:
             layout.addWidget(self.avatar, 0, Qt.AlignTop | Qt.AlignRight)
             layout.addWidget(triangle, 0, Qt.AlignTop | Qt.AlignRight)
-            layout.addWidget(self.message, 1)
+            if display_name:
+                layout.addLayout(vlayout,1)
+            else:
+                layout.addWidget(self.message, 1)
             layout.addItem(self.spacerItem)
         self.setLayout(layout)
 
@@ -204,8 +232,6 @@ class ScrollArea(QScrollArea):
             border:none;
             '''
         )
-
-
 
 
 class ChatWidget(QWidget):
