@@ -3,7 +3,6 @@ import os
 
 from app.DataBase import msg_db
 from app.DataBase.output import ExporterBase
-from app.DataBase.package_msg import PackageMsg
 
 
 class CSVExporter(ExporterBase):

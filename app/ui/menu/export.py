@@ -3,8 +3,7 @@ from typing import List
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QTimer, QThread, pyqtSignal
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QDialog, QVBoxLayout, QCheckBox, QHBoxLayout, \
-    QProgressBar, QLabel, QMessageBox
+from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QMessageBox
 
 from app.DataBase import micro_msg_db, misc_db
 from app.DataBase.output_pc import Output

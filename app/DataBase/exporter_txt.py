@@ -2,7 +2,6 @@ import os
 
 from app.DataBase import msg_db
 from app.DataBase.output import ExporterBase
-from app.DataBase.package_msg import PackageMsg
 from app.util.compress_content import parser_reply, share_card
 
 

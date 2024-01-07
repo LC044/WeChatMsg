@@ -11,7 +11,6 @@ from docx.oxml.ns import qn
 
 from app.DataBase import msg_db, hard_link_db
 from app.DataBase.output import ExporterBase, escape_js_and_html
-from app.DataBase.package_msg import PackageMsg
 from app.person import Me
 from app.util.compress_content import parser_reply, share_card, music_share
 from app.util.image import get_image_abs_path
