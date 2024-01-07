@@ -147,6 +147,7 @@ class ImageMessage(QLabel):
         # self.setFixedSize(self.max_width,self.max_height)
         self.setMaximumWidth(self.max_width)
         self.setMaximumHeight(self.max_height)
+        self.setCursor(Qt.PointingHandCursor)
         if isinstance(image, str):
             pixmap = QPixmap(image)
             self.image_path = image

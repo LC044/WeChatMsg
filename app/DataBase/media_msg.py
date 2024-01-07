@@ -84,20 +84,20 @@ class MediaMsg:
             ffmpeg_path = get_ffmpeg_path()
             # # 调用 FFmpeg
             if os.path.exists(ffmpeg_path):
-                cmd = f'''{ffmpeg_path} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
+                cmd = f'''"{ffmpeg_path}" -loglevel quiet -y -f s16le -i "{pcm_path}" -ar 44100 -ac 1 "{mp3_path}"'''
                 # system(cmd)
                 # 使用subprocess.run()执行命令
                 subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             else:
                 # 源码运行的时候下面的有效
                 # 这里不知道怎么捕捉异常
-                cmd = f'''{os.path.join(os.getcwd(), 'app', 'resources', 'data','ffmpeg.exe')} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
+                cmd = f'''"{os.path.join(os.getcwd(), 'app', 'resources', 'data','ffmpeg.exe')}" -loglevel quiet -y -f s16le -i "{pcm_path}" -ar 44100 -ac 1 "{mp3_path}"'''
                 # system(cmd)
                 # 使用subprocess.run()执行命令
                 subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         except Exception as e:
             print(f"Error: {e}")
-            cmd = f'''{os.path.join(os.getcwd(), 'app', 'resources', 'data', 'ffmpeg.exe')} -loglevel quiet -y -f s16le -i {pcm_path} -ar 44100 -ac 1 {mp3_path}'''
+            cmd = f'''"{os.path.join(os.getcwd(), 'app', 'resources', 'data', 'ffmpeg.exe')}" -loglevel quiet -y -f s16le -i "{pcm_path}" -ar 44100 -ac 1 "{mp3_path}"'''
             # system(cmd)
             # 使用subprocess.run()执行命令
             subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

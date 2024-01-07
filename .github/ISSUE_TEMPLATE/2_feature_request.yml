@@ -9,6 +9,8 @@ body:
       options:
         - 是
         - 否
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: '🥰 需求描述 | Feature Description'
