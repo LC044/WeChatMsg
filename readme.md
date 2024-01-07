@@ -44,7 +44,9 @@
 </blockquote>
 
 ## 🍉功能
-- [官网](https://memotrace.lc044.love/)
+- [![](https://img.shields.io/badge/MemoTrace-官网-blue)](https://memotrace.lc044.love/) 
+[![](https://img.shields.io/badge/GitHub-black.svg)](https://github.com/LC044/WeChatMsg)
+[![](https://img.shields.io/badge/Gitee-red.svg)](https://gitee.com/lc044/WeChatMsg)
 - 🔒️🔑🔓️Windows本地微信数据库
 - 还原微信聊天界面
     - 🗨文本✅

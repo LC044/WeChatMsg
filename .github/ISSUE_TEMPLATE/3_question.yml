@@ -7,8 +7,8 @@ body:
     attributes:
       label: '👌 是否检查过没有类似issue'
       options:
-        - 是
         - 否
+        - 是
   - type: textarea
     attributes:
       label: '🧐 问题描述 | Proposed Solution'
