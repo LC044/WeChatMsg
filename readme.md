@@ -311,7 +311,7 @@ python main.py
 后续更新将会在公众号同步发布
 <div>
   <img src="./doc/images/weixin.png">
-  <img src="./doc/images/qq.jpg" height="200">
+  <img src="./doc/images/qq1.jpg" height="200">
 </div>
 
 ## AI交流

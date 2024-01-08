@@ -1,7 +1,7 @@
 name: '🐛 反馈缺陷 Bug Report'
 description: '反馈一个问题缺陷 | Report an bug'
 title: '[Bug] '
-labels: '🐛 Bug'
+labels: ['🐛 Bug']
 body:
   - type: dropdown
     attributes:
@@ -19,8 +19,8 @@ body:
         - 3.11
         - 3.10
         - Other
-    validations:
-      required: true
+        - 什么是Python
+        - 我用的EXE程序
   - type: dropdown
     attributes:
       label: '💻 微信版本'
@@ -34,6 +34,7 @@ body:
       options:
         - 最新版
         - Other
+        - 源码
     validations:
       required: true
   - type: textarea
