@@ -5,6 +5,14 @@ labels: ['🐛 Bug']
 body:
   - type: dropdown
     attributes:
+      label: '👌 是否需要解答'
+      options:
+        - 否
+        - 是
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
       label: '👌 是否检查过没有类似issue'
       options:
         - 否
@@ -32,6 +40,7 @@ body:
     attributes:
       label: '软件版本 | EXE Version'
       options:
+        - 我是找茬的
         - 最新版
         - Other
         - 源码
