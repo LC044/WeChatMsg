@@ -105,7 +105,7 @@ class ExportDialog(QDialog, Ui_Dialog):
             three_months_ago_date = three_months_ago.date()
             three_months_ago_midnight = datetime.combine(three_months_ago_date, datetime.min.time())
             three_months_ago_midnight_timestamp = int(three_months_ago_midnight.timestamp())
-            self.time_range = (three_months_ago_midnight_timestamp,today_midnight_timestamp)
+            self.time_range = (three_months_ago_midnight_timestamp, today_midnight_timestamp)
 
         elif date_range == '自定义时间':
             self.time_range_view = TimeRangeDialog(parent=self)
@@ -116,9 +116,11 @@ class ExportDialog(QDialog, Ui_Dialog):
             #                     "别急别急",
             #                     "马上就实现该功能"
             #                     )
-    def set_time_range(self,time_range):
+
+    def set_time_range(self, time_range):
         self.time_range = time_range
         self.comboBox_time.setCurrentIndex(2)
+
     def export_data(self):
         self.btn_start.setEnabled(False)
         # 在这里获取用户选择的导出数据类型
@@ -141,7 +143,8 @@ class ExportDialog(QDialog, Ui_Dialog):
                 select_contacts.append(self.contacts[i])
         # 在这里根据用户选择的数据类型执行导出操作
         print("选择的文件格式:", file_types)
-        self.worker = Output(select_contacts, type_=Output.Batch, message_types=selected_types, sub_type=file_types,time_range=self.time_range)
+        self.worker = Output(select_contacts, type_=Output.Batch, message_types=selected_types, sub_type=file_types,
+                             time_range=self.time_range)
         # self.worker.progressSignal.connect(self.update_progress)
         self.worker.okSignal.connect(self.export_finished)
         self.worker.rangeSignal.connect(self.set_total_msg_num)
