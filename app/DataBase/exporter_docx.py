@@ -288,7 +288,7 @@ class DocxExporter(ExporterBase):
         doc = docx.Document()
         doc.styles['Normal'].font.name = u'Cambria'
         doc.styles['Normal']._element.rPr.rFonts.set(qn('w:eastAsia'), u'宋体')
-        messages = msg_db.get_messages(self.contact.wxid)
+        messages = msg_db.get_messages(self.contact.wxid, time_range=self.time_range)
         Me().save_avatar(os.path.join(f"{origin_docx_path}/avatar/{Me().wxid}.png"))
         if self.contact.is_chatroom:
             for message in messages:

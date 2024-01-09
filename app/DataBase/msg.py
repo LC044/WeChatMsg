@@ -139,7 +139,7 @@ class Msg:
             new_messages.append(new_message)
         return new_messages
 
-    def get_messages(self, username_):
+    def get_messages(self, username_, time_range=None):
         """
         return list
             a[0]: localId,
@@ -157,10 +157,13 @@ class Msg:
         """
         if not self.open_flag:
             return None
-        sql = '''
+        if time_range:
+            start_time, end_time = time_range
+        sql = f'''
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
             from MSG
             where StrTalker=?
+            {'AND CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
             order by CreateTime
         '''
         try:
@@ -230,14 +233,17 @@ class Msg:
         # result.sort(key=lambda x: x[5])
         return parser_chatroom_message(result) if username_.__contains__('@chatroom') else result
 
-    def get_messages_by_type(self, username_, type_, year_='all'):
+    def get_messages_by_type(self, username_, type_, year_='all',time_range=None):
         if not self.open_flag:
             return None
+        if time_range:
+            start_time, end_time = time_range
         if year_ == 'all':
-            sql = '''
+            sql = f'''
                         select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent
                         from MSG
                         where StrTalker=? and Type=? 
+                        {'AND CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
                         order by CreateTime
                     '''
             try:

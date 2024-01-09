@@ -3,29 +3,12 @@ import html
 import os
 import shutil
 import sys
-import time
-import traceback
+
 import filecmp
-from re import findall
 
-import docx
 from PyQt5.QtCore import pyqtSignal, QThread
-from PyQt5.QtWidgets import QFileDialog
-from docx import shared
-from docx.enum.table import WD_ALIGN_VERTICAL
-from docx.enum.text import WD_COLOR_INDEX, WD_PARAGRAPH_ALIGNMENT
-from docx.oxml.ns import qn
 
-from .package_msg import PackageMsg
-from ..DataBase import media_msg_db, hard_link_db, micro_msg_db, msg_db
-from ..log import logger
 from ..person import Me, Contact
-from ..util import path
-from ..util.compress_content import parser_reply, music_share, share_card
-from ..util.emoji import get_emoji_url
-from ..util.file import get_file
-from ..util.music import get_music_path
-from ..util.image import get_image_path, get_image, get_image_abs_path
 
 os.makedirs('./data/聊天记录', exist_ok=True)
 
@@ -107,7 +90,7 @@ class ExporterBase(QThread):
     CONTACT_CSV = 4
     TXT = 5
 
-    def __init__(self, contact, type_=DOCX, message_types={}, parent=None):
+    def __init__(self, contact, type_=DOCX, message_types={},time_range=None, parent=None):
         super().__init__(parent)
         self.message_types = message_types  # 导出的消息类型
         self.contact: Contact = contact  # 联系人
@@ -115,6 +98,7 @@ class ExporterBase(QThread):
         self.total_num = 1  # 总的消息数量
         self.num = 0  # 当前处理的消息数量
         self.last_timestamp = 0
+        self.time_range = time_range
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         makedirs(origin_docx_path)
     def run(self):

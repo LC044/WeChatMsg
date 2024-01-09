@@ -13,7 +13,7 @@ class CSVExporter(ExporterBase):
         columns = ['localId', 'TalkerId', 'Type', 'SubType',
                    'IsSender', 'CreateTime', 'Status', 'StrContent',
                    'StrTime', 'Remark', 'NickName', 'Sender']
-        messages = msg_db.get_messages(self.contact.wxid)
+        messages = msg_db.get_messages(self.contact.wxid, time_range=self.time_range)
         # 写入CSV文件
         with open(filename, mode='w', newline='', encoding='utf-8-sig') as file:
             writer = csv.writer(file)

@@ -3,14 +3,16 @@ from typing import List
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QTimer, QThread, pyqtSignal
-from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QMessageBox
+from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QMessageBox, QCalendarWidget
 
 from app.DataBase import micro_msg_db, misc_db
 from app.DataBase.output_pc import Output
 from app.components import ScrollBar
+from app.components.calendar_dialog import CalendarDialog
 from app.components.export_contact_item import ContactQListWidgetItem
 from app.person import Contact
 from app.ui.menu.exportUi import Ui_Dialog
+from app.ui.menu.export_time_range import TimeRangeDialog
 
 types = {
     '文本': 1,
@@ -77,22 +79,46 @@ class ExportDialog(QDialog, Ui_Dialog):
         self.listWidget.itemClicked.connect(self.setCurrentIndex)
         self.visited = set()
         self.now_index = 0
+        self.time_range = None
 
     def set_export_date(self):
         date_range = self.comboBox_time.currentText()
         if date_range == '全部时间':
             pass
         elif date_range == '最近三个月':
-            QMessageBox.warning(self,
-                                "别急别急",
-                                "马上就实现该功能"
-                                )
-        elif date_range == '自定义时间':
-            QMessageBox.warning(self,
-                                "别急别急",
-                                "马上就实现该功能"
-                                )
+            from datetime import datetime, timedelta
 
+            # 获取今天的日期和时间
+            today = datetime.now()
+
+            # 获取今天的日期
+            today_date = today.date()
+
+            # 获取今天的24:00:00的时间戳
+            today_midnight = datetime.combine(today_date, datetime.min.time()) + timedelta(days=1)
+            today_midnight_timestamp = int(today_midnight.timestamp())
+
+            # 获取三个月前的日期
+            three_months_ago = today - timedelta(days=90)
+
+            # 获取三个月前的00:00:00的时间戳
+            three_months_ago_date = three_months_ago.date()
+            three_months_ago_midnight = datetime.combine(three_months_ago_date, datetime.min.time())
+            three_months_ago_midnight_timestamp = int(three_months_ago_midnight.timestamp())
+            self.time_range = (three_months_ago_midnight_timestamp,today_midnight_timestamp)
+
+        elif date_range == '自定义时间':
+            self.time_range_view = TimeRangeDialog(parent=self)
+            self.time_range_view.date_range_signal.connect(self.set_time_range)
+            self.time_range_view.show()
+            self.comboBox_time.setCurrentIndex(0)
+            # QMessageBox.warning(self,
+            #                     "别急别急",
+            #                     "马上就实现该功能"
+            #                     )
+    def set_time_range(self,time_range):
+        self.time_range = time_range
+        self.comboBox_time.setCurrentIndex(2)
     def export_data(self):
         self.btn_start.setEnabled(False)
         # 在这里获取用户选择的导出数据类型
@@ -115,7 +141,7 @@ class ExportDialog(QDialog, Ui_Dialog):
                 select_contacts.append(self.contacts[i])
         # 在这里根据用户选择的数据类型执行导出操作
         print("选择的文件格式:", file_types)
-        self.worker = Output(select_contacts, type_=Output.Batch, message_types=selected_types, sub_type=file_types)
+        self.worker = Output(select_contacts, type_=Output.Batch, message_types=selected_types, sub_type=file_types,time_range=self.time_range)
         # self.worker.progressSignal.connect(self.update_progress)
         self.worker.okSignal.connect(self.export_finished)
         self.worker.rangeSignal.connect(self.set_total_msg_num)

@@ -39,11 +39,12 @@ class Output(QThread):
     TXT = 5
     Batch = 10086
 
-    def __init__(self, contact, type_=DOCX, message_types={}, sub_type=[], parent=None):
+    def __init__(self, contact, type_=DOCX, message_types={}, sub_type=[], time_range=None,parent=None):
         super().__init__(parent)
         self.children = []
         self.last_timestamp = 0
         self.sub_type = sub_type
+        self.time_range = time_range
         self.message_types = message_types
         self.sec = 2  # 默认1000秒
         self.contact = contact
@@ -161,7 +162,7 @@ class Output(QThread):
             self.okSignal.emit(1)
 
     def to_docx(self, contact, message_types, is_batch=False):
-        Child = DocxExporter(contact, type_=self.DOCX, message_types=message_types)
+        Child = DocxExporter(contact, type_=self.DOCX, message_types=message_types,time_range=self.time_range)
         self.children.append(Child)
         Child.progressSignal.connect(self.progress)
         if not is_batch:
@@ -170,7 +171,7 @@ class Output(QThread):
         Child.start()
 
     def to_txt(self, contact, message_types, is_batch=False):
-        Child = TxtExporter(contact, type_=self.TXT, message_types=message_types)
+        Child = TxtExporter(contact, type_=self.TXT, message_types=message_types,time_range=self.time_range)
         self.children.append(Child)
         Child.progressSignal.connect(self.progress)
         if not is_batch:
@@ -179,7 +180,7 @@ class Output(QThread):
         Child.start()
 
     def to_html(self, contact, message_types, is_batch=False):
-        Child = HtmlExporter(contact, type_=self.output_type, message_types=message_types)
+        Child = HtmlExporter(contact, type_=self.output_type, message_types=message_types,time_range=self.time_range)
         self.children.append(Child)
         Child.progressSignal.connect(self.progress)
         if not is_batch:
@@ -190,7 +191,7 @@ class Output(QThread):
         if message_types.get(34):
             # 语音消息单独的线程
             self.total_num += 1
-            output_media = OutputMedia(contact)
+            output_media = OutputMedia(contact,time_range=self.time_range)
             self.children.append(output_media)
             output_media.okSingal.connect(self.count_finish_num)
             output_media.progressSignal.connect(self.progressSignal)
@@ -198,7 +199,7 @@ class Output(QThread):
         if message_types.get(47):
             # emoji消息单独的线程
             self.total_num += 1
-            output_emoji = OutputEmoji(contact)
+            output_emoji = OutputEmoji(contact,time_range=self.time_range)
             self.children.append(output_emoji)
             output_emoji.okSingal.connect(self.count_finish_num)
             output_emoji.progressSignal.connect(self.progressSignal)
@@ -206,14 +207,14 @@ class Output(QThread):
         if message_types.get(3):
             # 图片消息单独的线程
             self.total_num += 1
-            output_image = OutputImage(contact)
+            output_image = OutputImage(contact,time_range=self.time_range)
             self.children.append(output_image)
             output_image.okSingal.connect(self.count_finish_num)
             output_image.progressSignal.connect(self.progressSignal)
             output_image.start()
 
     def to_csv(self, contact, message_types, is_batch=False):
-        Child = CSVExporter(contact, type_=self.CSV, message_types=message_types)
+        Child = CSVExporter(contact, type_=self.CSV, message_types=message_types,time_range=self.time_range)
         self.children.append(Child)
         Child.progressSignal.connect(self.progress)
         if not is_batch:
@@ -263,13 +264,14 @@ class OutputMedia(QThread):
     okSingal = pyqtSignal(int)
     progressSignal = pyqtSignal(int)
 
-    def __init__(self, contact):
+    def __init__(self, contact,time_range=None):
         super().__init__()
         self.contact = contact
+        self.time_range = time_range
 
     def run(self):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-        messages = msg_db.get_messages_by_type(self.contact.wxid, 34)
+        messages = msg_db.get_messages_by_type(self.contact.wxid, 34,time_range=self.time_range)
         for message in messages:
             is_send = message[4]
             msgSvrId = message[9]
@@ -289,13 +291,14 @@ class OutputEmoji(QThread):
     okSingal = pyqtSignal(int)
     progressSignal = pyqtSignal(int)
 
-    def __init__(self, contact):
+    def __init__(self, contact,time_range=None):
         super().__init__()
         self.contact = contact
+        self.time_range = time_range
 
     def run(self):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-        messages = msg_db.get_messages_by_type(self.contact.wxid, 47)
+        messages = msg_db.get_messages_by_type(self.contact.wxid, 47,time_range=self.time_range)
         for message in messages:
             str_content = message[7]
             try:
@@ -315,10 +318,11 @@ class OutputImage(QThread):
     okSingal = pyqtSignal(int)
     progressSignal = pyqtSignal(int)
 
-    def __init__(self, contact):
+    def __init__(self, contact,time_range):
         super().__init__()
         self.contact = contact
         self.child_thread_num = 2
+        self.time_range =time_range
         self.child_threads = [0] * (self.child_thread_num + 1)
         self.num = 0
 
@@ -331,7 +335,7 @@ class OutputImage(QThread):
 
     def run(self):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-        messages = msg_db.get_messages_by_type(self.contact.wxid, 3)
+        messages = msg_db.get_messages_by_type(self.contact.wxid, 3,time_range=self.time_range)
         for message in messages:
             str_content = message[7]
             BytesExtra = message[10]
@@ -359,10 +363,11 @@ class OutputImageChild(QThread):
     okSingal = pyqtSignal(int)
     progressSignal = pyqtSignal(int)
 
-    def __init__(self, contact, messages):
+    def __init__(self, contact, messages,time_range):
         super().__init__()
         self.contact = contact
         self.messages = messages
+        self.time_range = time_range
 
     def run(self):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
