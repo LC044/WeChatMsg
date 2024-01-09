@@ -39,5 +39,7 @@
         <file>icons/weixin.png</file>
         <file>icons/man.svg</file>
         <file>icons/woman.svg</file>
+        <file>icons/select.svg</file>
+        <file>icons/unselect.svg</file>
     </qresource>
 </RCC>

@@ -76,12 +76,14 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
             self.label_pid.setText(str(self.info['pid']))
             self.label_version.setText(self.info['version'])
             self.lineEdit.setFocus()
+            self.checkBox.setCheckable(True)
             self.checkBox.setChecked(True)
             self.get_wxidSignal.emit(self.info['wxid'])
             directory = os.path.join(path.wx_path(), self.info['wxid'])
             if os.path.exists(directory):
                 self.label_db_dir.setText(directory)
                 self.wx_dir = directory
+                self.checkBox_2.setCheckable(True)
                 self.checkBox_2.setChecked(True)
                 self.ready = True
             if self.ready:
@@ -109,6 +111,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
 
         self.label_db_dir.setText(directory)
         self.wx_dir = directory
+        self.checkBox_2.setCheckable(True)
         self.checkBox_2.setChecked(True)
         if self.ready:
             self.label_ready.setText('已就绪')

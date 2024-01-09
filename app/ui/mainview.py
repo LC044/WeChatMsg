@@ -66,6 +66,23 @@ QListWidget::item:selected {
 HistoryPanel::item:hover {
     background: rgb(52, 52, 52);
 }
+
+QCheckBox::indicator {
+    background: rgb(255, 255, 255);
+    Width:20px;
+    Height:20px;
+    border-radius: 10px
+}
+QCheckBox::indicator:unchecked{
+    Width:20px;
+    Height:20px;
+    image: url(:/icons/icons/unselect.svg);
+}
+QCheckBox::indicator:checked{
+    Width:20px;
+    Height:20px;
+    image: url(:/icons/icons/select.svg);
+}
 """
 
 
