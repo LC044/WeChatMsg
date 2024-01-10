@@ -46,6 +46,8 @@ class Ui_Dialog(object):
         self.toolButton_end_time.setObjectName("toolButton_end_time")
         self.horizontalLayout.addWidget(self.toolButton_end_time)
         self.verticalLayout.addLayout(self.horizontalLayout)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.btn_ok = QtWidgets.QPushButton(Dialog)

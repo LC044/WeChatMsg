@@ -1,8 +1,12 @@
 import time
 
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import QTimer, QThread, pyqtSignal
-from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QMessageBox, QCalendarWidget, QWidget, QVBoxLayout
+from datetime import datetime, timedelta
+from PyQt5.QtCore import QTimer, QThread, pyqtSignal, Qt
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QMessageBox, QCalendarWidget, QWidget, QVBoxLayout, \
+    QToolButton
+
+from app.ui.Icon import Icon
 
 
 class CalendarDialog(QDialog):
@@ -18,12 +22,37 @@ class CalendarDialog(QDialog):
         self.setWindowTitle('选择日期')
         self.calendar = QCalendarWidget(self)
         self.calendar.clicked.connect(self.onDateChanged)
+        prev_btn = self.calendar.findChild(QToolButton, "qt_calendar_prevmonth")
+        prev_btn.setIcon(Icon.Arrow_left_Icon)
+        next_btn = self.calendar.findChild(QToolButton, "qt_calendar_nextmonth")
+        next_btn.setIcon(Icon.Arrow_right_Icon)
+        self.date_range = date_range
         if date_range:
             self.calendar.setDateRange(*date_range)
+            # 从第一天开始，依次添加日期到列表，直到该月的最后一天
+            current_date = date_range[1]
+            while (current_date + timedelta(days=1)).month == date_range[1].month:
+                current_date += timedelta(days=1)
+                range_format = self.calendar.dateTextFormat(current_date)
+                range_format.setForeground(Qt.gray)
+                self.calendar.setDateTextFormat(current_date, range_format)
+            # 从第一天开始，依次添加日期到列表，直到该月的最后一天
+            current_date = date_range[0]
+            while (current_date - timedelta(days=1)).month == date_range[0].month:
+                current_date -= timedelta(days=1)
+                range_format = self.calendar.dateTextFormat(current_date)
+                range_format.setForeground(Qt.gray)
+                self.calendar.setDateTextFormat(current_date, range_format)
         layout = QVBoxLayout(self)
         layout.addWidget(self.calendar)
         self.setLayout(layout)
 
+    def set_start_date(self):
+        if self.date_range:
+            self.calendar.setCurrentPage(self.date_range[0].year, self.date_range[0].month)
+    def set_end_date(self):
+        if self.date_range:
+            self.calendar.setCurrentPage(self.date_range[1].year, self.date_range[1].month)
     def onDateChanged(self):
         # 获取选择的日期
         selected_date = self.calendar.selectedDate()
@@ -37,11 +66,11 @@ class CalendarDialog(QDialog):
 
 if __name__ == '__main__':
     import sys
-    from datetime import datetime
+    from datetime import datetime, timedelta
 
     app = QApplication(sys.argv)
     # 设置日期范围
-    start_date = datetime(2023, 12, 11)
+    start_date = datetime(2024, 1, 5)
     end_date = datetime(2024, 1, 9)
     date_range = (start_date.date(), end_date.date())
     ex = CalendarDialog(date_range=date_range)

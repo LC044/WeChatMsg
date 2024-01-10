@@ -1,13 +1,12 @@
 from PyQt5.QtCore import pyqtSignal, QUrl, QThread
 from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtWidgets import QWidget, QMenu, QAction, QToolButton, QMessageBox, QDialog
+from PyQt5.QtWidgets import QWidget, QMenu, QAction, QToolButton, QMessageBox
 
-from app.DataBase.output_pc import Output
 from app.ui.Icon import Icon
 from .contactInfoUi import Ui_Form
 from .userinfo import userinfo
 from ...person import Contact, Me
-from .export_dialog import ExportDialog
+from app.ui.contact.export.export_dialog import ExportDialog
 
 
 class ContactInfo(QWidget, Ui_Form):

@@ -4,11 +4,18 @@ from PyQt5.QtCore import QTimer, QThread, pyqtSignal
 from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QMessageBox, QCalendarWidget, QWidget, QVBoxLayout, QLabel
 
 from app.components.calendar_dialog import CalendarDialog
-from .time_range import Ui_Dialog
-
+try:
+    from .time_range import Ui_Dialog
+except:
+    from time_range import Ui_Dialog
 Stylesheet = '''
 QToolButton{
     color:#000000;
+}
+QCalendarWidget QAbstractItemView:disabled {
+
+}
+QCalendarWidget QAbstractItemView:enabled{
 }
 '''
 
@@ -32,6 +39,8 @@ class TimeRangeDialog(QDialog, Ui_Dialog):
         self.calendar = CalendarDialog(date_range=date_range, parent=self)
         self.calendar.selected_date_signal.connect(self.set_date)
         self.btn_ok.clicked.connect(self.ok)
+        self.btn_ok.setEnabled(False)
+        self.btn_ok_num = 0
         self.btn_cancel.clicked.connect(lambda x: self.close())
         self.start_time_flag = True
         self.start_timestamp = 0
@@ -43,11 +52,15 @@ class TimeRangeDialog(QDialog, Ui_Dialog):
             date_object = datetime.fromtimestamp(timestamp)
             str_start = date_object.strftime("%Y-%m-%d")
             self.toolButton_start_time.setText(str_start)
+            self.btn_ok_num += 1
         else:
             date_object = datetime.fromtimestamp(timestamp)
             str_start = date_object.strftime("%Y-%m-%d")
             self.end_timestamp = timestamp + 86399
             self.toolButton_end_time.setText(str_start)
+            self.btn_ok_num += 1
+        if self.btn_ok_num == 2:
+            self.btn_ok.setEnabled(True)
 
     def ok(self):
         date_range = (self.start_timestamp, self.end_timestamp)
@@ -56,10 +69,12 @@ class TimeRangeDialog(QDialog, Ui_Dialog):
 
     def select_date_start(self):
         self.start_time_flag = True
+        self.calendar.set_start_date()
         self.calendar.show()
 
     def select_date_end(self):
         self.start_time_flag = False
+        self.calendar.set_end_date()
         self.calendar.show()
 
 
@@ -72,6 +87,6 @@ if __name__ == '__main__':
     start_date = datetime(2023, 12, 11)
     end_date = datetime(2024, 1, 9)
     date_range = (start_date.date(), end_date.date())
-    ex = CalendarDialog(date_range=date_range)
+    ex = TimeRangeDialog(date_range=date_range)
     ex.show()
     sys.exit(app.exec_())

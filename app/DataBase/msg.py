@@ -233,7 +233,7 @@ class Msg:
         # result.sort(key=lambda x: x[5])
         return parser_chatroom_message(result) if username_.__contains__('@chatroom') else result
 
-    def get_messages_by_type(self, username_, type_, year_='all',time_range=None):
+    def get_messages_by_type(self, username_, type_, year_='all', time_range=None):
         if not self.open_flag:
             return None
         if time_range:
@@ -343,6 +343,28 @@ class Msg:
                 contacts[i].append(0)
         contacts.sort(key=lambda cur_contact: cur_contact[-1], reverse=True)
         return contacts
+
+    def get_messages_calendar(self, username_):
+        sql = '''
+            SELECT strftime('%Y-%m-%d',CreateTime,'unixepoch','localtime') as days
+            from (
+                SELECT MsgSvrID, CreateTime
+                FROM MSG
+                WHERE StrTalker = ?
+                ORDER BY CreateTime
+            )
+            group by days
+        '''
+        if not self.open_flag:
+            print('数据库未就绪')
+            return None
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql, [username_])
+            result = self.cursor.fetchall()
+        finally:
+            lock.release()
+        return [date[0] for date in result]
 
     def get_messages_by_days(self, username_, is_Annual_report_=False, year_='2023'):
         if is_Annual_report_:
@@ -694,39 +716,11 @@ class Msg:
 
 
 if __name__ == '__main__':
-    db_path = "./app/database/Msg/MSG.db"
+    db_path = "./Msg/MSG.db"
     msg = Msg()
     msg.init_database()
     wxid = 'wxid_0o18ef858vnu22'
     wxid = '24521163022@chatroom'
     wxid = 'wxid_vtz9jk9ulzjt22'  # si
     print()
-    from app.util import compress_content
-    import xml.etree.ElementTree as ET
-
-    msgs = msg.get_messages(wxid)
-
-    for msg in msgs:
-        if msg[2] == 49 and msg[3] == 5:
-            xml = compress_content.decompress_CompressContent(msg[11])
-            root = ET.XML(xml)
-            appmsg = root.find('appmsg')
-            title = appmsg.find('title').text
-            des = appmsg.find('des').text
-            url = appmsg.find('url').text
-            appinfo = root.find('appinfo')
-            show_display_name = appmsg.find('sourcedisplayname')
-            if show_display_name is not None:
-                show_display_name = show_display_name.text
-            else:
-                show_display_name = appinfo.find('appname').text
-            print(title, des, url, show_display_name)
-            msg_bytes = MessageBytesExtra()
-            msg_bytes.ParseFromString(msg[10])
-            for tmp in msg_bytes.message2:
-                if tmp.field1 == 3:
-                    thumb = tmp.field2
-                    print(thumb)
-                if tmp.field2 == 4:
-                    app_logo = tmp.field2
-                    print('logo', app_logo)
+    print(msg.get_messages_calendar(wxid))
