@@ -43,6 +43,8 @@
 </div>
 </blockquote>
 
+为了照顾普通用户，我准备在[![](https://img.shields.io/badge/Gitee-red.svg)](https://gitee.com/lc044/WeChatMsg)上同步创建一个发行版，但是普通[![](https://img.shields.io/badge/Gitee-red.svg)](https://gitee.com/lc044/WeChatMsg)项目附件不能超过100M，大家可以去[![](https://img.shields.io/badge/Gitee-red.svg)](https://gitee.com/lc044/WeChatMsg)上点点star，项目活跃起来之后我看看能不能申请GVP，把附件大小提升至200M，这样大家就能高速下载了。[https://gitee.com/lc044/WeChatMsg](https://gitee.com/lc044/WeChatMsg)
+
 ## 🍉功能
 - [![](https://img.shields.io/badge/MemoTrace-官网-blue)](https://memotrace.lc044.love/) 
 [![](https://img.shields.io/badge/GitHub-black.svg)](https://github.com/LC044/WeChatMsg)
