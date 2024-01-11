@@ -8,6 +8,7 @@ from docx import shared
 from docx.enum.table import WD_ALIGN_VERTICAL
 from docx.enum.text import WD_COLOR_INDEX, WD_PARAGRAPH_ALIGNMENT
 from docx.oxml.ns import qn
+from docxcompose.composer import Composer
 
 from app.DataBase import msg_db, hard_link_db
 from app.DataBase.output import ExporterBase, escape_js_and_html
@@ -284,10 +285,6 @@ class DocxExporter(ExporterBase):
     def export(self):
         print(f"【开始导出 DOCX {self.contact.remark}】")
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-        filename = os.path.join(origin_docx_path, f"{self.contact.remark}.docx")
-        doc = docx.Document()
-        doc.styles['Normal'].font.name = u'Cambria'
-        doc.styles['Normal']._element.rPr.rFonts.set(qn('w:eastAsia'), u'宋体')
         messages = msg_db.get_messages(self.contact.wxid, time_range=self.time_range)
         Me().save_avatar(os.path.join(f"{origin_docx_path}/avatar/{Me().wxid}.png"))
         if self.contact.is_chatroom:
@@ -303,7 +300,23 @@ class DocxExporter(ExporterBase):
         else:
             self.contact.save_avatar(os.path.join(f"{origin_docx_path}/avatar/{self.contact.wxid}.png"))
         self.rangeSignal.emit(len(messages))
+
+        def newdoc():
+            nonlocal n, doc
+            doc = docx.Document()
+            doc.styles["Normal"].font.name = "Cambria"
+            doc.styles["Normal"]._element.rPr.rFonts.set(qn("w:eastAsia"), "宋体")
+            docs.append(doc)
+            n += 1
+
+        doc = None
+        docs = []
+        n = 0
+        index = 0
+        newdoc()
         for index, message in enumerate(messages):
+            if index % 200 == 0 and index:
+                newdoc()
             type_ = message[2]
             sub_type = message[3]
             timestamp = message[5]
@@ -327,7 +340,23 @@ class DocxExporter(ExporterBase):
                 self.refermsg(doc, message)
             elif type_ == 49 and sub_type == 6 and self.message_types.get(4906):
                 self.file(doc, message)
-            print(f"【导出 DOCX {self.contact.remark}】{index}/{len(messages)}")
+            if index % 25 == 0:
+                print(f"【导出 DOCX {self.contact.remark}】{index}/{len(messages)}")
+        if index % 25:
+            print(f"【导出 DOCX {self.contact.remark}】{index+1}/{len(messages)}")
+        filename = os.path.join(origin_docx_path, f"{self.contact.remark}.docx")
+        doc = docx.Document()
+        doc.styles["Normal"].font.name = "Cambria"
+        doc.styles["Normal"]._element.rPr.rFonts.set(qn("w:eastAsia"), "宋体")
+        # doc = Composer(doc)
+        # for index, dx in enumerate(docs):
+        #     print(f"【MERGE Export DOCX {self.contact.remark}】{index}/{len(docs)}")
+        #     doc.append(dx)
+        # print(f"【MERGE Export DOCX {self.contact.remark}】{len(docs)}")
+        doc = Composer(doc)  # 针对11188条消息（56组）所测，反排比正排更快，正排65s，反排54s
+        for index, dx in enumerate(docs[::-1]):
+            print(f"【合并 DOCX {self.contact.remark}】{index+1}/{len(docs)}")
+            doc.insert(0, dx)
         try:
             doc.save(filename)
         except PermissionError:
