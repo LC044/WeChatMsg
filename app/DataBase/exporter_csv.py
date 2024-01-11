@@ -24,7 +24,7 @@ class CSVExporter(ExporterBase):
             for msg in messages:
                 other_data = [msg[12].remark, msg[12].nickName, msg[12].wxid] if self.contact.is_chatroom else []
                 writer.writerow([*msg[:9], *other_data])
-        print("【完成导出 CSV {self.contact.remark}】")
+        print(f"【完成导出 CSV {self.contact.remark}】")
         self.okSignal.emit(1)
 
     def run(self):

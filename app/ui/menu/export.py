@@ -1,8 +1,11 @@
+import os
+import sys
 import time
 from typing import List
 
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import QTimer, QThread, pyqtSignal
+from PyQt5.QtCore import QTimer, QThread, pyqtSignal, QObject
+from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QMessageBox, QCalendarWidget
 
 from app.DataBase import micro_msg_db, misc_db
@@ -41,6 +44,13 @@ QPushButton:hover {
 """
 
 
+class EmittingStr(QObject):
+    textWritten = pyqtSignal(str)  # 定义一个发送str的信号
+
+    def write(self, text):
+        self.textWritten.emit(str(text))
+
+
 class ExportDialog(QDialog, Ui_Dialog):
     def __init__(self, contact=None, title="选择导出的类型", file_type="html", parent=None):
         super(ExportDialog, self).__init__(parent)
@@ -52,6 +62,11 @@ class ExportDialog(QDialog, Ui_Dialog):
         self.select_all_flag = False
         self.btn_start.clicked.connect(self.export_data)
         self.comboBox_time.activated.connect(self.set_export_date)
+        # 下面将输出重定向到textBrowser中
+        sys.stdout = EmittingStr(textWritten=self.outputWritten)
+        sys.stderr = EmittingStr(textWritten=self.outputWritten)
+        scroll_bar = ScrollBar()
+        self.textBrowser.setVerticalScrollBar(scroll_bar)
         self.export_choices = {"文本": True, "图片": True, "语音": False, "视频": False, "表情包": False,
                                '音乐与音频': False, '分享卡片': False, '文件': False,
                                '拍一拍等系统消息': True}  # 定义导出的数据类型，默认全部选择
@@ -120,6 +135,13 @@ class ExportDialog(QDialog, Ui_Dialog):
     def set_time_range(self, time_range):
         self.time_range = time_range
         self.comboBox_time.setCurrentIndex(2)
+
+    def outputWritten(self, text):
+        cursor = self.textBrowser.textCursor()
+        cursor.movePosition(QTextCursor.End)
+        cursor.insertText(text)
+        self.textBrowser.setTextCursor(cursor)
+        self.textBrowser.ensureCursorVisible()
 
     def export_data(self):
         self.btn_start.setEnabled(False)
@@ -194,11 +216,18 @@ class ExportDialog(QDialog, Ui_Dialog):
         reply = QMessageBox(self)
         reply.setIcon(QMessageBox.Information)
         reply.setWindowTitle('OK')
-        reply.setText(f"导出聊天记录成功\n在./data/目录下(跟exe文件在一起)")
+        reply.setText(f"导出聊天记录成功\n在./data/目录下(跟exe文件在一起)\n{os.getcwd()}\\data\\")
         reply.addButton("确认", QMessageBox.AcceptRole)
         reply.addButton("取消", QMessageBox.RejectRole)
         api = reply.exec_()
+        # 在任务完成时重置sys.stdout
+        sys.stdout = sys.__stdout__
         self.accept()
+
+    def close(self):
+        sys.stdout = sys.__stdout__
+        del self.worker
+        super().close()
 
     def show_contact(self, contact):
         # return

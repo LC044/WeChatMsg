@@ -110,7 +110,7 @@ class TxtExporter(ExporterBase):
 
     def export(self):
         # 实现导出为txt的逻辑
-        print("【开始导出 TXT {self.contact.remark}】")
+        print(f"【开始导出 TXT {self.contact.remark}】")
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         os.makedirs(origin_docx_path, exist_ok=True)
         filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}.txt"
@@ -141,5 +141,5 @@ class TxtExporter(ExporterBase):
                     self.music_share(f, message)
                 elif type_ == 49 and sub_type == 5 and self.message_types.get(4905):
                     self.share_card(f, message)
-        print("【完成导出 TXT {self.contact.remark}】")
+        print(f"【完成导出 TXT {self.contact.remark}】")
         self.okSignal.emit(1)

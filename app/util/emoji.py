@@ -17,7 +17,8 @@ from PyQt5.QtGui import QPixmap
 import requests
 
 from app.log import log, logger
-
+lock = threading.Lock()
+db_path = "./app/Database/Msg/Emotion.db"
 root_path = './data/emoji/'
 if not os.path.exists('./data'):
     os.mkdir('./data')
@@ -46,11 +47,7 @@ def get_image_format(header):
 @log
 def parser_xml(xml_string):
     assert type(xml_string) == str
-    # Parse the XML string
-    try:
-        root = ET.fromstring(xml_string)
-    except:
-        root = ET.fromstring(xml_string.replace("&", "&amp;"))
+    root = ET.fromstring(xml_string)
     emoji = root.find('./emoji')
     # Accessing attributes of the 'emoji' element
     fromusername = emoji.get('fromusername')
@@ -71,11 +68,18 @@ def parser_xml(xml_string):
         'md5': (md5 if md5 else androidmd5).lower(),
     }
 
+def singleton(cls):
+    _instance = {}
 
-lock = threading.Lock()
-db_path = "./app/Database/Msg/Emotion.db"
+    def inner():
+        if cls not in _instance:
+            _instance[cls] = cls()
+        return _instance[cls]
 
+    return inner
 
+# 一定要保证只有一个实例对象
+@singleton
 class Emotion:
     def __init__(self):
         self.DB = None
@@ -123,10 +127,8 @@ class Emotion:
                 where md5 = ?
             """
             self.cursor.execute(sql, [md5])
-            try:
-                return self.cursor.fetchone()[0]
-            except:
-                return ""
+            res = self.cursor.fetchone()
+            return res[0] if res else ''
         finally:
             lock.release()
 
@@ -156,7 +158,6 @@ class Emotion:
             return ""
         finally:
             lock.release()
-
     def close(self):
         if self.open_flag:
             try:

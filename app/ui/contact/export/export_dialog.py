@@ -1,11 +1,14 @@
 import os
+import sys
 import time
 from datetime import datetime, timedelta
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, QObject, pyqtSignal
+from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QDialog, QVBoxLayout, QCheckBox, QHBoxLayout, \
     QProgressBar, QLabel, QMessageBox, QComboBox
 
 from app.DataBase import msg_db
+from app.components import ScrollBar
 from app.ui.menu.export_time_range import TimeRangeDialog
 from .exportUi import Ui_Dialog
 from app.DataBase.output_pc import Output
@@ -29,7 +32,11 @@ QPushButton:hover {
     background-color: lightgray;
 }
 """
+class EmittingStr(QObject):
+    textWritten = pyqtSignal(str)  # 定义一个发送str的信号
 
+    def write(self, text):
+        self.textWritten.emit(str(text))
 
 class ExportDialog(QDialog, Ui_Dialog):
     def __init__(self, contact=None, title="选择导出的类型", file_type="csv", parent=None):
@@ -37,7 +44,11 @@ class ExportDialog(QDialog, Ui_Dialog):
         self.select_all_flag = False
         self.setupUi(self)
         self.setStyleSheet(Stylesheet)
-
+        # 下面将输出重定向到textBrowser中
+        sys.stdout = EmittingStr(textWritten=self.outputWritten)
+        sys.stderr = EmittingStr(textWritten=self.outputWritten)
+        scroll_bar = ScrollBar()
+        self.textBrowser.setVerticalScrollBar(scroll_bar)
         self.contact = contact
         if file_type == 'html':
             self.export_type = Output.HTML
@@ -97,7 +108,12 @@ class ExportDialog(QDialog, Ui_Dialog):
         self.timer.start(1000)
         self.start_time = time.time()
         # self.accept()  # 使用accept关闭对话框
-
+    def outputWritten(self, text):
+        cursor = self.textBrowser.textCursor()
+        cursor.movePosition(QTextCursor.End)
+        cursor.insertText(text)
+        self.textBrowser.setTextCursor(cursor)
+        self.textBrowser.ensureCursorVisible()
     def set_export_date(self):
         date_range = self.comboBox_time.currentText()
         if date_range == '全部时间':
@@ -161,6 +177,8 @@ class ExportDialog(QDialog, Ui_Dialog):
         reply.addButton("确认", QMessageBox.AcceptRole)
         reply.addButton("取消", QMessageBox.RejectRole)
         api = reply.exec_()
+        # 在任务完成时重置sys.stdout
+        sys.stdout = sys.__stdout__
         self.accept()
 
     def select_all(self):
@@ -185,6 +203,10 @@ class ExportDialog(QDialog, Ui_Dialog):
         self.progressBar.setValue(progress_percentage)
         self.label_process.setText(f"导出进度: {progress_percentage}%")
 
+    def close(self):
+        sys.stdout = sys.__stdout__
+        del self.worker
+        super().close()
 
 if __name__ == '__main__':
     import sys
