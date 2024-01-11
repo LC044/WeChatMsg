@@ -282,7 +282,7 @@ class DocxExporter(ExporterBase):
         middle_new_docx.save(origin_docx_path + '/' + filename)
 
     def export(self):
-        print('导出docx')
+        print(f"【开始导出 DOCX {self.contact.remark}】")
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         filename = os.path.join(origin_docx_path, f"{self.contact.remark}.docx")
         doc = docx.Document()
@@ -327,9 +327,11 @@ class DocxExporter(ExporterBase):
                 self.refermsg(doc, message)
             elif type_ == 49 and sub_type == 6 and self.message_types.get(4906):
                 self.file(doc, message)
+            print(f"【导出 DOCX {self.contact.remark}】{index}/{len(messages)}")
         try:
             doc.save(filename)
         except PermissionError:
             filename = filename[:-5] + f'{time.time()}' + '.docx'
             doc.save(filename)
+        print(f"【完成导出 DOCX {self.contact.remark}】")
         self.okSignal.emit(1)

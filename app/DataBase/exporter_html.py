@@ -275,6 +275,7 @@ class HtmlExporter(ExporterBase):
         )
 
     def export(self):
+        print(f"【开始导出 HTML {self.contact.remark}】")
         messages = msg_db.get_messages(self.contact.wxid, time_range=self.time_range)
         filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}.html"
         file_path = './app/resources/data/template.html'
@@ -318,8 +319,11 @@ class HtmlExporter(ExporterBase):
                 self.music_share(f, message)
             elif type_ == 49 and sub_type == 5 and self.message_types.get(4905):
                 self.share_card(f, message)
+            if index % 2000 == 0:
+                print(f"【导出 HTML {self.contact.remark}】{index}/{len(messages)}")
         f.write(html_end)
         f.close()
+        print(f"【完成导出 HTML {self.contact.remark}】{len(messages)}")
         self.count_finish_num(1)
 
     def count_finish_num(self, num):
