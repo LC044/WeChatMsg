@@ -4,6 +4,7 @@ import time
 from re import findall
 
 import docx
+import unicodedata
 from docx import shared
 from docx.enum.table import WD_ALIGN_VERTICAL
 from docx.enum.text import WD_COLOR_INDEX, WD_PARAGRAPH_ALIGNMENT
@@ -12,10 +13,33 @@ from docxcompose.composer import Composer
 
 from app.DataBase import msg_db, hard_link_db
 from app.DataBase.output import ExporterBase, escape_js_and_html
+from app.log import logger
 from app.person import Me
 from app.util.compress_content import parser_reply, share_card, music_share
 from app.util.image import get_image_abs_path
 from app.util.music import get_music_path
+import string
+
+
+def filter_control_characters(input_string):
+    """
+    过滤掉不可打印字符
+    @param input_string:
+    @return:
+    """
+    # 创建一个包含所有可打印字符的字符串
+    printable_chars = set(string.printable)
+
+    # 过滤掉非可打印字符
+    filtered_string = ''.join(char for char in input_string if char in printable_chars)
+
+    return filtered_string
+
+def is_control_char(ch):
+    '''Whether a control character.
+    https://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python
+    '''
+    return unicodedata.category(ch)[0] == 'C'
 
 
 class DocxExporter(ExporterBase):
@@ -30,7 +54,12 @@ class DocxExporter(ExporterBase):
         display_name = self.get_display_name(is_send, message)
         avatar = self.get_avatar_path(is_send, message, True)
         content_cell = self.create_table(doc, is_send, avatar)
-        content_cell.paragraphs[0].add_run(str_content)
+        try:
+            content_cell.paragraphs[0].add_run(str_content)
+        except ValueError:
+            logger.error(f'非法字符:{str_content}')
+            str_content = filter_control_characters(str_content)
+            content_cell.paragraphs[0].add_run(str_content)
         content_cell.paragraphs[0].font_size = shared.Inches(0.5)
         if is_send:
             p = content_cell.paragraphs[0]
@@ -77,7 +106,7 @@ class DocxExporter(ExporterBase):
         display_name = self.get_display_name(is_send, message)
         avatar = self.get_avatar_path(is_send, message, True)
         content_cell = self.create_table(doc, is_send, avatar)
-        content_cell.paragraphs[0].add_run('【表情包】')
+        content_cell.paragraphs[0].add_run('【语音】')
         content_cell.paragraphs[0].font_size = shared.Inches(0.5)
         if is_send:
             p = content_cell.paragraphs[0]
@@ -233,7 +262,6 @@ class DocxExporter(ExporterBase):
         avatar = self.get_avatar_path(is_send, message)
         display_name = self.get_display_name(is_send, message)
 
-
     def share_card(self, doc, message):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         is_send = message[4]
@@ -260,6 +288,7 @@ class DocxExporter(ExporterBase):
                 app_logo = './image/' + os.path.basename(app_logo)
             else:
                 app_logo = ''
+
     def merge_docx(self, conRemark, n):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{conRemark}"
         all_file_path = []
@@ -343,7 +372,7 @@ class DocxExporter(ExporterBase):
             if index % 25 == 0:
                 print(f"【导出 DOCX {self.contact.remark}】{index}/{len(messages)}")
         if index % 25:
-            print(f"【导出 DOCX {self.contact.remark}】{index+1}/{len(messages)}")
+            print(f"【导出 DOCX {self.contact.remark}】{index + 1}/{len(messages)}")
         filename = os.path.join(origin_docx_path, f"{self.contact.remark}.docx")
         doc = docx.Document()
         doc.styles["Normal"].font.name = "Cambria"
@@ -355,7 +384,7 @@ class DocxExporter(ExporterBase):
         # print(f"【MERGE Export DOCX {self.contact.remark}】{len(docs)}")
         doc = Composer(doc)  # 针对11188条消息（56组）所测，反排比正排更快，正排65s，反排54s
         for index, dx in enumerate(docs[::-1]):
-            print(f"【合并 DOCX {self.contact.remark}】{index+1}/{len(docs)}")
+            print(f"【合并 DOCX {self.contact.remark}】{index + 1}/{len(docs)}")
             doc.insert(0, dx)
         try:
             doc.save(filename)

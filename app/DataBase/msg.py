@@ -59,6 +59,9 @@ def parser_chatroom_message(messages):
             message.append(ContactDefault(wxid))
             updated_messages.append(tuple(message))
             continue
+        # todo 解析还是有问题，会出现这种带:的东西
+        if ':' in wxid: # wxid_ewi8gfgpp0eu22:25319:1
+            wxid = wxid.split(':')[0]
         contact_info_list = micro_msg_db.get_contact_by_username(wxid)
         if contact_info_list is None:  # 群聊中已退群的联系人不会保存在数据库里
             message.append(ContactDefault(wxid))

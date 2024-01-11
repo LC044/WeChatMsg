@@ -116,15 +116,16 @@ class ExporterBase(QThread):
         return False
 
     def get_avatar_path(self, is_send, message, is_absolute_path=False) -> str:
-        if self.contact.is_chatroom:
-            avatar = message[12].smallHeadImgUrl
-        else:
-            avatar = Me().smallHeadImgUrl if is_send else self.contact.smallHeadImgUrl
         if is_absolute_path:
             if self.contact.is_chatroom:
                 avatar = message[12].avatar_path
             else:
                 avatar = Me().avatar_path if is_send else self.contact.avatar_path
+        else:
+            if self.contact.is_chatroom:
+                avatar = message[12].smallHeadImgUrl
+            else:
+                avatar = Me().smallHeadImgUrl if is_send else self.contact.smallHeadImgUrl
         return avatar
 
     def get_display_name(self, is_send, message) -> str:
