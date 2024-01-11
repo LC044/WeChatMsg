@@ -7,6 +7,7 @@ from app.DataBase.output import ExporterBase
 
 class CSVExporter(ExporterBase):
     def to_csv(self):
+        print("【开始导出 CSV {self.contact.remark}】")
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         os.makedirs(origin_docx_path, exist_ok=True)
         filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}_utf8.csv"
@@ -23,7 +24,8 @@ class CSVExporter(ExporterBase):
             for msg in messages:
                 other_data = [msg[12].remark, msg[12].nickName, msg[12].wxid] if self.contact.is_chatroom else []
                 writer.writerow([*msg[:9], *other_data])
-        self.okSignal.emit('ok')
+        print("【完成导出 CSV {self.contact.remark}】")
+        self.okSignal.emit(1)
 
     def run(self):
         self.to_csv()
