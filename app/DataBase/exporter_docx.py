@@ -18,8 +18,12 @@ from app.person import Me
 from app.util.compress_content import parser_reply, share_card, music_share
 from app.util.image import get_image_abs_path
 from app.util.music import get_music_path
-import string
 
+# 要删除的编码字符
+encoded_chars = b'\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0b\x0c\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f'
+
+# 创建一个字典，将要删除的字符映射为 None
+char_mapping = {char: None for char in encoded_chars}
 
 def filter_control_characters(input_string):
     """
@@ -27,19 +31,11 @@ def filter_control_characters(input_string):
     @param input_string:
     @return:
     """
-    # 创建一个包含所有可打印字符的字符串
-    printable_chars = set(string.printable)
 
     # 过滤掉非可打印字符
-    filtered_string = ''.join(char for char in input_string if char in printable_chars)
+    filtered_string = input_string.translate(char_mapping)
 
     return filtered_string
-
-def is_control_char(ch):
-    '''Whether a control character.
-    https://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python
-    '''
-    return unicodedata.category(ch)[0] == 'C'
 
 
 class DocxExporter(ExporterBase):
@@ -57,9 +53,12 @@ class DocxExporter(ExporterBase):
         try:
             content_cell.paragraphs[0].add_run(str_content)
         except ValueError:
-            logger.error(f'非法字符:{str_content}')
-            str_content = filter_control_characters(str_content)
-            content_cell.paragraphs[0].add_run(str_content)
+            try:
+                str_content = filter_control_characters(str_content)
+                content_cell.paragraphs[0].add_run(str_content)
+            except ValueError:
+                logger.error(f'非法字符:{str_content}')
+                content_cell.paragraphs[0].add_run('非法字符')
         content_cell.paragraphs[0].font_size = shared.Inches(0.5)
         if is_send:
             p = content_cell.paragraphs[0]
