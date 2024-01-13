@@ -86,7 +86,7 @@ QCheckBox::indicator:checked{
 """
 
 
-class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
+class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
     exitSignal = pyqtSignal(bool)
     okSignal = pyqtSignal(bool)
 
@@ -148,39 +148,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
         self.setCursorTimeout(100)
 
         self.startBusy()
-
-
-        self.action_help_contact.triggered.connect(
-            lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/5")))
-        self.action_help_chat.triggered.connect(
-            lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/5")))
-        self.action_help_decrypt.triggered.connect(
-            lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/4")))
-        self.listWidget.setVisible(False)
-        self.stackedWidget.setVisible(False)
-        self.listWidget.currentRowChanged.connect(self.setCurrentIndex)
-        tool_item = QListWidgetItem(Icon.Tool_Icon, '工具', self.listWidget)
-        chat_item = QListWidgetItem(Icon.Chat_Icon, '聊天', self.listWidget)
-        contact_item = QListWidgetItem(Icon.Contact_Icon, '好友', self.listWidget)
-        myinfo_item = QListWidgetItem(Icon.Home_Icon, '我的', self.listWidget)
-        tool_window = ToolWindow()
-        tool_window.get_info_signal.connect(self.set_my_info)
-        tool_window.decrypt_success_signal.connect(self.decrypt_success)
-        tool_window.load_finish_signal.connect(self.loading)
-        self.stackedWidget.addWidget(tool_window)
-        self.chat_window = ChatWindow()
-        # chat_window = QWidget()
-        self.stackedWidget.addWidget(self.chat_window)
-        self.contact_window = ContactWindow()
-        self.stackedWidget.addWidget(self.contact_window)
-        label = QLabel('该功能暂不支持哦')
-        label.setFont(QFont("微软雅黑", 50))
-        label.setAlignment(Qt.AlignCenter)
-        self.stackedWidget.addWidget(label)
-        tool_window.load_finish_signal.connect(self.loading)
-        self.statusbar.showMessage('聊天窗口上划到顶部会加载新的聊天记录\n一次不行那就多来几次')
-        self.contact_window.load_finish_signal.connect(self.loading)
-        self.chat_window.load_finish_signal.connect(self.loading)
+        self.about_view = AboutDialog(main_window=self, parent=self)
 
     def setCurrentIndex(self, row):
         self.stackedWidget.setCurrentIndex(row)
@@ -200,7 +168,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
         self.avatar = QPixmap()
         try:
             img_bytes = misc_db.get_avatar_buffer(wxid)
-        except :
+        except:
             close_db()
             QMessageBox.critical(self, "数据库错误", "请重启微信后重试")
             import shutil
@@ -244,7 +212,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
         # self.startBusy()
         if self.sender() == self.action_output_CSV:
             self.outputThread = Output(None, type_=Output.CSV_ALL)
-            self.outputThread.startSignal.connect(lambda x:self.startBusy())
+            self.outputThread.startSignal.connect(lambda x: self.startBusy())
             self.outputThread.okSignal.connect(
                 lambda x: self.message('聊天记录导出成功'))
             self.outputThread.start()
@@ -267,8 +235,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
         关于
         """
         # QMessageBox.about(self, "关于",config.about)
-        about_view = AboutDialog(self)
-        about_view.show()
+        # about_view = AboutDialog(self)
+        self.about_view.show()
 
     def decrypt_success(self):
         QMessageBox.about(self, "解密成功", "请重新启动")
@@ -284,6 +252,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow,QCursorGif):
             event.accept()
         else:
             event.ignore()
+
     def close(self) -> bool:
         close_db()
         super().close()

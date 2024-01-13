@@ -342,9 +342,15 @@ class DocxExporter(ExporterBase):
         n = 0
         index = 0
         newdoc()
+        # document = docx.Document()
+        # doc = document.add_paragraph()
         for index, message in enumerate(messages):
             if index % 200 == 0 and index:
+                # doc = document.add_paragraph()
+                filename = os.path.join(origin_docx_path, f"{self.contact.remark}{n}.docx")
+                doc.save(filename)
                 newdoc()
+
             type_ = message[2]
             sub_type = message[3]
             timestamp = message[5]
@@ -386,9 +392,11 @@ class DocxExporter(ExporterBase):
             print(f"【合并 DOCX {self.contact.remark}】{index + 1}/{len(docs)}")
             doc.insert(0, dx)
         try:
+            # document.save(filename)
             doc.save(filename)
         except PermissionError:
             filename = filename[:-5] + f'{time.time()}' + '.docx'
+            # document.save(filename)
             doc.save(filename)
         print(f"【完成导出 DOCX {self.contact.remark}】")
         self.okSignal.emit(1)

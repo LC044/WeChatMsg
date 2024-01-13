@@ -9,6 +9,7 @@ emoji.py
 """
 
 import os
+import re
 import traceback
 import xml.etree.ElementTree as ET
 import sqlite3
@@ -52,6 +53,9 @@ def parser_xml(xml_string):
     try:
         root = ET.fromstring(xml_string)
     except:
+        res = re.search('<msg>.*</msg>', xml_string)
+        if res:
+            xml_string = res.group()
         root = ET.fromstring(xml_string.replace("&", "&amp;"))
     emoji = root.find("./emoji")
     # Accessing attributes of the 'emoji' element
