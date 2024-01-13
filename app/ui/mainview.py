@@ -104,7 +104,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         self.setStyleSheet(Stylesheet)
         self.listWidget.clear()
         self.resize(QSize(800, 600))
-        self.action_desc.triggered.connect(self.about)
+
         self.load_flag = False
         self.load_data()
         self.load_num = 0
@@ -146,7 +146,6 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         self.initCursor([':/icons/icons/Cursors/%d.png' %
                          i for i in range(8)])
         self.setCursorTimeout(100)
-
         self.startBusy()
         self.about_view = AboutDialog(main_window=self, parent=self)
 
@@ -234,8 +233,6 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         """
         关于
         """
-        # QMessageBox.about(self, "关于",config.about)
-        # about_view = AboutDialog(self)
         self.about_view.show()
 
     def decrypt_success(self):

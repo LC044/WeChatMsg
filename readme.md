@@ -115,7 +115,7 @@
 ### 1. 安装
 
 ```shell
-# Python>=3.10
+# Python>=3.10 仅支持3.10、3.11、3.12,请勿使用其他Python版本
 git clone https://github.com/LC044/WeChatMsg
 cd WeChatMsg
 pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
@@ -312,7 +312,7 @@ python main.py
 
 后续更新将会在公众号同步发布
 <div>
-  <img src="./doc/images/weixin.png">
+  <img src="https://blog.lc044.love/static/img/3fd32f1732a2c8f53a7eb923472b8f19.clipboard-2023-12-18.webp">
   <img src="./doc/images/qq1.jpg" height="200">
 </div>
 
