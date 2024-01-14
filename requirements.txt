@@ -18,4 +18,3 @@ lz4==4.3.2
 pilk==0.2.4
 python-docx==1.1.0
 docxcompose==1.4.0
-eyed3==0.9.7
