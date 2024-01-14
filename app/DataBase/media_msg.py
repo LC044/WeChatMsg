@@ -1,11 +1,14 @@
 import os.path
 import subprocess
 import sys
+import traceback
 from os import system
 import sqlite3
 import threading
 import xml.etree.ElementTree as ET
 from pilk import decode
+
+from app.log import logger
 
 lock = threading.Lock()
 db_path = "./app/Database/Msg/MediaMSG.db"
@@ -95,15 +98,17 @@ class MediaMsg:
                 # system(cmd)
                 # 使用subprocess.run()执行命令
                 subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            os.remove(silk_path)
+            os.remove(pcm_path)
         except Exception as e:
             print(f"Error: {e}")
+            logger.error(f'语音发送错误\n{traceback.format_exc()}')
             cmd = f'''"{os.path.join(os.getcwd(), 'app', 'resources', 'data', 'ffmpeg.exe')}" -loglevel quiet -y -f s16le -i "{pcm_path}" -ar 44100 -ac 1 "{mp3_path}"'''
             # system(cmd)
             # 使用subprocess.run()执行命令
             subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        os.remove(silk_path)
-        os.remove(pcm_path)
-        print(mp3_path)
+        finally:
+            print(mp3_path)
         return mp3_path
 
     def get_audio_path(self, reserved0, output_path):
