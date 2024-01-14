@@ -1021,10 +1021,11 @@ input {
     function prevPage() {
         if (currentPage > 1) {
             currentPage--;
+            reachedBottom = false;
             renderPage(currentPage);
         }
     }
-
+    
     function nextPage() {
         const totalPages = Math.ceil(chatMessages.length / itemsPerPage);
         if (currentPage < totalPages) {
