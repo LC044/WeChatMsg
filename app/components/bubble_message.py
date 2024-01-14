@@ -264,7 +264,6 @@ class ChatWidget(QWidget):
         self.scrollArea = ScrollArea(self)
         scrollBar = ScrollBar()
         self.scrollArea.setVerticalScrollBar(scrollBar)
-        # self.scrollArea.setGeometry(QRect(9, 9, 261, 211))
         # 生成滚动区域的内容部署层部件
         self.scrollAreaWidgetContents = ScrollAreaContent(self.scrollArea)
         self.scrollAreaWidgetContents.setMinimumSize(50, 100)

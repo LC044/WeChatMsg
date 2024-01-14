@@ -170,7 +170,7 @@ def share_card(bytesExtra, compress_content_):
         return {
             'title': escape_js_and_html(title),
             'description': escape_js_and_html(des),
-            'url': url,
+            'url': escape_js_and_html(url),
             'app_name': escape_js_and_html(show_display_name),
             'thumbnail': thumbnail,
             'app_logo': app_logo

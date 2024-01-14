@@ -18,10 +18,14 @@ class Ui_Form(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.scrollArea = QtWidgets.QScrollArea(Form)
+        self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 567, 553))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 552, 555))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
@@ -67,8 +71,7 @@ class Ui_Form(object):
         self.widget_2 = QtWidgets.QWidget(self.scrollAreaWidgetContents)
         self.widget_2.setStyleSheet("QWidget{\n"
 "   background-color:rgb(251,251,251);\n"
-"    border-radius: 10\n"
-"px;\n"
+"    border-radius: 10px;\n"
 "}\n"
 "\n"
 "QPushButton{\n"
@@ -85,6 +88,7 @@ class Ui_Form(object):
 "}")
         self.widget_2.setObjectName("widget_2")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.widget_2)
+        self.horizontalLayout_2.setContentsMargins(9, -1, -1, -1)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.commandLinkButton = QtWidgets.QCommandLinkButton(self.widget_2)
         self.commandLinkButton.setEnabled(True)

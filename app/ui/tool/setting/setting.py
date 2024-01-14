@@ -60,6 +60,7 @@ QCheckBox::indicator:checked{
     Height:60px;
     image: url(:/icons/icons/按钮_开启.svg);
 }
+
 """
 
 
@@ -67,8 +68,9 @@ class SettingControl(QWidget, Ui_Form):
 
     def __init__(self, parent=None):
         super(SettingControl, self).__init__(parent)
-        self.setupUi(self)
         self.setStyleSheet(Stylesheet)
+        self.setupUi(self)
+
         self.btn_addstopword.clicked.connect(self.add_stopwords)
         self.init_ui()
         self.read_data()
