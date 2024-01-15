@@ -170,7 +170,7 @@ class Ui_Dialog(object):
         self.label_ready.setObjectName("label_ready")
         self.horizontalLayout.addWidget(self.label_ready)
         self.progressBar = QtWidgets.QProgressBar(Dialog)
-        self.progressBar.setProperty("value", 50)
+        self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
         self.horizontalLayout.addWidget(self.progressBar)
         self.verticalLayout.addLayout(self.horizontalLayout)

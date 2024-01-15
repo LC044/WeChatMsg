@@ -290,8 +290,9 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
 
     def close(self) -> bool:
         close_db()
-        super().close()
         self.contact_window.close()
+
+        super().close()
         self.exitSignal.emit(True)
 
 

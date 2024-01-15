@@ -2,9 +2,10 @@ import binascii
 import os.path
 import sqlite3
 import threading
+import traceback
 import xml.etree.ElementTree as ET
 
-from app.log import log
+from app.log import log, logger
 from app.util.protocbuf.msg_pb2 import MessageBytesExtra
 
 image_db_lock = threading.Lock()
@@ -32,6 +33,13 @@ def get_md5_from_xml(content, type_="img"):
 
 
 def decodeExtraBuf(extra_buf_content: bytes):
+    if not extra_buf_content:
+        return {
+            "region": ('', '', ''),
+            "signature": '',
+            "telephone": '',
+            "gender": 0,
+        }
     trunkName = {
         b"\x46\xCF\x10\xC4": "个性签名",
         b"\xA4\xD9\x02\x4A": "国家",
@@ -46,33 +54,42 @@ def decodeExtraBuf(extra_buf_content: bytes):
     }
     res = {"手机号": ""}
     off = 0
-    for key in trunkName:
-        trunk_head = trunkName[key]
-        try:
-            off = extra_buf_content.index(key) + 4
-        except:
-            pass
-        char = extra_buf_content[off : off + 1]
-        off += 1
-        if char == b"\x04":  # 四个字节的int，小端序
-            intContent = extra_buf_content[off : off + 4]
-            off += 4
-            intContent = int.from_bytes(intContent, "little")
-            res[trunk_head] = intContent
-        elif char == b"\x18":  # utf-16字符串
-            lengthContent = extra_buf_content[off : off + 4]
-            off += 4
-            lengthContent = int.from_bytes(lengthContent, "little")
-            strContent = extra_buf_content[off : off + lengthContent]
-            off += lengthContent
-            res[trunk_head] = strContent.decode("utf-16").rstrip("\x00")
+    try:
+        for key in trunkName:
+            trunk_head = trunkName[key]
+            try:
+                off = extra_buf_content.index(key) + 4
+            except:
+                pass
+            char = extra_buf_content[off : off + 1]
+            off += 1
+            if char == b"\x04":  # 四个字节的int，小端序
+                intContent = extra_buf_content[off : off + 4]
+                off += 4
+                intContent = int.from_bytes(intContent, "little")
+                res[trunk_head] = intContent
+            elif char == b"\x18":  # utf-16字符串
+                lengthContent = extra_buf_content[off : off + 4]
+                off += 4
+                lengthContent = int.from_bytes(lengthContent, "little")
+                strContent = extra_buf_content[off : off + lengthContent]
+                off += lengthContent
+                res[trunk_head] = strContent.decode("utf-16").rstrip("\x00")
+        return {
+            "region": (res["国家"], res["省份"], res["市"]),
+            "signature": res["个性签名"],
+            "telephone": res["手机号"],
+            "gender": res["性别"],
+        }
+    except:
+        logger.error(f'联系人解析错误:\n{traceback.format_exc()}')
+        return {
+            "region": ('', '', ''),
+            "signature": '',
+            "telephone": '',
+            "gender": 0,
+        }
 
-    return {
-        "region": (res["国家"], res["省份"], res["市"]),
-        "signature": res["个性签名"],
-        "telephone": res["手机号"],
-        "gender": res["性别"],
-    }
 
 
 def singleton(cls):

@@ -64,13 +64,15 @@ class ExportDialog(QDialog, Ui_Dialog):
         self.comboBox_time.activated.connect(self.set_export_date)
         # 下面将输出重定向到textBrowser中
         sys.stdout = EmittingStr(textWritten=self.outputWritten)
-        sys.stderr = EmittingStr(textWritten=self.outputWritten)
+        # sys.stderr = EmittingStr(textWritten=self.outputWritten)
         scroll_bar = ScrollBar()
         self.textBrowser.setVerticalScrollBar(scroll_bar)
         self.export_choices = {"文本": True, "图片": True, "语音": False, "视频": False, "表情包": False,
                                '音乐与音频': False, '分享卡片': False, '文件': False,
                                '拍一拍等系统消息': True}  # 定义导出的数据类型，默认全部选择
         self.setWindowTitle(title)
+        self.checkBox_word.setEnabled(False)
+        self.checkBox_word.setText('Docx(暂时不可用)')
         self.resize(800, 600)
         self.worker = None  # 导出线程
         for export_type, default_state in self.export_choices.items():

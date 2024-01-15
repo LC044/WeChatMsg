@@ -95,7 +95,7 @@ class Ui_Dialog(object):
         self.textBrowser.setObjectName("textBrowser")
         self.verticalLayout_3.addWidget(self.textBrowser)
         self.progressBar = QtWidgets.QProgressBar(Dialog)
-        self.progressBar.setProperty("value", 24)
+        self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
         self.verticalLayout_3.addWidget(self.progressBar)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
@@ -127,7 +127,7 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.label_3.setText(_translate("Dialog", "导出过程中请不要退出"))
+        self.label_3.setText(_translate("Dialog", "导出过程中请不要退出，为减少卡顿请尽量不要超过十个"))
         self.btn_select_all.setText(_translate("Dialog", "全选"))
         self.comboBox_time.setItemText(0, _translate("Dialog", "全部时间"))
         self.comboBox_time.setItemText(1, _translate("Dialog", "最近三个月"))
