@@ -56,6 +56,7 @@ class ContactQListWidgetItem(QListWidgetItem):
         # 设置布局用来对nameLabel和avatorLabel进行布局
         hbox = QHBoxLayout()
         self.checkBox = QCheckBox()
+        self.checkBox.clicked.connect(self.select)
         hbox.addWidget(self.checkBox)
         hbox.addWidget(self.avatorLabel)
         hbox.addWidget(self.nameLabel)
@@ -76,6 +77,7 @@ class ContactQListWidgetItem(QListWidgetItem):
         # print('选择',self.is_select)
         self.checkBox.setChecked(self.is_select)
         # self.widget.setStyleSheet(Stylesheet_clicked)
+
     def force_select(self):
         self.is_select = True
         self.checkBox.setChecked(self.is_select)

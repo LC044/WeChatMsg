@@ -9,6 +9,7 @@
 """
 import json
 import os.path
+import traceback
 
 from PyQt5.QtCore import pyqtSignal, QUrl, Qt, QThread, QSize
 from PyQt5.QtGui import QPixmap, QFont, QDesktopServices, QIcon
@@ -24,6 +25,7 @@ from .menu.export import ExportDialog
 from .tool.tool_window import ToolWindow
 from ..DataBase.output_pc import Output
 from ..components.QCursorGif import QCursorGif
+from ..log import logger
 from ..person import Me
 
 # 美化样式表
@@ -207,6 +209,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
             img_bytes = misc_db.get_avatar_buffer(wxid)
         except:
             close_db()
+            logger.error(f'数据库错误:\n{traceback.format_exc()}')
             QMessageBox.critical(self, "数据库错误", "请重启微信后重试")
             import shutil
             shutil.rmtree('./app/Database/Msg')
