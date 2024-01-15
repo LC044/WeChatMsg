@@ -16,17 +16,15 @@ from app.util.emoji import get_emoji_url
 from app.util.image import get_image_path, get_image
 from app.util.music import get_music_path
 
-
 icon_files = {
     './icon/word.png': ['doc', 'docx'],
     './icon/excel.png': ['xls', 'xlsx'],
     './icon/csv.png': ['csv'],
     './icon/txt.png': ['txt'],
-    './icon/zip.png': ['zip', '7z','rar'],
+    './icon/zip.png': ['zip', '7z', 'rar'],
     './icon/ppt.png': ['ppt', 'pptx'],
     './icon/pdf.png': ['pdf'],
 }
-
 
 
 class HtmlExporter(ExporterBase):
@@ -287,7 +285,9 @@ class HtmlExporter(ExporterBase):
             content = f.read()
             html_head, html_end = content.split('/*注意看这是分割线*/')
         f = open(filename, 'w', encoding='utf-8')
-        f.write(html_head.replace("<title>Chat Records</title>", f"<title>{self.contact.remark}</title>"))
+        html_head = html_head.replace("<title>出错了</title>", f"<title>{self.contact.remark}</title>")
+        html_head = html_head.replace("<p id=\"title\">出错了</p>", f"<p id=\"title\">{self.contact.remark}</p>")
+        f.write(html_head)
         self.rangeSignal.emit(len(messages))
         for index, message in enumerate(messages):
             type_ = message[2]
@@ -333,7 +333,7 @@ class HtmlExporter(ExporterBase):
         @return:
         """
         self.num += 1
-        print('子线程完成',self.num,'/',self.total_num)
+        print('子线程完成', self.num, '/', self.total_num)
         if self.num == self.total_num:
             # 所有子线程都完成之后就发送完成信号
             self.okSignal.emit(1)
