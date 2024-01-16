@@ -1,5 +1,8 @@
 import os
 import sqlite3
+import traceback
+
+from app.log import logger
 
 
 def merge_MediaMSG_databases(source_paths, target_path):
@@ -71,7 +74,7 @@ def merge_databases(source_paths, target_path):
                     "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
                     result)
             except:
-                pass
+                logger.error(f'数据库合并错误:\n{traceback.format_exc()}')
             cursor.close()
             db.close()
         # 提交事务

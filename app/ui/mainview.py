@@ -18,7 +18,6 @@ from PyQt5.QtWidgets import QMainWindow, QLabel, QListWidgetItem, QMessageBox
 from app.DataBase import misc_db, micro_msg_db, close_db
 from app.ui.Icon import Icon
 from . import mainwindow
-from app.ui.menu.about_dialog import AboutDialog
 from .chat import ChatWindow
 from .contact import ContactWindow
 from .menu.export import ExportDialog
@@ -28,6 +27,10 @@ from ..components.QCursorGif import QCursorGif
 from ..log import logger
 from ..person import Me
 
+try:
+    from app.ui.menu.about_dialog import AboutDialog
+except ModuleNotFoundError:
+    logger.error(f'Python版本错误:Python>=3.10,仅支持3.10、3.11、3.12')
 # 美化样式表
 Stylesheet = """
 QWidget{
