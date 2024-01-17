@@ -27,7 +27,7 @@ from ..log import logger
 from ..person import Me
 
 try:
-    from app.ui.menu.about_dialog import AboutDialog
+    from app.ui.menu.about_dialog import AboutDialog, version, UpdateThread
 except ModuleNotFoundError:
     logger.error(f'Python版本错误:Python>=3.10,仅支持3.10、3.11、3.12')
 # 美化样式表
@@ -185,6 +185,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
                          i for i in range(8)])
         self.setCursorTimeout(100)
         self.startBusy()
+        self.action_update.triggered.connect(self.update)
         self.about_view = AboutDialog(main_window=self, parent=self)
 
     def setCurrentIndex(self, row):
@@ -267,6 +268,23 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
     def message(self, msg):
         self.stopBusy()
         QMessageBox.about(self, "提醒", msg)
+
+    def update(self):
+        self.update_thread = UpdateThread()
+        self.update_thread.updateSignal.connect(self.show_update)
+        self.update_thread.start()
+
+    def show_update(self, update_info):
+        if not update_info.get('update_available'):
+            QMessageBox.information(self, '更新通知', "当前已是最新版本")
+            return
+        detail = f'''
+        当前版本:{version},最新版本:{update_info.get('latest_version')}<br>
+        更新内容:
+        {update_info.get('description')}
+        <br><a href='{update_info.get('download_url')}'>点击下载</a>
+        '''
+        QMessageBox.information(self, '更新通知', detail)
 
     def about(self):
         """
