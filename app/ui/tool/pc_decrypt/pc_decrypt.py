@@ -61,7 +61,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
         if result[0] == -1:
             QMessageBox.critical(self, "错误", "请登录微信")
         elif result[0] == -2:
-            QMessageBox.critical(self, "错误", "微信版本不匹配\n请更新微信版本为:3.9.9.27（去微信官网下载）")
+            QMessageBox.critical(self, "错误", "微信版本不匹配\n请更新微信版本为:3.9.9.27（去微信官网下载）\n或更新本软件")
         elif result[0] == -3:
             QMessageBox.critical(self, "错误", "WeChat WeChatWin.dll Not Found")
         elif result[0] == -10086:

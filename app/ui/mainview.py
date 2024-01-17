@@ -11,9 +11,9 @@ import json
 import os.path
 import traceback
 
-from PyQt5.QtCore import pyqtSignal, QUrl, Qt, QThread, QSize
-from PyQt5.QtGui import QPixmap, QFont, QDesktopServices, QIcon
-from PyQt5.QtWidgets import QMainWindow, QLabel, QListWidgetItem, QMessageBox
+from PyQt5.QtCore import pyqtSignal, QThread, QSize
+from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtWidgets import QMainWindow, QLabel, QMessageBox
 
 from app.DataBase import misc_db, micro_msg_db, close_db
 from app.ui.Icon import Icon
@@ -21,7 +21,6 @@ from . import mainwindow
 from .chat import ChatWindow
 from .contact import ContactWindow
 from .menu.export import ExportDialog
-from .tool.tool_window import ToolWindow
 from ..DataBase.output_pc import Output
 from ..components.QCursorGif import QCursorGif
 from ..log import logger
@@ -177,11 +176,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
                     self.set_my_info(wxid)
                     self.load_flag = True
         else:
-            QMessageBox.information(
-                self,
-                '温馨提示',
-                '点击 工具->获取信息 重启后可以显示本人头像哦'
-            )
+            pass
 
     def init_ui(self):
 
