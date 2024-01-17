@@ -71,7 +71,7 @@ class ViewController(QWidget):
 
         except Exception as e:
             print(f"Exception: {e}")
-            logger.error(traceback.print_exc())
+            logger.error(traceback.format_exc())
 
     def show_success(self):
         QMessageBox.about(self, "解密成功", "数据库文件存储在\napp/DataBase/Msg\n文件夹下")

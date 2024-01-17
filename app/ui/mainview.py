@@ -18,8 +18,10 @@ from PyQt5.QtWidgets import QMainWindow, QLabel, QMessageBox
 from app.DataBase import misc_db, micro_msg_db, close_db
 from app.ui.Icon import Icon
 from . import mainwindow
+# 不能删，删了会出错
 from .chat import ChatWindow
 from .contact import ContactWindow
+from app.ui.tool.tool_window import ToolWindow
 from .menu.export import ExportDialog
 from ..DataBase.output_pc import Output
 from ..components.QCursorGif import QCursorGif
@@ -30,6 +32,7 @@ try:
     from app.ui.menu.about_dialog import AboutDialog, version, UpdateThread
 except ModuleNotFoundError:
     logger.error(f'Python版本错误:Python>=3.10,仅支持3.10、3.11、3.12')
+    raise ValueError('Python版本错误:Python>=3.10,仅支持3.10、3.11、3.12')
 # 美化样式表
 Stylesheet = """
 QWidget{
