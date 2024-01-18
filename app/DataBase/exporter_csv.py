@@ -22,7 +22,7 @@ class CSVExporter(ExporterBase):
             # 写入数据
             # writer.writerows(messages)
             for msg in messages:
-                other_data = [msg[12].remark, msg[12].nickName, msg[12].wxid] if self.contact.is_chatroom else []
+                other_data = [msg[13].remark, msg[13].nickName, msg[13].wxid] if self.contact.is_chatroom else []
                 writer.writerow([*msg[:9], *other_data])
         print(f"【完成导出 CSV {self.contact.remark}】")
         self.okSignal.emit(1)

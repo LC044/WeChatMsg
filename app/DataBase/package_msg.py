@@ -107,7 +107,8 @@ class PackageMsg:
             a[9]: msgSvrId,
             a[10]: BytesExtra,
             a[11]: CompressContent,
-            a[12]: msg_sender, （ContactPC 或 ContactDefault 类型，这个才是群聊里的信息发送人，不是群聊或者自己是发送者没有这个字段）
+            a[12]: DisplayContent,
+            a[13]: msg_sender, （ContactPC 或 ContactDefault 类型，这个才是群聊里的信息发送人，不是群聊或者自己是发送者没有这个字段）
         '''
         updated_messages = []  # 用于存储修改后的消息列表
         messages = msg_db.get_messages(chatroom_wxid)
