@@ -232,6 +232,7 @@ class HtmlExporter(ExporterBase):
             is_chatroom = 1 if self.contact.is_chatroom else 0
             avatar = self.get_avatar_path(is_send, message)
             display_name = self.get_display_name(is_send, message)
+            music_path = escape_js_and_html(music_path)
             doc.write(
                 f'''{{ type:49, text:'{music_path}',is_send:{is_send},avatar_path:'{avatar}',link_url:'{content.get('link_url')}',
                 timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',sub_type:3,title:'{content.get('title')}',
