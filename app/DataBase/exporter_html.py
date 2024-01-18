@@ -127,10 +127,7 @@ class HtmlExporter(ExporterBase):
             if file_path != "":
                 file_path = './file/' + file_info.get('file_name')
             doc.write(
-                f'''{{ type:49, text: '{file_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp}
-                            ,is_chatroom:{is_chatroom},displayname:'{display_name}',icon_path: '{icon_path}'
-                            ,sub_type:6,file_name: '{file_info.get('file_name')}',file_size: '{file_info.get('file_len')}'
-                            ,app_name: '{file_info.get('app_name')}'}},'''
+                f'''{{ type:49, text: '{file_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',icon_path: '{icon_path}',sub_type:6,file_name: '{file_info.get('file_name')}',file_size: '{file_info.get('file_len')}',app_name: '{file_info.get('app_name')}'}},'''
             )
 
     def refermsg(self, doc, message):
@@ -234,9 +231,7 @@ class HtmlExporter(ExporterBase):
             display_name = self.get_display_name(is_send, message)
             music_path = escape_js_and_html(music_path)
             doc.write(
-                f'''{{ type:49, text:'{music_path}',is_send:{is_send},avatar_path:'{avatar}',link_url:'{content.get('link_url')}',
-                timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',sub_type:3,title:'{content.get('title')}',
-                artist:'{content.get('artist')}', website_name:'{content.get('website_name')}'}},'''
+                f'''{{ type:49, text:'{music_path}',is_send:{is_send},avatar_path:'{avatar}',link_url:'{content.get('link_url')}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',sub_type:3,title:'{content.get('title')}',artist:'{content.get('artist')}', website_name:'{content.get('website_name')}'}},'''
             )
 
     def share_card(self, doc, message):
@@ -266,11 +261,7 @@ class HtmlExporter(ExporterBase):
             else:
                 app_logo = card_data.get('app_logo')
         doc.write(
-            f'''{{ type:49,sub_type:5, text:'',is_send:{is_send},avatar_path:'{avatar}',url:'{card_data.get('url')}',
-                    timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',title:'{card_data.get('title')}',
-                    description:'{card_data.get('description')}',thumbnail:'{thumbnail}',app_logo:'{app_logo}',
-                    app_name:'{card_data.get('app_name')}'
-                    }},\n'''
+            f'''{{ type:49,sub_type:5, text:'',is_send:{is_send},avatar_path:'{avatar}',url:'{card_data.get('url')}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',title:'{card_data.get('title')}',description:'{card_data.get('description')}',thumbnail:'{thumbnail}',app_logo:'{app_logo}',app_name:'{card_data.get('app_name')}'}},\n'''
         )
 
     def export(self):
