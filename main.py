@@ -95,4 +95,4 @@ if __name__ == '__main__':
         sys.exit(app.exec_())
     except Exception as e:
         print(f"Exception: {e}")
-        logger.error(traceback.print_exc())
+        logger.error(traceback.format_exc())
