@@ -225,7 +225,7 @@ def call_decompress(is_send, bytes_extra, display_content, str_content):  # 音�
                     (call_length % 3600) // 60,
                     call_length % 60,
                 )
-                display_content = f"通话时长 {f'{h}:' if h else ''}{m:02d}:{s:02d}"
+                display_content = f"通话时长 {f'{h:02d}:' if h else ''}{m:02d}:{s:02d}"
             else:
                 display_content = {
                     "5": ("" if is_send else "对方") + "已取消",
