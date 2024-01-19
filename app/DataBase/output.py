@@ -90,19 +90,23 @@ class ExporterBase(QThread):
     CONTACT_CSV = 4
     TXT = 5
 
-    def __init__(self, contact, type_=DOCX, message_types={},time_range=None, parent=None):
+    def __init__(self, contact, type_=DOCX, message_types={}, time_range=None, messages=None,index=0, parent=None):
         super().__init__(parent)
         self.message_types = message_types  # 导出的消息类型
         self.contact: Contact = contact  # 联系人
         self.output_type = type_  # 导出文件类型
         self.total_num = 1  # 总的消息数量
         self.num = 0  # 当前处理的消息数量
+        self.index = index #
         self.last_timestamp = 0
         self.time_range = time_range
+        self.messages = messages
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         makedirs(origin_docx_path)
+
     def run(self):
         self.export()
+
     def export(self):
         raise NotImplementedError("export method must be implemented in subclasses")
 

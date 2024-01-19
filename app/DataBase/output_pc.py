@@ -3,7 +3,7 @@ import os
 import traceback
 from typing import List
 
-from PyQt5.QtCore import pyqtSignal, QThread
+from PyQt5.QtCore import pyqtSignal, QThread, QObject
 from PyQt5.QtWidgets import QFileDialog
 
 from app.DataBase.exporter_csv import CSVExporter
@@ -20,7 +20,7 @@ from ..util.image import get_image
 os.makedirs('./data/聊天记录', exist_ok=True)
 
 
-class Output(QThread):
+class Output(QObject):
     """
     发送信息线程
     """
@@ -222,7 +222,7 @@ class Output(QThread):
         Child.okSignal.connect(self.okSignal if not is_batch else self.batch_finish_one)
         Child.start()
 
-    def run(self):
+    def start(self):
         if self.output_type == self.DOCX:
             self.to_docx(self.contact, self.message_types)
         elif self.output_type == self.CSV_ALL:
