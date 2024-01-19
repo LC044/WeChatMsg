@@ -83,13 +83,13 @@ class ChatInfo(QWidget):
 
     def get_avatar_path(self, is_send, message, is_absolute_path=False) -> str:
         if self.contact.is_chatroom:
-            avatar = message[12].smallHeadImgUrl
+            avatar = message[13].smallHeadImgUrl
         else:
             avatar = Me().smallHeadImgUrl if is_send else self.contact.smallHeadImgUrl
         if is_absolute_path:
             if self.contact.is_chatroom:
-                # message[12].save_avatar()
-                avatar = message[12].avatar
+                # message[13].save_avatar()
+                avatar = message[13].avatar
             else:
                 avatar = Me().avatar if is_send else self.contact.avatar
         return avatar
@@ -99,7 +99,7 @@ class ChatInfo(QWidget):
             if is_send:
                 display_name = Me().name
             else:
-                display_name = message[12].remark
+                display_name = message[13].remark
         else:
             display_name = None
         return display_name

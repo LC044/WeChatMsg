@@ -11,7 +11,7 @@ from app.DataBase.output import ExporterBase, escape_js_and_html
 from app.log import logger
 from app.person import Me
 from app.util import path
-from app.util.compress_content import parser_reply, share_card, music_share, file
+from app.util.compress_content import parser_reply, share_card, music_share, file, transfer_decompress, call_decompress
 from app.util.emoji import get_emoji_url
 from app.util.image import get_image_path, get_image
 from app.util.music import get_music_path
@@ -264,6 +264,36 @@ class HtmlExporter(ExporterBase):
             f'''{{ type:49,sub_type:5, text:'',is_send:{is_send},avatar_path:'{avatar}',url:'{card_data.get('url')}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',title:'{card_data.get('title')}',description:'{card_data.get('description')}',thumbnail:'{thumbnail}',app_logo:'{app_logo}',app_name:'{card_data.get('app_name')}'}},\n'''
         )
 
+    def transfer(self, doc, message):
+        is_send = message[4]
+        timestamp = message[5]
+        compress_content_ = message[11]
+        open("test.bin", "wb").write(compress_content_)
+        transfer_detail = transfer_decompress(compress_content_)
+        is_chatroom = 1 if self.contact.is_chatroom else 0
+        avatar = self.get_avatar_path(is_send, message)
+        display_name = self.get_display_name(is_send, message)
+        text_info_map = {
+            1: transfer_detail["pay_memo"] or "转账",
+            3: "已收款",
+            4: "已退还",
+        }
+        doc.write(f"""{{ type:49, sub_type:2000,text:'{text_info_map[transfer_detail["paysubtype"]]}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',paysubtype:{transfer_detail["paysubtype"]},pay_memo:'{transfer_detail["pay_memo"]}',feedesc:'{transfer_detail["feedesc"]}',}},\n""")
+
+    def call(self, doc, message):
+        is_send = message[4]
+        timestamp = message[5]
+        str_content = message[7]
+        bytes_extra = message[10]
+        display_content = message[12]
+        call_detail = call_decompress(
+            is_send, bytes_extra, display_content, str_content
+        )
+        is_chatroom = 1 if self.contact.is_chatroom else 0
+        avatar = self.get_avatar_path(is_send, message)
+        display_name = self.get_display_name(is_send, message)
+        doc.write(f"""{{ type:50, text:'{call_detail["display_content"]}',call_type:{call_detail["call_type"]},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',}},\n""")
+
     def export(self):
         print(f"【开始导出 HTML {self.contact.remark}】")
         messages = msg_db.get_messages(self.contact.wxid, time_range=self.time_range)
@@ -311,6 +341,10 @@ class HtmlExporter(ExporterBase):
                 self.music_share(f, message)
             elif type_ == 49 and sub_type == 5 and self.message_types.get(4905):
                 self.share_card(f, message)
+            elif type_ == 49 and sub_type == 2000 and self.message_types.get(492000):
+                self.transfer(f, message)
+            elif type_ == 50 and self.message_types.get(50):
+                self.call(f, message)
             if index % 2000 == 0:
                 print(f"【导出 HTML {self.contact.remark}】{index}/{len(messages)}")
         f.write(html_end)
@@ -325,7 +359,7 @@ class HtmlExporter(ExporterBase):
         @return:
         """
         self.num += 1
-        print('子线程完成', self.num, '/', self.total_num)
+        print("子线程完成", self.num, "/", self.total_num)
         if self.num == self.total_num:
             # 所有子线程都完成之后就发送完成信号
             self.okSignal.emit(1)
@@ -335,6 +369,7 @@ class OutputMedia(QThread):
     """
     导出语音消息
     """
+
     okSingal = pyqtSignal(int)
     progressSignal = pyqtSignal(int)
 
@@ -349,7 +384,9 @@ class OutputMedia(QThread):
             is_send = message[4]
             msgSvrId = message[9]
             try:
-                audio_path = media_msg_db.get_audio(msgSvrId, output_path=origin_docx_path + "/voice")
+                audio_path = media_msg_db.get_audio(
+                    msgSvrId, output_path=origin_docx_path + "/voice"
+                )
             except:
                 logger.error(traceback.format_exc())
             finally:
@@ -361,6 +398,7 @@ class OutputEmoji(QThread):
     """
     导出表情包
     """
+
     okSingal = pyqtSignal(int)
     progressSignal = pyqtSignal(int)
 
@@ -387,6 +425,7 @@ class OutputImage(QThread):
     """
     导出图片
     """
+
     okSingal = pyqtSignal(int)
     progressSignal = pyqtSignal(int)
 
@@ -399,10 +438,10 @@ class OutputImage(QThread):
 
     def count1(self, num):
         self.num += 1
-        print('图片导出完成一个')
+        print("图片导出完成一个")
         if self.num == self.child_thread_num:
             self.okSingal.emit(47)
-            print('图片导出完成')
+            print("图片导出完成")
 
     def run(self):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
@@ -412,13 +451,19 @@ class OutputImage(QThread):
             BytesExtra = message[10]
             timestamp = message[5]
             try:
-                image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
+                image_path = hard_link_db.get_image(
+                    str_content, BytesExtra, thumb=False
+                )
                 if not os.path.exists(os.path.join(Me().wx_dir, image_path)):
-                    image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
+                    image_thumb_path = hard_link_db.get_image(
+                        str_content, BytesExtra, thumb=True
+                    )
                     if not os.path.exists(os.path.join(Me().wx_dir, image_thumb_path)):
                         continue
                     image_path = image_thumb_path
-                image_path = get_image(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
+                image_path = get_image(
+                    image_path, base_path=f"/data/聊天记录/{self.contact.remark}/image"
+                )
                 try:
                     os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
                 except:
@@ -456,13 +501,19 @@ class OutputImageChild(QThread):
             BytesExtra = message[10]
             timestamp = message[5]
             try:
-                image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
+                image_path = hard_link_db.get_image(
+                    str_content, BytesExtra, thumb=False
+                )
                 if not os.path.exists(os.path.join(Me().wx_dir, image_path)):
-                    image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
+                    image_thumb_path = hard_link_db.get_image(
+                        str_content, BytesExtra, thumb=True
+                    )
                     if not os.path.exists(os.path.join(Me().wx_dir, image_thumb_path)):
                         continue
                     image_path = image_thumb_path
-                image_path = get_image(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
+                image_path = get_image(
+                    image_path, base_path=f"/data/聊天记录/{self.contact.remark}/image"
+                )
                 try:
                     os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
                 except:
@@ -472,4 +523,4 @@ class OutputImageChild(QThread):
             finally:
                 self.progressSignal.emit(1)
         self.okSingal.emit(47)
-        print('图片子线程完成')
+        print("图片子线程完成")
