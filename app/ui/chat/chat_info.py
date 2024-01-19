@@ -166,6 +166,7 @@ class ChatInfo(QWidget):
             traceback.print_exc()
 
 
+
 class ShowChatThread(QThread):
     showSingal = pyqtSignal(tuple)
     finishSingal = pyqtSignal(int)
