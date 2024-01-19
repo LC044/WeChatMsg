@@ -170,323 +170,423 @@ body {
 }
 
 .container .content {
-    .bubble {
-        white-space: pre-wrap;
-        max-width: 400px;
-        padding: 10px 11px 10px 11px;
-        border-radius: 5px;
-        position: relative;
-        color: #1F1F1F;
-        font-size: 14px;
-        word-wrap: break-word;
-        word-break: normal;
-    }
+}
+.bubble {
+    white-space: pre-wrap;
+    max-width: 400px;
+    padding: 10px 11px 10px 11px;
+    border-radius: 5px;
+    position: relative;
+    color: #1F1F1F;
+    font-size: 14px;
+    word-wrap: break-word;
+    word-break: normal;
+}
 
-    .chat-refer {
-        margin-top: 5px;
-        max-width: 400px;
-        padding: 8px 10px 8px 10px;
-        border-radius: 3px;
-        position: relative;
-        color: #797979;
-        font-size: 12px;
-        background-color: #e8e8e8;
-        word-wrap: break-word;
-        word-break: normal;
-    }
+.chat-refer {
+    margin-top: 5px;
+    max-width: 400px;
+    padding: 8px 10px 8px 10px;
+    border-radius: 3px;
+    position: relative;
+    color: #797979;
+    font-size: 12px;
+    background-color: #e8e8e8;
+    word-wrap: break-word;
+    word-break: normal;
+}
 
-    .chat-refer-right {
-        margin-right: 15px;
-    }
+.chat-refer-right {
+    margin-right: 15px;
+}
 
-    .chat-refer-left {
-        margin-left: 15px;
-    }
+.chat-refer-left {
+    margin-left: 15px;
+}
 
-    .item-left .bubble {
-        margin-left: 15px;
-        background-color: #fff;
-    }
+.item-left .bubble {
+    margin-left: 15px;
+    background-color: #fff;
+}
 
-    .item-left .bubble:before {
-        content: "";
-        position: absolute;
-        width: 0;
-        height: 0;
-        border-left: 10px solid transparent;
-        border-top: 10px solid transparent;
-        border-right: 10px solid #fff;
-        border-bottom: 10px solid transparent;
-        left: -20px;
-    }
+.item-left .bubble:before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-top: 10px solid transparent;
+    border-right: 10px solid #fff;
+    border-bottom: 10px solid transparent;
+    left: -20px;
+}
 
-    .item-right .bubble {
-        margin-right: 15px;
-        background-color: #9eea6a;
-    }
+.item-right .bubble {
+    margin-right: 15px;
+    background-color: #9eea6a;
+}
 
-    .item-right .bubble:before {
-        content: "";
-        position: absolute;
-        width: 0;
-        height: 0;
-        border-left: 10px solid #9eea6a;
-        border-top: 10px solid transparent;
-        border-right: 10px solid transparent;
-        border-bottom: 10px solid transparent;
-        right: -20px;
-    }
+.item-right .bubble:before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 10px solid #9eea6a;
+    border-top: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    right: -20px;
+}
 
-    .item {
-        margin-top: 15px;
-        display: flex;
-        width: 100%;
-    }
+.item {
+    margin-top: 15px;
+    display: flex;
+    width: 100%;
+}
 
-    .item-refer {
-        margin-top: 4px;
-    }
+.item-refer {
+    margin-top: 4px;
+}
 
-    .item.item-right {
-        justify-content: flex-end;
-    }
+.item.item-right {
+    justify-content: flex-end;
+}
 
-    .item.item-center {
-        justify-content: center;
-    }
+.item.item-center {
+    justify-content: center;
+}
 
-    .item.item-center span {
-        font-size: 12px;
-        padding: 2px 4px;
-        color: #fff;
-        background-color: #dadada;
-        border-radius: 3px;
-        -moz-user-select: none; /*火狐*/
-        -webkit-user-select: none; /*webkit浏览器*/
-        -ms-user-select: none; /*IE10*/
-        -khtml-user-select: none; /*早期浏览器*/
-        user-select: none;
-    }
+.item.item-center span {
+    font-size: 12px;
+    padding: 2px 4px;
+    color: #fff;
+    background-color: #dadada;
+    border-radius: 3px;
+    -moz-user-select: none; /*火狐*/
+    -webkit-user-select: none; /*webkit浏览器*/
+    -ms-user-select: none; /*IE10*/
+    -khtml-user-select: none; /*早期浏览器*/
+    user-select: none;
+}
 
-    .content-wrapper {
-        display: flex;
-        flex-direction: column;
-    }
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+}
 
-    .content-wrapper-left {
-        align-items: baseline;
-    }
+.content-wrapper-left {
+    align-items: baseline;
+}
 
-    .content-wrapper-right {
-        align-items: flex-end;
-    }
+.content-wrapper-right {
+    align-items: flex-end;
+}
 
-    .displayname {
-        margin-left: 13px;
-        margin-left: 13px;
-        font-size: 13px;
-        margin-bottom: 5px;
-        color: darkgray;
-    }
+.displayname {
+    margin-left: 13px;
+    margin-left: 13px;
+    font-size: 13px;
+    margin-bottom: 5px;
+    color: darkgray;
+}
 
-    .chat-image img, .chat-file img {
-        margin-right: 18px;
-        margin-left: 18px;
-        max-width: 300px;
-        /*max-height: auto;*/
-    }
+.chat-image img, .chat-file img {
+    margin-right: 18px;
+    margin-left: 18px;
+    max-width: 300px;
+    /*max-height: auto;*/
+}
 
-    .avatar img {
-        width: 42px;
-        height: 42px;
-        border-radius: 3px;
-        user-select: none;
-    }
+.avatar img {
+    width: 42px;
+    height: 42px;
+    border-radius: 3px;
+    user-select: none;
+}
 
-    .chat-video video {
-        margin-right: 18px;
-        margin-left: 18px;
-        max-width: 350px;
-    }
+.chat-video video {
+    margin-right: 18px;
+    margin-left: 18px;
+    max-width: 350px;
+}
 
-    .chat-audio {
-        max-width: 400px;
-    }
+.chat-audio {
+    max-width: 400px;
+}
 
-    audio {
-        margin-left: 9px;
-        margin-right: 9px;
-    }
+audio {
+    margin-left: 9px;
+    margin-right: 9px;
+}
 
-    .chat-music-audio, .chat-file {
-        width: 300px;
-        margin-right: 20px;
-        display: flex;
-        flex-direction: column;
-        padding: 10px;
-        background-color: #fff;
-        border-radius: 4px;
-        cursor: pointer;
-        height: 100px;
-        margin-left: 10px;
-    }
+.chat-music-audio, .chat-file {
+    width: 300px;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 100px;
+    margin-left: 10px;
+}
 
-    .chat-file img {
-        width: 50px;
-    }
+.chat-file img {
+    width: 50px;
+}
 
-    .chat-music-audio .player-box, .chat-file .file-box {
-        width: 300px;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        height: 80px;
-    }
+.chat-music-audio .player-box, .chat-file .file-box {
+    width: 300px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    height: 80px;
+}
 
-    .chat-music-audio .player-original, .chat-file .app-info {
-        border-top: 1px solid #ede3e3;
-    }
+.chat-music-audio .player-original, .chat-file .app-info {
+    border-top: 1px solid #ede3e3;
+}
 
-    .chat-music-audio .player-original p, .chat-file .app-info p {
-        margin-top: 3px;
-        color: #888;
-    }
+.chat-music-audio .player-original p, .chat-file .app-info p {
+    margin-top: 3px;
+    color: #888;
+}
 
-    .chat-music-audio .player-controls, .chat-file .file-img {
-        display: flex;
-        align-items: center;;
-    }
+.chat-music-audio .player-controls, .chat-file .file-img {
+    display: flex;
+    align-items: center;;
+}
 
-    .file-title, .card-content > h2, .description > p {
-        display: -webkit-box;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        -webkit-box-orient: vertical;
-    }
+.file-title, .card-content > h2, .description > p {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+}
 
-    .file-title, .card-content > h2 {
-        -webkit-line-clamp: 2;
-    }
+.file-title, .card-content > h2 {
+    -webkit-line-clamp: 2;
+}
 
-    .description > p {
-        -webkit-line-clamp: 3;
-        margin-top: 2px;
-    }
+.description > p {
+    -webkit-line-clamp: 3;
+    margin-top: 2px;
+}
 
 
-    .chat-music-audio .flex1, .chat-file .flex1 {
-        flex: 1;
-        justify-content: start;
-    }
+.chat-music-audio .flex1, .chat-file .flex1 {
+    flex: 1;
+    justify-content: start;
+}
 
-    .chat-music-audio .flex2, .chat-file .flex2 {
-        flex: 2;
-        justify-content: end;
-    }
+.chat-music-audio .flex2, .chat-file .flex2 {
+    flex: 2;
+    justify-content: end;
+}
 
-    .chat-music-audio .player-info, .chat-file .file-info {
-        width: 200px;
-        height: 80px;
-        margin-left: 4px;
-        margin-top: 15px;
-        white-space: normal;
-        flex-basis: 200px;
-        word-break: break-word;
-    }
+.chat-music-audio .player-info, .chat-file .file-info {
+    width: 200px;
+    height: 80px;
+    margin-left: 4px;
+    margin-top: 15px;
+    white-space: normal;
+    flex-basis: 200px;
+    word-break: break-word;
+}
 
-    .chat-music-audio .song-title, .chat-file .file-name {
-        font-weight: bold;
-        overflow-wrap: break-word;
-    }
+.chat-music-audio .song-title, .chat-file .file-name {
+    font-weight: bold;
+    overflow-wrap: break-word;
+}
 
-    .chat-music-audio .artist, .chat-file .file-size {
-        margin-top: 5px;
-        color: #888;
-    }
+.chat-music-audio .artist, .chat-file .file-size {
+    margin-top: 5px;
+    color: #888;
+}
 
-    .app-info {
-        font-size: 13px;
-        margin-left: 3px;
-        margin-right: 3px;
-    }
+.app-info {
+    font-size: 13px;
+    margin-left: 3px;
+    margin-right: 3px;
+}
 
-    .file-size {
-        font-size: 14px;
-    }
+.file-size {
+    font-size: 14px;
+}
 
-    .chat-music-audio .play-button {
-        width: 50px;
-        height: 50px;
-        background-color: rgba(0, 0, 0, 0);
-        border-radius: 50%;
-        border: none;
-        outline: none;
-        cursor: pointer;
-    }
+.chat-music-audio .play-button {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
 
-    .chat-music-audio .play-button.playing {
-        background: url("./icon/pause.png");
-    }
+.chat-music-audio .play-button.playing {
+    background: url("./icon/pause.png");
+}
 
-    .chat-music-audio .play-button.paused {
-        background: url("./icon/play.png");
-    }
+.chat-music-audio .play-button.paused {
+    background: url("./icon/play.png");
+}
 
-    .input-area {
-        border-top: 0.5px solid #e0e0e0;
-        height: 150px;
-        display: flex;
-        flex-flow: column;
-        background-color: #fff;
-    }
+.input-area {
+    border-top: 0.5px solid #e0e0e0;
+    height: 150px;
+    display: flex;
+    flex-flow: column;
+    background-color: #fff;
+}
 
-    textarea {
-        flex: 1;
-        padding: 5px;
-        font-size: 14px;
-        border: none;
-        cursor: pointer;
-        overflow-y: auto;
-        overflow-x: hidden;
-        outline: none;
-        resize: none;
-    }
+textarea {
+    flex: 1;
+    padding: 5px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    overflow-y: auto;
+    overflow-x: hidden;
+    outline: none;
+    resize: none;
+}
 
-    .button-area {
-        display: flex;
-        height: 40px;
-        margin-right: 10px;
-        line-height: 40px;
-        padding: 5px;
-        justify-content: flex-end;
-    }
+.button-area {
+    display: flex;
+    height: 40px;
+    margin-right: 10px;
+    line-height: 40px;
+    padding: 5px;
+    justify-content: flex-end;
+}
 
-    .button-area button {
-        width: 80px;
-        border: none;
-        outline: none;
-        border-radius: 4px;
-        float: right;
-        cursor: pointer;
-    }
+.button-area button {
+    width: 80px;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    float: right;
+    cursor: pointer;
+}
 
+.button-row,
+.jump-row,
+#paginationInfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 25px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 14px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+input {
+    padding: 8px;
+    width: 120px;
+    box-sizing: border-box;
+    margin-right: 0px;
+    margin-left: 15px;
+}
+
+button,
+input {
+    font-size: 14px;
+}
+
+#paginationInfo {
+    color: #555;
+    font-size: 14px;
+}
+
+/* 分享的卡片 */
+
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin: 5px 20px 20px 20px;
+}
+
+.card a {
+    text-decoration: none; /* 去掉链接的下划线 */
+    color: inherit; /* 继承父元素的文字颜色 */
+
+}
+
+.card-content {
+    padding: 20px;
+    flex: 1;
+}
+
+.thumbnail {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.description {
+    display: flex;
+    justify-content: space-between;
+}
+
+.link-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+}
+
+.app-logo {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.app-name {
+    font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
     .button-row,
     .jump-row,
     #paginationInfo {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-bottom: 10px;
+        margin-bottom: 0px;
     }
 
     button {
-        padding: 10px 25px;
+        padding: 5px 10px;
         background-color: #3498db;
         color: white;
         border: none;
         border-radius: 4px;
         cursor: pointer;
-        margin: 0 14px;
+        margin: 0 5px;
         transition: background-color 0.3s;
     }
 
@@ -499,122 +599,21 @@ body {
         width: 120px;
         box-sizing: border-box;
         margin-right: 0px;
-        margin-left: 15px;
-    }
-
-    button,
-    input {
-        font-size: 14px;
-    }
-
-    #paginationInfo {
-        color: #555;
-        font-size: 14px;
-    }
-
-    /* 分享的卡片 */
-
-    .card {
-        background-color: #fff;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        max-width: 400px;
-        width: 400px;
-        display: flex;
-        flex-direction: column;
-        text-align: left;
-        margin: 5px 20px 20px 20px;
-    }
-
-    .card a {
-        text-decoration: none; /* 去掉链接的下划线 */
-        color: inherit; /* 继承父元素的文字颜色 */
-
-    }
-
-    .card-content {
-        padding: 20px;
-        flex: 1;
-    }
-
-    .thumbnail {
-        width: 50px;
-        height: 50px;
-        object-fit: cover;
-    }
-
-    .description {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .link-info {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 10px;
-        background-color: #f0f0f0;
-    }
-
-    .app-logo {
-        width: 30px;
-        height: 30px;
-        margin-right: 10px;
-        border-radius: 50%;
-    }
-
-    .app-name {
-        font-weight: bold;
-    }
-
-    @media screen and (max-width: 768px) {
-        .button-row,
-        .jump-row,
-        #paginationInfo {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 0px;
-        }
-
-        button {
-            padding: 5px 10px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 0 5px;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #2980b9;
-        }
-
-        input {
-            padding: 8px;
-            width: 120px;
-            box-sizing: border-box;
-            margin-right: 0px;
-            margin-left: 5px;
-        }
-    }
-
-    .system-msg > .emoji_img {
-        width: 18px;
-        height: 18px;
-    }
-
-    .emoji_img {
-        width: 22px;
-        height: 22px;
-        vertical-align: middle;
-        margin-top: -4.4px;
+        margin-left: 5px;
     }
 }
 
+.system-msg > .emoji_img {
+    width: 18px;
+    height: 18px;
+}
+
+.emoji_img {
+    width: 22px;
+    height: 22px;
+    vertical-align: middle;
+    margin-top: -4.4px;
+}
 .modal {
     display: none;
     position: fixed;
