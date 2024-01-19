@@ -298,36 +298,25 @@ class HtmlExporter(ExporterBase):
         print(f"【开始导出 HTML {self.contact.remark}】")
         messages = msg_db.get_messages(self.contact.wxid, time_range=self.time_range)
         filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}.html"
-        file_path = "./app/resources/data/template.html"
+        file_path = './app/resources/data/template.html'
         if not os.path.exists(file_path):
-            resource_dir = getattr(
-                sys, "_MEIPASS", os.path.abspath(os.path.dirname(__file__))
-            )
-            file_path = os.path.join(
-                resource_dir, "app", "resources", "data", "template.html"
-            )
+            resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
+            file_path = os.path.join(resource_dir, 'app', 'resources', 'data', 'template.html')
 
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
-            html_head, html_end = content.split("/*注意看这是分割线*/")
-        f = open(filename, "w", encoding="utf-8")
-        html_head = html_head.replace(
-            "<title>出错了</title>", f"<title>{self.contact.remark}</title>"
-        )
-        html_head = html_head.replace(
-            '<p id="title">出错了</p>', f'<p id="title">{self.contact.remark}</p>'
-        )
+            html_head, html_end = content.split('/*注意看这是分割线*/')
+        f = open(filename, 'w', encoding='utf-8')
+        html_head = html_head.replace("<title>出错了</title>", f"<title>{self.contact.remark}</title>")
+        html_head = html_head.replace("<p id=\"title\">出错了</p>", f"<p id=\"title\">{self.contact.remark}</p>")
         f.write(html_head)
         self.rangeSignal.emit(len(messages))
         for index, message in enumerate(messages):
             type_ = message[2]
             sub_type = message[3]
             timestamp = message[5]
-            if (
-                (type_ == 3 and self.message_types.get(3))
-                or (type_ == 34 and self.message_types.get(34))
-                or (type_ == 47 and self.message_types.get(47))
-            ):
+            if (type_ == 3 and self.message_types.get(3)) or (type_ == 34 and self.message_types.get(34)) or (
+                    type_ == 47 and self.message_types.get(47)):
                 pass
             else:
                 self.progressSignal.emit(1)
