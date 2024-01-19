@@ -61,6 +61,8 @@ def makedirs(path):
 
 
 def escape_js_and_html(input_str):
+    if not input_str:
+        return ''
     # 转义HTML特殊字符
     html_escaped = html.escape(input_str, quote=False)
 

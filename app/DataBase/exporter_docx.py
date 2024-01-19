@@ -40,84 +40,6 @@ def filter_control_characters(input_string):
 
 
 class DocxExporter(ExporterBase):
-    def merge_docx(self, n):
-        self.process_num += 1
-        conRemark = self.contact.remark
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{conRemark}"
-        filename = f"{origin_docx_path}/{conRemark}_{n}.docx"
-        # print(all_file_path)
-        doc = docx.Document(filename)
-        if self.merged_doc_index == [-1, -1]:
-            self.document.append(doc)
-            self.merged_doc_index = [n, n]
-        else:
-            if n == self.merged_doc_index[0] - 1:
-                self.document.insert(0, doc)
-                self.merged_doc_index[0] -= 1
-            elif n == self.merged_doc_index[1] + 1:
-                self.document.append(doc)
-                self.merged_doc_index[1] += 1
-            else:
-                self.docs.append([doc, n])
-                self.docs_set.add(n)
-            new_docx = []
-            new_set = set()
-            # print(self.docs)
-            while new_set!=self.docs_set:
-                self.docs.sort(key=lambda x: x[1])
-                for doc_, index in self.docs:
-                    if index == self.merged_doc_index[0] - 1:
-                        self.document.insert(0, doc_)
-                        self.merged_doc_index[0] -= 1
-                    elif index == self.merged_doc_index[1] + 1:
-                        self.document.append(doc_)
-                        self.merged_doc_index[1] += 1
-                    else:
-                        new_docx.append([doc_, index])
-                        new_set.add(index)
-            self.docs = new_docx
-            self.docs_set = new_set
-        os.remove(filename)
-        if self.process_num == self.child_thread_num:
-            # self.document.append(self.document)
-            file = os.path.join(origin_docx_path, f'{conRemark}.docx')
-            try:
-                self.document.save(file)
-            except PermissionError:
-                file = file[:-5] + f'{time.time()}' + '.docx'
-                self.document.save(file)
-            self.okSignal.emit(1)
-
-    def export(self):
-        self.child_threads = []
-        messages = msg_db.get_messages(self.contact.wxid, time_range=self.time_range)
-        # 计算每个子列表的长度
-        num = 1
-        # num = len(messages) // 500 +1
-        sublist_length = len(messages) // num
-
-        # 使用列表切片将列表分成n个子列表
-        divided_list = [messages[i:i + sublist_length] for i in range(0, len(messages), sublist_length)]
-        self.child_thread_num = len(divided_list)
-        self.process_num = 0
-        doc = docx.Document()
-        doc.styles["Normal"].font.name = "Cambria"
-        doc.styles["Normal"]._element.rPr.rFonts.set(qn("w:eastAsia"), "宋体")
-        self.document = Composer(doc)
-        self.merged_doc_index = [-1, -1]
-        self.docs = []
-        self.docs_set = set()
-        # self.document.append(self.document)
-        for i in range(self.child_thread_num):
-            child_thread = DocxExporterChildThread(self.contact, type_=self.DOCX, message_types=self.message_types,
-                                                   time_range=self.time_range, messages=divided_list[i], index=i)
-            self.child_threads.append(child_thread)
-            child_thread.okSignal.connect(self.merge_docx)
-            child_thread.progressSignal.connect(self.progressSignal)
-            child_thread.start()
-
-
-class DocxExporterChildThread(ExporterBase):
     def text(self, doc, message):
         type_ = message[2]
         str_content = message[7]
@@ -139,11 +61,11 @@ class DocxExporterChildThread(ExporterBase):
                 logger.error(f'非法字符:{str_content}')
                 content_cell.paragraphs[0].add_run('非法字符')
         content_cell.paragraphs[0].font_size = shared.Inches(0.5)
+        # doc.add_picture(avatar)
         if is_send:
             p = content_cell.paragraphs[0]
             p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT
         doc.add_paragraph()
-
     def image(self, doc, message):
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         type_ = message[2]
@@ -392,7 +314,8 @@ class DocxExporterChildThread(ExporterBase):
     def export(self):
         print(f"【开始导出 DOCX {self.contact.remark}】")
         origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-        messages = self.messages
+        # messages = self.messages
+        messages = msg_db.get_messages(self.contact.wxid, time_range=self.time_range)
         Me().save_avatar(os.path.join(f"{origin_docx_path}/avatar/{Me().wxid}.png"))
         if self.contact.is_chatroom:
             for message in messages:
@@ -407,29 +330,21 @@ class DocxExporterChildThread(ExporterBase):
         else:
             self.contact.save_avatar(os.path.join(f"{origin_docx_path}/avatar/{self.contact.wxid}.png"))
         self.rangeSignal.emit(len(messages))
-
-        index = 0
-
         def newdoc():
             nonlocal n, doc
             doc = docx.Document()
             doc.styles["Normal"].font.name = "Cambria"
             doc.styles["Normal"]._element.rPr.rFonts.set(qn("w:eastAsia"), "宋体")
-            docs.append(doc)
             n += 1
-
         doc = None
-        docs = []
         n = 0
         index = 0
         newdoc()
-        # document = docx.Document()
-        # doc = document.add_paragraph()
         for index, message in enumerate(messages):
             if index % 200 == 0 and index:
-                # doc = document.add_paragraph()
-                # filename = os.path.join(origin_docx_path, f"{self.contact.remark}{n}.docx")
-                # doc.save(filename)
+                filename = os.path.join(origin_docx_path, f"{self.contact.remark}_{n}.docx")
+                doc.save(filename)
+                self.okSignal.emit(n)
                 newdoc()
 
             type_ = message[2]
@@ -459,20 +374,7 @@ class DocxExporterChildThread(ExporterBase):
                 print(f"【导出 DOCX {self.contact.remark}】{index}/{len(messages)}")
         if index % 25:
             print(f"【导出 DOCX {self.contact.remark}】{index + 1}/{len(messages)}")
-        filename = os.path.join(origin_docx_path, f"{self.contact.remark}.docx")
-        doc = docx.Document()
-        doc.styles["Normal"].font.name = "Cambria"
-        doc.styles["Normal"]._element.rPr.rFonts.set(qn("w:eastAsia"), "宋体")
-        # doc = Composer(doc)
-        # for index, dx in enumerate(docs):
-        #     print(f"【MERGE Export DOCX {self.contact.remark}】{index}/{len(docs)}")
-        #     doc.append(dx)
-        # print(f"【MERGE Export DOCX {self.contact.remark}】{len(docs)}")
-        doc = Composer(doc)  # 针对11188条消息（56组）所测，反排比正排更快，正排65s，反排54s
-        for index, dx in enumerate(docs[::-1]):
-            print(f"【合并 DOCX {self.contact.remark}】{index + 1}/{len(docs)}")
-            doc.insert(0, dx)
-        filename = os.path.join(origin_docx_path, f"{self.contact.remark}_{self.index}.docx")
+        filename = os.path.join(origin_docx_path, f"{self.contact.remark}_{n}.docx")
         try:
             # document.save(filename)
             doc.save(filename)
@@ -480,5 +382,6 @@ class DocxExporterChildThread(ExporterBase):
             filename = filename[:-5] + f'{time.time()}' + '.docx'
             # document.save(filename)
             doc.save(filename)
+        self.okSignal.emit(n)
         print(f"【完成导出 DOCX {self.contact.remark}】")
-        self.okSignal.emit(self.index)
+        self.okSignal.emit(10086)
