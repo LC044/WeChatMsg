@@ -169,6 +169,8 @@ class HardLink:
             video_db_lock.acquire(True)
             try:
                 self.video_cursor.execute(sql, [md5])
+            except sqlite3.OperationalError:
+                return None
             except AttributeError:
                 self.init_database()
                 self.video_cursor.execute(sql, [md5])
@@ -218,6 +220,8 @@ class HardLink:
             # dir0 = 'Thumb' if thumb else 'Image'
             dat_image = os.path.join(video_root_path, dir2, data_image)
             return dat_image
+        else:
+            return ''
 
     def close(self):
         if self.open_flag:
