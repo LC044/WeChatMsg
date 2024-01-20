@@ -1,6 +1,7 @@
 import os
 import sys
 
+import requests
 from flask import Flask, render_template, send_file
 
 from app.DataBase import msg_db
@@ -12,6 +13,9 @@ app = Flask(__name__)
 
 wxid = ''
 contact: Contact = None
+
+html: str = ''
+api_url = 'http://api.lc044.love/upload'
 
 
 @app.route("/")
@@ -28,8 +32,8 @@ def christmas():
     except TypeError:
         first_time = '2023-01-01 00:00:00'
     data = {
-        'ta_avatar_path': contact.avatar_path,
-        'my_avatar_path': Me().avatar_path,
+        'ta_avatar_path': contact.smallHeadImgUrl,
+        'my_avatar_path': Me().smallHeadImgUrl,
         'ta_nickname': contact.remark,
         'my_nickname': Me().name,
         'first_time': first_time,
@@ -84,8 +88,11 @@ def christmas():
         'emoji_url': url,
         'emoji_num': num,
     }
-    return render_template("christmas.html", **data, **wordcloud_cloud_data, **time_data, **month_data, **calendar_data,
+    global html
+    html = render_template("christmas.html", **data, **wordcloud_cloud_data, **time_data, **month_data, **calendar_data,
                            **emoji_data)
+    return html
+
 
 @app.route('/home')
 def home():
@@ -101,6 +108,19 @@ def home():
     }
 
     return render_template('home.html', **data)
+
+
+@app.route('/upload')
+def upload():
+    global html
+    data = {
+        'html_content': html,
+        'wxid': contact.wxid,
+        'username': Me().wxid,
+    }
+    response = requests.post(api_url, data=data)
+    print(response.json())
+    return response.json()
 
 
 @app.route('/wordcloud/<who>/')

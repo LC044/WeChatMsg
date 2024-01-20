@@ -60,11 +60,7 @@ class ContactInfo(QWidget, Ui_Form):
         self.toolButton_output.showMenu()
 
     def analysis(self):
-        QMessageBox.warning(self,
-                            "别急别急",
-                            "马上就实现该功能"
-                            )
-        return
+        QDesktopServices.openUrl(QUrl("https://memotrace.lc044.love/"))
 
     def annual_report(self):
         if 'room' in self.contact.wxid:
@@ -81,17 +77,7 @@ class ContactInfo(QWidget, Ui_Form):
         QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314/christmas"))
 
     def emotionale_Analysis(self):
-        if 'room' in self.contact.wxid:
-            QMessageBox.warning(
-                self, '警告',
-                '暂不支持群组'
-            )
-            return
-        QMessageBox.warning(self,
-                            "别急别急",
-                            "马上就实现该功能"
-                            )
-        return
+        QDesktopServices.openUrl(QUrl("https://memotrace.lc044.love/"))
 
     def back(self):
         """
