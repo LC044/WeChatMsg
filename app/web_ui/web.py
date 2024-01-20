@@ -2,7 +2,7 @@ import os
 import sys
 
 import requests
-from flask import Flask, render_template, send_file
+from flask import Flask, render_template, send_file, jsonify, make_response
 
 from app.DataBase import msg_db
 from app.analysis import analysis
@@ -120,7 +120,11 @@ def upload():
     }
     response = requests.post(api_url, data=data)
     print(response.json())
-    return response.json()
+    response = make_response(response.json())
+    response.headers.add('Access-Control-Allow-Origin', '*')  # Replace '*' with specific origins if needed
+    response.headers.add('Content-Type', 'application/json')
+
+    return response
 
 
 @app.route('/wordcloud/<who>/')

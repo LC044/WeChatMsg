@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://memotrace.lc044.love/static/css/fullpage.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://memotrace.lc044.love/static/js/fullpage.min.js"></script>
+    <script src="https://davidshimjs.github.io/qrcodejs/qrcode.min.js"></script>
 </head>
 <body>
     <div id="snow"></div>
@@ -228,13 +229,53 @@
                 <div id="calendar-chart" class="calendar-chart"></div>
             </div>
     </div>
-    <div class="section">
+    <div class="section" style="text-align: center;display:flex;justify-content: center;align-items: center;">
         <h1 style="text-align: center;">敬请期待</h1>
+        <h1>Upload HTML and Display QR Code</h1>
+        <button onclick="confirmUpload()">Upload and Display QR Code</button>
+
+        <div id="qrcode"></div>
     </div>
     <!-- Add more sections as needed -->
 </div>
+  <script>
+        function confirmUpload() {
+            var userConfirmed = confirm("注意！！！\n本页面将会上传至服务器，别可通过链接查看该网页，该操作不会上传您的其他任何信息，页面将在下个版本更新之后删除，请注意链接生效时间。\n点击“确认”代表您同意上传至服务器，如不同意请点击取消");
 
+            if (userConfirmed) {
+                // User clicked OK, perform the upload and display QR code
+                uploadAndDisplayQRCode();
+            } else {
+                // User clicked Cancel or closed the dialog
+                alert("Upload canceled.");
+            }
+        }
 
+        function uploadAndDisplayQRCode() {
+            // Simulate a GET request to the server endpoint
+            fetch('http://127.0.0.1:21314/upload')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayQRCode(data.url);
+                    } else {
+                        alert('Error: Unable to fetch data from the server.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error: Unable to fetch data from the server.');
+                });
+        }
+
+        function displayQRCode(url) {
+            var qrcode = new QRCode(document.getElementById("qrcode"), {
+                text: url,
+                width: 128,
+                height: 128
+            });
+        }
+    </script>
 <script>
     // JavaScript 代码用于生成聊天内容和雪花动画
     document.addEventListener('DOMContentLoaded', function () {
