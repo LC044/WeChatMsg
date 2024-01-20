@@ -231,8 +231,8 @@
     </div>
     <div class="section" style="text-align: center;display:flex;justify-content: center;align-items: center;">
         <h1 style="text-align: center;">敬请期待</h1>
-        <h1>Upload HTML and Display QR Code</h1>
-        <button onclick="confirmUpload()">Upload and Display QR Code</button>
+        <h1>分享此页面</h1>
+        <button onclick="confirmUpload()">上传并显示二维码</button>
 
         <div id="qrcode"></div>
     </div>
@@ -240,7 +240,7 @@
 </div>
   <script>
         function confirmUpload() {
-            var userConfirmed = confirm("注意！！！\n本页面将会上传至服务器，别可通过链接查看该网页，该操作不会上传您的其他任何信息，页面将在下个版本更新之后删除，请注意链接生效时间。\n点击“确认”代表您同意上传至服务器，如不同意请点击取消");
+            var userConfirmed = confirm("注意！！！\n本页面将会上传至服务器，别人可通过链接查看该网页，该操作不会上传您的其他任何信息，页面将在下个版本更新之后删除，请注意链接生效时间。\n点击“确认”代表您同意上传至服务器，如不同意请点击取消");
 
             if (userConfirmed) {
                 // User clicked OK, perform the upload and display QR code
@@ -259,7 +259,7 @@
                     if (data.success) {
                         displayQRCode(data.url);
                     } else {
-                        alert('Error: Unable to fetch data from the server.');
+                        alert('错误: 数据错误，可能您的上传次数已达上限，请联系作者:863909694@qq.com增加上传次数');
                     }
                 })
                 .catch(error => {
