@@ -117,13 +117,14 @@ def upload():
         'html_content': html,
         'wxid': contact.wxid,
         'username': Me().wxid,
+        'type': 'contact'
     }
     response = requests.post(api_url, data=data)
+    print(response)
     print(response.json())
     response = make_response(response.json())
     response.headers.add('Access-Control-Allow-Origin', '*')  # Replace '*' with specific origins if needed
     response.headers.add('Content-Type', 'application/json')
-
     return response
 
 
