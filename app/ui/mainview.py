@@ -266,7 +266,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
             self.outputThread.start()
         elif self.sender() == self.action_batch_export:
             dialog = ExportDialog(None, title='批量导出聊天记录', parent=self)
-            result = dialog.exec_()  # 使用exec_()获取用户的操作结果
+            result = dialog.exec_() # 使用exec_()获取用户的操作结果
 
     def message(self, msg):
         self.stopBusy()
