@@ -221,7 +221,7 @@ class Msg:
         sql = '''
                 select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent,DisplayContent
                 from MSG
-                where StrTalker = ? and localId < ?
+                where StrTalker = ? and localId < ? and (Type=1 or Type=3)
                 order by CreateTime desc 
                 limit 20
             '''

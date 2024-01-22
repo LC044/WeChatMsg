@@ -349,7 +349,7 @@ def read_info(version_list, is_logging=False):
     wechat_process = []
     result = []
     error = ""
-    for process in psutil.process_iter(['name', 'exe', 'pid', 'cmdline']):
+    for process in psutil.process_iter(['name', 'exe', 'pid']):
         if process.name() == 'WeChat.exe':
             wechat_process.append(process)
 

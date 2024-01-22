@@ -11,8 +11,8 @@ import json
 import os.path
 import traceback
 
-from PyQt5.QtCore import pyqtSignal, QThread, QSize
-from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtCore import pyqtSignal, QThread, QSize, QUrl
+from PyQt5.QtGui import QPixmap, QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow, QLabel, QMessageBox
 
 from app.DataBase import misc_db, micro_msg_db, close_db
@@ -189,6 +189,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         self.setCursorTimeout(100)
         self.startBusy()
         self.action_update.triggered.connect(self.update)
+        self.action_help_faq.triggered.connect(
+            lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/7")))
         self.about_view = AboutDialog(main_window=self, parent=self)
 
     def setCurrentIndex(self, row):
