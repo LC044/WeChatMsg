@@ -8,6 +8,7 @@ from app.components.bubble_message import BubbleMessage, ChatWidget, Notice
 from app.person import Me
 from app.util import get_abs_path
 from app.util.emoji import get_emoji
+from app.util.compress_content import parser_reply
 
 
 class ChatInfo(QWidget):
@@ -155,6 +156,26 @@ class ChatInfo(QWidget):
                     avatar,
                     3,
                     is_send
+                )
+                self.chat_window.add_message_item(bubble_message, 0)
+            elif type_ == 49 and message[3] == 57:
+                # return
+                if self.is_5_min(timestamp):
+                    time_message = Notice(self.last_str_time)
+                    self.last_str_time = str_time
+                    self.chat_window.add_message_item(time_message, 0)
+                content = parser_reply(message[11])
+                refer_msg = content.get('refer')
+                if refer_msg is None:
+                    str_content = content.get('title')
+                else:
+                    str_content = f"「{refer_msg.get('displayname')}: {refer_msg.get('content')}」\n—————————\n{content.get('title')}"
+                bubble_message = BubbleMessage(
+                    str_content,
+                    avatar,
+                    1,
+                    is_send,
+                    display_name=display_name
                 )
                 self.chat_window.add_message_item(bubble_message, 0)
             elif type_ == 10000:

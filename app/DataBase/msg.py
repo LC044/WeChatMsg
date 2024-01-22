@@ -45,7 +45,7 @@ def parser_chatroom_message(messages):
             message.append(Me())
             updated_messages.append(tuple(message))
             continue
-        if message[10] is None:  # BytesExtra是空的跳过
+        if message[10] is None and not (message[2] == 49 and message[3] == 57):  # BytesExtra是空且不是带引用的消息的跳过
             message.append(ContactDefault(wxid))
             updated_messages.append(tuple(message))
             continue
