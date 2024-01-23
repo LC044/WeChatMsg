@@ -74,7 +74,7 @@ def merge_databases(source_paths, target_path):
                     "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
                     result)
             except:
-                logger.error(f'数据库合并错误:\n{traceback.format_exc()}')
+                logger.error(f'{source_path}数据库合并错误:\n{traceback.format_exc()}')
             cursor.close()
             db.close()
         # 提交事务
