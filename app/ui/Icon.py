@@ -38,6 +38,7 @@ class Icon:
     Woman_Icon = QIcon(':/icons/icons/woman.svg')
     Arrow_left_Icon = QIcon(':/icons/icons/arrow-left.svg')
     Arrow_right_Icon = QIcon(':/icons/icons/arrow-right.svg')
+    Update_Icon = QIcon(':/icons/icons/update.svg')
     # Man_Icon_pixmap = QPixmap(Man_Icon_path)
     # Woman_Icon_pixmap = QPixmap(Woman_Icon_path)
     # Logo_Icon = QIcon(':/icons/icons/logo.png')

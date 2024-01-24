@@ -128,6 +128,19 @@ QScrollBar::sub-page:vertical {
 QScrollBar::add-page:vertical {
     background: rgba(133, 135, 138, 0);
 }
+QProgressBar{
+    height:22px; 
+    text-align:center; 
+    font-size:14px; 
+    color:black;
+    border-radius:11px; 
+    background:#EBEEF5;
+}
+QProgressBar::chunk{
+    border-radius:11px;
+    background:qlineargradient(spread:pad,x1:0,y1:0,x2:1,y2:0,stop:0 #99ffff,stop:1 #9900ff);
+}
+
 """
 
 
@@ -164,6 +177,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         self.action_batch_export.setIcon(Icon.Output)
         self.action_batch_export.triggered.connect(self.output)
         self.action_desc.setIcon(Icon.Help_Icon)
+        self.action_update.setIcon(Icon.Update_Icon)
+
 
     def load_data(self, flag=True):
         if os.path.exists('./app/data/info.json'):
@@ -192,6 +207,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         self.action_help_faq.triggered.connect(
             lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/7")))
         self.about_view = AboutDialog(main_window=self, parent=self)
+
 
     def setCurrentIndex(self, row):
         self.stackedWidget.setCurrentIndex(row)
