@@ -27,12 +27,6 @@ types = {
     '拍一拍等系统消息': 10000,
 }
 Stylesheet = """
-QPushButton{
-    background-color: #ffffff;
-}
-QPushButton:hover { 
-    background-color: lightgray;
-}
 """
 class EmittingStr(QObject):
     textWritten = pyqtSignal(str)  # 定义一个发送str的信号

@@ -35,6 +35,14 @@ except ModuleNotFoundError:
     raise ValueError('Python版本错误:Python>=3.10,仅支持3.10、3.11、3.12')
 # 美化样式表
 Stylesheet = """
+QPushButton{
+    background-color: rgb(238,244,249);
+    border-radius: 5px;
+    padding: 8px;
+}
+QPushButton:hover { 
+    background-color: lightgray;
+}
 QWidget{
     background: rgb(238,244,249);
 }
@@ -42,6 +50,7 @@ QWidget{
 QListWidget, QListView, QTreeWidget, QTreeView {
     outline: 0px;
 }
+
 QMenu::item:selected {
       color: black;
       background: rgb(230, 235, 240);
@@ -140,8 +149,80 @@ QProgressBar::chunk{
     border-radius:11px;
     background:qlineargradient(spread:pad,x1:0,y1:0,x2:1,y2:0,stop:0 #99ffff,stop:1 #9900ff);
 }
+QComboBox
+{
+    border-radius:3px;
+    border:0px ;
+    padding-top: 2px;
+    padding-left: 2px;
+}
+QComboBox:disabled
+{
+    background-color:rgba(50,50,50,200);
+    color:rgb(160,160,160);
+}
+QComboBox:hover
+{
+    background-color:rgba(230,230,230,200);
+    border:1px solid rgb(31,156,220) ;
+}
+ /*下拉箭头的边框*/
+QComboBox::drop-down 
+{
+    border:none;
+}
 
+ /*下拉箭头样式*/
+QComboBox::down-arrow 
+{
+    right:0px;/*控制箭头左右偏移*/
+    width: 16px;  
+    height: 16px;   
+    image: url(:/icons/icons/down.svg);
+}
+ /*下拉箭头点击样式*/
+QComboBox::down-arrow:on
+{
+    width: 16px;  
+    height: 16px;   
+    image: url(:/icons/icons/up.svg);
+}
 """
+
+'''
+
+
+/*点击combox的样式*/
+QComboBox:on
+{
+	border-radius:3px;
+	background-color:rgba(35,35,35);
+	font: 75 9pt "Microsoft YaHei";
+    color:rgb(255,255,255);
+    border:1px solid rgb(31,156,220) ;
+}
+/*下拉框的样式*/
+QComboBox QAbstractItemView 
+{
+    outline: 0px solid gray;  /*取消选中虚线*/
+    border: 1px solid rgb(31,156,220);  
+    font: 75 9pt "Microsoft YaHei";
+    color: rgb(255,255,255);
+    background-color: rgb(45,45,45);   
+    selection-background-color: rgb(90,90,90);   
+}
+ /*选中每一项高度*/
+QComboBox QAbstractItemView::item
+ { 
+	height: 25px;  
+ }
+/*选中每一项的字体颜色和背景颜色*/
+QComboBox QAbstractItemView::item:selected 
+{
+    color: rgb(31,163,246);
+	background-color: rgb(90,90,90); 
+}
+'''
 
 
 class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
@@ -179,7 +260,6 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         self.action_desc.setIcon(Icon.Help_Icon)
         self.action_update.setIcon(Icon.Update_Icon)
 
-
     def load_data(self, flag=True):
         if os.path.exists('./app/data/info.json'):
             with open('./app/data/info.json', 'r', encoding='utf-8') as f:
@@ -207,7 +287,6 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         self.action_help_faq.triggered.connect(
             lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/7")))
         self.about_view = AboutDialog(main_window=self, parent=self)
-
 
     def setCurrentIndex(self, row):
         self.stackedWidget.setCurrentIndex(row)
@@ -284,7 +363,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
             self.outputThread.start()
         elif self.sender() == self.action_batch_export:
             dialog = ExportDialog(None, title='批量导出聊天记录', parent=self)
-            result = dialog.exec_() # 使用exec_()获取用户的操作结果
+            result = dialog.exec_()  # 使用exec_()获取用户的操作结果
 
     def message(self, msg):
         self.stopBusy()

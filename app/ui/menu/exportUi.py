@@ -114,6 +114,18 @@ class Ui_Dialog(object):
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem2)
         self.btn_start = QtWidgets.QPushButton(Dialog)
+        self.btn_start.setStyleSheet("QPushButton{\n"
+"    background-color: rgb(233,233,233);\n"
+"    border-radius: 5px;\n"
+"    padding: 8px;\n"
+"}\n"
+"QPushButton:hover { \n"
+"    background-color: lightgray;\n"
+"border:1px solid rgb(31,156,220) ;\n"
+"}")
+        self.btn_start.setAutoDefault(False)
+        self.btn_start.setDefault(False)
+        self.btn_start.setFlat(False)
         self.btn_start.setObjectName("btn_start")
         self.horizontalLayout_3.addWidget(self.btn_start)
         self.verticalLayout_3.addLayout(self.horizontalLayout_3)

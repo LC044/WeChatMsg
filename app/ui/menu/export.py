@@ -37,12 +37,6 @@ file_format = {
     'CSV': Output.CSV,
 }
 Stylesheet = """
-QPushButton{
-    background-color: #ffffff;
-}
-QPushButton:hover { 
-    background-color: lightgray;
-}
 """
 
 

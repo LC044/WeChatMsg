@@ -69,9 +69,27 @@ class Ui_Dialog(object):
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem1)
         self.btn_start = QtWidgets.QPushButton(Dialog)
+        self.btn_start.setStyleSheet("QPushButton{\n"
+"    background-color: rgb(233,233,233);\n"
+"    border-radius: 5px;\n"
+"    padding: 10px;\n"
+"}\n"
+"QPushButton:hover { \n"
+"    background-color: lightgray;\n"
+"border:1px solid rgb(31,156,220) ;\n"
+"}")
         self.btn_start.setObjectName("btn_start")
         self.horizontalLayout_3.addWidget(self.btn_start)
         self.btn_cancel = QtWidgets.QPushButton(Dialog)
+        self.btn_cancel.setStyleSheet("QPushButton{\n"
+"    background-color: rgb(233,233,233);\n"
+"    border-radius: 5px;\n"
+"    padding: 10px;\n"
+"}\n"
+"QPushButton:hover { \n"
+"    background-color: lightgray;\n"
+"border:1px solid rgb(31,156,220) ;\n"
+"}")
         self.btn_cancel.setObjectName("btn_cancel")
         self.horizontalLayout_3.addWidget(self.btn_cancel)
         self.verticalLayout.addLayout(self.horizontalLayout_3)
