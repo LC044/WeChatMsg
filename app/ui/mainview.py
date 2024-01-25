@@ -35,6 +35,15 @@ except ModuleNotFoundError:
     raise ValueError('Python版本错误:Python>=3.10,仅支持3.10、3.11、3.12')
 # 美化样式表
 Stylesheet = """
+QMessageBox QPushButton{
+    background-color: rgb(250,252,253);
+    border-radius: 5px;
+    padding: 8px;
+    border-right: 2px solid #888888;  /* 按钮边框，2px宽，白色 */
+    border-bottom: 2px solid #888888;  /* 按钮边框，2px宽，白色 */
+    border-left: 1px solid #ffffff;  /* 按钮边框，2px宽，白色 */
+    border-top: 1px solid #ffffff;  /* 按钮边框，2px宽，白色 */
+}
 QPushButton{
     background-color: rgb(238,244,249);
     border-radius: 5px;
@@ -187,6 +196,21 @@ QComboBox::down-arrow:on
     height: 16px;   
     image: url(:/icons/icons/up.svg);
 }
+QLineEdit
+{
+    background:transparent;
+    border-radius:15px;
+    border-top: 0px solid #b2e281;
+    border-bottom: 1px solid rgb(227,228,222);
+    border-right: 1px solid rgb(227,228,222);
+    border-left: 0px solid #b2e281;
+    border-style:outset;
+    background-color:rgb(247,248,252);
+}
+QLineEdit:hover
+{
+    background-color:rgb(238,241,248);
+}
 """
 
 '''
@@ -214,14 +238,15 @@ QComboBox QAbstractItemView
  /*选中每一项高度*/
 QComboBox QAbstractItemView::item
  { 
-	height: 25px;  
+    height: 25px;  
  }
 /*选中每一项的字体颜色和背景颜色*/
 QComboBox QAbstractItemView::item:selected 
 {
     color: rgb(31,163,246);
-	background-color: rgb(90,90,90); 
+    background-color: rgb(90,90,90); 
 }
+
 '''
 
 
