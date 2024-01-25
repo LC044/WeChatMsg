@@ -1,5 +1,7 @@
 import os
+import traceback
 
+from app.log import logger
 from app.person import Me
 
 # 图片字节头信息，
@@ -17,19 +19,23 @@ def get_code(dat_read):
     :param file_path: dat文件路径
     :return: 如果文件为jpg/png/gif格式，则返回解密码，否则返回-1
     """
-
-    head_index = 0
-    while head_index < len(pic_head):
-        # 使用第一个头信息字节来计算加密码
-        # 第二个字节来验证解密码是否正确
-        code = dat_read[0] ^ pic_head[head_index]
-        idf_code = dat_read[1] ^ code
-        head_index = head_index + 1
-        if idf_code == pic_head[head_index]:
-            return head_index, code
-        head_index = head_index + 1
-    print("not jpg, png, gif")
-    return -1, -1
+    try:
+        if not dat_read:
+            return -1, -1
+        head_index = 0
+        while head_index < len(pic_head):
+            # 使用第一个头信息字节来计算加密码
+            # 第二个字节来验证解密码是否正确
+            code = dat_read[0] ^ pic_head[head_index]
+            idf_code = dat_read[1] ^ code
+            head_index = head_index + 1
+            if idf_code == pic_head[head_index]:
+                return head_index, code
+            head_index = head_index + 1
+        print("not jpg, png, gif")
+    except:
+        logger.error(f'image解析发生了错误:\n\n{traceback.format_exc()}')
+        return -1, -1
 
 
 def decode_dat(file_path, out_path):

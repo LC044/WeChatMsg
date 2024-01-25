@@ -322,8 +322,8 @@ class DocxExporter(ExporterBase):
                 if message[4]:  # is_send
                     continue
                 try:
-                    chatroom_avatar_path = f"{origin_docx_path}/avatar/{message[12].wxid}.png"
-                    message[12].save_avatar(chatroom_avatar_path)
+                    chatroom_avatar_path = f"{origin_docx_path}/avatar/{message[13].wxid}.png"
+                    message[13].save_avatar(chatroom_avatar_path)
                 except:
                     print(message)
                     pass

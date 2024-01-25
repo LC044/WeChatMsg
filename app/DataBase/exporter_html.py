@@ -203,6 +203,7 @@ class HtmlExporter(ExporterBase):
         if video_path is None and image_path is None:
             return
         video_path = f'{Me().wx_dir}/{video_path}'
+        video_path = video_path.replace('\\','/')
         if os.path.exists(video_path):
             new_path = origin_docx_path + '/video/' + os.path.basename(video_path)
             if not os.path.exists(new_path):
