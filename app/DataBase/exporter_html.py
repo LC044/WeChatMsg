@@ -203,7 +203,7 @@ class HtmlExporter(ExporterBase):
         if video_path is None and image_path is None:
             return
         video_path = f'{Me().wx_dir}/{video_path}'
-        video_path = video_path.replace('\\','/')
+        video_path = video_path.replace('\\', '/')
         if os.path.exists(video_path):
             new_path = origin_docx_path + '/video/' + os.path.basename(video_path)
             if not os.path.exists(new_path):
@@ -269,7 +269,7 @@ class HtmlExporter(ExporterBase):
         is_send = message[4]
         timestamp = message[5]
         compress_content_ = message[11]
-        open("test.bin", "wb").write(compress_content_)
+        # open("test.bin", "wb").write(compress_content_)
         transfer_detail = transfer_decompress(compress_content_)
         is_chatroom = 1 if self.contact.is_chatroom else 0
         avatar = self.get_avatar_path(is_send, message)
@@ -278,8 +278,10 @@ class HtmlExporter(ExporterBase):
             1: transfer_detail["pay_memo"] or "转账",
             3: "已收款",
             4: "已退还",
+            7: "未知",
         }
-        doc.write(f"""{{ type:49, sub_type:2000,text:'{text_info_map[transfer_detail["paysubtype"]]}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',paysubtype:{transfer_detail["paysubtype"]},pay_memo:'{transfer_detail["pay_memo"]}',feedesc:'{transfer_detail["feedesc"]}',}},\n""")
+        doc.write(
+            f"""{{ type:49, sub_type:2000,text:'{text_info_map[transfer_detail["paysubtype"]]}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',paysubtype:{transfer_detail["paysubtype"]},pay_memo:'{transfer_detail["pay_memo"]}',feedesc:'{transfer_detail["feedesc"]}',}},\n""")
 
     def call(self, doc, message):
         is_send = message[4]
@@ -293,7 +295,8 @@ class HtmlExporter(ExporterBase):
         is_chatroom = 1 if self.contact.is_chatroom else 0
         avatar = self.get_avatar_path(is_send, message)
         display_name = self.get_display_name(is_send, message)
-        doc.write(f"""{{ type:50, text:'{call_detail["display_content"]}',call_type:{call_detail["call_type"]},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',}},\n""")
+        doc.write(
+            f"""{{ type:50, text:'{call_detail["display_content"]}',call_type:{call_detail["call_type"]},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',}},\n""")
 
     def export(self):
         print(f"【开始导出 HTML {self.contact.remark}】")
