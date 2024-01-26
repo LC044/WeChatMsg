@@ -199,7 +199,7 @@ QComboBox::down-arrow:on
 QLineEdit
 {
     background:transparent;
-    border-radius:15px;
+    border-radius:10px;
     border-top: 0px solid #b2e281;
     border-bottom: 1px solid rgb(227,228,222);
     border-right: 1px solid rgb(227,228,222);

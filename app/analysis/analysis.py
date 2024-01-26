@@ -73,6 +73,60 @@ def wordcloud(wxid, is_Annual_report=False, year='2023', who='1'):
     }
 
 
+def wordcloud_(wxid, is_Annual_report=False, time_range=None):
+    import jieba
+    txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT, time_range=time_range)
+    if not txt_messages:
+        return {
+            'chart_data': None,
+            'keyword': "没有聊天你想分析啥",
+            'max_num': "0",
+            'dialogs': []
+        }
+    # text = ''.join(map(lambda x: x[7], txt_messages))
+    text = ''.join(map(lambda x: x[7], txt_messages))  # 1“我”说的话，0“Ta”说的话
+
+    total_msg_len = len(text)
+    # 使用jieba进行分词，并加入停用词
+    words = jieba.cut(text)
+    # 统计词频
+    word_count = Counter(words)
+    # 过滤停用词
+    stopwords_file = './app/data/stopwords.txt'
+    with open(stopwords_file, "r", encoding="utf-8") as stopword_file:
+        stopwords1 = set(stopword_file.read().splitlines())
+    # 构建 FFmpeg 可执行文件的路径
+    stopwords = set()
+    stopwords_file = './app/resources/data/stopwords.txt'
+    if not os.path.exists(stopwords_file):
+        resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
+        stopwords_file = os.path.join(resource_dir, 'app', 'resources', 'data', 'stopwords.txt')
+    with open(stopwords_file, "r", encoding="utf-8") as stopword_file:
+        stopwords = set(stopword_file.read().splitlines())
+        stopwords = stopwords.union(stopwords1)
+    filtered_word_count = {word: count for word, count in word_count.items() if len(word) > 1 and word not in stopwords}
+
+    # 转换为词云数据格式
+    data = [(word, count) for word, count in filtered_word_count.items()]
+    # text_data = data
+    data.sort(key=lambda x: x[1], reverse=True)
+
+    text_data = data[:100] if len(data) > 100 else data
+    # 创建词云图
+    keyword, max_num = text_data[0]
+    w = (
+        WordCloud(init_opts=opts.InitOpts(width=f"{wordcloud_width}px", height=f"{wordcloud_height}px"))
+        .add(series_name="聊天文字", data_pair=text_data, word_size_range=[5, 100])
+    )
+    # return w.render_embed()
+    return {
+        'chart_data': w.dump_options_with_quotes(),
+        'keyword': keyword,
+        'max_num': str(max_num),
+        'dialogs': msg_db.get_messages_by_keyword(wxid, keyword, num=5, max_len=12)
+    }
+
+
 def wordcloud_christmas(wxid, year='2023'):
     import jieba
     txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT, year)
@@ -99,7 +153,7 @@ def wordcloud_christmas(wxid, year='2023'):
     stopwords_file = './app/resources/data/stopwords.txt'
     if not os.path.exists(stopwords_file):
         resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
-        stopwords_file = os.path.join(resource_dir, 'app', 'resources', 'data','stopwords.txt')
+        stopwords_file = os.path.join(resource_dir, 'app', 'resources', 'data', 'stopwords.txt')
     with open(stopwords_file, "r", encoding="utf-8") as stopword_file:
         stopwords = set(stopword_file.read().splitlines())
         stopwords = stopwords.union(stopwords1)

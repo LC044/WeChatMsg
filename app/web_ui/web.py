@@ -1,8 +1,10 @@
 import os
 import sys
+import time
 
 import requests
 from flask import Flask, render_template, send_file, jsonify, make_response
+from pyecharts.charts import Bar
 
 from app.DataBase import msg_db
 from app.analysis import analysis
@@ -198,6 +200,48 @@ def get_image(filename):
         return send_file(os.path.join("../../data/avatar/", filename), mimetype='image/png')
     except:
         return send_file(os.path.join(f"{os.getcwd()}/data/avatar/", filename), mimetype='image/png')
+
+
+# 示例数据，实际应用中你需要替换成从数据库或其他数据源获取的数据
+echarts_data = {
+    'categories': ['Category A', 'Category B', 'Category C', 'Category D', 'Category E'],
+    'data': [20, 50, 80, 45, 60]
+}
+
+
+def generate_chart():
+    # 使用 Pyecharts 生成图表
+    bar = Bar()
+    bar.add_xaxis(echarts_data['categories'])
+    bar.add_yaxis('Data', echarts_data['data'])
+    return bar.dump_options_with_quotes()
+
+
+@app.route('/get_chart_options')
+def get_chart_options():
+    chart_options = generate_chart()
+    data = {
+        'chart_data': chart_options
+    }
+    return jsonify(data)
+
+
+@app.route('/wordcloud')
+def get_wordcloud():
+
+    time_range = (0, time.time())
+    print(time_range)
+    world_cloud_data = analysis.wordcloud_(contact.wxid, time_range=time_range)
+    return jsonify(world_cloud_data)
+
+
+@app.route('/charts')
+def charts():
+    data = {
+        'my_nickname':Me().name,
+        'ta_nickname':contact.remark,
+    }
+    return render_template('charts.html',**data)
 
 
 if __name__ == "__main__":

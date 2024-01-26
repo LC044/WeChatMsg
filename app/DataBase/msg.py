@@ -240,6 +240,13 @@ class Msg:
         return parser_chatroom_message(result) if username_.__contains__('@chatroom') else result
 
     def get_messages_by_type(self, username_, type_, year_='all', time_range=None):
+        """
+        @param username_:
+        @param type_:
+        @param year_:
+        @param time_range: Tuple(timestamp:开始时间戳,timestamp:结束时间戳)
+        @return:
+        """
         if not self.open_flag:
             return None
         if time_range:
@@ -260,11 +267,11 @@ class Msg:
                 lock.release()
         else:
             sql = '''
-                            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent,DisplayContent
-                            from MSG
-                            where StrTalker=? and Type=? and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?
-                            order by CreateTime
-                        '''
+                select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent,DisplayContent
+                from MSG
+                where StrTalker=? and Type=? and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?
+                order by CreateTime
+             '''
             try:
                 lock.acquire(True)
                 self.cursor.execute(sql, [username_, type_, year_])

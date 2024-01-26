@@ -60,7 +60,11 @@ class ContactInfo(QWidget, Ui_Form):
         self.toolButton_output.showMenu()
 
     def analysis(self):
-        QDesktopServices.openUrl(QUrl("https://memotrace.lc044.love/"))
+        # QDesktopServices.openUrl(QUrl("https://memotrace.lc044.love/"))
+        self.report_thread = ReportThread(self.contact)
+        # self.report_thread.okSignal.connect(lambda x: QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314")))
+        self.report_thread.start()
+        QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314/charts"))
 
     def annual_report(self):
         if 'room' in self.contact.wxid:

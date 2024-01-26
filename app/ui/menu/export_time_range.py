@@ -1,6 +1,7 @@
 from datetime import datetime
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import QTimer, QThread, pyqtSignal
+from PyQt5.QtCore import QTimer, QThread, pyqtSignal, Qt, QPoint
+from PyQt5.QtGui import QMouseEvent
 from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QMessageBox, QCalendarWidget, QWidget, QVBoxLayout, QLabel
 
 from app.components.calendar_dialog import CalendarDialog
@@ -33,6 +34,7 @@ class TimeRangeDialog(QDialog, Ui_Dialog):
         self.calendar = None
         self.setupUi(self)
         self.setWindowTitle('选择日期范围')
+        # self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
         self.setStyleSheet(Stylesheet)
         self.toolButton_start_time.clicked.connect(self.select_date_start)
         self.toolButton_end_time.clicked.connect(self.select_date_end)
@@ -77,6 +79,21 @@ class TimeRangeDialog(QDialog, Ui_Dialog):
         self.calendar.set_end_date()
         self.calendar.show()
 
+    def mouseMoveEvent(self, e: QMouseEvent):  # 重写移动事件
+        if self._tracking:
+            self._endPos = e.pos() - self._startPos
+            self.move(self.pos() + self._endPos)
+
+    def mousePressEvent(self, e: QMouseEvent):
+        if e.button() == Qt.LeftButton:
+            self._startPos = QPoint(e.x(), e.y())
+            self._tracking = True
+
+    def mouseReleaseEvent(self, e: QMouseEvent):
+        if e.button() == Qt.LeftButton:
+            self._tracking = False
+            self._startPos = None
+            self._endPos = None
 
 if __name__ == '__main__':
     import sys

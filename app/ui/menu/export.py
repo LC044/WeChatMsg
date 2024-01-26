@@ -6,12 +6,11 @@ from typing import List
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QTimer, QThread, pyqtSignal, QObject
 from PyQt5.QtGui import QTextCursor
-from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QMessageBox, QCalendarWidget
+from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QMessageBox
 
 from app.DataBase import micro_msg_db, misc_db
 from app.DataBase.output_pc import Output
 from app.components import ScrollBar
-from app.components.calendar_dialog import CalendarDialog
 from app.components.export_contact_item import ContactQListWidgetItem
 from app.person import Contact
 from app.ui.menu.exportUi import Ui_Dialog
