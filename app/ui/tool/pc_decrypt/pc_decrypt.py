@@ -3,6 +3,7 @@ import os.path
 import sys
 import traceback
 
+import requests
 from PyQt5.QtCore import pyqtSignal, QThread, QUrl
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QWidget, QMessageBox, QFileDialog
@@ -61,7 +62,8 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
         if result[0] == -1:
             QMessageBox.critical(self, "错误", "请登录微信")
         elif result[0] == -2:
-            QMessageBox.critical(self, "错误", "微信版本不匹配\n请更新微信版本为:3.9.9.27（去微信官网下载）\n或更新本软件")
+            QMessageBox.critical(self, "错误",
+                                 "微信版本不匹配\n请更新微信版本为:3.9.9.27（去微信官网下载）\n或更新本软件")
         elif result[0] == -3:
             QMessageBox.critical(self, "错误", "WeChat WeChatWin.dll Not Found")
         elif result[0] == -10086:
@@ -140,7 +142,8 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
         self.thread2.signal.connect(self.progressBar_view)
         self.thread2.okSignal.connect(self.btnExitClicked)
         self.thread2.errorSignal.connect(
-            lambda x: QMessageBox.critical(self, "错误", "错误\n请检查微信版本是否为最新和微信路径是否正确\n或者关闭微信多开")
+            lambda x: QMessageBox.critical(self, "错误",
+                                           "错误\n请检查微信版本是否为最新和微信路径是否正确\n或者关闭微信多开")
         )
         self.thread2.start()
 
@@ -274,11 +277,26 @@ class MyThread(QThread):
     def __del__(self):
         pass
 
+    def get_bias_add(self, version):
+        url = "http://api.lc044.love/wxBiasAddr"
+        data = {
+            'version': version
+        }
+        try:
+            response = requests.post(url, json=data)
+            if response.status_code == 200:
+                update_info = response.json()
+                return update_info
+            else:
+                return {}
+        except:
+            return {}
+
     def run(self):
         file_path = './app/resources/data/version_list.json'
         if not os.path.exists(file_path):
             resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
-            file_path = os.path.join(resource_dir, 'app', 'resources', 'data','version_list.json')
+            file_path = os.path.join(resource_dir, 'app', 'resources', 'data', 'version_list.json')
         with open(file_path, "r", encoding="utf-8") as f:
             VERSION_LIST = json.loads(f.read())
         try:
@@ -289,6 +307,12 @@ class MyThread(QThread):
                 result = [result]
             elif result == -3:
                 result = [result]
+            elif isinstance(result, str):
+                version = result
+                version_bias = self.get_bias_add(version)
+                if version_bias.get(version):
+                    logger.info(f"从云端获取内存基址:{version_bias}")
+                    result = get_wx_info.get_info(version_bias)
         except:
             logger.error(traceback.format_exc())
             result = [-10086]

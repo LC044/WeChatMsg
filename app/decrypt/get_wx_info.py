@@ -384,7 +384,7 @@ def read_info(version_list, is_logging=False):
             tmp_rd['mobile'] = "None"
             tmp_rd['name'] = "None"
             tmp_rd['mail'] = "None"
-            return -2
+            return tmp_rd['version']
         else:
             name_baseaddr = wechat_base_address + bias_list[0]
             account__baseaddr = wechat_base_address + bias_list[1]
