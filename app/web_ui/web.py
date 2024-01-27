@@ -28,6 +28,13 @@ def index():
 
 @app.route("/christmas")
 def christmas():
+    t = '2023-1-01 00:00:00'
+    s_t = time.strptime(t, "%Y-%m-%d %H:%M:%S")  # 返回元祖
+    start_time = int(time.mktime(s_t))
+    t = '2023-12-31 23:59:59'
+    s_t = time.strptime(t, "%Y-%m-%d %H:%M:%S")  # 返回元祖
+    end_time = int(time.mktime(s_t))
+    time_range = (start_time, end_time)
     # 渲染模板，并传递图表的 HTML 到模板中
     try:
         first_message, first_time = msg_db.get_first_time_of_message(contact.wxid)
@@ -63,7 +70,7 @@ def christmas():
         'chat_time': chat_time,
         'chat_time_num': num,
     }
-    month_data = msg_db.get_messages_by_month(contact.wxid, True, year_='2023')
+    month_data = msg_db.get_messages_by_month(contact.wxid,time_range=time_range)
 
     if month_data:
         month_data.sort(key=lambda x: x[1])
@@ -74,16 +81,18 @@ def christmas():
     else:
         max_month, max_num = '月份', 0
         min_month, min_num = '月份', 0
+
     month_data = {
         'year': '2023',
-        'total_msg_num': msg_db.get_messages_number(contact.wxid, '2023'),
+        'total_msg_num': msg_db.get_messages_number(contact.wxid,time_range=time_range),
         'max_month': max_month,
         'min_month': min_month,
         'max_month_num': max_num,
         'min_month_num': min_num,
     }
-    calendar_data = analysis.calendar_chart(contact.wxid, True, year='2023')
-    emoji_msgs = msg_db.get_messages_by_type(contact.wxid, 47, year_='2023')
+
+    calendar_data = analysis.calendar_chart(contact.wxid, time_range)
+    emoji_msgs = msg_db.get_messages_by_type(contact.wxid, 47, time_range=time_range)
     url, num = get_most_emoji(emoji_msgs)
     emoji_data = {
         'emoji_total_num': len(emoji_msgs),
@@ -95,21 +104,6 @@ def christmas():
                            **emoji_data)
     return html
 
-
-@app.route('/home')
-def home():
-    try:
-        first_message, first_time = msg_db.get_first_time_of_message(contact.wxid)
-    except TypeError:
-        return set_text('咱就是说，一次都没聊过就别分析了')
-    data = {
-        'sub_title': '二零二三年度报告',
-        'avatar_path': contact.avatar_path,
-        'nickname': contact.remark,
-        'first_time': first_time,
-    }
-
-    return render_template('home.html', **data)
 
 
 @app.route('/upload')
@@ -128,20 +122,6 @@ def upload():
     response.headers.add('Access-Control-Allow-Origin', '*')  # Replace '*' with specific origins if needed
     response.headers.add('Content-Type', 'application/json')
     return response
-
-
-@app.route('/wordcloud/<who>/')
-def one(who):
-    wxid = contact.wxid
-    # wxid = 'wxid_lltzaezg38so22'
-    # print('wxid:'+wxid)
-    world_cloud_data = analysis.wordcloud(wxid, who=who)  # 获取与Ta的对话数据
-    # print(world_cloud_data)
-    who = "你" if who == '1' else "TA"
-    with open('wordcloud.html', 'w', encoding='utf-8') as f:
-        f.write(render_template('wordcloud.html', **world_cloud_data))
-    return render_template('wordcloud.html', **world_cloud_data, who=who)
-
 
 def set_text(text):
     html = '''
@@ -217,32 +197,41 @@ def generate_chart():
     return bar.dump_options_with_quotes()
 
 
-@app.route('/get_chart_options')
+@app.route('/month_count')
 def get_chart_options():
-    chart_options = generate_chart()
-    data = {
-        'chart_data': chart_options
-    }
+    time_range = (0, time.time())
+    data = analysis.month_count(contact.wxid, time_range=time_range)
     return jsonify(data)
+
 
 
 @app.route('/wordcloud')
 def get_wordcloud():
-
     time_range = (0, time.time())
-    print(time_range)
+    print(time_range,contact.wxid)
+
     world_cloud_data = analysis.wordcloud_(contact.wxid, time_range=time_range)
     return jsonify(world_cloud_data)
 
 
 @app.route('/charts')
 def charts():
+    # 渲染模板，并传递图表的 HTML 到模板中
+    try:
+        first_message, first_time = msg_db.get_first_time_of_message(contact.wxid)
+    except TypeError:
+        first_time = '2023-01-01 00:00:00'
     data = {
-        'my_nickname':Me().name,
-        'ta_nickname':contact.remark,
+        'my_nickname': Me().name,
+        'ta_nickname': contact.remark,
+        'first_time': first_time
     }
-    return render_template('charts.html',**data)
+    return render_template('charts.html', **data)
 
-
+@app.route('/calendar')
+def get_calendar():
+    time_range = (0, time.time())
+    world_cloud_data = analysis.calendar_chart(contact.wxid, time_range=time_range)
+    return jsonify(world_cloud_data)
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')

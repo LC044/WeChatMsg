@@ -6,29 +6,74 @@
     <title>微信年度聊天报告</title>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@latest/dist/echarts.min.js"></script>
     <script type="text/javascript" src="https://assets.pyecharts.org/assets/v5/echarts-wordcloud.min.js"></script>
+    <style>
+        body{
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
 <h1>{{my_nickname}}——{{ta_nickname}}</h1>
-<div id="echarts-container" style="width: 600px; height: 400px;"></div>
+<div>
+    <p class="mt-3">我们第一次聊天在</p>
+    <p id="first_time" class="first-time">{{first_time}}</p>
+    <p class="mt-3">距今已有</p>
+    <div class="mt-3">
+        <span id="t_d"></span>
+        <span id="t_h"></span>
+        <span id="t_m"></span>
+        <span id="t_s"></span>
+    </div>
+</div>
+<div id="echarts-month_count" style="width: 800px; height: 600px;"></div>
 <div id="echarts-wordcloud" style="width: 800px; height: 800px;"></div>
+<div id="echarts-calendar" style="width: 800px; height: 300px;"></div>
+<script type="text/javascript"> function getRTime() {
+    var tt = document.getElementById("first_time").innerText;
+    var EndTime = new Date(tt);
+    var NowTime = new Date();
+    var t = NowTime.getTime()-EndTime.getTime();
+    var d = Math.floor(t / 1000 / 60 / 60 / 24);
+    var h = Math.floor(t / 1000 / 60 / 60 % 24);
+    var m = Math.floor(t / 1000 / 60 % 60);
+    var s = Math.floor(t / 1000 % 60);
+    document.getElementById("t_d").innerHTML = d + " 天";
+    document.getElementById("t_h").innerHTML = h + " 时";
+    document.getElementById("t_m").innerHTML = m + " 分";
+    document.getElementById("t_s").innerHTML = s + " 秒";
+}
+setInterval(getRTime, 1000);
+
+</script>
 <script>
-    // 使用 AJAX 请求获取 Pyecharts 生成的图表配置项数据
-    fetch('/get_chart_options')
+    fetch('/month_count')
         .then(response => response.json())
         .then(chartOptions => {
             // 在这里使用 ECharts 渲染图表
-            var myChart = echarts.init(document.getElementById('echarts-container'));
+            var myChart = echarts.init(document.getElementById('echarts-month_count'));
             var option = chartOptions.chart_data;
             myChart.setOption(JSON.parse(option));
         });
 </script>
 <script>
-    // 使用 AJAX 请求获取 Pyecharts 生成的图表配置项数据
     fetch('/wordcloud')
         .then(response => response.json())
         .then(chartOptions => {
             // 在这里使用 ECharts 渲染图表
             var myChart = echarts.init(document.getElementById('echarts-wordcloud'));
+            var option = chartOptions.chart_data;
+            myChart.setOption(JSON.parse(option));
+        });
+</script>
+<script>
+    fetch('/calendar')
+        .then(response => response.json())
+        .then(chartOptions => {
+            // 在这里使用 ECharts 渲染图表
+            var myChart = echarts.init(document.getElementById('echarts-calendar'));
             var option = chartOptions.chart_data;
             myChart.setOption(JSON.parse(option));
         });
