@@ -21,14 +21,17 @@ from ...Icon import Icon
 class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
     DecryptSignal = pyqtSignal(bool)
     get_wxidSignal = pyqtSignal(str)
+    versionErrorSignal = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super(DecryptControl, self).__init__(parent)
+        self.max_val = 0
         self.setupUi(self)
         # 设置忙碌光标图片数组
         self.initCursor([':/icons/icons/Cursors/%d.png' %
                          i for i in range(8)], self)
         self.setCursorTimeout(100)
+        self.version_list = None
         self.btn_start.clicked.connect(self.decrypt)
         self.btn_getinfo.clicked.connect(self.get_info)
         self.btn_db_dir.clicked.connect(self.select_db_dir)
@@ -53,7 +56,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
     # @log
     def get_info(self):
         self.startBusy()
-        self.get_info_thread = MyThread()
+        self.get_info_thread = MyThread(self.version_list)
         self.get_info_thread.signal.connect(self.set_info)
         self.get_info_thread.start()
 
@@ -62,8 +65,10 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
         if result[0] == -1:
             QMessageBox.critical(self, "错误", "请登录微信")
         elif result[0] == -2:
+            self.versionErrorSignal.emit(result[1])
             QMessageBox.critical(self, "错误",
-                                 "微信版本不匹配\n请更新微信版本为:3.9.9.27（去微信官网下载）\n或更新本软件")
+                                 "微信版本不匹配\n请手动填写信息")
+
         elif result[0] == -3:
             QMessageBox.critical(self, "错误", "WeChat WeChatWin.dll Not Found")
         elif result[0] == -10086:
@@ -151,11 +156,12 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
         # print("enter clicked")
         # 中间可以添加处理逻辑
         # QMessageBox.about(self, "解密成功", "数据库文件存储在app/DataBase/Msg文件夹下")
-
+        self.progressBar_view(self.max_val)
         self.DecryptSignal.emit(True)
         # self.close()
 
     def setProgressBarMaxNum(self, max_val):
+        self.max_val = max_val
         self.progressBar.setRange(0, max_val)
 
     def progressBar_view(self, value):
@@ -184,7 +190,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
         except:
             with open('./info.json', 'w', encoding='utf-8') as f:
                 f.write(json.dumps(dic))
-
+        self.progressBar_view(self.max_val)
         self.DecryptSignal.emit(True)
         self.close()
 
@@ -271,8 +277,9 @@ class DecryptThread(QThread):
 class MyThread(QThread):
     signal = pyqtSignal(list)
 
-    def __init__(self):
+    def __init__(self,version_list = None):
         super(MyThread, self).__init__()
+        self.version_list = version_list
 
     def __del__(self):
         pass
@@ -283,8 +290,11 @@ class MyThread(QThread):
             'version': version
         }
         try:
-            response = requests.post(url, json=data)
+            response = requests.get(url, json=data)
+            print(response)
+            print(response.text)
             if response.status_code == 200:
+
                 update_info = response.json()
                 return update_info
             else:
@@ -293,12 +303,15 @@ class MyThread(QThread):
             return {}
 
     def run(self):
-        file_path = './app/resources/data/version_list.json'
-        if not os.path.exists(file_path):
-            resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
-            file_path = os.path.join(resource_dir, 'app', 'resources', 'data', 'version_list.json')
-        with open(file_path, "r", encoding="utf-8") as f:
-            VERSION_LIST = json.loads(f.read())
+        if self.version_list:
+            VERSION_LIST = self.version_list
+        else:
+            file_path = './app/resources/data/version_list.json'
+            if not os.path.exists(file_path):
+                resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
+                file_path = os.path.join(resource_dir, 'app', 'resources', 'data', 'version_list.json')
+            with open(file_path, "r", encoding="utf-8") as f:
+                VERSION_LIST = json.loads(f.read())
         try:
             result = get_wx_info.get_info(VERSION_LIST)
             if result == -1:
@@ -313,6 +326,9 @@ class MyThread(QThread):
                 if version_bias.get(version):
                     logger.info(f"从云端获取内存基址:{version_bias}")
                     result = get_wx_info.get_info(version_bias)
+                else:
+                    logger.info(f"从云端获取内存基址失败:{version}")
+                    result = [-2,version]
         except:
             logger.error(traceback.format_exc())
             result = [-10086]

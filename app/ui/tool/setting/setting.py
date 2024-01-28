@@ -78,6 +78,7 @@ class SettingControl(QWidget, Ui_Form):
     def init_ui(self):
         self.checkBox.setText('是')
         self.checkBox_send_error_log.clicked.connect(self.set_error_log)
+
     def set_error_log(self):
         if self.checkBox_send_error_log.isChecked():
             self.label_error_log.setText('开')

@@ -33,6 +33,7 @@ def get_code(dat_read):
                 return head_index, code
             head_index = head_index + 1
         print("not jpg, png, gif")
+        return -1, -1
     except:
         logger.error(f'image解析发生了错误:\n\n{traceback.format_exc()}')
         return -1, -1
@@ -48,8 +49,8 @@ def decode_dat(file_path, out_path):
         return None
     with open(file_path, 'rb') as file_in:
         data = file_in.read()
-    file_type, decode_code = get_code(data[:2])
-
+    data = get_code(data[:2])
+    file_type, decode_code = data
     if decode_code == -1:
         return
 
