@@ -5,6 +5,7 @@ from app.DataBase import msg_db, MsgType
 from pyecharts import options as opts
 from pyecharts.charts import WordCloud, Calendar, Bar, Line
 
+
 def wordcloud_(wxid, time_range=None):
     import jieba
     txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT, time_range=time_range)
@@ -64,7 +65,7 @@ def wordcloud_christmas(wxid, year='2023'):
     txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT, year)
     if not txt_messages:
         return {
-            'chart_data': None,
+            'wordcloud_chart_data': None,
             'keyword': "没有聊天你想分析啥",
             'max_num': '0',
             'dialogs': [],
@@ -116,7 +117,14 @@ def wordcloud_christmas(wxid, year='2023'):
 
 
 def calendar_chart(wxid, time_range=None):
-    calendar_data = msg_db.get_messages_by_days(wxid,time_range)
+    calendar_data = msg_db.get_messages_by_days(wxid, time_range)
+    if not calendar_data:
+        return {
+            'chart_data': None,
+            'calendar_chart_data': None,
+            'chat_days': 0,
+            # 'chart':c,
+        }
     min_ = min(map(lambda x: x[1], calendar_data))
     max_ = max(map(lambda x: x[1], calendar_data))
     start_date_ = calendar_data[0][0]

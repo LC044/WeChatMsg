@@ -185,8 +185,8 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
 
         try:
             os.makedirs('./app/data', exist_ok=True)
-            with open('./app/data/info.json', 'w', encoding='utf-8') as f:
-                f.write(json.dumps(dic))
+            with open('./app/data/info.json', "w", encoding="utf-8") as f:
+                json.dump(dic, f, ensure_ascii=False, indent=4)
         except:
             with open('./info.json', 'w', encoding='utf-8') as f:
                 f.write(json.dumps(dic))
