@@ -144,6 +144,7 @@ def calendar_chart(wxid, time_range=None):
     )
     return {
         'chart_data': c.dump_options_with_quotes(),
+        'calendar_chart_data': c.dump_options_with_quotes(),
         'chat_days': len(calendar_data),
         # 'chart':c,
     }
