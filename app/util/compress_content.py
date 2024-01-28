@@ -70,6 +70,14 @@ def parser_reply(data: bytes):
         title = appmsg.find("title").text
         refermsg_content = appmsg.find("refermsg").find("content").text
         refermsg_type = int(appmsg.find("refermsg").find("type").text)
+        # 处理引用的消息是个带有引用的消息
+        if refermsg_type == 49:
+            refer_root = ET.XML(refermsg_content)
+            refer_appmsg = refer_root.find('appmsg')
+            refer_msg_type = int(refer_appmsg.find('type').text)
+            if refer_msg_type == 57:
+                refermsg_type = 1
+                refermsg_content = refer_appmsg.find('title').text
         refermsg_displayname = appmsg.find("refermsg").find("displayname").text
         return {
             "type": msg_type,

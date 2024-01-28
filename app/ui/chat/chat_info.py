@@ -8,6 +8,7 @@ from app.components.bubble_message import BubbleMessage, ChatWidget, Notice
 from app.person import Me
 from app.util import get_abs_path
 from app.util.emoji import get_emoji
+from app.util.compress_content import parser_reply
 
 
 class ChatInfo(QWidget):
@@ -81,17 +82,12 @@ class ChatInfo(QWidget):
             return True
         return False
 
-    def get_avatar_path(self, is_send, message, is_absolute_path=False) -> str:
+    def get_avatar(self, is_send, message) -> str:
         if self.contact.is_chatroom:
-            avatar = message[13].smallHeadImgUrl
+            # message[-1].save_avatar()
+            avatar = message[-1].avatar
         else:
-            avatar = Me().smallHeadImgUrl if is_send else self.contact.smallHeadImgUrl
-        if is_absolute_path:
-            if self.contact.is_chatroom:
-                # message[13].save_avatar()
-                avatar = message[13].avatar
-            else:
-                avatar = Me().avatar if is_send else self.contact.avatar
+            avatar = Me().avatar if is_send else self.contact.avatar
         return avatar
 
     def get_display_name(self, is_send, message) -> str:
@@ -99,7 +95,7 @@ class ChatInfo(QWidget):
             if is_send:
                 display_name = Me().name
             else:
-                display_name = message[13].remark
+                display_name = message[-1].remark
         else:
             display_name = None
         return display_name
@@ -111,7 +107,7 @@ class ChatInfo(QWidget):
             str_time = message[8]
             # print(type_, type(type_))
             is_send = message[4]
-            avatar = self.get_avatar_path(is_send, message,True)
+            avatar = self.get_avatar(is_send, message)
             display_name = self.get_display_name(is_send, message)
             timestamp = message[5]
             BytesExtra = message[10]
@@ -155,6 +151,26 @@ class ChatInfo(QWidget):
                     avatar,
                     3,
                     is_send
+                )
+                self.chat_window.add_message_item(bubble_message, 0)
+            elif type_ == 49 and message[3] == 57:
+                # return
+                if self.is_5_min(timestamp):
+                    time_message = Notice(self.last_str_time)
+                    self.last_str_time = str_time
+                    self.chat_window.add_message_item(time_message, 0)
+                content = parser_reply(message[11])
+                refer_msg = content.get('refer')
+                if refer_msg is None:
+                    str_content = content.get('title')
+                else:
+                    str_content = f"「{refer_msg.get('displayname')}: {refer_msg.get('content')}」\n—————————\n{content.get('title')}"
+                bubble_message = BubbleMessage(
+                    str_content,
+                    avatar,
+                    1,
+                    is_send,
+                    display_name=display_name
                 )
                 self.chat_window.add_message_item(bubble_message, 0)
             elif type_ == 10000:
