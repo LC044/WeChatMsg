@@ -332,11 +332,14 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         try:
             img_bytes = misc_db.get_avatar_buffer(wxid)
         except:
-            close_db()
             logger.error(f'数据库错误:\n{traceback.format_exc()}')
             QMessageBox.critical(self, "数据库错误", "请重启微信后重试")
+            close_db()
             import shutil
-            shutil.rmtree('./app/Database/Msg')
+            try:
+                shutil.rmtree('./app/Database/Msg')
+            except:
+                pass
             return
         if not img_bytes:
             return

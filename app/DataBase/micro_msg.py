@@ -40,7 +40,7 @@ class MicroMsg:
 
     def get_contact(self):
         if not self.open_flag:
-            return None
+            return []
         try:
             lock.acquire(True)
             sql = '''SELECT UserName, Alias, Type, Remark, NickName, PYInitial, RemarkPYInitial, ContactHeadImgUrl.smallHeadImgUrl, ContactHeadImgUrl.bigHeadImgUrl,ExTraBuf,COALESCE(ContactLabel.LabelName, 'None') AS labelName

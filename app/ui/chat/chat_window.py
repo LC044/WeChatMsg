@@ -1,7 +1,9 @@
+import shutil
+
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import QWidget, QMessageBox, QAction, QLineEdit
 
-from app.DataBase import micro_msg_db, misc_db, msg_db
+from app.DataBase import micro_msg_db, misc_db, msg_db, close_db
 from app.components import ContactQListWidgetItem, ScrollBar
 from app.person import Contact
 from app.ui.Icon import Icon
@@ -136,6 +138,15 @@ class ShowContactThread(QThread):
 
     def run(self) -> None:
         contact_info_lists = micro_msg_db.get_contact()
+        if not contact_info_lists:
+            self.load_finish_signal.emit(True)
+            # QMessageBox.critical(None, "错误", "数据库错误，请重启电脑后重试")
+            close_db()
+            try:
+                shutil.rmtree('./app/Database/Msg')
+            except:
+                pass
+            return
         for contact_info_list in contact_info_lists:
             # UserName, Alias,Type,Remark,NickName,PYInitial,RemarkPYInitial,ContactHeadImgUrl.smallHeadImgUrl,ContactHeadImgUrl,bigHeadImgUrl
             contact_info = {
