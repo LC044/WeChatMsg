@@ -7,7 +7,7 @@ from re import findall
 from PyQt5.QtCore import pyqtSignal, QThread
 
 from app.DataBase import msg_db, hard_link_db, media_msg_db
-from app.DataBase.output import ExporterBase, escape_js_and_html
+from app.DataBase.exporter import ExporterBase, escape_js_and_html
 from app.log import logger
 from app.person import Me
 from app.util import path

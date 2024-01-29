@@ -11,7 +11,7 @@ from app.DataBase import msg_db
 from app.components import ScrollBar
 from app.ui.menu.export_time_range import TimeRangeDialog
 from .exportUi import Ui_Dialog
-from app.DataBase.output_pc import Output
+from app.DataBase.output import Output
 
 types = {
     '文本': 1,

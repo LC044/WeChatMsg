@@ -9,7 +9,7 @@ from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QMessageBox
 
 from app.DataBase import micro_msg_db, misc_db
-from app.DataBase.output_pc import Output
+from app.DataBase.output import Output
 from app.components import ScrollBar
 from app.components.export_contact_item import ContactQListWidgetItem
 from app.person import Contact

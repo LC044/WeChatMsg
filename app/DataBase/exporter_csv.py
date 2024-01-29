@@ -2,7 +2,7 @@ import csv
 import os
 
 from app.DataBase import msg_db
-from app.DataBase.output import ExporterBase
+from app.DataBase.exporter import ExporterBase
 
 
 class CSVExporter(ExporterBase):

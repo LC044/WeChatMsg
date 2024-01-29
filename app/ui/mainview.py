@@ -23,7 +23,7 @@ from .chat import ChatWindow
 from .contact import ContactWindow
 from app.ui.tool.tool_window import ToolWindow
 from .menu.export import ExportDialog
-from ..DataBase.output_pc import Output
+from ..DataBase.output import Output
 from ..components.QCursorGif import QCursorGif
 from ..log import logger
 from ..person import Me

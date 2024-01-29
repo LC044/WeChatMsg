@@ -43,33 +43,35 @@
 </div>
 </blockquote>
 
-为了照顾普通用户，我准备在[![](https://img.shields.io/badge/Gitee-red.svg)](https://gitee.com/lc044/WeChatMsg)上同步创建一个发行版，但是普通[![](https://img.shields.io/badge/Gitee-red.svg)](https://gitee.com/lc044/WeChatMsg)项目附件不能超过100M，大家可以去[![](https://img.shields.io/badge/Gitee-red.svg)](https://gitee.com/lc044/WeChatMsg)上点点star，项目活跃起来之后我看看能不能申请GVP，把附件大小提升至200M，这样大家就能高速下载了。[https://gitee.com/lc044/WeChatMsg](https://gitee.com/lc044/WeChatMsg)
-
 ## 🍉功能
 - [![](https://img.shields.io/badge/MemoTrace-官网-blue)](https://memotrace.lc044.love/) 
 [![](https://img.shields.io/badge/GitHub-black.svg)](https://github.com/LC044/WeChatMsg)
 [![](https://img.shields.io/badge/Gitee-red.svg)](https://gitee.com/lc044/WeChatMsg)
+[![](https://img.shields.io/badge/Download-yellow.svg)](https://memotrace.lc044.love/)
 - 🔒️🔑🔓️Windows本地微信数据库
 - 还原微信聊天界面
     - 🗨文本✅
     - 🏝图片✅
     - 🐻‍❄️表情包✅ 
     - 拍一拍等系统消息✅ 
-- 导出聊天记录
-    - sqlite数据库✅ 
-    - HTML(文本、图片、视频、表情包、语音、文件、系统消息)✅ 
-    - CSV文档✅ 
-    - TXT文档✅ 
-    - Word文档✅ 
+- 导出数据
+  - 批量导出数据✅ 
+  - 导出联系人✅ 
+  - sqlite数据库✅ 
+  - HTML(文本、图片、视频、表情包、语音、文件、系统消息)✅ 
+  - CSV文档✅ 
+  - TXT文档✅ 
+  - Word文档✅ 
 - 分析聊天数据，做成可视化年报[点击预览](https://memotrace.lc044.love/demo.html)
 - 🔥**项目持续更新中**
 - 开发计划
+  - 各种分析图表
+  - 个人年度报告
+  - 群组年度报告
+  - 情感分析
   - 自主选择年度报告年份
   - 一键导出全部表情包、文件、图片、视频、语音
   - 合并多个备份数据
-  - 批量导出数据
-  - 个人年度报告
-  - 群组年度报告
   - 按日期、关键词索引
   - 支持企业微信好友
 - 小伙伴们想要其他功能可以留言哦📬
@@ -99,102 +101,15 @@
 
 # ⌛使用
 
-网络有问题可移步国内网站Gitee:[https://gitee.com/lc044/WeChatMsg](https://gitee.com/lc044/WeChatMsg)
+下载地址：[https://memotrace.lc044.love/](https://memotrace.lc044.love/)
 
-小白可以先点个star⭐(💘项目不断更新中),然后去旁边[Releases](https://github.com/LC044/WeChatMsg/releases)
 下载打包好的exe可执行文件，双击即可运行
 
 **⚠️注意：若出现闪退情况请右击选择用管理员身份运行exe程序，该程序不存在任何病毒，若杀毒软件提示有风险选择略过即可，key为none可重启电脑**
 
-**不懂编程的请移步[Releases](https://github.com/LC044/WeChatMsg/releases)，下面的东西看了可能要长脑子啦🐶**
-
 ## 源码运行
 
-<details>
-
-### 1. 安装
-
-```shell
-# Python>=3.10 仅支持3.10、3.11、3.12,请勿使用其他Python版本
-git clone https://github.com/LC044/WeChatMsg
-cd WeChatMsg
-pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
-```
-
-### 2. 使用
-
-1. 登录微信
-
-手机端使用聊天记录迁移功能将聊天数据迁移到电脑上
-
-操作步骤：
-- 安卓： 手机微信->我->设置->聊天->聊天记录迁移与备份->迁移-> 迁移到电脑微信（迁移完成后重启微信）[否则](https://github.com/LC044/WeChatMsg/issues/27)
-- iOS： 手机微信->我->设置->通用->聊天记录迁移与备份->迁移-> 迁移到电脑微信（迁移完成后重启微信）[否则](https://github.com/LC044/WeChatMsg/issues/27)
-
-2. 运行程序
-
-```shell
-python main.py
-```
-
-3. 点击获取信息
-
-![](./doc/images/pc_decrypt_info.png)
-
-4. 设置微信安装路径(如果自动设置好了就**不用管**了)
-
-可以到微信->设置->文件管理查看
-
-![](./doc/images/setting.png)
-
-点击**设置微信路径**按钮，选择该文件夹路径下的带有wxid_xxx的路径(没有wxid的话先选择其中一个文件夹不对的话换其他文件夹)
-
-![](./doc/images/path_select.png)
-
-5. 获取到key和微信路径之后点击开始启动
-6. 数据库文件保存在./app/DataBase/Msg路径下
-
-### 3. 查看
-
-随便下载一个SQLite数据库查看软件就能打开数据库，例如[DB Browser for SQLite](https://sqlitebrowser.org/dl/)
-（不懂SQL的稍微学下SQL咱再来，或者自动跳过该步骤直接往下看最终效果）
-
-* [数据库功能介绍](./doc/数据库介绍.md)
-* [更多功能介绍](./doc/电脑端使用教程.md)
-
-显示效果
-
-<img alt="聊天界面" src="doc/images/chat.png"/>
-
-### 4. pc端功能展示
-
-#### 4.1 最上方导航栏
-
-可以点击获取教程，相关信息，导出全部信息的csv文件。
-
-![](./doc/images/main_window.png)
-
-#### 4.2 聊天界面
-
-点击**左侧导航栏——>聊天**
-，会随机跳转到某一个好友的界面，滚轮滚动，可以向上翻看更早的聊天记录。目前聊天记录中文字、图片基本可以正常显示~
-
-![](./doc/images/chat_window1.png)
-
-
-当你想要查找某一位好友的信息时，可以在图中红框输入信息，点击Enter回车键，进行检索
-
-![](./doc/images/chat_window2.png)
-
-#### 4.3 好友界面
-
-点击**左侧导航栏——>好友**，会跳转到好友的界面，同样可以选择好友，右上方导航栏中有（1）统计信息（2）情感分析（3）年度报告（4）退出（5）导出聊天记录：可选择导出为word、csv、html、txt格式。
-
-![](./doc/images/contact_window.png)
-
-**功能部分未集成或开发，请您耐心等待呀~**
-
-</details>
+[详见开发者手册](./doc/开发者手册.md)
 
 ## PC端使用过程中部分问题解决（可参考）
 
@@ -202,9 +117,10 @@ python main.py
 
 #### 🤔如果您在pc端使用的时候出现问题，可以先参考以下方面，如果仍未解决，可以在群里交流~
 
-* 不支持Win7(可自行下载代码构建可执行程序)
+* 不支持Win7
 * 不支持Mac(未来或许会实现)
 * 遇到问题四大法宝
+  * 首先要删除app/Database/Msg文件夹
   * 重启微信
   * 重启exe程序
   * 重启电脑
@@ -240,7 +156,7 @@ python main.py
 
 * PC微信工具:[https://github.com/xaoyaoo/PyWxDump](https://github.com/xaoyaoo/PyWxDump)
 * PyQt组件库:[https://github.com/PyQt5/CustomWidgets](https://github.com/PyQt5/CustomWidgets)
-* 我的得力助手:[ChatGPT](https://chat.openai.com/)
+* 得力小助手:[ChatGPT](https://chat.openai.com/)
 
 ---
 > \[!IMPORTANT]
@@ -253,7 +169,7 @@ python main.py
 [![Star History Chart](https://api.star-history.com/svg?repos=LC044/WeChatMsg&type=Date)](https://star-history.com/?utm_source=bestxtools.com#LC044/WeChatMsg&Date)
 
 
-# 贡献者
+# 🤝贡献者
 
 <a href="https://github.com/lc044/wechatmsg/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=lc044/wechatmsg" />
