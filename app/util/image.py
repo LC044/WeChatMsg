@@ -13,7 +13,7 @@ pic_head = [0xff, 0xd8, 0x89, 0x50, 0x47, 0x49]
 decode_code = 0
 
 
-def get_code(dat_read):
+def get_code(dat_read) -> tuple[int, int]:
     """
     自动判断文件类型，并获取dat文件解密码
     :param file_path: dat文件路径
@@ -39,7 +39,7 @@ def get_code(dat_read):
         return -1, -1
 
 
-def decode_dat(file_path, out_path):
+def decode_dat(file_path, out_path) -> str:
     """
     解密文件，并生成图片
     :param file_path: dat文件路径
@@ -49,10 +49,10 @@ def decode_dat(file_path, out_path):
         return None
     with open(file_path, 'rb') as file_in:
         data = file_in.read()
-    data = get_code(data[:2])
-    file_type, decode_code = data
+
+    file_type, decode_code = get_code(data[:2])
     if decode_code == -1:
-        return
+        return ''
 
     filename = os.path.basename(file_path)
     if file_type == 1:
@@ -74,21 +74,19 @@ def decode_dat(file_path, out_path):
     return file_outpath
 
 
-def decode_dat_path(file_path, out_path):
+def decode_dat_path(file_path, out_path) -> str:
     """
     解密文件，并生成图片
     :param file_path: dat文件路径
     :return: 无
     """
     if not os.path.exists(file_path):
-        return None
+        return ''
     with open(file_path, 'rb') as file_in:
         data = file_in.read(2)
     file_type, decode_code = get_code(data)
-
     if decode_code == -1:
-        return
-
+        return ''
     filename = os.path.basename(file_path)
     if file_type == 1:
         pic_name = os.path.basename(file_path)[:-4] + ".jpg"
@@ -100,18 +98,6 @@ def decode_dat_path(file_path, out_path):
         pic_name = filename[:-4] + ".jpg"
     file_outpath = os.path.join(out_path, pic_name)
     return file_outpath
-
-
-def find_datfile(dir_path, out_path):
-    """
-    获取dat文件目录下所有的文件
-    :param dir_path: dat文件目录
-    :return: 无
-    """
-    files_list = os.listdir(dir_path)
-    for file_name in files_list:
-        file_path = dir_path + "\\" + file_name
-        decode_dat(file_path, out_path)
 
 
 def get_image(path, base_path) -> str:

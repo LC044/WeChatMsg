@@ -61,18 +61,18 @@ def decodeExtraBuf(extra_buf_content: bytes):
                 off = extra_buf_content.index(key) + 4
             except:
                 pass
-            char = extra_buf_content[off : off + 1]
+            char = extra_buf_content[off: off + 1]
             off += 1
             if char == b"\x04":  # 四个字节的int，小端序
-                intContent = extra_buf_content[off : off + 4]
+                intContent = extra_buf_content[off: off + 4]
                 off += 4
                 intContent = int.from_bytes(intContent, "little")
                 res[trunk_head] = intContent
             elif char == b"\x18":  # utf-16字符串
-                lengthContent = extra_buf_content[off : off + 4]
+                lengthContent = extra_buf_content[off: off + 4]
                 off += 4
                 lengthContent = int.from_bytes(lengthContent, "little")
-                strContent = extra_buf_content[off : off + lengthContent]
+                strContent = extra_buf_content[off: off + lengthContent]
                 off += lengthContent
                 res[trunk_head] = strContent.decode("utf-16").rstrip("\x00")
         return {
@@ -89,7 +89,6 @@ def decodeExtraBuf(extra_buf_content: bytes):
             "telephone": '',
             "gender": 0,
         }
-
 
 
 def singleton(cls):
@@ -179,27 +178,64 @@ class HardLink:
         finally:
             video_db_lock.release()
 
-    def get_image(self, content, bytesExtra, thumb=False):
+    def get_image_original(self, content, bytesExtra) -> str:
         msg_bytes = MessageBytesExtra()
         msg_bytes.ParseFromString(bytesExtra)
+        result = ''
         for tmp in msg_bytes.message2:
-            if tmp.field1 != (3 if thumb else 4):
+            if tmp.field1 != 4:
                 continue
             pathh = tmp.field2  # wxid\FileStorage\...
             pathh = "\\".join(pathh.split("\\")[1:])
             return pathh
         md5 = get_md5_from_xml(content)
         if not md5:
-            return None
-        result = self.get_image_by_md5(binascii.unhexlify(md5))
+            pass
+        else:
+            result = self.get_image_by_md5(binascii.unhexlify(md5))
+            if result:
+                dir1 = result[3]
+                dir2 = result[4]
+                data_image = result[2]
+                dir0 = "Image"
+                dat_image = os.path.join(root_path, dir1, dir0, dir2, data_image)
+                result = dat_image
+        return result
 
-        if result:
-            dir1 = result[3]
-            dir2 = result[4]
-            data_image = result[2]
-            dir0 = "Thumb" if thumb else "Image"
-            dat_image = os.path.join(root_path, dir1, dir0, dir2, data_image)
-            return dat_image
+    def get_image_thumb(self, content, bytesExtra) -> str:
+        msg_bytes = MessageBytesExtra()
+        msg_bytes.ParseFromString(bytesExtra)
+        result = ''
+        for tmp in msg_bytes.message2:
+            if tmp.field1 != 3:
+                continue
+            pathh = tmp.field2  # wxid\FileStorage\...
+            pathh = "\\".join(pathh.split("\\")[1:])
+            return pathh
+        md5 = get_md5_from_xml(content)
+        if not md5:
+            pass
+        else:
+            result = self.get_image_by_md5(binascii.unhexlify(md5))
+            if result:
+                dir1 = result[3]
+                dir2 = result[4]
+                data_image = result[2]
+                dir0 = "Thumb"
+                dat_image = os.path.join(root_path, dir1, dir0, dir2, data_image)
+                result = dat_image
+        return result
+
+    def get_image(self, content, bytesExtra, thumb=False) -> str:
+        msg_bytes = MessageBytesExtra()
+        msg_bytes.ParseFromString(bytesExtra)
+        if thumb:
+            result = self.get_image_thumb(content, bytesExtra)
+        else:
+            result = self.get_image_original(content, bytesExtra)
+            if not (result and os.path.exists(result)):
+                result = self.get_image_thumb(content, bytesExtra)
+        return result
 
     def get_video(self, content, bytesExtra, thumb=False):
         msg_bytes = MessageBytesExtra()
@@ -212,7 +248,7 @@ class HardLink:
             return pathh
         md5 = get_md5_from_xml(content, type_="video")
         if not md5:
-            return None
+            return ''
         result = self.get_video_by_md5(binascii.unhexlify(md5))
         if result:
             dir2 = result[3]
