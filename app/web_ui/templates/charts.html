@@ -29,8 +29,16 @@
     </div>
 </div>
 <div id="echarts-month_count" style="width: 800px; height: 600px;"></div>
+<div>
+    <h2>消息统计</h2>
+    <div id="echarts-sender" style="width: 800px; height: 600px;"></div>
+    <div id="echarts-types" style="width: 800px; height: 600px;"></div>
+    <div id="echarts-weekday" style="width: 800px; height: 600px;"></div>
+</div>
 <div id="echarts-wordcloud" style="width: 800px; height: 800px;"></div>
 <div id="echarts-calendar" style="width: 800px; height: 300px;"></div>
+
+
 <script type="text/javascript"> function getRTime() {
     var tt = document.getElementById("first_time").innerText;
     var EndTime = new Date(tt);
@@ -76,6 +84,22 @@ setInterval(getRTime, 1000);
             var myChart = echarts.init(document.getElementById('echarts-calendar'));
             var option = chartOptions.chart_data;
             myChart.setOption(JSON.parse(option));
+        });
+</script>
+<script>
+    fetch('/message_counter')
+        .then(response => response.json())
+        .then(chartOptions => {
+            // 在这里使用 ECharts 渲染图表
+            var myChart = echarts.init(document.getElementById('echarts-sender'));
+            var option = chartOptions.chart_data_sender;
+            myChart.setOption(JSON.parse(option));
+            var myChart1 = echarts.init(document.getElementById('echarts-types'));
+            var option = chartOptions.chart_data_types;
+            myChart1.setOption(JSON.parse(option));
+            var myChart2 = echarts.init(document.getElementById('echarts-weekday'));
+            var option = chartOptions.chart_data_weekday;
+            myChart2.setOption(JSON.parse(option));
         });
 </script>
 </body>

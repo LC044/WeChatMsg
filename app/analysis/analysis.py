@@ -1,11 +1,13 @@
 import os
 from collections import Counter
 import sys
+from datetime import datetime
+
 from app.DataBase import msg_db, MsgType
 from pyecharts import options as opts
-from pyecharts.charts import WordCloud, Calendar, Bar, Line
+from pyecharts.charts import WordCloud, Calendar, Bar, Line, Pie
 
-
+os.makedirs('./data/聊天统计/',exist_ok=True)
 def wordcloud_(wxid, time_range=None):
     import jieba
     txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT, time_range=time_range)
@@ -240,9 +242,130 @@ def hour_count(wxid, is_Annual_report=False, year='2023'):
     }
 
 
-class Analysis:
-    pass
+types = {
+    '文本': 1,
+    '图片': 3,
+    '语音': 34,
+    '视频': 43,
+    '表情包': 47,
+    '音乐与音频': 4903,
+    '文件': 4906,
+    '分享卡片': 4905,
+    '转账': 492000,
+    '音视频通话': 50,
+    '拍一拍等系统消息': 10000,
+}
+types_ = {
+    1: '文本',
+    3: '图片',
+    34: '语音',
+    43: '视频',
+    47: '表情包',
+    4957: '引用消息',
+    4903: '音乐与音频',
+    4906: '文件',
+    4905: '分享卡片',
+    492000: '转账',
+    50: '音视频通话',
+    10000: '拍一拍等系统消息',
+}
 
+
+def get_weekday(timestamp):
+    # 将时间戳转换为日期时间对象
+    dt_object = datetime.fromtimestamp(timestamp)
+
+    # 获取星期几，0代表星期一，1代表星期二，以此类推
+    weekday = dt_object.weekday()
+    weekdays = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+    return weekdays[weekday]
+
+
+def sender(wxid, time_range, my_name='', ta_name=''):
+    msg_data = msg_db.get_messages(wxid, time_range)
+
+    types_count = {}
+    send_num = 0  # 发送消息的数量
+    weekday_count = {}
+    for message in msg_data:
+        type_ = message[2]
+        is_sender = message[4]
+        subType = message[3]
+        timestamp = message[5]
+        weekday = get_weekday(timestamp)
+        str_time = message[8]
+        send_num += is_sender
+        type_ = f'{type_}{subType:0>2d}' if subType != 0 else type_
+        type_ = int(type_)
+        if type_ in types_count:
+            types_count[type_] += 1
+        else:
+            types_count[type_] = 1
+        if weekday in weekday_count:
+            weekday_count[weekday] += 1
+        else:
+            weekday_count[weekday] = 1
+    receive_num = len(msg_data) - send_num
+    data = [[types_.get(key), value] for key, value in types_count.items() if key in types_]
+    if not data:
+        return {
+            'chart_data_sender': None,
+            'chart_data_types': None,
+            'chart_data_weekday': None,
+        }
+    p1 = (
+        Pie()
+        .add(
+            "",
+            data,
+            center=["40%", "50%"],
+        )
+        .set_global_opts(
+            datazoom_opts=opts.DataZoomOpts(),
+            toolbox_opts=opts.ToolboxOpts(),
+            title_opts=opts.TitleOpts(title="消息类型占比"),
+            legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%",pos_top="20%", orient="vertical"),
+        )
+        .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}"))
+        # .render("./data/聊天统计/types_pie.html")
+    )
+    p2 = (
+        Pie()
+        .add(
+            "",
+            [[my_name, send_num], [ta_name, receive_num]],
+            center=["40%", "50%"],
+        )
+        .set_global_opts(
+            datazoom_opts=opts.DataZoomOpts(),
+            toolbox_opts=opts.ToolboxOpts(),
+            title_opts=opts.TitleOpts(title="双方消息占比"),
+            legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%",pos_top="20%", orient="vertical"),
+        )
+        .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}\n{d}%"))
+        # .render("./data/聊天统计/pie_scroll_legend.html")
+    )
+    p3 = (
+        Pie()
+        .add(
+            "",
+            [[key,value] for key,value in weekday_count.items()],
+            radius=["40%", "75%"],
+        )
+        .set_global_opts(
+            datazoom_opts=opts.DataZoomOpts(),
+            toolbox_opts=opts.ToolboxOpts(),
+            title_opts=opts.TitleOpts(title="星期分布图"),
+            legend_opts=opts.LegendOpts(orient="vertical", pos_top="15%", pos_left="2%"),
+        )
+        .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}\n{d}%"))
+        # .render("./data/聊天统计/pie_weekdays.html")
+    )
+    return {
+        'chart_data_sender': p2.dump_options_with_quotes(),
+        'chart_data_types': p1.dump_options_with_quotes(),
+        'chart_data_weekday': p3.dump_options_with_quotes(),
+    }
 
 if __name__ == '__main__':
     msg_db.init_database(path='../DataBase/Msg/MSG.db')
@@ -253,5 +376,7 @@ if __name__ == '__main__':
     wxid = 'wxid_0o18ef858vnu22'
     # data = month_count(wxid, time_range=None)
     # data['chart'].render("./data/聊天统计/month_count.html")
-    data = calendar_chart(wxid, time_range=None)
-    data['chart'].render("./data/聊天统计/calendar_chart.html")
+    # data = calendar_chart(wxid, time_range=None)
+    # data['chart'].render("./data/聊天统计/calendar_chart.html")
+    data = sender(wxid, time_range=None, my_name='发送', ta_name='接收')
+    print(data)

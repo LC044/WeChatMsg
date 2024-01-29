@@ -70,7 +70,7 @@ def christmas():
         'chat_time': chat_time,
         'chat_time_num': num,
     }
-    month_data = msg_db.get_messages_by_month(contact.wxid,time_range=time_range)
+    month_data = msg_db.get_messages_by_month(contact.wxid, time_range=time_range)
 
     if month_data:
         month_data.sort(key=lambda x: x[1])
@@ -84,7 +84,7 @@ def christmas():
 
     month_data = {
         'year': '2023',
-        'total_msg_num': msg_db.get_messages_number(contact.wxid,time_range=time_range),
+        'total_msg_num': msg_db.get_messages_number(contact.wxid, time_range=time_range),
         'max_month': max_month,
         'min_month': min_month,
         'max_month_num': max_num,
@@ -105,7 +105,6 @@ def christmas():
     return html
 
 
-
 @app.route('/upload')
 def upload():
     global html
@@ -122,6 +121,7 @@ def upload():
     response.headers.add('Access-Control-Allow-Origin', '*')  # Replace '*' with specific origins if needed
     response.headers.add('Content-Type', 'application/json')
     return response
+
 
 def set_text(text):
     html = '''
@@ -204,11 +204,10 @@ def get_chart_options():
     return jsonify(data)
 
 
-
 @app.route('/wordcloud')
 def get_wordcloud():
     time_range = (0, time.time())
-    print(time_range,contact.wxid)
+    print(time_range, contact.wxid)
 
     world_cloud_data = analysis.wordcloud_(contact.wxid, time_range=time_range)
     return jsonify(world_cloud_data)
@@ -228,10 +227,20 @@ def charts():
     }
     return render_template('charts.html', **data)
 
+
 @app.route('/calendar')
 def get_calendar():
     time_range = (0, time.time())
     world_cloud_data = analysis.calendar_chart(contact.wxid, time_range=time_range)
     return jsonify(world_cloud_data)
+
+
+@app.route('/message_counter')
+def get_counter():
+    time_range = (0, time.time())
+    data = analysis.sender(contact.wxid, time_range=time_range, my_name=Me().name, ta_name=contact.remark)
+    return jsonify(data)
+
+
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
