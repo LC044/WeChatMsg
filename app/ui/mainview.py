@@ -349,6 +349,14 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
             self.avatar.loadFromData(img_bytes, format='jfif')
         self.avatar.scaled(60, 60)
         contact_info_list = micro_msg_db.get_contact_by_username(wxid)
+        if not contact_info_list:
+            close_db()
+            import shutil
+            try:
+                shutil.rmtree('./app/Database/Msg')
+            except:
+                pass
+            return
         me = Me()
         me.set_avatar(img_bytes)
         me.smallHeadImgUrl = contact_info_list[7]
