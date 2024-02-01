@@ -237,7 +237,7 @@ class BiasAddr:
 
     def run(self, logging_path=False, version_list_path=None):
         if not self.get_process_handle()[0]:
-            return None
+            return {}
         mobile_bias = self.search_memory_value(self.mobile, self.module_name)
         name_bias = self.search_memory_value(self.name, self.module_name)
         account_bias = self.search_memory_value(self.account, self.module_name)
