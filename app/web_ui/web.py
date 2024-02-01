@@ -182,21 +182,6 @@ def get_image(filename):
         return send_file(os.path.join(f"{os.getcwd()}/data/avatar/", filename), mimetype='image/png')
 
 
-# 示例数据，实际应用中你需要替换成从数据库或其他数据源获取的数据
-echarts_data = {
-    'categories': ['Category A', 'Category B', 'Category C', 'Category D', 'Category E'],
-    'data': [20, 50, 80, 45, 60]
-}
-
-
-def generate_chart():
-    # 使用 Pyecharts 生成图表
-    bar = Bar()
-    bar.add_xaxis(echarts_data['categories'])
-    bar.add_yaxis('Data', echarts_data['data'])
-    return bar.dump_options_with_quotes()
-
-
 @app.route('/month_count')
 def get_chart_options():
     time_range = (0, time.time())

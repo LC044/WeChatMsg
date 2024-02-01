@@ -250,6 +250,18 @@ QComboBox QAbstractItemView::item:selected
 '''
 
 
+class Avatar(QLabel):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+    def mouseDoubleClickEvent(self, e):  # 双击
+        super().mouseDoubleClickEvent()
+        QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/7"))
+
+    def mousePressEvent(self, e):  # 单击
+        super().mousePressEvent(e)
+        QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/7"))
+
 class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
     exitSignal = pyqtSignal(bool)
     okSignal = pyqtSignal(bool)
@@ -260,7 +272,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         self.outputThread0 = None
         self.outputThread = None
         self.setupUi(self)
-
+        # self.myavatar = Avatar(self)
         # self.setWindowIcon(Icon.MainWindow_Icon)
         pixmap = QPixmap(Icon.logo_ico_path)
         icon = QIcon(pixmap)
@@ -312,6 +324,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         self.action_help_faq.triggered.connect(
             lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/7")))
         self.about_view = AboutDialog(main_window=self, parent=self)
+        # self.statusbar.set
 
     def setCurrentIndex(self, row):
         self.stackedWidget.setCurrentIndex(row)

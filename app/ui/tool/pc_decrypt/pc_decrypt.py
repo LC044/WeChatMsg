@@ -125,7 +125,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
 
     def decrypt(self):
         if not self.ready:
-            QMessageBox.critical(self, "错误", "请先获取密钥")
+            QMessageBox.critical(self, "错误", "请先获取信息")
             return
         if not self.wx_dir:
             QMessageBox.critical(self, "错误", "请先选择微信安装路径")
@@ -294,7 +294,6 @@ class MyThread(QThread):
             print(response)
             print(response.text)
             if response.status_code == 200:
-
                 update_info = response.json()
                 return update_info
             else:
@@ -322,6 +321,7 @@ class MyThread(QThread):
                 result = [result]
             elif isinstance(result, str):
                 version = result
+                # version = '3.9.9.43'
                 version_bias = self.get_bias_add(version)
                 if version_bias.get(version):
                     logger.info(f"从云端获取内存基址:{version_bias}")

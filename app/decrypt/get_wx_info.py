@@ -297,7 +297,7 @@ def get_key(db_path, addr_len):
         return key_bytes
 
     def verify_key(key, wx_db_path):
-        if wx_db_path == "None":
+        if not wx_db_path or wx_db_path.lower() == "none":
             return True
         KEY_SIZE = 32
         DEFAULT_PAGESIZE = 4096

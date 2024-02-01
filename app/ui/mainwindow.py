@@ -9,6 +9,22 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QUrl
+from PyQt5.QtGui import QDesktopServices
+from PyQt5.QtWidgets import QLabel
+
+
+class Avatar(QLabel):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+    def mouseDoubleClickEvent(self, e):  # 双击
+        super().mouseDoubleClickEvent(e)
+        QDesktopServices.openUrl(QUrl("https://memotrace.lc044.love/"))
+
+    def mousePressEvent(self, e):  # 单击
+        super().mousePressEvent(e)
+        QDesktopServices.openUrl(QUrl("https://memotrace.lc044.love/"))
 
 
 class Ui_MainWindow(object):
@@ -24,7 +40,7 @@ class Ui_MainWindow(object):
         MainWindow.setMouseTracking(True)
         MainWindow.setStyleSheet("")
         MainWindow.setIconSize(QtCore.QSize(50, 24))
-        MainWindow.setDockOptions(QtWidgets.QMainWindow.AllowTabbedDocks|QtWidgets.QMainWindow.AnimatedDocks)
+        MainWindow.setDockOptions(QtWidgets.QMainWindow.AllowTabbedDocks | QtWidgets.QMainWindow.AnimatedDocks)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setMouseTracking(True)
         self.centralwidget.setObjectName("centralwidget")
@@ -40,7 +56,7 @@ class Ui_MainWindow(object):
         self.frame_info.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame_info.setLineWidth(5)
         self.frame_info.setObjectName("frame_info")
-        self.myavatar = QtWidgets.QLabel(self.frame_info)
+        self.myavatar = Avatar(self.frame_info)
         self.myavatar.setGeometry(QtCore.QRect(10, 40, 60, 60))
         self.myavatar.setObjectName("myavatar")
         self.listWidget = QtWidgets.QListWidget(self.frame_info)
