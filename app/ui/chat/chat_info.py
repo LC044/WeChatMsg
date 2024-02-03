@@ -134,7 +134,7 @@ class ChatInfo(QWidget):
                     time_message = Notice(self.last_str_time)
                     self.last_str_time = str_time
                     self.chat_window.add_message_item(time_message, 0)
-                image_path = hard_link_db.get_image(content=str_content, bytesExtra=BytesExtra, thumb=False)
+                image_path = hard_link_db.get_image(content=str_content, bytesExtra=BytesExtra, up_dir=Me().wx_dir,thumb=False)
                 image_path = get_abs_path(image_path)
                 bubble_message = BubbleMessage(
                     image_path,

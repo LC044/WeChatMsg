@@ -379,12 +379,7 @@ class OutputImage(QThread):
             BytesExtra = message[10]
             timestamp = message[5]
             try:
-                image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
-                if not os.path.exists(os.path.join(Me().wx_dir, image_path)):
-                    image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
-                    if not os.path.exists(os.path.join(Me().wx_dir, image_thumb_path)):
-                        continue
-                    image_path = image_thumb_path
+                image_path = hard_link_db.get_image(str_content, BytesExtra, up_dir=Me().wx_dir,thumb=False)
                 image_path = get_image(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
                 try:
                     os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))

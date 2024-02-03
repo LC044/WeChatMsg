@@ -55,12 +55,7 @@ class HtmlExporter(ExporterBase):
         avatar = self.get_avatar_path(is_send, message)
         display_name = self.get_display_name(is_send, message)
         str_content = escape_js_and_html(str_content)
-        image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
-        if not os.path.exists(os.path.join(Me().wx_dir, image_path)):
-            image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
-            if not os.path.exists(os.path.join(Me().wx_dir, image_thumb_path)):
-                return
-            image_path = image_thumb_path
+        image_path = hard_link_db.get_image(str_content, BytesExtra, up_dir=Me().wx_dir, thumb=False)
         image_path = get_image_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
         doc.write(
             f'''{{ type:{type_}, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}'}},'''
