@@ -226,14 +226,14 @@ class HardLink:
                 result = dat_image
         return result
 
-    def get_image(self, content, bytesExtra, thumb=False) -> str:
+    def get_image(self, content, bytesExtra, up_dir="", thumb=False) -> str:
         msg_bytes = MessageBytesExtra()
         msg_bytes.ParseFromString(bytesExtra)
         if thumb:
             result = self.get_image_thumb(content, bytesExtra)
         else:
             result = self.get_image_original(content, bytesExtra)
-            if not (result and os.path.exists(result)):
+            if not (result and os.path.exists(os.path.join(up_dir, result))):
                 result = self.get_image_thumb(content, bytesExtra)
         return result
 
