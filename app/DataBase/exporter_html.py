@@ -8,6 +8,7 @@ from PyQt5.QtCore import pyqtSignal, QThread
 
 from app.DataBase import msg_db, hard_link_db, media_msg_db
 from app.DataBase.exporter import ExporterBase, escape_js_and_html
+from app.config import output_dir
 from app.log import logger
 from app.person import Me
 from app.util import path
@@ -44,7 +45,7 @@ class HtmlExporter(ExporterBase):
         )
 
     def image(self, doc, message):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        base_path = os.path.join(output_dir, '聊天记录', self.contact.remark, 'image')
         type_ = message[2]
         str_content = message[7]
         str_time = message[8]
@@ -56,13 +57,13 @@ class HtmlExporter(ExporterBase):
         display_name = self.get_display_name(is_send, message)
         str_content = escape_js_and_html(str_content)
         image_path = hard_link_db.get_image(str_content, BytesExtra, up_dir=Me().wx_dir, thumb=False)
-        image_path = get_image_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
+        image_path = get_image_path(image_path, base_path=base_path)
         doc.write(
             f'''{{ type:{type_}, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}'}},'''
         )
 
     def audio(self, doc, message):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        origin_path = os.path.join(os.path.abspath('.'), output_dir, '聊天记录', self.contact.remark)
         str_content = message[7]
         str_time = message[8]
         is_send = message[4]
@@ -72,7 +73,7 @@ class HtmlExporter(ExporterBase):
         avatar = self.get_avatar_path(is_send, message)
         display_name = self.get_display_name(is_send, message)
         try:
-            audio_path = media_msg_db.get_audio_path(msgSvrId, output_path=origin_docx_path + "/voice")
+            audio_path = media_msg_db.get_audio_path(msgSvrId, output_path=origin_path + "/voice")
             audio_path = "./voice/" + os.path.basename(audio_path)
         except:
             logger.error(traceback.format_exc())
@@ -98,7 +99,7 @@ class HtmlExporter(ExporterBase):
         )
 
     def file(self, doc, message):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        origin_path = os.path.join(os.path.abspath('.'), output_dir, '聊天记录', self.contact.remark)
         bytesExtra = message[10]
         compress_content = message[11]
         str_time = message[8]
@@ -107,7 +108,7 @@ class HtmlExporter(ExporterBase):
         is_chatroom = 1 if self.contact.is_chatroom else 0
         avatar = self.get_avatar_path(is_send, message)
         display_name = self.get_display_name(is_send, message)
-        file_info = file(bytesExtra, compress_content, output_path=origin_docx_path + '/file')
+        file_info = file(bytesExtra, compress_content, output_path=origin_path + '/file')
         if file_info.get('is_error') == False:
             icon_path = None
             for icon, extensions in icon_files.items():
@@ -169,7 +170,7 @@ class HtmlExporter(ExporterBase):
         )
 
     def video(self, doc, message):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        origin_path = os.path.join(os.path.abspath('.'), output_dir, '聊天记录', self.contact.remark)
         type_ = message[2]
         str_content = message[7]
         str_time = message[8]
@@ -185,8 +186,8 @@ class HtmlExporter(ExporterBase):
             image_path = path.get_relative_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
             try:
                 # todo 网络图片问题
-                print(origin_docx_path + image_path[1:])
-                os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
+                print(origin_path + image_path[1:])
+                os.utime(origin_path + image_path[1:], (timestamp, timestamp))
                 doc.write(
                     f'''{{ type:3, text: '{image_path}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}'}},'''
                 )
@@ -200,9 +201,9 @@ class HtmlExporter(ExporterBase):
         video_path = f'{Me().wx_dir}/{video_path}'
         video_path = video_path.replace('\\', '/')
         if os.path.exists(video_path):
-            new_path = origin_docx_path + '/video/' + os.path.basename(video_path)
+            new_path = origin_path + '/video/' + os.path.basename(video_path)
             if not os.path.exists(new_path):
-                shutil.copy(video_path, os.path.join(origin_docx_path, 'video'))
+                shutil.copy(video_path, os.path.join(origin_path, 'video'))
             os.utime(new_path, (timestamp, timestamp))
             video_path = f'./video/{os.path.basename(video_path)}'
         doc.write(
@@ -210,7 +211,7 @@ class HtmlExporter(ExporterBase):
         )
 
     def music_share(self, doc, message):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        origin_path = os.path.join(os.path.abspath('.'), output_dir, '聊天记录', self.contact.remark)
         is_send = message[4]
         timestamp = message[5]
         content = music_share(message[11])
@@ -218,7 +219,7 @@ class HtmlExporter(ExporterBase):
         if content.get('is_error') == False:
             if content.get('audio_url') != '':
                 music_path = get_music_path(content.get('audio_url'), content.get('title'),
-                                            output_path=origin_docx_path + '/music')
+                                            output_path=origin_path + '/music')
                 if music_path != '':
                     music_path = f'./music/{os.path.basename(music_path)}'
                     music_path = music_path.replace('\\', '/')
@@ -231,7 +232,7 @@ class HtmlExporter(ExporterBase):
             )
 
     def share_card(self, doc, message):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        origin_path = os.path.join(os.path.abspath('.'), output_dir, '聊天记录', self.contact.remark)
         is_send = message[4]
         timestamp = message[5]
         bytesExtra = message[10]
@@ -244,7 +245,7 @@ class HtmlExporter(ExporterBase):
         if card_data.get('thumbnail'):
             thumbnail = os.path.join(Me().wx_dir, card_data.get('thumbnail'))
             if os.path.exists(thumbnail):
-                shutil.copy(thumbnail, os.path.join(origin_docx_path, 'image', os.path.basename(thumbnail)))
+                shutil.copy(thumbnail, os.path.join(origin_path, 'image', os.path.basename(thumbnail)))
                 thumbnail = './image/' + os.path.basename(thumbnail)
             else:
                 thumbnail = ''
@@ -252,7 +253,7 @@ class HtmlExporter(ExporterBase):
         if card_data.get('app_logo'):
             app_logo = os.path.join(Me().wx_dir, card_data.get('app_logo'))
             if os.path.exists(app_logo):
-                shutil.copy(app_logo, os.path.join(origin_docx_path, 'image', os.path.basename(app_logo)))
+                shutil.copy(app_logo, os.path.join(origin_path, 'image', os.path.basename(app_logo)))
                 app_logo = './image/' + os.path.basename(app_logo)
             else:
                 app_logo = card_data.get('app_logo')
@@ -296,7 +297,8 @@ class HtmlExporter(ExporterBase):
     def export(self):
         print(f"【开始导出 HTML {self.contact.remark}】")
         messages = msg_db.get_messages(self.contact.wxid, time_range=self.time_range)
-        filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}.html"
+        filename = os.path.join(os.path.abspath('.'), output_dir, '聊天记录', self.contact.remark,
+                                f'{self.contact.remark}.html')
         file_path = './app/resources/data/template.html'
         if not os.path.exists(file_path):
             resource_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
@@ -377,14 +379,14 @@ class OutputMedia(QThread):
         self.contact = contact
 
     def run(self):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        origin_path = os.path.join(os.path.abspath('.'), output_dir, '聊天记录', self.contact.remark)
         messages = msg_db.get_messages_by_type(self.contact.wxid, 34)
         for message in messages:
             is_send = message[4]
             msgSvrId = message[9]
             try:
                 audio_path = media_msg_db.get_audio(
-                    msgSvrId, output_path=origin_docx_path + "/voice"
+                    msgSvrId, output_path=origin_path + "/voice"
                 )
             except:
                 logger.error(traceback.format_exc())
@@ -406,13 +408,13 @@ class OutputEmoji(QThread):
         self.contact = contact
 
     def run(self):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        origin_path = os.path.join(os.path.abspath('.'), output_dir, '聊天记录', self.contact.remark)
         messages = msg_db.get_messages_by_type(self.contact.wxid, 47)
         for message in messages:
             str_content = message[7]
             try:
                 pass
-                # emoji_path = get_emoji(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
+                # emoji_path = get_emoji(str_content, thumb=True, output_path=origin_path + '/emoji')
             except:
                 logger.error(traceback.format_exc())
             finally:
@@ -443,8 +445,9 @@ class OutputImage(QThread):
             print("图片导出完成")
 
     def run(self):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        origin_path = os.path.join(os.path.abspath('.'), output_dir, '聊天记录', self.contact.remark)
         messages = msg_db.get_messages_by_type(self.contact.wxid, 3)
+        base_path = os.path.join(output_dir, '聊天记录', self.contact.remark, 'image')
         for message in messages:
             str_content = message[7]
             BytesExtra = message[10]
@@ -461,10 +464,10 @@ class OutputImage(QThread):
                         continue
                     image_path = image_thumb_path
                 image_path = get_image(
-                    image_path, base_path=f"/data/聊天记录/{self.contact.remark}/image"
+                    image_path, base_path=base_path
                 )
                 try:
-                    os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
+                    os.utime(origin_path + image_path[1:], (timestamp, timestamp))
                 except:
                     pass
             except:
@@ -472,16 +475,6 @@ class OutputImage(QThread):
             finally:
                 self.progressSignal.emit(1)
         self.okSingal.emit(47)
-        # sublist_length = len(messages) // self.child_thread_num
-        # index = 0
-        # for i in range(0, len(messages), sublist_length):
-        #     child_messages = messages[i:i + sublist_length]
-        #     self.child_threads[index] = OutputImageChild(self.contact, child_messages)
-        #     self.child_threads[index].okSingal.connect(self.count1)
-        #     self.child_threads[index].progressSignal.connect(self.progressSignal)
-        #     self.child_threads[index].start()
-        #     print('开启一个新线程')
-        #     index += 1
 
 
 class OutputImageChild(QThread):
@@ -494,7 +487,7 @@ class OutputImageChild(QThread):
         self.messages = messages
 
     def run(self):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        origin_path = os.path.join(os.path.abspath('.'), output_dir, '聊天记录', self.contact.remark)
         for message in self.messages:
             str_content = message[7]
             BytesExtra = message[10]
@@ -514,7 +507,7 @@ class OutputImageChild(QThread):
                     image_path, base_path=f"/data/聊天记录/{self.contact.remark}/image"
                 )
                 try:
-                    os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
+                    os.utime(origin_path + image_path[1:], (timestamp, timestamp))
                 except:
                     pass
             except:

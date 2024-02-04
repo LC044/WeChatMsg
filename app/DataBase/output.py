@@ -15,13 +15,14 @@ from app.DataBase.exporter_docx import DocxExporter
 from app.DataBase.exporter_html import HtmlExporter
 from app.DataBase.exporter_txt import TxtExporter
 from app.DataBase.hard_link import decodeExtraBuf
+from app.config import output_dir
 from .package_msg import PackageMsg
 from ..DataBase import media_msg_db, hard_link_db, micro_msg_db, msg_db
 from ..log import logger
 from ..person import Me
 from ..util.image import get_image
 
-os.makedirs('./data/聊天记录', exist_ok=True)
+os.makedirs(os.path.join(output_dir, '聊天记录'), exist_ok=True)
 
 
 class Output(QThread):
@@ -79,8 +80,9 @@ class Output(QThread):
         导出全部聊天记录到CSV
         @return:
         """
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/"
-        os.makedirs(origin_docx_path, exist_ok=True)
+
+        origin_path = os.path.join(os.path.abspath('.'), output_dir, '聊天记录')
+        os.makedirs(origin_path, exist_ok=True)
         filename = QFileDialog.getSaveFileName(None, "save file", os.path.join(os.getcwd(), 'messages.csv'),
                                                "csv files (*.csv);;all files(*.*)")
         if not filename[0]:
@@ -167,11 +169,11 @@ class Output(QThread):
 
     def merge_docx(self, n):
         conRemark = self.contact.remark
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{conRemark}"
-        filename = f"{origin_docx_path}/{conRemark}_{n}.docx"
+        origin_path = os.path.join(os.path.abspath('.'), output_dir, '聊天记录',conRemark)
+        filename = f"{origin_path}/{conRemark}_{n}.docx"
         if n == 10086:
             # self.document.append(self.document)
-            file = os.path.join(origin_docx_path, f'{conRemark}.docx')
+            file = os.path.join(origin_path, f'{conRemark}.docx')
             try:
                 self.document.save(file)
             except PermissionError:
@@ -184,7 +186,7 @@ class Output(QThread):
         os.remove(filename)
         if n % 50 == 0:
             # self.document.append(self.document)
-            file = os.path.join(origin_docx_path, f'{conRemark}-{n//50}.docx')
+            file = os.path.join(origin_path, f'{conRemark}-{n // 50}.docx')
             try:
                 self.document.save(file)
             except PermissionError:
@@ -308,13 +310,13 @@ class OutputMedia(QThread):
         self.time_range = time_range
 
     def run(self):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        origin_path = os.path.join(os.path.abspath('.'),output_dir,'聊天记录',self.contact.remark)
         messages = msg_db.get_messages_by_type(self.contact.wxid, 34, time_range=self.time_range)
         for message in messages:
             is_send = message[4]
             msgSvrId = message[9]
             try:
-                audio_path = media_msg_db.get_audio(msgSvrId, output_path=origin_docx_path + "/voice")
+                audio_path = media_msg_db.get_audio(msgSvrId, output_path=origin_path + "/voice")
             except:
                 logger.error(traceback.format_exc())
             finally:
@@ -335,13 +337,13 @@ class OutputEmoji(QThread):
         self.time_range = time_range
 
     def run(self):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        origin_path = os.path.join(os.path.abspath('.'),output_dir,'聊天记录',self.contact.remark)
         messages = msg_db.get_messages_by_type(self.contact.wxid, 47, time_range=self.time_range)
         for message in messages:
             str_content = message[7]
             try:
                 pass
-                # emoji_path = get_emoji(str_content, thumb=True, output_path=origin_docx_path + '/emoji')
+                # emoji_path = get_emoji(str_content, thumb=True, output_path=origin_path + '/emoji')
             except:
                 logger.error(traceback.format_exc())
             finally:
@@ -372,17 +374,18 @@ class OutputImage(QThread):
             print('图片导出完成')
 
     def run(self):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        origin_path = os.path.join(os.path.abspath('.'),output_dir,'聊天记录',self.contact.remark)
         messages = msg_db.get_messages_by_type(self.contact.wxid, 3, time_range=self.time_range)
+        base_path = os.path.join(output_dir,'聊天记录',self.contact.remark,'image')
         for message in messages:
             str_content = message[7]
             BytesExtra = message[10]
             timestamp = message[5]
             try:
-                image_path = hard_link_db.get_image(str_content, BytesExtra, up_dir=Me().wx_dir,thumb=False)
-                image_path = get_image(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
+                image_path = hard_link_db.get_image(str_content, BytesExtra, up_dir=Me().wx_dir, thumb=False)
+                image_path = get_image(image_path, base_path=base_path)
                 try:
-                    os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
+                    os.utime(origin_path + image_path[1:], (timestamp, timestamp))
                 except:
                     pass
             except:
@@ -403,7 +406,7 @@ class OutputImageChild(QThread):
         self.time_range = time_range
 
     def run(self):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        origin_path = os.path.join(os.path.abspath('.'),output_dir,'聊天记录',self.contact.remark)
         for message in self.messages:
             str_content = message[7]
             BytesExtra = message[10]
@@ -417,7 +420,7 @@ class OutputImageChild(QThread):
                     image_path = image_thumb_path
                 image_path = get_image(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
                 try:
-                    os.utime(origin_docx_path + image_path[1:], (timestamp, timestamp))
+                    os.utime(origin_path + image_path[1:], (timestamp, timestamp))
                 except:
                     pass
             except:

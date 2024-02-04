@@ -2,6 +2,7 @@ import os
 
 from app.DataBase import msg_db
 from app.DataBase.exporter import ExporterBase
+from app.config import output_dir
 from app.util.compress_content import parser_reply, share_card
 
 
@@ -111,9 +112,9 @@ class TxtExporter(ExporterBase):
     def export(self):
         # 实现导出为txt的逻辑
         print(f"【开始导出 TXT {self.contact.remark}】")
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-        os.makedirs(origin_docx_path, exist_ok=True)
-        filename = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}/{self.contact.remark}.txt"
+        origin_path = os.path.join(os.path.abspath('.'), output_dir, '聊天记录', self.contact.remark)
+        os.makedirs(origin_path, exist_ok=True)
+        filename = os.path.join(origin_path, self.contact.remark+'.txt')
         messages = msg_db.get_messages(self.contact.wxid, time_range=self.time_range)
         total_steps = len(messages)
         with open(filename, mode='w', newline='', encoding='utf-8') as f:
