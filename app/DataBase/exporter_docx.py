@@ -13,6 +13,7 @@ from docxcompose.composer import Composer
 
 from app.DataBase import msg_db, hard_link_db
 from app.DataBase.exporter import ExporterBase, escape_js_and_html
+from app.config import output_dir
 from app.log import logger
 from app.person import Me
 from app.util.compress_content import parser_reply, share_card, music_share
@@ -66,28 +67,23 @@ class DocxExporter(ExporterBase):
             p = content_cell.paragraphs[0]
             p.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT
         doc.add_paragraph()
+
     def image(self, doc, message):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-        type_ = message[2]
         str_content = message[7]
-        str_time = message[8]
         is_send = message[4]
         BytesExtra = message[10]
-        timestamp = message[5]
-        is_chatroom = 1 if self.contact.is_chatroom else 0
-        avatar = self.get_avatar_path(is_send, message)
-        display_name = self.get_display_name(is_send, message)
         avatar = self.get_avatar_path(is_send, message, True)
         content = self.create_table(doc, is_send, avatar)
         run = content.paragraphs[0].add_run()
         str_content = escape_js_and_html(str_content)
         image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
+        base_path = os.path.join(output_dir, '聊天记录', self.contact.remark, 'image')
         if not os.path.exists(os.path.join(Me().wx_dir, image_path)):
             image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
             if not os.path.exists(os.path.join(Me().wx_dir, image_thumb_path)):
                 return
             image_path = image_thumb_path
-        image_path = get_image_abs_path(image_path, base_path=f'/data/聊天记录/{self.contact.remark}/image')
+        image_path = get_image_abs_path(image_path, base_path=base_path)
         try:
             run.add_picture(image_path, height=shared.Inches(2))
             doc.add_paragraph()
@@ -95,7 +91,6 @@ class DocxExporter(ExporterBase):
             print("Error!image")
 
     def audio(self, doc, message):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         str_content = message[7]
         str_time = message[8]
         is_send = message[4]
@@ -131,7 +126,6 @@ class DocxExporter(ExporterBase):
         doc.add_paragraph()
 
     def file(self, doc, message):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         bytesExtra = message[10]
         str_time = message[8]
         is_send = message[4]
@@ -196,7 +190,6 @@ class DocxExporter(ExporterBase):
         doc.add_paragraph(str_content).alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
     def video(self, doc, message):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         type_ = message[2]
         str_content = message[7]
         str_time = message[8]
@@ -247,14 +240,14 @@ class DocxExporter(ExporterBase):
         return content_cell
 
     def music_share(self, doc, message):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        origin_path = os.path.join(os.path.abspath('.'), output_dir, '聊天记录', self.contact.remark)
         is_send = message[4]
         timestamp = message[5]
         content = music_share(message[11])
         music_path = ''
         if content.get('audio_url') != '':
             music_path = get_music_path(content.get('audio_url'), content.get('title'),
-                                        output_path=origin_docx_path + '/music')
+                                        output_path=origin_path + '/music')
             if music_path != '':
                 music_path = f'./music/{os.path.basename(music_path)}'
                 music_path = music_path.replace('\\', '/')
@@ -263,7 +256,7 @@ class DocxExporter(ExporterBase):
         display_name = self.get_display_name(is_send, message)
 
     def share_card(self, doc, message):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
+        origin_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
         is_send = message[4]
         timestamp = message[5]
         bytesExtra = message[10]
@@ -276,7 +269,7 @@ class DocxExporter(ExporterBase):
         if card_data.get('thumbnail'):
             thumbnail = os.path.join(Me().wx_dir, card_data.get('thumbnail'))
             if os.path.exists(thumbnail):
-                shutil.copy(thumbnail, os.path.join(origin_docx_path, 'image', os.path.basename(thumbnail)))
+                shutil.copy(thumbnail, os.path.join(origin_path, 'image', os.path.basename(thumbnail)))
                 thumbnail = './image/' + os.path.basename(thumbnail)
             else:
                 thumbnail = ''
@@ -284,22 +277,22 @@ class DocxExporter(ExporterBase):
         if card_data.get('app_logo'):
             app_logo = os.path.join(Me().wx_dir, card_data.get('app_logo'))
             if os.path.exists(app_logo):
-                shutil.copy(app_logo, os.path.join(origin_docx_path, 'image', os.path.basename(app_logo)))
+                shutil.copy(app_logo, os.path.join(origin_path, 'image', os.path.basename(app_logo)))
                 app_logo = './image/' + os.path.basename(app_logo)
             else:
                 app_logo = ''
 
     def merge_docx(self, conRemark, n):
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{conRemark}"
+        origin_path = os.path.join(os.path.abspath('.'), output_dir, '聊天记录')
         all_file_path = []
         for i in range(n):
             file_name = f"{conRemark}{i}.docx"
-            all_file_path.append(origin_docx_path + '/' + file_name)
+            all_file_path.append(origin_path + '/' + file_name)
         filename = f"{conRemark}.docx"
         # print(all_file_path)
         doc = docx.Document()
-        doc.save(origin_docx_path + '/' + filename)
-        master = docx.Document(origin_docx_path + '/' + filename)
+        doc.save(origin_path + '/' + filename)
+        master = docx.Document(origin_path + '/' + filename)
         middle_new_docx = Composer(master)
         num = 0
         for word in all_file_path:
@@ -309,40 +302,41 @@ class DocxExporter(ExporterBase):
                 middle_new_docx.append(word_document)
             num = num + 1
             os.remove(word)
-        middle_new_docx.save(origin_docx_path + '/' + filename)
+        middle_new_docx.save(origin_path + '/' + filename)
 
     def export(self):
         print(f"【开始导出 DOCX {self.contact.remark}】")
-        origin_docx_path = f"{os.path.abspath('.')}/data/聊天记录/{self.contact.remark}"
-        # messages = self.messages
+        origin_path = os.path.join(os.path.abspath('.'), output_dir, '聊天记录', self.contact.remark)
         messages = msg_db.get_messages(self.contact.wxid, time_range=self.time_range)
-        Me().save_avatar(os.path.join(f"{origin_docx_path}/avatar/{Me().wxid}.png"))
+        Me().save_avatar(os.path.join(origin_path, 'avatar', f'{Me().wxid}.png'))
         if self.contact.is_chatroom:
             for message in messages:
                 if message[4]:  # is_send
                     continue
                 try:
-                    chatroom_avatar_path = f"{origin_docx_path}/avatar/{message[13].wxid}.png"
+                    chatroom_avatar_path =os.path.join(origin_path, 'avatar', f'{message[13].wxid}.png')
                     message[13].save_avatar(chatroom_avatar_path)
                 except:
                     print(message)
                     pass
         else:
-            self.contact.save_avatar(os.path.join(f"{origin_docx_path}/avatar/{self.contact.wxid}.png"))
+            self.contact.save_avatar(os.path.join(origin_path, 'avatar', f'{self.contact.wxid}.png'))
         self.rangeSignal.emit(len(messages))
+
         def newdoc():
             nonlocal n, doc
             doc = docx.Document()
             doc.styles["Normal"].font.name = "Cambria"
             doc.styles["Normal"]._element.rPr.rFonts.set(qn("w:eastAsia"), "宋体")
             n += 1
+
         doc = None
         n = 0
         index = 0
         newdoc()
         for index, message in enumerate(messages):
             if index % 200 == 0 and index:
-                filename = os.path.join(origin_docx_path, f"{self.contact.remark}_{n}.docx")
+                filename = os.path.join(origin_path, f"{self.contact.remark}_{n}.docx")
                 doc.save(filename)
                 self.okSignal.emit(n)
                 newdoc()
@@ -374,7 +368,7 @@ class DocxExporter(ExporterBase):
                 print(f"【导出 DOCX {self.contact.remark}】{index}/{len(messages)}")
         if index % 25:
             print(f"【导出 DOCX {self.contact.remark}】{index + 1}/{len(messages)}")
-        filename = os.path.join(origin_docx_path, f"{self.contact.remark}_{n}.docx")
+        filename = os.path.join(origin_path, f"{self.contact.remark}_{n}.docx")
         try:
             # document.save(filename)
             doc.save(filename)
