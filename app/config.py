@@ -24,5 +24,5 @@ about = f'''
 # 数据存放文件路径
 
 info_file_path = './app/data/info.json'  # 个人信息文件
-db_dir = 'app/Database/Msg'
+db_dir = './app/Database/Msg'
 output_dir = './data/'  # 输出文件夹
