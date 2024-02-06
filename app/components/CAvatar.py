@@ -53,6 +53,8 @@ class CAvatar(QWidget):
         self.setSize(size)
         if img_bytes:
             self.setBytes(img_bytes)
+
+
         else:
             self.setUrl(url)
 
@@ -178,10 +180,13 @@ class CAvatar(QWidget):
 
     def setBytes(self, img_bytes):
         self._pixmap = QPixmap()
-        if img_bytes[:4] == b'\x89PNG':
-            self._pixmap.loadFromData(img_bytes, format='PNG')
-        else:
-            self._pixmap.loadFromData(img_bytes, format='jfif')
+        if isinstance(img_bytes, bytes):
+            if img_bytes[:4] == b'\x89PNG':
+                self._pixmap.loadFromData(img_bytes, format='PNG')
+            else:
+                self._pixmap.loadFromData(img_bytes, format='jfif')
+        elif isinstance(img_bytes, QPixmap):
+            self._pixmap = img_bytes
         self._resizePixmap()
 
     def setUrl(self, url):

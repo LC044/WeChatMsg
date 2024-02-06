@@ -1,13 +1,15 @@
 import shutil
 
 from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QMessageBox, QAction, QLineEdit
 
 from app.DataBase import micro_msg_db, misc_db, msg_db, close_db
 from app.components import ContactQListWidgetItem, ScrollBar
-from app.person import Contact
+from app.person import Contact, Me
 from app.ui.Icon import Icon
 from app.util import search
+from .ai_chat import AIChat
 from .chatUi import Ui_Form
 from .chat_info import ChatInfo
 
@@ -67,6 +69,12 @@ class ChatWindow(QWidget, Ui_Form):
         self.listWidget.currentRowChanged.connect(self.setCurrentIndex)
         self.listWidget.setCurrentRow(0)
         self.stackedWidget.setCurrentIndex(0)
+        pixmap = QPixmap(Icon.Default_avatar_path).scaled(45, 45)
+        contact_item = ContactQListWidgetItem('AI小助手', '', pixmap)
+        self.listWidget.addItem(contact_item)
+        self.listWidget.setItemWidget(contact_item, contact_item.widget)
+        chat_info_window = AIChat(Me())
+        self.stackedWidget.addWidget(chat_info_window)
 
     def show_chats(self):
         # return
