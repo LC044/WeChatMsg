@@ -2,10 +2,12 @@ import sys
 import time
 import traceback
 
+import requests
 from PyQt5.QtCore import QThread, pyqtSignal, QSize, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QApplication, QTextBrowser
 
+from app.log import logger
 from app.ui.Icon import Icon
 
 try:
@@ -50,7 +52,7 @@ class Message(QWidget):
 class AIChat(QWidget, Ui_Form):
     def __init__(self, contact, parent=None):
         super().__init__(parent)
-        self.now_message :Message= None
+        self.now_message: Message = None
         self.setupUi(self)
         self.last_timestamp = 0
         self.last_str_time = ''
@@ -85,6 +87,7 @@ class AIChat(QWidget, Ui_Form):
         self.show_chat_thread.msg = msg
         self.now_message = message1
         self.show_chat_thread.start()
+        self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
 
     def show_chats(self):
         # return
@@ -94,11 +97,12 @@ class AIChat(QWidget, Ui_Form):
     def update_history_messages(self):
         print('开始发送信息')
         message1 = Message(False)
-        msg = '您好！我是MemoTrace小助手，您可以问我一些问题。'
+        msg = '你好！'
         self.verticalLayout_message.addWidget(message1)
         self.show_chat_thread.msg = msg
         self.now_message = message1
         self.show_chat_thread.start()
+
     def add_message(self, message):
         print('message', message)
         # self.textBrowser.append(message)
@@ -114,6 +118,7 @@ class AIChat(QWidget, Ui_Form):
                 return True
         return super().eventFilter(obj, event)
 
+
 class AIChatThread(QThread):
     msgSignal = pyqtSignal(str)
     showSingal = pyqtSignal(tuple)
@@ -126,10 +131,32 @@ class AIChatThread(QThread):
         self.msg = ''
 
     def run(self) -> None:
-        for s in self.msg:
-            self.msgSignal.emit(s)
-            time.sleep(0.02)
-        self.finishSingal.emit(1)
+        url = 'http://api.lc044.love/chat'
+        data = {
+            'username': Me().wxid,
+            'messages': [
+                {
+                    'role': 'user',
+                    "content": self.msg
+                }
+            ]
+        }
+        try:
+            resp = requests.post(url, json=data, stream=True)
+            if resp.status_code==200:
+                for line in resp.iter_lines():
+                    if line:
+                        trunk = line.decode('utf-8')
+                        print(trunk)
+                        self.msgSignal.emit(trunk)
+            else:
+                error = resp.json().get('error')
+                logger.error(f'ai请求错误:{error}')
+                self.msgSignal.emit(error)
+        except Exception as e:
+            error = str(e)
+            logger.error(f'ai请求错误:{error}')
+            self.msgSignal.emit(error)
 
 
 if __name__ == '__main__':
