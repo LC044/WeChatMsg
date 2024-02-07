@@ -3,6 +3,8 @@ import random
 import sqlite3
 import threading
 import traceback
+from datetime import datetime, date
+from typing import Tuple
 
 from app.log import logger
 from app.util.compress_content import parser_reply
@@ -14,6 +16,40 @@ lock = threading.Lock()
 
 def is_database_exist():
     return os.path.exists(db_path)
+
+
+def convert_to_timestamp_(time_input) -> int:
+    if isinstance(time_input, (int, float)):
+        # 如果输入是时间戳，直接返回
+        return int(time_input)
+    elif isinstance(time_input, str):
+        # 如果输入是格式化的时间字符串，将其转换为时间戳
+        try:
+            dt_object = datetime.strptime(time_input, '%Y-%m-%d %H:%M:%S')
+            return int(dt_object.timestamp())
+        except ValueError:
+            # 如果转换失败，可能是其他格式的字符串，可以根据需要添加更多的处理逻辑
+            print("Error: Unsupported date format")
+            return -1
+    elif isinstance(time_input, date):
+        # 如果输入是datetime.date对象，将其转换为时间戳
+        dt_object = datetime.combine(time_input, datetime.min.time())
+        return int(dt_object.timestamp())
+    else:
+        print("Error: Unsupported input type")
+        return -1
+
+
+def convert_to_timestamp(time_range) -> Tuple[int, int]:
+    """
+    将时间转换成时间戳
+    @param time_range:
+    @return:
+    """
+    if not time_range:
+        return 0, 0
+    else:
+        return convert_to_timestamp_(time_range[0]), convert_to_timestamp_(time_range[1])
 
 
 def parser_chatroom_message(messages):
@@ -61,7 +97,7 @@ def parser_chatroom_message(messages):
             updated_messages.append(tuple(message))
             continue
         # todo 解析还是有问题，会出现这种带:的东西
-        if ':' in wxid: # wxid_ewi8gfgpp0eu22:25319:1
+        if ':' in wxid:  # wxid_ewi8gfgpp0eu22:25319:1
             wxid = wxid.split(':')[0]
         contact_info_list = micro_msg_db.get_contact_by_username(wxid)
         if contact_info_list is None:  # 群聊中已退群的联系人不会保存在数据库里
@@ -143,7 +179,11 @@ class Msg:
             new_messages.append(new_message)
         return new_messages
 
-    def get_messages(self, username_, time_range=None):
+    def get_messages(
+            self,
+            username_,
+            time_range: Tuple[int | float | str | date, int | float | str | date] = None,
+    ):
         """
         return list
             a[0]: localId,
@@ -164,7 +204,7 @@ class Msg:
         if not self.open_flag:
             return None
         if time_range:
-            start_time, end_time = time_range
+            start_time, end_time = convert_to_timestamp(time_range)
         sql = f'''
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent,DisplayContent
             from MSG
@@ -239,7 +279,13 @@ class Msg:
         # result.sort(key=lambda x: x[5])
         return parser_chatroom_message(result) if username_.__contains__('@chatroom') else result
 
-    def get_messages_by_type(self, username_, type_, year_='all', time_range=None):
+    def get_messages_by_type(
+            self,
+            username_,
+            type_,
+            year_='all',
+            time_range: Tuple[int | float | str | date, int | float | str | date] = None,
+    ):
         """
         @param username_:
         @param type_:
@@ -250,7 +296,7 @@ class Msg:
         if not self.open_flag:
             return None
         if time_range:
-            start_time, end_time = time_range
+            start_time, end_time = convert_to_timestamp(time_range)
         if year_ == 'all':
             sql = f'''
                         select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent,DisplayContent
@@ -379,12 +425,16 @@ class Msg:
             lock.release()
         return [date[0] for date in result]
 
-    def get_messages_by_days(self, username_, time_range=None):
+    def get_messages_by_days(
+            self,
+            username_,
+            time_range: Tuple[int | float | str | date, int | float | str | date] = None,
+    ):
         result = None
         if not self.open_flag:
             return None
         if time_range:
-            start_time, end_time = time_range
+            start_time, end_time = convert_to_timestamp(time_range)
         sql = f'''
             SELECT strftime('%Y-%m-%d',CreateTime,'unixepoch','localtime') as days,count(MsgSvrID)
             from (
@@ -406,12 +456,16 @@ class Msg:
             lock.release()
         return result
 
-    def get_messages_by_month(self, username_, time_range=None):
+    def get_messages_by_month(
+            self,
+            username_,
+            time_range: Tuple[int | float | str | date, int | float | str | date] = None,
+    ):
         result = None
         if not self.open_flag:
             return None
         if time_range:
-            start_time, end_time = time_range
+            start_time, end_time = convert_to_timestamp(time_range)
         sql = f'''
             SELECT strftime('%Y-%m',CreateTime,'unixepoch','localtime') as days,count(MsgSvrID)
             from (
@@ -474,32 +528,33 @@ class Msg:
                 result = self.cursor.fetchall()
         return result
 
-    def get_first_time_of_message(self, username_):
+    def get_first_time_of_message(self, username_=''):
         if not self.open_flag:
             return None
-        sql = '''
+        sql = f'''
             select StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime
             from MSG
-            where StrTalker=?
+            {'where StrTalker=?' if username_ else ''}
             order by CreateTime
             limit 1
         '''
         try:
             lock.acquire(True)
-            self.cursor.execute(sql, [username_])
+            self.cursor.execute(sql, [username_] if username_ else [])
             result = self.cursor.fetchone()
         finally:
             lock.release()
         return result
 
-    def get_latest_time_of_message(self, username_, year_='all'):
+    def get_latest_time_of_message(self, username_='', year_='all'):
         if not self.open_flag:
             return None
         sql = f'''
                 SELECT isSender,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,
                 strftime('%H:%M:%S', CreateTime,'unixepoch','localtime') as hour
                 FROM MSG
-                WHERE StrTalker = ? AND Type=1 AND
+                WHERE Type=1 AND 
+                {'StrTalker = ? AND ' if username_ else f"'{username_}'=? AND "} 
                 hour BETWEEN '00:00:00' AND '05:00:00'
                 {"and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?" if year_ != "all" else ""}
                 ORDER BY hour DESC
@@ -524,18 +579,22 @@ class Msg:
                 break
         return res
 
-    def get_send_messages_type_number(self, year_="all") -> list:
+    def get_send_messages_type_number(
+            self,
+            time_range: Tuple[int | float | str | date, int | float | str | date] = None,
+    ) -> list:
         """
         统计自己发的各类型消息条数，按条数降序，精确到subtype\n
         return [(type_1, subtype_1, number_1), (type_2, subtype_2, number_2), ...]\n
         be like [(1, 0, 71481), (3, 0, 6686), (49, 57, 3887), ..., (10002, 0, 1)]
         """
-
+        if time_range:
+            start_time, end_time = convert_to_timestamp(time_range)
         sql = f"""
             SELECT type, subtype, Count(MsgSvrID)
             from MSG
             where isSender = 1
-            {"and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?" if year_ != "all" else ""}
+            {'AND CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
             group by type, subtype
             order by Count(MsgSvrID) desc
         """
@@ -544,7 +603,7 @@ class Msg:
             return None
         try:
             lock.acquire(True)
-            self.cursor.execute(sql, [year_] if year_ != "all" else [])
+            self.cursor.execute(sql)
             result = self.cursor.fetchall()
         except sqlite3.DatabaseError:
             logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
@@ -552,20 +611,28 @@ class Msg:
             lock.release()
         return result
 
-    def get_messages_number(self, username_, time_range=None) -> int:
+    def get_messages_number(
+            self,
+            username_,
+            time_range: Tuple[int | float | str | date, int | float | str | date] = None,
+    ) -> int:
+        """
+        统计好友聊天消息的数量
+        @param username_:
+        @param time_range:
+        @return:
+        """
         if time_range:
-            start_time, end_time = time_range
+            start_time, end_time = convert_to_timestamp(time_range)
         sql = f"""
             SELECT Count(MsgSvrID)
             from MSG
             where StrTalker = ?
             {'AND CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
-            group by type, subtype
-            order by Count(MsgSvrID) desc
         """
-        result = None
+        result = 0
         if not self.open_flag:
-            return None
+            return 0
         try:
             lock.acquire(True)
             self.cursor.execute(sql, [username_])
@@ -576,18 +643,24 @@ class Msg:
             lock.release()
         return result[0] if result else 0
 
-    def get_chatted_top_contacts(self, year_="all", contain_chatroom=False, top_n=10) -> list:
+    def get_chatted_top_contacts(
+            self,
+            time_range: Tuple[int | float | str | date, int | float | str | date] = None,
+            contain_chatroom=False,
+            top_n=10
+    ) -> list:
         """
         统计聊天最多的 n 个联系人（默认不包含群组），按条数降序\n
         return [(wxid_1, number_1), (wxid_2, number_2), ...]
         """
-
+        if time_range:
+            start_time, end_time = convert_to_timestamp(time_range)
         sql = f"""
             SELECT strtalker, Count(MsgSvrID)
             from MSG
             where strtalker != "filehelper" and strtalker != "notifymessage" and strtalker not like "gh_%"
             {"and strtalker not like '%@chatroom'" if not contain_chatroom else ""}
-            {"and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?" if year_ != "all" else ""}
+            {'AND CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
             group by strtalker
             order by Count(MsgSvrID) desc
             limit {top_n}
@@ -597,7 +670,7 @@ class Msg:
             return None
         try:
             lock.acquire(True)
-            self.cursor.execute(sql, [year_] if year_ != "all" else [])
+            self.cursor.execute(sql)
             result = self.cursor.fetchall()
         except sqlite3.DatabaseError:
             logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
@@ -605,22 +678,26 @@ class Msg:
             lock.release()
         return result
 
-    def get_send_messages_length(self, year_="all") -> int:
+    def get_send_messages_length(
+            self,
+            time_range: Tuple[int | float | str | date, int | float | str | date] = None,
+    ) -> int:
         """
         统计自己总共发消息的字数，包含type=1的文本和type=49,subtype=57里面自己发的文本
         """
-
+        if time_range:
+            start_time, end_time = convert_to_timestamp(time_range)
         sql_type_1 = f"""
             SELECT sum(length(strContent))
             from MSG
             where isSender = 1 and type = 1
-            {"and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?" if year_ != "all" else ""}
+            {'AND CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
         """
         sql_type_49 = f"""
             SELECT CompressContent
             from MSG
             where isSender = 1 and type = 49 and subtype = 57
-            {"and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?" if year_ != "all" else ""}
+            {'AND CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
         """
         sum_type_1 = None
         result_type_49 = None
@@ -630,9 +707,9 @@ class Msg:
             return None
         try:
             lock.acquire(True)
-            self.cursor.execute(sql_type_1, [year_] if year_ != "all" else [])
+            self.cursor.execute(sql_type_1)
             sum_type_1 = self.cursor.fetchall()[0][0]
-            self.cursor.execute(sql_type_49, [year_] if year_ != "all" else [])
+            self.cursor.execute(sql_type_49)
             result_type_49 = self.cursor.fetchall()
             for message in result_type_49:
                 message = message[0]
@@ -646,21 +723,25 @@ class Msg:
             lock.release()
         return sum_type_1 + sum_type_49
 
-    def get_send_messages_number_sum(self, year_="all") -> int:
+    def get_send_messages_number_sum(
+            self,
+            time_range: Tuple[int | float | str | date, int | float | str | date] = None,
+    ) -> int:
         """统计自己总共发了多少条消息"""
-
+        if time_range:
+            start_time, end_time = convert_to_timestamp(time_range)
         sql = f"""
             SELECT count(MsgSvrID)
             from MSG
             where isSender = 1
-            {"and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?" if year_ != "all" else ""}
+            {'AND CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
         """
         result = None
         if not self.open_flag:
             return None
         try:
             lock.acquire(True)
-            self.cursor.execute(sql, [year_] if year_ != "all" else [])
+            self.cursor.execute(sql)
             result = self.cursor.fetchall()[0][0]
         except sqlite3.DatabaseError:
             logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
@@ -668,18 +749,23 @@ class Msg:
             lock.release()
         return result
 
-    def get_send_messages_number_by_hour(self, year_="all"):
+    def get_send_messages_number_by_hour(
+            self,
+            time_range: Tuple[int | float | str | date, int | float | str | date] = None,
+    )->list:
         """
         统计每个（小时）时段自己总共发了多少消息，从最多到最少排序\n
         return be like [('23', 9526), ('00', 7890), ('22', 7600),  ..., ('05', 29)]
         """
+        if time_range:
+            start_time, end_time = convert_to_timestamp(time_range)
         sql = f"""
             SELECT strftime('%H', CreateTime, 'unixepoch', 'localtime') as hour,count(MsgSvrID)
             from (
                 SELECT MsgSvrID, CreateTime
                 FROM MSG
                 where isSender = 1
-                    {"and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?" if year_ != "all" else ""}
+                    {'AND CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
             )
             group by hour
             order by count(MsgSvrID) desc
@@ -689,7 +775,7 @@ class Msg:
             return None
         try:
             lock.acquire(True)
-            self.cursor.execute(sql, [year_] if year_ != "all" else [])
+            self.cursor.execute(sql)
             result = self.cursor.fetchall()
         except sqlite3.DatabaseError:
             logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
@@ -718,4 +804,10 @@ if __name__ == '__main__':
     wxid = '24521163022@chatroom'
     wxid = 'wxid_vtz9jk9ulzjt22'  # si
     print()
+    time_range = ('2023-01-01 00:00:00', '2024-01-01 00:00:00')
     print(msg.get_messages_calendar(wxid))
+    print(msg.get_first_time_of_message())
+    print(msg.get_latest_time_of_message())
+    top_n = msg.get_chatted_top_contacts(time_range=time_range, top_n=9999999)
+    print(top_n)
+    print(len(top_n))
