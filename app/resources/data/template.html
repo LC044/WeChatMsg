@@ -17,7 +17,7 @@ body {
     align-items: center;
     justify-content: center;
     background-color: #F5F5F5;
-    //background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2394AB85' fill-opacity='0.4'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    /*background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2394AB85' fill-opacity='0.4'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");*/
 }
 
 ::-webkit-scrollbar {
@@ -169,8 +169,6 @@ body {
     background: rgba(0, 0, 0, 0.3);
 }
 
-.container .content {
-}
 .bubble {
     white-space: pre-wrap;
     max-width: 400px;
@@ -567,6 +565,128 @@ input {
 
 .app-name {
     font-weight: bold;
+}
+
+/* 转账 */
+
+.transfer-box {
+    width: 200px;
+    height: 80px;
+    margin-left: 18px;
+    margin-right: 18px;
+    border-radius: 3px;
+    padding-left: 11px;
+    padding-right: 11px;
+    position: relative;
+}
+
+.transfer-box[paysubtype="1"], .transfer-box[paysubtype="1"]::before {
+    background: #f79c46;
+}
+
+.transfer-box[paysubtype="1"] i {
+    background-image: url(./icon/transfer1.png);
+}
+
+.transfer-box:not([paysubtype="1"]), .transfer-box:not([paysubtype="1"])::before {
+    background: #f8e2c6;
+}
+
+.transfer-box[paysubtype="3"] i {
+    background-image: url(./icon/transfer2.png);
+}
+
+.transfer-box[paysubtype="4"] i {
+    background-image: url(./icon/transfer3.png);
+}
+
+.transfer-box::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    transform: rotate(45deg);
+    top: 18px;
+}
+
+.transfer-box[issend="0"]::before {
+    left: -3px;
+}
+
+.transfer-box[issend="1"]::before {
+    left: 218px;
+}
+
+.trans-content {
+    display: flex;
+    height: 60px;
+    align-items: center;
+    position: relative;
+}
+
+.trans-content>i {
+    display: block;
+    width: 36px;
+    height: 36px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.transfer-texts {
+    margin-left: 7px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.transfer-texts>span, .transfer-texts>font, .trans-bottom>span {
+    color: white;
+    font-weight: 500;
+}
+
+.transfer-texts>span {
+    font-size: 15px;
+}
+
+.transfer-texts>font {
+    font-size: 12px;
+    padding-left: 2px;
+}
+
+.transfer {
+    height: 60px;
+}
+
+.trans-bottom {
+    height: 16px;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+}
+
+.trans-bottom>span {
+    font-size: 10px;
+}
+
+/* 音视频通话 */
+
+.call i{
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    vertical-align: middle;
+    margin-right: 4px;
+    margin-top: -2px;
+}
+
+.call[calltype='1'] i {
+    background-image: url(./icon/phone.png);
+}
+
+.call[calltype='0'] i {
+    background-image: url(./icon/video.png);
 }
 
 @media screen and (max-width: 768px) {
@@ -1406,6 +1526,26 @@ function renderPage(page) {
         }
         return messageMusicAudioTag;
     }
+    function messageTransfer(message) {
+        const transfer_box = document.createElement("div");
+        transfer_box.className = "transfer-box";
+        transfer_box.setAttribute("issend", message.is_send);
+        transfer_box.setAttribute("paysubtype", message.paysubtype);
+        transfer_box.innerHTML = `<div class="transfer">
+                <div class="trans-content"><i></i>
+                    <div class="transfer-texts"><span>${message.feedesc}</span><font>${message.text}</font></div>
+                </div>
+                <div class="trans-bottom"><span>聊天转账</span></div>
+            </div>`;
+        return transfer_box;
+    }
+    function messageVideoAudioCall(message, side) {
+        const message_call_box = document.createElement('div');
+        message_call_box.className = `bubble bubble-${side} call`;
+        message_call_box.setAttribute("calltype", message.call_type)
+        message_call_box.innerHTML = `<i></i><span>${message.text}<span>`;
+        return message_call_box;
+    }
 
     // 从数据列表中取出对应范围的元素并添加到容器中
     for (let i = startIndex; i < endIndex && i < chatMessages.length; i++) {
@@ -1506,6 +1646,18 @@ function renderPage(page) {
                 messageElement.className = `item item-${side}`;
                 messageElement.appendChild(message.is_send ? messageContent : avatarTag);
                 messageElement.appendChild(message.is_send ? avatarTag : messageContent);
+            } else if (message.sub_type == 2000) {
+                // displayname 和 messageTransfer
+                messageContent.className = `content-wrapper content-wrapper-${side}`;
+                if (message.is_chatroom && !message.is_send) {
+                    messageContent.appendChild(displayNameBox(message));
+                }
+                messageContent.appendChild(messageTransfer(message));
+
+                // 整合
+                messageElement.className = `item item-${side}`;
+                messageElement.appendChild(message.is_send ? messageContent : avatarTag);
+                messageElement.appendChild(message.is_send ? avatarTag : messageContent);
             }
 
         } else if (message.type == 34) {
@@ -1518,6 +1670,18 @@ function renderPage(page) {
                 messageContent.appendChild(messageVoiceToTextBubble(message, side));
             }
             messageContent.appendChild(messageAudioBox(message));
+
+            // 整合
+            messageElement.className = `item item-${side}`;
+            messageElement.appendChild(message.is_send ? messageContent : avatarTag);
+            messageElement.appendChild(message.is_send ? avatarTag : messageContent);
+        } else if (message.type == 50) {
+            // displayname 和 转的文字 和 audio
+            messageContent.className = `content-wrapper content-wrapper-${side}`;
+            if (message.is_chatroom && !message.is_send) {
+                messageContent.appendChild(displayNameBox(message));
+            }
+            messageContent.appendChild(messageVideoAudioCall(message, side));
 
             // 整合
             messageElement.className = `item item-${side}`;

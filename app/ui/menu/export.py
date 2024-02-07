@@ -65,7 +65,7 @@ class ExportDialog(QDialog, Ui_Dialog):
         self.textBrowser.setVerticalScrollBar(scroll_bar)
         self.export_choices = {"文本": True, "图片": True, "语音": False, "视频": False, "表情包": False,
                                '音乐与音频': False, '分享卡片': False, '文件': False,
-                               '拍一拍等系统消息': True}  # 定义导出的数据类型
+                               '转账': False, '音视频通话': False,'拍一拍等系统消息': True}  # 定义导出的数据类型
         self.setWindowTitle(title)
         self.checkBox_word.setEnabled(False)
         self.checkBox_word.setText('Docx(暂时不可用)')
