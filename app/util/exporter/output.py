@@ -5,22 +5,22 @@ import traceback
 from typing import List
 
 import docx
-from PyQt5.QtCore import pyqtSignal, QThread, QObject
+from PyQt5.QtCore import pyqtSignal, QThread
 from PyQt5.QtWidgets import QFileDialog
 from docx.oxml.ns import qn
 from docxcompose.composer import Composer
 
-from app.DataBase.exporter_csv import CSVExporter
-from app.DataBase.exporter_docx import DocxExporter
-from app.DataBase.exporter_html import HtmlExporter
-from app.DataBase.exporter_txt import TxtExporter
+from app.util.exporter.exporter_csv import CSVExporter
+from app.util.exporter.exporter_docx import DocxExporter
+from app.util.exporter.exporter_html import HtmlExporter
+from app.util.exporter.exporter_txt import TxtExporter
 from app.DataBase.hard_link import decodeExtraBuf
 from app.config import output_dir
-from .package_msg import PackageMsg
-from ..DataBase import media_msg_db, hard_link_db, micro_msg_db, msg_db
-from ..log import logger
-from ..person import Me
-from ..util.image import get_image
+from app.DataBase.package_msg import PackageMsg
+from app.DataBase import media_msg_db, hard_link_db, micro_msg_db, msg_db
+from app.log import logger
+from app.person import Me
+from app.util.image import get_image
 
 os.makedirs(os.path.join(output_dir, '聊天记录'), exist_ok=True)
 
@@ -81,7 +81,7 @@ class Output(QThread):
         @return:
         """
 
-        origin_path = os.path.join(os.path.abspath('.'), output_dir, '聊天记录')
+        origin_path = os.path.join(os.path.abspath('../../DataBase'), output_dir, '聊天记录')
         os.makedirs(origin_path, exist_ok=True)
         filename = QFileDialog.getSaveFileName(None, "save file", os.path.join(os.getcwd(), 'messages.csv'),
                                                "csv files (*.csv);;all files(*.*)")
@@ -169,7 +169,7 @@ class Output(QThread):
 
     def merge_docx(self, n):
         conRemark = self.contact.remark
-        origin_path = os.path.join(os.path.abspath('.'), output_dir, '聊天记录',conRemark)
+        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', conRemark)
         filename = f"{origin_path}/{conRemark}_{n}.docx"
         if n == 10086:
             # self.document.append(self.document)
@@ -310,7 +310,7 @@ class OutputMedia(QThread):
         self.time_range = time_range
 
     def run(self):
-        origin_path = os.path.join(os.path.abspath('.'),output_dir,'聊天记录',self.contact.remark)
+        origin_path = os.path.join(os.path.abspath('../../DataBase'), output_dir, '聊天记录', self.contact.remark)
         messages = msg_db.get_messages_by_type(self.contact.wxid, 34, time_range=self.time_range)
         for message in messages:
             is_send = message[4]
@@ -337,7 +337,7 @@ class OutputEmoji(QThread):
         self.time_range = time_range
 
     def run(self):
-        origin_path = os.path.join(os.path.abspath('.'),output_dir,'聊天记录',self.contact.remark)
+        origin_path = os.path.join(os.path.abspath('../../DataBase'), output_dir, '聊天记录', self.contact.remark)
         messages = msg_db.get_messages_by_type(self.contact.wxid, 47, time_range=self.time_range)
         for message in messages:
             str_content = message[7]
@@ -374,7 +374,7 @@ class OutputImage(QThread):
             print('图片导出完成')
 
     def run(self):
-        origin_path = os.path.join(os.path.abspath('.'),output_dir,'聊天记录',self.contact.remark)
+        origin_path = os.path.join(os.path.abspath('../../DataBase'), output_dir, '聊天记录', self.contact.remark)
         messages = msg_db.get_messages_by_type(self.contact.wxid, 3, time_range=self.time_range)
         base_path = os.path.join(output_dir,'聊天记录',self.contact.remark,'image')
         for message in messages:
@@ -406,7 +406,7 @@ class OutputImageChild(QThread):
         self.time_range = time_range
 
     def run(self):
-        origin_path = os.path.join(os.path.abspath('.'),output_dir,'聊天记录',self.contact.remark)
+        origin_path = os.path.join(os.path.abspath('../../DataBase'), output_dir, '聊天记录', self.contact.remark)
         for message in self.messages:
             str_content = message[7]
             BytesExtra = message[10]

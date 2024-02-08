@@ -8,8 +8,8 @@ import filecmp
 
 from PyQt5.QtCore import pyqtSignal, QThread
 
-from ..config import output_dir
-from ..person import Me, Contact
+from app.config import output_dir
+from app.person import Me, Contact
 
 os.makedirs(os.path.join(output_dir, '聊天记录'), exist_ok=True)
 
@@ -104,7 +104,7 @@ class ExporterBase(QThread):
         self.last_timestamp = 0
         self.time_range = time_range
         self.messages = messages
-        origin_path = os.path.join(os.path.abspath('.'),output_dir,'聊天记录',self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
         makedirs(origin_path)
 
     def run(self):

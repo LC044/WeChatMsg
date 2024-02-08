@@ -21,9 +21,8 @@ from . import mainwindow
 # 不能删，删了会出错
 from .chat import ChatWindow
 from .contact import ContactWindow
-from app.ui.tool.tool_window import ToolWindow
 from .menu.export import ExportDialog
-from ..DataBase.output import Output
+from app.util.exporter.output import Output
 from ..components.QCursorGif import QCursorGif
 from ..config import info_file_path, db_dir
 from ..log import logger
