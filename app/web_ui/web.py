@@ -22,6 +22,7 @@ time_range = (start_time, end_time)
 html: str = ''
 api_url = 'http://api.lc044.love/upload'
 
+
 def get_contact(wxid):
     contact_info_list = micro_msg_db.get_contact_by_username(wxid)
     contact_info = {
@@ -36,10 +37,19 @@ def get_contact(wxid):
     contact = Contact(contact_info)
     return contact
 
+
 @app.route("/")
 def index():
-    # 渲染模板，并传递图表的 HTML 到模板中
-    return "index.html"
+    contact_topN_num = msg_db.get_chatted_top_contacts(time_range=time_range, top_n=6)
+    contact_topN = []
+    for wxid,num in contact_topN_num:
+        contact = get_contact(wxid)
+        contact_topN.append([contact,num])
+    data = {
+        'avatar': Me().smallHeadImgUrl,
+        'contact_topN':contact_topN,
+    }
+    return render_template('index.html', **data)
 
 
 @app.route("/christmas/<wxid>")
@@ -225,7 +235,7 @@ def charts(wxid):
     except TypeError:
         first_time = '2023-01-01 00:00:00'
     data = {
-        'wxid':wxid,
+        'wxid': wxid,
         'my_nickname': Me().name,
         'ta_nickname': contact.remark,
         'first_time': first_time
@@ -236,7 +246,7 @@ def charts(wxid):
 @app.route('/calendar', methods=['POST'])
 def get_calendar():
     wxid = request.json.get('wxid')
-    time_range = request.json.get('time_range',[])
+    time_range = request.json.get('time_range', [])
     world_cloud_data = analysis.calendar_chart(wxid, time_range=time_range)
     return jsonify(world_cloud_data)
 
