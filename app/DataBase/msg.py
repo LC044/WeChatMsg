@@ -222,10 +222,13 @@ class Msg:
         # result.sort(key=lambda x: x[5])
         # return self.add_sender(result)
 
-    def get_messages_all(self):
-        sql = '''
+    def get_messages_all(self,time_range=None):
+        if time_range:
+            start_time, end_time = convert_to_timestamp(time_range)
+        sql = f'''
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,StrTalker,Reserved1,CompressContent
             from MSG
+            {'WHERE CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
             order by CreateTime
         '''
         if not self.open_flag:

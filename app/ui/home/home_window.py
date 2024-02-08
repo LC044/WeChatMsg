@@ -24,7 +24,7 @@ class HomeWindow(QWidget, Ui_Dialog):
         pass
 
     def report(self):
-        time_range = [0, time.time()]
+        time_range = ['2023-01-01 00:00:00', '2024-02-10 00:00:00']
         self.report_thread = ReportThread(Me(), time_range)
         self.report_thread.start()
         QDesktopServices.openUrl(QUrl(f"http://127.0.0.1:21314/"))

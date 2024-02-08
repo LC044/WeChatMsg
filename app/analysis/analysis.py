@@ -7,7 +7,9 @@ from app.DataBase import msg_db, MsgType
 from pyecharts import options as opts
 from pyecharts.charts import WordCloud, Calendar, Bar, Line, Pie
 
-os.makedirs('./data/聊天统计/',exist_ok=True)
+os.makedirs('./data/聊天统计/', exist_ok=True)
+
+
 def wordcloud_(wxid, time_range=None):
     import jieba
     txt_messages = msg_db.get_messages_by_type(wxid, MsgType.TEXT, time_range=time_range)
@@ -324,7 +326,7 @@ def sender(wxid, time_range, my_name='', ta_name=''):
             datazoom_opts=opts.DataZoomOpts(),
             toolbox_opts=opts.ToolboxOpts(),
             title_opts=opts.TitleOpts(title="消息类型占比"),
-            legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%",pos_top="20%", orient="vertical"),
+            legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", pos_top="20%", orient="vertical"),
         )
         .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}"))
         # .render("./data/聊天统计/types_pie.html")
@@ -340,7 +342,7 @@ def sender(wxid, time_range, my_name='', ta_name=''):
             datazoom_opts=opts.DataZoomOpts(),
             toolbox_opts=opts.ToolboxOpts(),
             title_opts=opts.TitleOpts(title="双方消息占比"),
-            legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%",pos_top="20%", orient="vertical"),
+            legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", pos_top="20%", orient="vertical"),
         )
         .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}\n{d}%"))
         # .render("./data/聊天统计/pie_scroll_legend.html")
@@ -349,7 +351,7 @@ def sender(wxid, time_range, my_name='', ta_name=''):
         Pie()
         .add(
             "",
-            [[key,value] for key,value in weekday_count.items()],
+            [[key, value] for key, value in weekday_count.items()],
             radius=["40%", "75%"],
         )
         .set_global_opts(
@@ -366,6 +368,71 @@ def sender(wxid, time_range, my_name='', ta_name=''):
         'chart_data_types': p1.dump_options_with_quotes(),
         'chart_data_weekday': p3.dump_options_with_quotes(),
     }
+
+
+def my_message_counter(time_range, my_name=''):
+    msg_data = msg_db.get_messages_all(time_range=time_range)
+    types_count = {}
+    send_num = 0  # 发送消息的数量
+    weekday_count = {}
+    for message in msg_data:
+        type_ = message[2]
+        is_sender = message[4]
+        subType = message[3]
+        timestamp = message[5]
+        weekday = get_weekday(timestamp)
+        str_time = message[8]
+        send_num += is_sender
+        type_ = f'{type_}{subType:0>2d}' if subType != 0 else type_
+        type_ = int(type_)
+        if type_ in types_count:
+            types_count[type_] += 1
+        else:
+            types_count[type_] = 1
+        if weekday in weekday_count:
+            weekday_count[weekday] += 1
+        else:
+            weekday_count[weekday] = 1
+    receive_num = len(msg_data) - send_num
+    data = [[types_.get(key), value] for key, value in types_count.items() if key in types_]
+    if not data:
+        return {
+            'chart_data_sender': None,
+            'chart_data_types': None,
+        }
+    p1 = (
+        Pie()
+        .add(
+            "",
+            data,
+            center=["40%", "50%"],
+        )
+        .set_global_opts(
+            datazoom_opts=opts.DataZoomOpts(),
+            legend_opts=opts.LegendOpts(type_="scroll", pos_left="70%", pos_top="10%", orient="vertical"),
+        )
+        .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}"))
+        # .render("./data/聊天统计/types_pie.html")
+    )
+    p2 = (
+        Pie()
+        .add(
+            "",
+            [['发送', send_num], ['接收',receive_num ]],
+            center=["40%", "50%"],
+        )
+        .set_global_opts(
+            datazoom_opts=opts.DataZoomOpts(),
+            legend_opts=opts.LegendOpts(type_="scroll", pos_left="70%", pos_top="20%", orient="vertical"),
+        )
+        .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}\n{d}%", position='inside'))
+        # .render("./data/聊天统计/pie_scroll_legend.html")
+    )
+    return {
+        'chart_data_sender': p2.dump_options_with_quotes(),
+        'chart_data_types': p1.dump_options_with_quotes(),
+    }
+
 
 if __name__ == '__main__':
     msg_db.init_database(path='../DataBase/Msg/MSG.db')

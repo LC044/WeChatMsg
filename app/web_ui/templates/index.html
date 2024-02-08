@@ -6,6 +6,8 @@
     <title>微信年度聊天报告</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://memotrace.lc044.love/static/css/fullpage.min.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@latest/dist/echarts.min.js"></script>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/v5/echarts-wordcloud.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script type="text/javascript" src="https://memotrace.lc044.love/static/js/fullpage.min.js"></script>
     <script type="text/javascript" src="https://davidshimjs.github.io/qrcodejs/qrcode.min.js"></script>
@@ -23,7 +25,7 @@
 }
 .section{
     height: 100vh;
-    margin: 20px;
+    margin: 0px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -248,6 +250,17 @@ p {
         opacity: 1;
     }
 }
+.chart{
+    width: 800px;
+    height: 400px;
+}
+
+@media screen and (max-width:600px){
+	.chart{
+        width: 400px;
+        height: 220px;
+    }
+}
     </style>
 </head>
 <body>
@@ -256,11 +269,17 @@ p {
     <div id="fullpage">
       <div class="section">
           <div id="cover">
-              <h1>微信年度聊天报告</h1>
-              <p>统计、分析、回顾，记录一年的聊天时光</p>
+              <h1>年度聊天报告</h1>
+              <p>统计、分析、回顾，记录聊天时光</p>
               <button id="enterButton" onclick="navigateToNextPage()">进入报告</button>
           </div>
       </div>
+        <div class="section cover">
+            <h1>2023年</h1>
+            <p>你一共给<span class="number">{{contact_num}}</span>个联系人<br>发送了<span class="number">{{send_msg_num}}</span>条消息<br>收到了<span class="number">{{receive_msg_num}}</span>条消息</p>
+            <div id="sender-chart" class="chart" ></div>
+            <div id="types-chart" class="chart"></div>
+        </div>
       <div class="section cover">
           <h1>我的年度好友</h1>
           <h2>聊天榜单</h2>
@@ -332,5 +351,15 @@ p {
         fullpage_api.moveSectionDown();
     }
   </script>
+<script>
+    var chart_51ebd4312946429e9c32b2b55b96a479 = echarts.init(
+        document.getElementById('types-chart'), 'white', {renderer: 'canvas'});
+    var result = {{chart_data_types|safe}};
+    chart_51ebd4312946429e9c32b2b55b96a479.setOption(result);
+    var chart_51ebd4312946429e9c32b2b55b96a4 = echarts.init(
+        document.getElementById('sender-chart'), 'white', {renderer: 'canvas'});
+    var result = {{chart_data_sender|safe}};
+    chart_51ebd4312946429e9c32b2b55b96a4.setOption(result);
+</script>
 </body>
 </html>

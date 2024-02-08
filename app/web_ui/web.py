@@ -8,7 +8,7 @@ from pyecharts.charts import Bar
 
 from app.DataBase import msg_db, micro_msg_db
 from app.analysis import analysis
-from app.person import Contact, Me
+from app.person import Contact, Me, ContactDefault
 from app.util.emoji import get_most_emoji
 
 app = Flask(__name__)
@@ -25,6 +25,8 @@ api_url = 'http://api.lc044.love/upload'
 
 def get_contact(wxid):
     contact_info_list = micro_msg_db.get_contact_by_username(wxid)
+    if not contact_info_list:
+        return ContactDefault('')
     contact_info = {
         'UserName': contact_info_list[0],
         'Alias': contact_info_list[1],
@@ -40,16 +42,23 @@ def get_contact(wxid):
 
 @app.route("/")
 def index():
-    contact_topN_num = msg_db.get_chatted_top_contacts(time_range=time_range, top_n=6)
+    contact_topN_num = msg_db.get_chatted_top_contacts(time_range=time_range, top_n=9999999,contain_chatroom=True)
+    total_msg_num = sum(list(map(lambda x:x[1],contact_topN_num)))
     contact_topN = []
-    for wxid,num in contact_topN_num:
+    send_msg_num = msg_db.get_send_messages_number_sum(time_range)
+    contact_topN_num = msg_db.get_chatted_top_contacts(time_range=time_range, top_n=9999999, contain_chatroom=False)
+    for wxid, num in contact_topN_num[:6]:
         contact = get_contact(wxid)
-        contact_topN.append([contact,num])
+        contact_topN.append([contact, num])
+    my_message_counter_data = analysis.my_message_counter(time_range=time_range)
     data = {
         'avatar': Me().smallHeadImgUrl,
-        'contact_topN':contact_topN,
+        'contact_topN': contact_topN,
+        'contact_num':len(contact_topN_num),
+        'send_msg_num':send_msg_num ,
+        'receive_msg_num':total_msg_num-send_msg_num,
     }
-    return render_template('index.html', **data)
+    return render_template('index.html', **data,**my_message_counter_data)
 
 
 @app.route("/christmas/<wxid>")
