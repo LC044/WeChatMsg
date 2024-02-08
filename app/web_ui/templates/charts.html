@@ -58,7 +58,19 @@ setInterval(getRTime, 1000);
 
 </script>
 <script>
-    fetch('/month_count')
+    var wxid = '{{wxid}}';
+    function month_count(time_range){
+        const requestData = {
+            wxid: wxid,
+            time_range: time_range
+        };
+        fetch('/month_count',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        })
         .then(response => response.json())
         .then(chartOptions => {
             // 在这里使用 ECharts 渲染图表
@@ -66,9 +78,19 @@ setInterval(getRTime, 1000);
             var option = chartOptions.chart_data;
             myChart.setOption(JSON.parse(option));
         });
-</script>
-<script>
-    fetch('/wordcloud')
+    }
+    function wordcloud(time_range){
+        const requestData = {
+            wxid: wxid,
+            time_range: time_range
+        };
+        fetch('/wordcloud',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        })
         .then(response => response.json())
         .then(chartOptions => {
             // 在这里使用 ECharts 渲染图表
@@ -76,9 +98,19 @@ setInterval(getRTime, 1000);
             var option = chartOptions.chart_data;
             myChart.setOption(JSON.parse(option));
         });
-</script>
-<script>
-    fetch('/calendar')
+    }
+    function calendar(time_range){
+        const requestData = {
+            wxid: wxid,
+            time_range: time_range
+        };
+        fetch('/calendar',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        })
         .then(response => response.json())
         .then(chartOptions => {
             // 在这里使用 ECharts 渲染图表
@@ -86,9 +118,19 @@ setInterval(getRTime, 1000);
             var option = chartOptions.chart_data;
             myChart.setOption(JSON.parse(option));
         });
-</script>
-<script>
-    fetch('/message_counter')
+    }
+    function message_counter(time_range){
+        const requestData = {
+            wxid: wxid,
+            time_range: time_range
+        };
+        fetch('/message_counter',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        })
         .then(response => response.json())
         .then(chartOptions => {
             // 在这里使用 ECharts 渲染图表
@@ -102,6 +144,12 @@ setInterval(getRTime, 1000);
             var option = chartOptions.chart_data_weekday;
             myChart2.setOption(JSON.parse(option));
         });
+    }
+    var time_range=['1997-01-01 00:00:00','2035-01-01 00:00:00']
+    message_counter(time_range);
+    month_count(time_range);
+    calendar(time_range);
+    wordcloud(time_range);
 </script>
 </body>
 </html>

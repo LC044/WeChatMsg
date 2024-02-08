@@ -71,7 +71,7 @@ class ContactInfo(QWidget, Ui_Form):
         self.report_thread = ReportThread(self.contact)
         # self.report_thread.okSignal.connect(lambda x: QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314")))
         self.report_thread.start()
-        QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314/charts"))
+        QDesktopServices.openUrl(QUrl(f"http://127.0.0.1:21314/charts/{self.contact.wxid}"))
 
     def annual_report(self):
         date_range = None
@@ -95,9 +95,8 @@ class ContactInfo(QWidget, Ui_Form):
         self.contact.save_avatar()
         Me().save_avatar()
         self.report_thread = ReportThread(self.contact, time_range)
-        self.report_thread.okSignal.connect(lambda x: QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314")))
         self.report_thread.start()
-        QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314/christmas"))
+        QDesktopServices.openUrl(QUrl(f"http://127.0.0.1:21314/christmas/{self.contact.wxid}"))
 
     def emotionale_Analysis(self):
         QDesktopServices.openUrl(QUrl("https://memotrace.lc044.love/"))

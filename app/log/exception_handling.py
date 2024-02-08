@@ -40,10 +40,3 @@ def excepthook(exc_type, exc_value, traceback_):
 
     # 调用原始的 excepthook，以便程序正常退出
     sys.__excepthook__(exc_type, exc_value, traceback_)
-
-
-# 设置 excepthook
-sys.excepthook = excepthook
-result = None  # 假设这里返回了一个 None
-for item in result:  # 尝试迭代一个 None
-    print(item)
