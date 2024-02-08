@@ -212,8 +212,9 @@ def get_image(filename):
 
 @app.route('/month_count', methods=['POST'])
 def get_chart_options():
-    time_range = (0, time.time())
-    data = analysis.month_count(contact.wxid, time_range=time_range)
+    wxid = request.json.get('wxid')
+    time_range = request.json.get('time_range', [])
+    data = analysis.month_count(wxid, time_range=time_range)
     return jsonify(data)
 
 
@@ -256,7 +257,7 @@ def get_counter():
     wxid = request.json.get('wxid')
     time_range = request.json.get('time_range', [])
     contact = get_contact(wxid)
-    data = analysis.sender(contact.wxid, time_range=time_range, my_name=Me().name, ta_name=contact.remark)
+    data = analysis.sender(wxid, time_range=time_range, my_name=Me().name, ta_name=contact.remark)
     return jsonify(data)
 
 
