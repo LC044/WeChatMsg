@@ -15,7 +15,9 @@ app = Flask(__name__)
 
 wxid = ''
 contact: Contact = None
-
+start_time = '2023-1-01 00:00:00'
+end_time = '2023-12-31 23:59:59'
+time_range = (start_time, end_time)
 html: str = ''
 api_url = 'http://api.lc044.love/upload'
 
@@ -28,13 +30,7 @@ def index():
 
 @app.route("/christmas")
 def christmas():
-    t = '2023-1-01 00:00:00'
-    s_t = time.strptime(t, "%Y-%m-%d %H:%M:%S")  # 返回元祖
-    start_time = int(time.mktime(s_t))
-    t = '2023-12-31 23:59:59'
-    s_t = time.strptime(t, "%Y-%m-%d %H:%M:%S")  # 返回元祖
-    end_time = int(time.mktime(s_t))
-    time_range = (start_time, end_time)
+
     # 渲染模板，并传递图表的 HTML 到模板中
     try:
         first_message, first_time = msg_db.get_first_time_of_message(contact.wxid)
@@ -164,7 +160,10 @@ def test():
 
 
 def run(port=21314):
-    app.run(debug=True, host='0.0.0.0', port=port, use_reloader=False)
+    try:
+        app.run(debug=True, host='0.0.0.0', port=port, use_reloader=False)
+    except:
+        pass
 
 
 def resource_path(relative_path):

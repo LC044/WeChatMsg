@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from PyQt5.QtCore import pyqtSignal, QUrl, QThread
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QWidget, QMenu, QAction, QToolButton, QMessageBox
@@ -5,6 +7,8 @@ from PyQt5.QtWidgets import QWidget, QMenu, QAction, QToolButton, QMessageBox
 from app.ui.Icon import Icon
 from .contactInfoUi import Ui_Form
 from .userinfo import userinfo
+from ..menu.export_time_range import TimeRangeDialog
+from ...DataBase import msg_db
 from ...person import Contact, Me
 from app.ui.contact.export.export_dialog import ExportDialog
 
@@ -19,6 +23,7 @@ class ContactInfo(QWidget, Ui_Form):
     # username = ''
     def __init__(self, contact, parent=None):
         super(ContactInfo, self).__init__(parent)
+        self.time_range = None
         self.setupUi(self)
         self.contact: Contact = contact
         self.view_userinfo = userinfo.UserinfoController(self.contact)
@@ -53,9 +58,11 @@ class ContactInfo(QWidget, Ui_Form):
         self.toDocxAct.triggered.connect(self.output)
         self.toCSVAct.triggered.connect(self.output)
         self.toTxtAct.triggered.connect(self.output)
-    def set_contact(self,contact:Contact):
+
+    def set_contact(self, contact: Contact):
         self.view_userinfo.set_contact(contact)
         self.contact = contact
+
     def toolButton_show(self):
         self.toolButton_output.showMenu()
 
@@ -67,15 +74,27 @@ class ContactInfo(QWidget, Ui_Form):
         QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314/charts"))
 
     def annual_report(self):
+        date_range = None
+        chat_calendar = msg_db.get_messages_calendar(self.contact.wxid)
+        if chat_calendar:
+            start_time = datetime.strptime(chat_calendar[0], "%Y-%m-%d")
+            end_time = datetime.strptime(chat_calendar[-1], "%Y-%m-%d")
+            date_range = (start_time.date(), end_time.date())
+        self.time_range_view = TimeRangeDialog(date_range=date_range, parent=self)
+        self.time_range_view.date_range_signal.connect(self.set_time_range)
+        self.time_range_view.show()
         if 'room' in self.contact.wxid:
             QMessageBox.warning(
                 self, '警告',
                 '暂不支持群组'
             )
             return
+
+    def set_time_range(self, time_range):
+        self.time_range = time_range
         self.contact.save_avatar()
         Me().save_avatar()
-        self.report_thread = ReportThread(self.contact)
+        self.report_thread = ReportThread(self.contact, time_range)
         self.report_thread.okSignal.connect(lambda x: QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314")))
         self.report_thread.start()
         QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314/christmas"))
@@ -100,24 +119,27 @@ class ContactInfo(QWidget, Ui_Form):
             result = dialog.exec_()  # 使用exec_()获取用户的操作结果
         elif self.sender() == self.toCSVAct:
             # self.outputThread = Output(self.contact, type_=Output.CSV)
-            dialog = ExportDialog(self.contact,title='选择导出的消息类型', file_type='csv', parent=self)
+            dialog = ExportDialog(self.contact, title='选择导出的消息类型', file_type='csv', parent=self)
             result = dialog.exec_()  # 使用exec_()获取用户的操作结果
         elif self.sender() == self.toHtmlAct:
-            dialog = ExportDialog(self.contact,title='选择导出的消息类型', file_type='html', parent=self)
+            dialog = ExportDialog(self.contact, title='选择导出的消息类型', file_type='html', parent=self)
             result = dialog.exec_()  # 使用exec_()获取用户的操作结果
         elif self.sender() == self.toTxtAct:
             dialog = ExportDialog(self.contact, title='选择导出的消息类型', file_type='txt', parent=self)
             result = dialog.exec_()  # 使用exec_()获取用户的操作结果
 
+
 class ReportThread(QThread):
     okSignal = pyqtSignal(bool)
 
-    def __init__(self, contact):
+    def __init__(self, contact, time_range=None):
         super().__init__()
         self.contact = contact
+        self.time_range = time_range
 
     def run(self):
         from app.web_ui import web
         web.contact = self.contact
+        web.time_range = self.time_range
         web.run(port='21314')
         self.okSignal.emit(True)
