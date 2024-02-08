@@ -3,6 +3,7 @@ import sys
 import time
 import traceback
 
+from app.log.exception_handling import ExceptionHanding
 from app.ui.Icon import Icon
 
 widget = None
@@ -13,7 +14,7 @@ def excepthook(exc_type, exc_value, traceback_):
 
     # 在这里处理全局异常
 
-    error_message = ''.join(traceback.format_exception(exc_type, exc_value, traceback_))
+    error_message = ExceptionHanding(exc_type, exc_value, traceback_)
     txt = '您可添加QQ群发送log文件以便解决该问题'
     msg = f"Exception Type: {exc_type.__name__}\nException Value: {exc_value}\ndetails: {error_message}\n\n{txt}"
     logger.error(f'程序发生了错误:\n\n{msg}')

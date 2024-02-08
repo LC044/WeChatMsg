@@ -1,0 +1,49 @@
+import sqlite3
+import sys
+import traceback
+
+
+class ExceptionHanding:
+    def __init__(self, exc_type, exc_value, traceback_):
+        self.exc_type = exc_type
+        self.exc_value = exc_value
+        self.traceback = traceback_
+        self.error_message = ''.join(traceback.format_exception(exc_type, exc_value, traceback_))
+
+    def parser_exc(self):
+        if isinstance(self.exc_value, PermissionError):
+            return f'权限错误，请使用管理员身份运行'
+        elif isinstance(self.exc_value, sqlite3.DatabaseError):
+            return '数据库错误，请删除app文件夹后重启电脑再运行软件'
+        elif isinstance(self.exc_value, OSError) and self.exc_value.errno == 28:
+            return '空间磁盘不足，请预留足够多的磁盘空间以供软件正常运行'
+        elif isinstance(self.exc_value, TypeError) and 'NoneType' in str(self.exc_value) and 'not iterable' in str(
+                self.exc_value):
+            return '数据库错误，请删除app文件夹后重启电脑再运行软件'
+        else:
+            return '未知错误类型，可参考 https://blog.lc044.love/post/7 解决该问题'
+
+    def __str__(self):
+        errmsg = f'{self.error_message}\n{self.parser_exc()}'
+        return errmsg
+
+
+def excepthook(exc_type, exc_value, traceback_):
+    # 将异常信息转为字符串
+
+    # 在这里处理全局异常
+
+    error_message = ExceptionHanding(exc_type, exc_value, traceback_)
+    txt = '您可添加QQ群发送log文件以便解决该问题'
+    msg = f"Exception Type: {exc_type.__name__}\nException Value: {exc_value}\ndetails: {error_message}\n\n{txt}"
+    print(msg)
+
+    # 调用原始的 excepthook，以便程序正常退出
+    sys.__excepthook__(exc_type, exc_value, traceback_)
+
+
+# 设置 excepthook
+sys.excepthook = excepthook
+result = None  # 假设这里返回了一个 None
+for item in result:  # 尝试迭代一个 None
+    print(item)
