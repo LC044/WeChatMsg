@@ -270,15 +270,17 @@ class HtmlExporter(ExporterBase):
         is_chatroom = 1 if self.contact.is_chatroom else 0
         avatar = self.get_avatar_path(is_send, message)
         display_name = self.get_display_name(is_send, message)
-        text_info_map = {
-            1: transfer_detail["pay_memo"] or "转账",
-            3: "已收款",
-            4: "已退还",
-            7: "未知",
-        }
-        doc.write(
-            f"""{{ type:49, sub_type:2000,text:'{text_info_map[transfer_detail["paysubtype"]]}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',paysubtype:{transfer_detail["paysubtype"]},pay_memo:'{transfer_detail["pay_memo"]}',feedesc:'{transfer_detail["feedesc"]}',}},\n""")
-
+        try:
+            text_info_map = {
+                1: transfer_detail["pay_memo"] or "转账",
+                3: "已收款",
+                4: "已退还",
+                7: "未知",
+            }
+            doc.write(
+                f"""{{ type:49, sub_type:2000,text:'{text_info_map[transfer_detail["paysubtype"]]}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',paysubtype:{transfer_detail["paysubtype"]},pay_memo:'{transfer_detail["pay_memo"]}',feedesc:'{transfer_detail["feedesc"]}',}},\n""")
+        except Exception as e:
+            logger.error(f'转账解析错误：{transfer_detail}\n{traceback.format_exc()}')
     def call(self, doc, message):
         is_send = message[4]
         timestamp = message[5]
