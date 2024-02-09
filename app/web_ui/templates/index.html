@@ -324,14 +324,14 @@ p {
           <h1>年度聊天好友</h1>
           <h2>聊天榜单</h2>
           <ul>
-              {% for contact,msg_num in contact_topN:%}
+              {% for contact,msg_num,text_length in contact_topN:%}
                   <li>
                       <a href="/charts/{{contact.wxid}}" target="_blank">
                           <div class="contact-container">
                               <p class="nickname">{{contact.remark}}</p>
                               <img class="avatar" src="{{contact.smallHeadImgUrl}}">
                           </div>
-                          <div style="color: blueviolet;"><span class="number">{{msg_num}}</span>条消息<br><span class="number">000</span>字</div>
+                          <div style="color: blueviolet;"><span class="number">{{msg_num}}</span>条消息<br><span class="number">{{text_length}}</span>字</div>
                       </a>
                   </li>
               {% endfor %}

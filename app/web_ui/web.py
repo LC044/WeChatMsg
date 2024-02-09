@@ -49,7 +49,8 @@ def index():
     contact_topN_num = msg_db.get_chatted_top_contacts(time_range=time_range, top_n=9999999, contain_chatroom=False)
     for wxid, num in contact_topN_num[:6]:
         contact = get_contact(wxid)
-        contact_topN.append([contact, num])
+        text_length = msg_db.get_message_length(wxid,time_range)
+        contact_topN.append([contact, num,text_length])
     my_message_counter_data = analysis.my_message_counter(time_range=time_range)
     data = {
         'avatar': Me().smallHeadImgUrl,

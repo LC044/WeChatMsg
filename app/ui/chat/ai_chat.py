@@ -14,9 +14,8 @@ try:
     from .chatInfoUi import Ui_Form
 except:
     from chatInfoUi import Ui_Form
-from app.DataBase import msg_db, hard_link_db
-from app.components.bubble_message import BubbleMessage, ChatWidget, Notice
-from app.person import Me, Contact, ContactDefault
+from app.components.bubble_message import BubbleMessage
+from app.person import Me,ContactDefault
 
 
 class Message(QWidget):
@@ -145,7 +144,14 @@ class AIChatThread(QThread):
                 }
             ]
         }
+        message = '''
+        幼儿园三班一共有35人，上个月34人满勤。\n其中1月15日，小明同学感冒了，他的妈妈给他请了一天的病假。
+        '''
         try:
+            # for s in message:
+            #     self.msgSignal.emit(s)
+            #     time.sleep(0.05)
+            # return
             resp = requests.post(url, json=data, stream=True)
             if resp.status_code == 200:
                 for line in resp.iter_lines():

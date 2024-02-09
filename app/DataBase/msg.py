@@ -785,7 +785,55 @@ class Msg:
         finally:
             lock.release()
         return result
+    def get_message_length(
+            self,
+            username_='',
+            time_range: Tuple[int | float | str | date, int | float | str | date] = None,
+    )->int:
+        """
+                统计自己总共发消息的字数，包含type=1的文本和type=49,subtype=57里面自己发的文本
+                """
+        if time_range:
+            start_time, end_time = convert_to_timestamp(time_range)
+        sql_type_1 = f"""
+                    SELECT sum(length(strContent))
+                    from MSG
+                    where  StrTalker = ? and
+                    type = 1
+                    {'AND CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
+                """
+        sql_type_49 = f"""
+                    SELECT CompressContent
+                    from MSG
+                    where  StrTalker = ? and
+                    type = 49 and subtype = 57
+                    {'AND CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
+                """
+        sum_type_1 = 0
+        result_type_1 = 0
+        result_type_49 = 0
+        sum_type_49 = 0
 
+        if not self.open_flag:
+            return None
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql_type_1,[username_])
+            result_type_1 = self.cursor.fetchall()[0][0]
+            self.cursor.execute(sql_type_49,[username_])
+            result_type_49 = self.cursor.fetchall()
+        except sqlite3.DatabaseError:
+            logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
+        finally:
+            lock.release()
+        for message in result_type_49:
+            message = message[0]
+            content = parser_reply(message)
+            if content["is_error"]:
+                continue
+            sum_type_49 += len(content["title"])
+        sum_type_1 = result_type_1 if result_type_1 else 0
+        return sum_type_1 + sum_type_49
     def close(self):
         if self.open_flag:
             try:

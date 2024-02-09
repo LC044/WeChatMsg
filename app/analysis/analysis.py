@@ -94,7 +94,10 @@ def get_wordcloud(text):
 
     text_data = data[:100] if len(data) > 100 else data
     # 创建词云图
-    keyword, max_num = text_data[0]
+    if text_data:
+        keyword, max_num = text_data[0]
+    else:
+        keyword, max_num = '', 0
     w = (
         WordCloud()
         .add(series_name="聊天文字", data_pair=text_data, word_size_range=[5, 40])
@@ -483,7 +486,7 @@ def my_message_counter(time_range, my_name=''):
         'chart_data_wordcloud': w.get('chart_data_wordcloud'),
         'keyword': w.get('keyword'),
         'keyword_max_num': w.get('keyword_max_num'),
-        'total_text_num':total_text_num,
+        'total_text_num': total_text_num,
     }
 
 

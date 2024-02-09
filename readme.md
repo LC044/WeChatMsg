@@ -84,6 +84,10 @@
 
 ![](./doc/images/微信图片_20240130214341.jpg)
 
+![](./doc/images/why.gif)
+
+![](./doc/images/病假.gif)
+
 ![image-20230520235351749](./doc/images/20231227211149.png)
 
 ![image-20230520235351749](./doc/images/20231227211215.png)
