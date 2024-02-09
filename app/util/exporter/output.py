@@ -310,7 +310,7 @@ class OutputMedia(QThread):
         self.time_range = time_range
 
     def run(self):
-        origin_path = os.path.join(os.path.abspath('../../DataBase'), output_dir, '聊天记录', self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
         messages = msg_db.get_messages_by_type(self.contact.wxid, 34, time_range=self.time_range)
         for message in messages:
             is_send = message[4]

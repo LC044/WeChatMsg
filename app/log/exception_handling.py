@@ -12,7 +12,7 @@ class ExceptionHanding:
 
     def parser_exc(self):
         if isinstance(self.exc_value, PermissionError):
-            return f'权限错误，请使用管理员身份运行'
+            return f'权限错误，请使用管理员身份运行并将文件夹设置为可读写'
         elif isinstance(self.exc_value, sqlite3.DatabaseError):
             return '数据库错误，请删除app文件夹后重启电脑再运行软件'
         elif isinstance(self.exc_value, OSError) and self.exc_value.errno == 28:
