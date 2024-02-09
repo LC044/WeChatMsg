@@ -81,7 +81,7 @@ class Output(QThread):
         @return:
         """
 
-        origin_path = os.path.join(os.path.abspath('../../DataBase'), output_dir, '聊天记录')
+        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录')
         os.makedirs(origin_path, exist_ok=True)
         filename = QFileDialog.getSaveFileName(None, "save file", os.path.join(os.getcwd(), 'messages.csv'),
                                                "csv files (*.csv);;all files(*.*)")
@@ -337,7 +337,7 @@ class OutputEmoji(QThread):
         self.time_range = time_range
 
     def run(self):
-        origin_path = os.path.join(os.path.abspath('../../DataBase'), output_dir, '聊天记录', self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
         messages = msg_db.get_messages_by_type(self.contact.wxid, 47, time_range=self.time_range)
         for message in messages:
             str_content = message[7]
@@ -374,7 +374,7 @@ class OutputImage(QThread):
             print('图片导出完成')
 
     def run(self):
-        origin_path = os.path.join(os.path.abspath('../../DataBase'), output_dir, '聊天记录', self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
         messages = msg_db.get_messages_by_type(self.contact.wxid, 3, time_range=self.time_range)
         base_path = os.path.join(output_dir,'聊天记录',self.contact.remark,'image')
         for message in messages:
@@ -406,7 +406,7 @@ class OutputImageChild(QThread):
         self.time_range = time_range
 
     def run(self):
-        origin_path = os.path.join(os.path.abspath('../../DataBase'), output_dir, '聊天记录', self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
         for message in self.messages:
             str_content = message[7]
             BytesExtra = message[10]

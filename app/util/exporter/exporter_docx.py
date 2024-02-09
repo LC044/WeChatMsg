@@ -239,7 +239,7 @@ class DocxExporter(ExporterBase):
         return content_cell
 
     def music_share(self, doc, message):
-        origin_path = os.path.join(os.path.abspath('../../DataBase'), output_dir, '聊天记录', self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
         is_send = message[4]
         timestamp = message[5]
         content = music_share(message[11])
@@ -255,7 +255,7 @@ class DocxExporter(ExporterBase):
         display_name = self.get_display_name(is_send, message)
 
     def share_card(self, doc, message):
-        origin_path = f"{os.path.abspath('../../DataBase')}/data/聊天记录/{self.contact.remark}"
+        origin_path = f"{os.getcwd()}/data/聊天记录/{self.contact.remark}"
         is_send = message[4]
         timestamp = message[5]
         bytesExtra = message[10]
@@ -282,7 +282,7 @@ class DocxExporter(ExporterBase):
                 app_logo = ''
 
     def merge_docx(self, conRemark, n):
-        origin_path = os.path.join(os.path.abspath('../../DataBase'), output_dir, '聊天记录')
+        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录')
         all_file_path = []
         for i in range(n):
             file_name = f"{conRemark}{i}.docx"

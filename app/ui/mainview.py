@@ -19,8 +19,10 @@ from app.DataBase import misc_db, micro_msg_db, close_db
 from app.ui.Icon import Icon
 from . import mainwindow
 # 不能删，删了会出错
-from .chat import ChatWindow
-from .contact import ContactWindow
+from app.ui.chat import ChatWindow
+from app.ui.contact import ContactWindow
+from app.ui.tool.tool_window import ToolWindow
+from app.ui.home.home_window import HomeWindow
 from .menu.export import ExportDialog
 from app.util.exporter.output import Output
 from ..components.QCursorGif import QCursorGif
