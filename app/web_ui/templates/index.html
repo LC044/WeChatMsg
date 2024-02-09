@@ -252,15 +252,48 @@ p {
 }
 .chart{
     width: 800px;
-    height: 400px;
+    height: 300px;
 }
-
-@media screen and (max-width:600px){
+.chart-container{
+    display: flex;
+}
+#word_cloud{
+    width: 800px;
+    height: 800px;
+}
+@media screen and (max-width:480px){
 	.chart{
+        width: 300px;
+        height: 250px;
+    }
+    .chart-container{
+        display:flex;
+        flex-direction: column;
+    }
+    #word_cloud{
         width: 400px;
-        height: 220px;
+        height: 400px;
     }
 }
+
+#keywords {
+    font-size: 2.5em;
+    color: #003366;
+    animation: slideIn 1.5s ease-out;
+    transform: skew(-15deg);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50px) skew(-15deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) skew(-15deg);
+    }
+}
+
     </style>
 </head>
 <body>
@@ -270,18 +303,25 @@ p {
       <div class="section">
           <div id="cover">
               <h1>年度聊天报告</h1>
-              <p>统计、分析、回顾，记录聊天时光</p>
+              <p>可掌控的才真正属于你</p>
               <button id="enterButton" onclick="navigateToNextPage()">进入报告</button>
           </div>
       </div>
         <div class="section cover">
             <h1>2023年</h1>
-            <p>你一共给<span class="number">{{contact_num}}</span>个联系人<br>发送了<span class="number">{{send_msg_num}}</span>条消息<br>收到了<span class="number">{{receive_msg_num}}</span>条消息</p>
-            <div id="sender-chart" class="chart" ></div>
-            <div id="types-chart" class="chart"></div>
+            <p>你一共给<span class="number">{{contact_num}}</span>个联系人<br>发送了<span class="number">{{send_msg_num}}</span>条消息<br>收到了<span class="number">{{receive_msg_num}}</span>条消息<br>总计<span class="number">{{total_text_num}}</span>字</p>
+            <div class="chart-container">
+                <div id="types-chart" class="chart"></div>
+                <div id="sender-chart" class="chart" ></div>
+            </div>
+        </div>
+        <div class="section cover">
+            <h1>年度关键词</h1>
+            <div id="keywords">“{{keyword}}”<span class="number">{{keyword_max_num}}</span>次</div>
+            <div id="word_cloud"></div>
         </div>
       <div class="section cover">
-          <h1>我的年度好友</h1>
+          <h1>年度聊天好友</h1>
           <h2>聊天榜单</h2>
           <ul>
               {% for contact,msg_num in contact_topN:%}
@@ -360,6 +400,20 @@ p {
         document.getElementById('sender-chart'), 'white', {renderer: 'canvas'});
     var result = {{chart_data_sender|safe}};
     chart_51ebd4312946429e9c32b2b55b96a4.setOption(result);
+    var chart_51ebd4312946429e9c32b2b55b96 = echarts.init(
+        document.getElementById('word_cloud'), 'white', {renderer: 'canvas'});
+    var result = {{chart_data_wordcloud|safe}};
+    // 获取屏幕宽度
+    const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    // 根据屏幕宽度设置字体范围
+    let fontSizeRange;
+    if (screenWidth < 768) { // 手机屏幕
+        fontSizeRange = [5, 40];
+    } else { // 电脑屏幕
+        fontSizeRange = [10, 100];
+    }
+    result.series[0].sizeRange = fontSizeRange;
+    chart_51ebd4312946429e9c32b2b55b96.setOption(result);
 </script>
 </body>
 </html>

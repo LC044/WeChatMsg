@@ -5,7 +5,7 @@ import traceback
 import requests
 from PyQt5.QtCore import QThread, pyqtSignal, QSize, Qt
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QApplication, QTextBrowser
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QApplication, QTextBrowser, QMessageBox
 
 from app.log import logger
 from app.ui.Icon import Icon
@@ -61,9 +61,13 @@ class AIChat(QWidget, Ui_Form):
         self.init_ui()
         self.show_chats()
         self.pushButton.clicked.connect(self.send_msg)
+        self.toolButton.clicked.connect(self.tool)
 
     def init_ui(self):
         self.textEdit.installEventFilter(self)
+
+    def tool(self):
+        QMessageBox.information(self, "温馨提示", "暂未接入聊天数据，您可进行基础的AI对话，后续更新敬请期待")
 
     def chat(self, text):
         self.now_message.append(text)
@@ -143,7 +147,7 @@ class AIChatThread(QThread):
         }
         try:
             resp = requests.post(url, json=data, stream=True)
-            if resp.status_code==200:
+            if resp.status_code == 200:
                 for line in resp.iter_lines():
                     if line:
                         trunk = line.decode('utf-8')
