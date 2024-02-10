@@ -1,7 +1,7 @@
 import os
+import sys
 import time
 from typing import List
-
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QTimer, QThread, pyqtSignal, QObject
 from PyQt5.QtGui import QTextCursor
