@@ -1,4 +1,4 @@
-version = '1.1.0'
+version = '1.1.1'
 contact = '701805520'
 github = 'https://github.com/LC044/WeChatMsg'
 website = 'https://memotrace.lc044.love/'

@@ -1,5 +1,5 @@
 import os
-import sys
+import sys as sys_
 import time
 from typing import List
 from PyQt5 import QtWidgets
@@ -58,7 +58,7 @@ class ExportDialog(QDialog, Ui_Dialog):
         self.btn_start.clicked.connect(self.export_data)
         self.comboBox_time.activated.connect(self.set_export_date)
         # 下面将输出重定向到textBrowser中
-        sys.stdout = EmittingStr(textWritten=self.outputWritten)
+        sys_.stdout = EmittingStr(textWritten=self.outputWritten)
         # sys.stderr = EmittingStr(textWritten=self.outputWritten)
         scroll_bar = ScrollBar()
         self.textBrowser.setVerticalScrollBar(scroll_bar)
@@ -218,11 +218,11 @@ class ExportDialog(QDialog, Ui_Dialog):
         reply.addButton("取消", QMessageBox.RejectRole)
         api = reply.exec_()
         # 在任务完成时重置sys.stdout
-        sys.stdout = sys.__stdout__
+        sys_.stdout = sys_.__stdout__
         self.accept()
 
     def close(self):
-        sys.stdout = sys.__stdout__
+        sys_.stdout = sys_.__stdout__
         del self.worker
         super().close()
 

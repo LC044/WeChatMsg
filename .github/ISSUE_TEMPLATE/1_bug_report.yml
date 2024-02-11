@@ -33,8 +33,7 @@ body:
     attributes:
       label: '💻 微信版本'
       options:
-        - 3.9.8.25
-        - 3.9.8.15
+        - 最新版
         - Other(更新到最新版再试试)
   - type: dropdown
     attributes:
