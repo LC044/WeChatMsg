@@ -40,6 +40,7 @@ province_mapping = {
 country_mapping = {
     'CN': '中国大陆',
     'TW': '中国台湾',
+    'GB': "英国",
 }
 city_mapping = {
     "Beijing": "北京",
@@ -326,12 +327,22 @@ city_mapping = {
     "Jingdezhen": "景德镇",
     "Xinyu": "新余",
     "Yichun": "宜春",
-    "Fuzhou": "抚州"
+    "Fuzhou": "抚州",
+    "Tin Shui": "天水"
 }
+
+
+def conversion_province_to_chinese(province):
+    area = ''
+    if province in province_mapping:
+        area = f'{province_mapping[province]}'
+    return area
 
 
 def conversion_region_to_chinese(region: tuple):
     area = ''
+    if not region:
+        return area
     if region[2]:
         if region[2] in city_mapping:
             area = city_mapping[region[2]]

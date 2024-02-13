@@ -7,9 +7,11 @@ from flask import Flask, render_template, send_file, jsonify, make_response, req
 from pyecharts.charts import Bar
 
 from app.DataBase import msg_db, micro_msg_db
+from app.DataBase.hard_link import decodeExtraBuf
 from app.analysis import analysis
 from app.person import Contact, Me, ContactDefault
 from app.util.emoji import get_most_emoji
+from app.util.region_conversion import conversion_region_to_chinese
 
 app = Flask(__name__)
 
@@ -23,10 +25,12 @@ html: str = ''
 api_url = 'http://api.lc044.love/upload'
 
 
-def get_contact(wxid):
+def get_contact(wxid) -> ContactDefault | Contact:
     contact_info_list = micro_msg_db.get_contact_by_username(wxid)
     if not contact_info_list:
         return ContactDefault('')
+    detail = decodeExtraBuf(contact_info_list[9])
+    # detail = {}
     contact_info = {
         'UserName': contact_info_list[0],
         'Alias': contact_info_list[1],
@@ -35,31 +39,44 @@ def get_contact(wxid):
         'NickName': contact_info_list[4],
         'smallHeadImgUrl': contact_info_list[7],
         'label_name': contact_info_list[10],
+        'detail': detail,
     }
-    contact = Contact(contact_info)
+    contact =Contact(contact_info)
+    print(detail)
+    # region = contact.detail.get('region')
+    # area = conversion_region_to_chinese(region)
+    # print(area)
     return contact
 
 
 @app.route("/")
 def index():
-    contact_topN_num = msg_db.get_chatted_top_contacts(time_range=time_range, top_n=9999999,contain_chatroom=True)
-    total_msg_num = sum(list(map(lambda x:x[1],contact_topN_num)))
+    contact_topN_num = msg_db.get_chatted_top_contacts(time_range=time_range, top_n=9999999, contain_chatroom=True)
+    total_msg_num = sum(list(map(lambda x: x[1], contact_topN_num)))
+    contact_topN = []
+    for wxid, num in contact_topN_num:
+        contact = get_contact(wxid)
+        text_length = 0
+        contact_topN.append([contact, num, text_length])
+    contacts_data = analysis.contacts_analysis(contact_topN)
     contact_topN = []
     send_msg_num = msg_db.get_send_messages_number_sum(time_range)
     contact_topN_num = msg_db.get_chatted_top_contacts(time_range=time_range, top_n=9999999, contain_chatroom=False)
+
     for wxid, num in contact_topN_num[:6]:
         contact = get_contact(wxid)
-        text_length = msg_db.get_message_length(wxid,time_range)
-        contact_topN.append([contact, num,text_length])
+        text_length = msg_db.get_message_length(wxid, time_range)
+        contact_topN.append([contact, num, text_length])
+
     my_message_counter_data = analysis.my_message_counter(time_range=time_range)
     data = {
         'avatar': Me().smallHeadImgUrl,
         'contact_topN': contact_topN,
-        'contact_num':len(contact_topN_num),
-        'send_msg_num':send_msg_num ,
-        'receive_msg_num':total_msg_num-send_msg_num,
+        'contact_num': len(contact_topN_num),
+        'send_msg_num': send_msg_num,
+        'receive_msg_num': total_msg_num - send_msg_num,
     }
-    return render_template('index.html', **data,**my_message_counter_data)
+    return render_template('index.html', **data,**contacts_data, **my_message_counter_data)
 
 
 @app.route("/christmas/<wxid>")

@@ -25,6 +25,7 @@ class Person:
         self.avatar_path = None
         self.avatar = None
         self.avatar_path_qt = Icon.Default_avatar_path
+        self.detail = {}
 
     def set_avatar(self, img_bytes):
         if not img_bytes:
@@ -55,6 +56,7 @@ class Person:
 @singleton
 class Me(Person):
     def __init__(self):
+        super().__init__()
         self.avatar = QPixmap(Icon.Default_avatar_path)
         self.avatar_path = ':/icons/icons/default_avatar.svg'
         self.wxid = ''
@@ -68,6 +70,7 @@ class Me(Person):
 
 class Contact(Person):
     def __init__(self, contact_info: Dict):
+        super().__init__()
         self.wxid = contact_info.get('UserName')
         self.remark = contact_info.get('Remark')
         # Alias,Type,Remark,NickName,PYInitial,RemarkPYInitial,ContactHeadImgUrl.smallHeadImgUrl,ContactHeadImgUrl,bigHeadImgUrl
@@ -81,7 +84,7 @@ class Contact(Person):
         self.avatar = QPixmap()
         self.avatar_path = Icon.Default_avatar_path
         self.is_chatroom = self.wxid.__contains__('@chatroom')
-        self.detail = contact_info.get('detail')
+        self.detail:Dict = contact_info.get('detail')
         self.label_name = contact_info.get('label_name')  # 联系人的标签分类
 
         """
@@ -97,6 +100,7 @@ class Contact(Person):
 
 class ContactDefault(Person):
     def __init__(self, wxid=""):
+        super().__init__()
         self.avatar = QPixmap(Icon.Default_avatar_path)
         self.avatar_path = ':/icons/icons/default_avatar.svg'
         self.wxid = wxid
@@ -106,6 +110,7 @@ class ContactDefault(Person):
         self.smallHeadImgUrl = ""
         self.smallHeadImgBLOG = b''
         self.is_chatroom = False
+        self.detail = {}
 
 
 class Contacts:

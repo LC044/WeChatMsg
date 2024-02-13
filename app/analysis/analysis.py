@@ -2,12 +2,16 @@ import os
 from collections import Counter
 import sys
 from datetime import datetime
+from typing import List
 
 import jieba
 
 from app.DataBase import msg_db, MsgType
 from pyecharts import options as opts
-from pyecharts.charts import WordCloud, Calendar, Bar, Line, Pie
+from pyecharts.charts import WordCloud, Calendar, Bar, Line, Pie, Map
+
+from app.person import Contact
+from app.util.region_conversion import conversion_province_to_chinese
 
 os.makedirs('./data/聊天统计/', exist_ok=True)
 
@@ -412,6 +416,58 @@ def sender(wxid, time_range, my_name='', ta_name=''):
         'chart_data_sender': p2.dump_options_with_quotes(),
         'chart_data_types': p1.dump_options_with_quotes(),
         'chart_data_weekday': p3.dump_options_with_quotes(),
+    }
+
+
+def contacts_analysis(contacts):
+    man_contact_num = 0
+    woman_contact_num = 0
+    province_dict = {
+        '北京': '北京市',
+        '上海': '上海市',
+        '天津': '天津市',
+        '重庆': '重庆市',
+        '新疆': '新疆维吾尔族自治区',
+        '广西': '广西壮族自治区',
+        '内蒙古': '内蒙古自治区',
+        '宁夏': '宁夏回族自治区',
+        '西藏': '西藏自治区'
+    }
+    provinces = []
+    for contact, num, text_length in contacts:
+        if contact.detail.get('gender') == 1:
+            man_contact_num += 1
+        elif contact.detail.get('gender') == 2:
+            woman_contact_num += 1
+        province_py = contact.detail.get('region')
+        if province_py:
+            province = province_py[1]
+            province = conversion_province_to_chinese(province)
+            if province:
+                if province in province_dict:
+                    province = province_dict[province]
+                else:
+                    province += '省'
+                provinces.append(province)
+                print(province, contact.detail)
+    data = Counter(provinces)
+    data = [[k, v] for k, v in data.items()]
+    print(data)
+    max_ = max(list(map(lambda x:x[1],data)))
+    c = (
+        Map()
+        .add("分布", data, "china")
+        .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
+        .set_global_opts(
+            title_opts=opts.TitleOpts(title="地区分布"),
+            visualmap_opts=opts.VisualMapOpts(max_=max_, is_piecewise=True),
+            legend_opts=opts.LegendOpts(is_show=False),
+        )
+    )
+    return {
+        'woman_contact_num': woman_contact_num,
+        'man_contact_num': man_contact_num,
+        'contact_region_map': c.dump_options_with_quotes(),
     }
 
 
