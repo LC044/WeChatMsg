@@ -21,7 +21,7 @@ class ExceptionHanding:
                 self.exc_value):
             return '数据库错误，请删除app文件夹后重启电脑再运行软件'
         else:
-            return '未知错误类型，可参考 https://blog.lc044.love/post/7 解决该问题'
+            return '未知错误类型，可参考 https://blog.lc044.love/post/7 解决该问题\n温馨提示：重启电脑可解决80%的问题'
 
     def __str__(self):
         errmsg = f'{self.error_message}\n{self.parser_exc()}'

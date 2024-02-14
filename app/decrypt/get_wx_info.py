@@ -24,6 +24,8 @@ from win32api import GetFileVersionInfo, HIWORD, LOWORD
 """
 class Wechat来源：https://github.com/SnowMeteors/GetWeChatKey
 """
+
+
 class Wechat:
     def __init__(self, pm):
         module = pymem.process.module_from_name(pm.process_handle, "WeChatWin.dll")
@@ -149,6 +151,7 @@ class Wechat:
         version = f"{str(HIWORD(msv))}.{str(LOWORD(msv))}.{str(HIWORD(lsv))}.{str(LOWORD(lsv))}"
 
         return version
+
 
 # 获取exe文件的位数
 def get_exe_bit(file_path):
@@ -403,7 +406,7 @@ def read_info(version_list, is_logging=False):
         tmp_rd['filePath'] = get_info_filePath(tmp_rd['wxid']) if tmp_rd['wxid'] != "None" else "None"
         tmp_rd['key'] = "None"
         tmp_rd['key'] = get_key(tmp_rd['filePath'], addrLen)
-        if tmp_rd['key']=='None':
+        if tmp_rd['key'] == 'None':
             wechat = Pymem("WeChat.exe")
             key = Wechat(wechat).GetInfo()
             if key:

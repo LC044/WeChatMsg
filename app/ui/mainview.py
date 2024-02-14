@@ -11,7 +11,7 @@ import json
 import os.path
 import traceback
 
-from PyQt5.QtCore import pyqtSignal, QThread, QSize, QUrl
+from PyQt5.QtCore import pyqtSignal, QThread, QSize, QUrl, Qt
 from PyQt5.QtGui import QPixmap, QIcon, QDesktopServices
 from PyQt5.QtWidgets import QMainWindow, QLabel, QMessageBox
 
@@ -282,7 +282,11 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         self.setStyleSheet(Stylesheet)
         self.listWidget.clear()
         self.resize(QSize(800, 600))
-
+        self.info = QLabel(self)
+        self.info.setText('Tips ')
+        self.info.setAlignment(Qt.AlignRight)
+        self.statusbar.addPermanentWidget(self.info)
+        self.statusbar.showMessage('遇到问题可添加QQ群咨询', 5000)
         self.load_flag = False
         self.load_data()
         self.load_num = 0
@@ -316,7 +320,6 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
             pass
 
     def init_ui(self):
-
         # 设置忙碌光标图片数组
         self.initCursor([':/icons/icons/Cursors/%d.png' %
                          i for i in range(8)])
