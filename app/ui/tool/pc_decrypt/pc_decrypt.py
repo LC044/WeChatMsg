@@ -229,6 +229,16 @@ class DecryptThread(QThread):
                         # print(inpath)
                         output_path = os.path.join(output_dir, file)
                         tasks.append([self.key, inpath, output_path])
+                    else:
+                        try:
+                            name,suffix = file.split('.')
+                            if suffix.startswith('db_SQLITE'):
+                                inpath = os.path.join(root, file)
+                                # print(inpath)
+                                output_path = os.path.join(output_dir, name+'.db')
+                                tasks.append([self.key, inpath, output_path])
+                        except:
+                            continue
         self.maxNumSignal.emit(len(tasks))
         for i, task in enumerate(tasks):
             if decrypt.decrypt(*task) == -1:
