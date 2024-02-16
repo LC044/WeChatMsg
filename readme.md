@@ -61,14 +61,11 @@
   - CSV文档✅ 
   - TXT文档✅ 
   - Word文档✅ 
-- 分析聊天数据，做成可视化年报[点击预览](https://memotrace.lc044.love/demo.html)
+- 分析聊天数据，做成[可视化年报](https://memotrace.lc044.love/demo.html)
 - 🔥**项目持续更新中**
 - 开发计划
-  - 各种分析图表
-  - 个人年度报告
   - 群组年度报告
   - 情感分析
-  - 自主选择年度报告年份
   - 一键导出全部表情包、文件、图片、视频、语音
   - 合并多个备份数据
   - 按日期、关键词索引
@@ -130,32 +127,11 @@
   * 重启exe程序
   * 重启电脑
   * 换电脑
-
-如果您遇到下图所示的问题，是由于没有在电脑端登录微信
-
-![](./doc/images/login_wx.png)
-
-
 如果您在运行可执行程序的时候出现闪退的现象，请右击软件使用管理员权限运行。
 
-![](./doc/images/exe_file.png)
-
-如果您在获取信息的时候，`wxid`
-显示none，但是key是存在的，需要在微信文件保存的路径中选择该文件夹路径下的带有wxid_xxx的名字，填到wxid位置并继续点击`开始启动`
-
-![](./doc/images/with_wxid_name.png)
-
-如果出现如图所示的报错信息，将`app/database/msg`文件夹删除，重新运行`main.py`。
-
-![](./doc/images/err_log.png)
-
-
-导出数据成功之后，该文件位置与exe文件位置相同（或者在源码.data文件下）
-
-![](./doc/images/message.png)
+[查看详细教程](https://blog.lc044.love/post/5)
 
 </details>
-
 
 # 🏆致谢
 
@@ -172,7 +148,6 @@
 > <br>软件贩子勿扰，违规违法勿扰，二次开发请务必遵守开源协议
 
 [![Star History Chart](https://api.star-history.com/svg?repos=LC044/WeChatMsg&type=Date)](https://star-history.com/?utm_source=bestxtools.com#LC044/WeChatMsg&Date)
-
 
 # 🤝贡献者
 

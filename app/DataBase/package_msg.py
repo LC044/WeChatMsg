@@ -90,7 +90,7 @@ class PackageMsg:
                         row_list.append('')
             updated_messages.append(tuple(row_list))
         return updated_messages
-    
+
     def get_package_message_by_wxid(self, chatroom_wxid):
         '''
         获取一个群聊的聊天记录
@@ -114,11 +114,11 @@ class PackageMsg:
         messages = msg_db.get_messages(chatroom_wxid)
         for row in messages:
             message = list(row)
-            if message[4] == 1: # 自己发送的就没必要解析了
+            if message[4] == 1:  # 自己发送的就没必要解析了
                 message.append(Me())
                 updated_messages.append(message)
                 continue
-            if message[10] is None: # BytesExtra是空的跳过
+            if message[10] is None:  # BytesExtra是空的跳过
                 message.append(ContactDefault(wxid))
                 updated_messages.append(message)
                 continue
@@ -129,12 +129,12 @@ class PackageMsg:
                 if tmp.field1 != 1:
                     continue
                 wxid = tmp.field2
-            if wxid == "": # 系统消息里面 wxid 不存在
+            if wxid == "":  # 系统消息里面 wxid 不存在
                 message.append(ContactDefault(wxid))
                 updated_messages.append(message)
                 continue
             contact_info_list = micro_msg_db.get_contact_by_username(wxid)
-            if contact_info_list is None: # 群聊中已退群的联系人不会保存在数据库里
+            if contact_info_list is None:  # 群聊中已退群的联系人不会保存在数据库里
                 message.append(ContactDefault(wxid))
                 updated_messages.append(message)
                 continue
@@ -177,6 +177,7 @@ class PackageMsg:
         finally:
             lock.release()
         return membermap
+
 
 if __name__ == "__main__":
     p = PackageMsg()

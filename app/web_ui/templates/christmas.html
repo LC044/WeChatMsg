@@ -265,11 +265,14 @@
                             displayQRCode(data.url);
                             alert(data.errmsg);
                         }
+                        else{
+                            alert(data.errmsg);
+                        }
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Error: Unable to fetch data from the server.');
+                    alert('Error: Unable to fetch data from the server.\n'+error);
                 });
         }
 
