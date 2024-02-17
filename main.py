@@ -3,7 +3,7 @@ import sys
 import time
 import traceback
 
-from app.log.exception_handling import ExceptionHanding
+from app.log.exception_handling import ExceptionHanding, send_error_msg
 from app.ui.Icon import Icon
 
 widget = None
@@ -17,6 +17,8 @@ def excepthook(exc_type, exc_value, traceback_):
     error_message = ExceptionHanding(exc_type, exc_value, traceback_)
     txt = '您可添加QQ群发送log文件以便解决该问题'
     msg = f"Exception Type: {exc_type.__name__}\nException Value: {exc_value}\ndetails: {error_message}\n\n{txt}"
+    if SEND_LOG_FLAG:
+        send_error_msg(msg)
     logger.error(f'程序发生了错误:\n\n{msg}')
     # 创建一个 QMessageBox 对象
     error_box = QMessageBox()
@@ -49,7 +51,7 @@ from app.DataBase import close_db
 from app.log import logger
 from app.ui import mainview
 from app.ui.tool.pc_decrypt import pc_decrypt
-from app.config import version
+from app.config import version, SEND_LOG_FLAG
 
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("WeChatReport")
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)

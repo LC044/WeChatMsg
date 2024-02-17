@@ -59,7 +59,7 @@ class Me(Person):
         super().__init__()
         self.avatar = QPixmap(Icon.Default_avatar_path)
         self.avatar_path = ':/icons/icons/default_avatar.svg'
-        self.wxid = ''
+        self.wxid = 'wxid_00112233'
         self.wx_dir = ''
         self.name = ''
         self.mobile = ''

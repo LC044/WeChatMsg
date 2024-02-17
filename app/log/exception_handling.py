@@ -2,6 +2,10 @@ import sqlite3
 import sys
 import traceback
 
+import requests
+
+from app.person import Me
+
 
 class ExceptionHanding:
     def __init__(self, exc_type, exc_value, traceback_):
@@ -40,3 +44,30 @@ def excepthook(exc_type, exc_value, traceback_):
 
     # 调用原始的 excepthook，以便程序正常退出
     sys.__excepthook__(exc_type, exc_value, traceback_)
+
+def send_error_msg( message):
+    url = "http://api.lc044.love/error"
+    if not message:
+        return {
+            'code': 201,
+            'errmsg': '日志为空'
+        }
+    data = {
+        'username': Me().wxid,
+        'error': message
+    }
+    try:
+        response = requests.post(url, json=data)
+        if response.status_code == 200:
+            resp_info = response.json()
+            return resp_info
+        else:
+            return {
+                'code': 503,
+                'errmsg': '服务器错误'
+            }
+    except:
+        return {
+            'code': 404,
+            'errmsg': '客户端错误'
+        }
