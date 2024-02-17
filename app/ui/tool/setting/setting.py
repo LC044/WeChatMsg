@@ -2,7 +2,7 @@ import json
 import os.path
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget, QMessageBox
-
+from app.config import SEND_LOG_FLAG
 from .settingUi import Ui_Form
 
 Stylesheet = """
@@ -64,6 +64,12 @@ QCheckBox::indicator:checked{
 """
 
 
+def set_SEND_LOG_FLAG(flag):
+    # noinspection PyGlobalUndefined
+    global SEND_LOG_FLAG
+    SEND_LOG_FLAG = flag
+
+
 class SettingControl(QWidget, Ui_Form):
 
     def __init__(self, parent=None):
@@ -72,6 +78,7 @@ class SettingControl(QWidget, Ui_Form):
         self.setupUi(self)
 
         self.btn_addstopword.clicked.connect(self.add_stopwords)
+        self.btn_addnewword_2.clicked.connect(self.add_new_words)
         self.init_ui()
         self.read_data()
 
@@ -82,13 +89,17 @@ class SettingControl(QWidget, Ui_Form):
     def set_error_log(self):
         if self.checkBox_send_error_log.isChecked():
             self.label_error_log.setText('开')
+            set_SEND_LOG_FLAG(True)
         else:
             self.label_error_log.setText('关')
+            set_SEND_LOG_FLAG(False)
+        print('SEND_LOG_FLAG:', SEND_LOG_FLAG)
 
     def read_data(self):
         os.makedirs('./app/data', exist_ok=True)
         stopwords = ['裂开', '苦涩', '叹气', '凋谢', '让我看看', '酷', '奋斗', '疑问', '擦汗', '抠鼻', '鄙视', '勾引',
                      '奸笑', '嘿哈', '捂脸', '机智', '加油', '吃瓜', '尴尬', '炸弹', '旺柴']
+        new_words = ['YYDS', '666', '显眼包', '遥遥领先']
         if os.path.exists('./app/data/stopwords.txt'):
             with open('./app/data/stopwords.txt', 'r', encoding='utf-8') as f:
                 stopwords = set(f.read().splitlines())
@@ -98,6 +109,15 @@ class SettingControl(QWidget, Ui_Form):
             stopwords = '\n'.join(stopwords)
             with open('./app/data/stopwords.txt', 'w', encoding='utf-8') as f:
                 f.write(stopwords)
+        if os.path.exists('./app/data/new_words.txt'):
+            with open('./app/data/new_words.txt', 'r', encoding='utf-8') as f:
+                stopwords = set(f.read().splitlines())
+                self.plainTextEdit_newword.setPlainText(' '.join(new_words))
+        else:
+            self.plainTextEdit_newword.setPlainText(' '.join(new_words))
+            stopwords = '\n'.join(stopwords)
+            with open('./app/data/new_words.txt', 'w', encoding='utf-8') as f:
+                f.write(stopwords)
 
     def add_stopwords(self):
         text = self.plainTextEdit.toPlainText()
@@ -105,3 +125,10 @@ class SettingControl(QWidget, Ui_Form):
         with open('./app/data/stopwords.txt', 'w', encoding='utf-8') as f:
             f.write(stopwords)
         QMessageBox.about(self, "添加成功", "停用词添加成功")
+
+    def add_new_words(self):
+        text = self.plainTextEdit_newword.toPlainText()
+        new_words = '\n'.join(text.split())
+        with open('./app/data/new_words.txt', 'w', encoding='utf-8') as f:
+            f.write(new_words)
+        QMessageBox.about(self, "添加成功", "自定义词添加成功")

@@ -12,7 +12,7 @@ from docxcompose.composer import Composer
 
 from app.DataBase import msg_db, hard_link_db
 from app.util.exporter.exporter import ExporterBase, escape_js_and_html
-from app.config import output_dir
+from app.config import OUTPUT_DIR
 from app.log import logger
 from app.person import Me
 from app.util.compress_content import parser_reply, share_card, music_share
@@ -76,7 +76,7 @@ class DocxExporter(ExporterBase):
         run = content.paragraphs[0].add_run()
         str_content = escape_js_and_html(str_content)
         image_path = hard_link_db.get_image(str_content, BytesExtra, thumb=True)
-        base_path = os.path.join(output_dir, '聊天记录', self.contact.remark, 'image')
+        base_path = os.path.join(OUTPUT_DIR, '聊天记录', self.contact.remark, 'image')
         if not os.path.exists(os.path.join(Me().wx_dir, image_path)):
             image_thumb_path = hard_link_db.get_image(str_content, BytesExtra, thumb=False)
             if not os.path.exists(os.path.join(Me().wx_dir, image_thumb_path)):
@@ -239,7 +239,7 @@ class DocxExporter(ExporterBase):
         return content_cell
 
     def music_share(self, doc, message):
-        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), OUTPUT_DIR, '聊天记录', self.contact.remark)
         is_send = message[4]
         timestamp = message[5]
         content = music_share(message[11])
@@ -282,7 +282,7 @@ class DocxExporter(ExporterBase):
                 app_logo = ''
 
     def merge_docx(self, conRemark, n):
-        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录')
+        origin_path = os.path.join(os.getcwd(), OUTPUT_DIR, '聊天记录')
         all_file_path = []
         for i in range(n):
             file_name = f"{conRemark}{i}.docx"
@@ -305,7 +305,7 @@ class DocxExporter(ExporterBase):
 
     def export(self):
         print(f"【开始导出 DOCX {self.contact.remark}】")
-        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), OUTPUT_DIR, '聊天记录', self.contact.remark)
         messages = msg_db.get_messages(self.contact.wxid, time_range=self.time_range)
         Me().save_avatar(os.path.join(origin_path, 'avatar', f'{Me().wxid}.png'))
         if self.contact.is_chatroom:

@@ -11,7 +11,7 @@ from app.DataBase import micro_msg_db, misc_db
 from app.util.exporter.output import Output
 from app.components import ScrollBar
 from app.components.export_contact_item import ContactQListWidgetItem
-from app.config import output_dir
+from app.config import OUTPUT_DIR
 from app.person import Contact
 from app.ui.menu.exportUi import Ui_Dialog
 from app.ui.menu.export_time_range import TimeRangeDialog
@@ -213,7 +213,7 @@ class ExportDialog(QDialog, Ui_Dialog):
         reply = QMessageBox(self)
         reply.setIcon(QMessageBox.Information)
         reply.setWindowTitle('OK')
-        reply.setText(f"导出聊天记录成功\n在{output_dir}目录下(跟exe文件在一起)\n{os.path.normpath(os.path.join(os.getcwd(),output_dir))}")
+        reply.setText(f"导出聊天记录成功\n在{OUTPUT_DIR}目录下(跟exe文件在一起)\n{os.path.normpath(os.path.join(os.getcwd(), OUTPUT_DIR))}")
         reply.addButton("确认", QMessageBox.AcceptRole)
         reply.addButton("取消", QMessageBox.RejectRole)
         api = reply.exec_()

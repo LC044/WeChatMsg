@@ -23,6 +23,10 @@ about = f'''
 
 # 数据存放文件路径
 
-info_file_path = './app/data/info.json'  # 个人信息文件
-db_dir = './app/Database/Msg'
-output_dir = './data/'  # 输出文件夹
+INFO_FILE_PATH = './app/data/info.json'  # 个人信息文件
+DB_DIR = './app/Database/Msg'
+OUTPUT_DIR = './data/'  # 输出文件夹
+
+# 全局参数
+
+SEND_LOG_FLAG = True  # 是否发送错误日志

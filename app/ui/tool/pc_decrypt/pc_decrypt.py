@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import QWidget, QMessageBox, QFileDialog
 from app.DataBase import msg_db, misc_db, close_db
 from app.DataBase.merge import merge_databases, merge_MediaMSG_databases
 from app.components.QCursorGif import QCursorGif
-from app.config import info_file_path, db_dir
+from app.config import INFO_FILE_PATH, DB_DIR
 from app.decrypt import get_wx_info, decrypt
 from app.log import logger
 from app.util import path
@@ -186,7 +186,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
 
         try:
             os.makedirs('./app/data', exist_ok=True)
-            with open(info_file_path, "w", encoding="utf-8") as f:
+            with open(INFO_FILE_PATH, "w", encoding="utf-8") as f:
                 json.dump(dic, f, ensure_ascii=False, indent=4)
         except:
             with open('./info.json', 'w', encoding='utf-8') as f:
@@ -216,7 +216,7 @@ class DecryptThread(QThread):
         msg_db.close()
         # micro_msg_db.close()
         # hard_link_db.close()
-        output_dir = db_dir
+        output_dir = DB_DIR
         os.makedirs(output_dir, exist_ok=True)
         tasks = []
         if os.path.exists(self.db_path):
@@ -246,14 +246,14 @@ class DecryptThread(QThread):
             self.signal.emit(str(i))
         # print(self.db_path)
         # 目标数据库文件
-        target_database = os.path.join(db_dir, 'MSG.db')
+        target_database = os.path.join(DB_DIR, 'MSG.db')
         # 源数据库文件列表
-        source_databases = [os.path.join(db_dir, f"MSG{i}.db") for i in range(1, 50)]
+        source_databases = [os.path.join(DB_DIR, f"MSG{i}.db") for i in range(1, 50)]
         import shutil
         if os.path.exists(target_database):
             os.remove(target_database)
         try:
-            shutil.copy2(os.path.join(db_dir, 'MSG0.db'), target_database)  # 使用一个数据库文件作为模板
+            shutil.copy2(os.path.join(DB_DIR, 'MSG0.db'), target_database)  # 使用一个数据库文件作为模板
         except FileNotFoundError:
             logger.error(traceback.format_exc())
             self.errorSignal.emit(True)
@@ -265,13 +265,13 @@ class DecryptThread(QThread):
             QMessageBox.critical("错误", "数据库不存在\n请检查微信版本是否为最新")
 
         # 音频数据库文件
-        target_database = os.path.join(db_dir,'MediaMSG.db')
+        target_database = os.path.join(DB_DIR, 'MediaMSG.db')
         # 源数据库文件列表
         if os.path.exists(target_database):
             os.remove(target_database)
-        source_databases = [os.path.join(db_dir,f"MediaMSG{i}.db") for i in range(1, 50)]
+        source_databases = [os.path.join(DB_DIR, f"MediaMSG{i}.db") for i in range(1, 50)]
         try:
-            shutil.copy2(os.path.join(db_dir,'MediaMSG0.db'), target_database)  # 使用一个数据库文件作为模板
+            shutil.copy2(os.path.join(DB_DIR, 'MediaMSG0.db'), target_database)  # 使用一个数据库文件作为模板
         except FileNotFoundError:
             logger.error(traceback.format_exc())
             self.errorSignal.emit(True)

@@ -8,7 +8,7 @@ from PyQt5.QtCore import pyqtSignal, QThread
 
 from app.DataBase import msg_db, hard_link_db, media_msg_db
 from app.util.exporter.exporter import ExporterBase, escape_js_and_html
-from app.config import output_dir
+from app.config import OUTPUT_DIR
 from app.log import logger
 from app.person import Me
 from app.util import path
@@ -45,7 +45,7 @@ class HtmlExporter(ExporterBase):
         )
 
     def image(self, doc, message):
-        base_path = os.path.join(output_dir, '聊天记录', self.contact.remark, 'image')
+        base_path = os.path.join(OUTPUT_DIR, '聊天记录', self.contact.remark, 'image')
         type_ = message[2]
         str_content = message[7]
         str_time = message[8]
@@ -63,7 +63,7 @@ class HtmlExporter(ExporterBase):
         )
 
     def audio(self, doc, message):
-        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), OUTPUT_DIR, '聊天记录', self.contact.remark)
         str_content = message[7]
         str_time = message[8]
         is_send = message[4]
@@ -99,7 +99,7 @@ class HtmlExporter(ExporterBase):
         )
 
     def file(self, doc, message):
-        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), OUTPUT_DIR, '聊天记录', self.contact.remark)
         bytesExtra = message[10]
         compress_content = message[11]
         str_time = message[8]
@@ -170,7 +170,7 @@ class HtmlExporter(ExporterBase):
         )
 
     def video(self, doc, message):
-        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), OUTPUT_DIR, '聊天记录', self.contact.remark)
         type_ = message[2]
         str_content = message[7]
         str_time = message[8]
@@ -211,7 +211,7 @@ class HtmlExporter(ExporterBase):
         )
 
     def music_share(self, doc, message):
-        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), OUTPUT_DIR, '聊天记录', self.contact.remark)
         is_send = message[4]
         timestamp = message[5]
         content = music_share(message[11])
@@ -232,7 +232,7 @@ class HtmlExporter(ExporterBase):
             )
 
     def share_card(self, doc, message):
-        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), OUTPUT_DIR, '聊天记录', self.contact.remark)
         is_send = message[4]
         timestamp = message[5]
         bytesExtra = message[10]
@@ -299,7 +299,7 @@ class HtmlExporter(ExporterBase):
     def export(self):
         print(f"【开始导出 HTML {self.contact.remark}】")
         messages = msg_db.get_messages(self.contact.wxid, time_range=self.time_range)
-        filename = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark,
+        filename = os.path.join(os.getcwd(), OUTPUT_DIR, '聊天记录', self.contact.remark,
                                 f'{self.contact.remark}.html')
         file_path = './app/resources/data/template.html'
         if not os.path.exists(file_path):
@@ -381,7 +381,7 @@ class OutputMedia(QThread):
         self.contact = contact
 
     def run(self):
-        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), OUTPUT_DIR, '聊天记录', self.contact.remark)
         messages = msg_db.get_messages_by_type(self.contact.wxid, 34)
         for message in messages:
             is_send = message[4]
@@ -410,7 +410,7 @@ class OutputEmoji(QThread):
         self.contact = contact
 
     def run(self):
-        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), OUTPUT_DIR, '聊天记录', self.contact.remark)
         messages = msg_db.get_messages_by_type(self.contact.wxid, 47)
         for message in messages:
             str_content = message[7]
@@ -447,9 +447,9 @@ class OutputImage(QThread):
             print("图片导出完成")
 
     def run(self):
-        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), OUTPUT_DIR, '聊天记录', self.contact.remark)
         messages = msg_db.get_messages_by_type(self.contact.wxid, 3)
-        base_path = os.path.join(output_dir, '聊天记录', self.contact.remark, 'image')
+        base_path = os.path.join(OUTPUT_DIR, '聊天记录', self.contact.remark, 'image')
         for message in messages:
             str_content = message[7]
             BytesExtra = message[10]
@@ -489,7 +489,7 @@ class OutputImageChild(QThread):
         self.messages = messages
 
     def run(self):
-        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), OUTPUT_DIR, '聊天记录', self.contact.remark)
         for message in self.messages:
             str_content = message[7]
             BytesExtra = message[10]

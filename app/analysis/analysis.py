@@ -72,6 +72,7 @@ def wordcloud_(wxid, time_range=None):
 
 def get_wordcloud(text):
     total_msg_len = len(text)
+    jieba.load_userdict('./app/data/new_words.txt')
     # 使用jieba进行分词，并加入停用词
     words = jieba.cut(text)
     # 统计词频

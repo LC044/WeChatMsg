@@ -26,7 +26,7 @@ from app.ui.home.home_window import HomeWindow
 from .menu.export import ExportDialog
 from app.util.exporter.output import Output
 from ..components.QCursorGif import QCursorGif
-from ..config import info_file_path, db_dir
+from ..config import INFO_FILE_PATH, DB_DIR
 from ..log import logger
 from ..person import Me
 
@@ -304,8 +304,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         self.action_update.setIcon(Icon.Update_Icon)
 
     def load_data(self, flag=True):
-        if os.path.exists(info_file_path):
-            with open(info_file_path, 'r', encoding='utf-8') as f:
+        if os.path.exists(INFO_FILE_PATH):
+            with open(INFO_FILE_PATH, 'r', encoding='utf-8') as f:
                 dic = json.loads(f.read())
                 wxid = dic.get('wxid')
                 if wxid:
@@ -355,7 +355,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
             close_db()
             import shutil
             try:
-                shutil.rmtree(db_dir)
+                shutil.rmtree(DB_DIR)
             except:
                 pass
             return
@@ -371,7 +371,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
             close_db()
             import shutil
             try:
-                shutil.rmtree(db_dir)
+                shutil.rmtree(DB_DIR)
             except:
                 pass
             QMessageBox.critical(self, "数据库错误", "请重启电脑后重试")

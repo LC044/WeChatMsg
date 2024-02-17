@@ -3,13 +3,13 @@ import os
 
 from app.DataBase import msg_db
 from app.util.exporter.exporter import ExporterBase
-from app.config import output_dir
+from app.config import OUTPUT_DIR
 
 
 class CSVExporter(ExporterBase):
     def to_csv(self):
         print(f"【开始导出 CSV {self.contact.remark}】")
-        origin_path = os.path.join(os.getcwd(), output_dir, '聊天记录', self.contact.remark)
+        origin_path = os.path.join(os.getcwd(), OUTPUT_DIR, '聊天记录', self.contact.remark)
         os.makedirs(origin_path, exist_ok=True)
         filename = os.path.join(origin_path,f"{self.contact.remark}_utf8.csv")
         columns = ['localId', 'TalkerId', 'Type', 'SubType',
