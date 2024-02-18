@@ -329,14 +329,16 @@ class Msg:
                 result = self.cursor.fetchall()
         return result
 
-    def get_messages_by_keyword(self, username_, keyword, num=5, max_len=10, year_='all'):
+    def get_messages_by_keyword(self, username_, keyword, num=5, max_len=10,time_range=None, year_='all'):
         if not self.open_flag:
             return None
+        if time_range:
+            start_time, end_time = convert_to_timestamp(time_range)
         sql = f'''
             select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra
             from MSG
             where StrTalker=? and Type=1 and LENGTH(StrContent)<? and StrContent like ?
-            {"and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?" if year_ != "all" else ""}
+            {'AND CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
             order by CreateTime desc
         '''
         temp = []
@@ -489,46 +491,30 @@ class Msg:
             lock.release()
         return result
 
-    def get_messages_by_hour(self, username_, year_='all'):
+    def get_messages_by_hour(self, username_, time_range=None,year_='all'):
         result = []
         if not self.open_flag:
             return result
-        if year_ == 'all':
-            sql = '''
-                SELECT strftime('%H:00',CreateTime,'unixepoch','localtime') as hours,count(MsgSvrID)
-                from (
-                    SELECT MsgSvrID, CreateTime
-                    FROM MSG
-                    where StrTalker = ?
-                )
-                group by hours
-            '''
-            try:
-                lock.acquire(True)
-                self.cursor.execute(sql, [username_])
-            except sqlite3.DatabaseError:
-                logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
-            finally:
-                lock.release()
-                result = self.cursor.fetchall()
-        else:
-            sql = '''
-                SELECT strftime('%H:00',CreateTime,'unixepoch','localtime') as hours,count(MsgSvrID)
-                from (
-                    SELECT MsgSvrID, CreateTime
-                    FROM MSG
-                    where StrTalker = ? and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?
-                )
-                group by hours
-                '''
-            try:
-                lock.acquire(True)
-                self.cursor.execute(sql, [username_, year_])
-            except sqlite3.DatabaseError:
-                logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
-            finally:
-                lock.release()
-                result = self.cursor.fetchall()
+        if time_range:
+            start_time, end_time = convert_to_timestamp(time_range)
+        sql = f'''
+            SELECT strftime('%H:00',CreateTime,'unixepoch','localtime') as hours,count(MsgSvrID)
+            from (
+                SELECT MsgSvrID, CreateTime
+                FROM MSG
+                where StrTalker = ?
+                {'AND CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
+            )
+            group by hours
+        '''
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql, [username_])
+        except sqlite3.DatabaseError:
+            logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
+        finally:
+            lock.release()
+            result = self.cursor.fetchall()
         return result
 
     def get_first_time_of_message(self, username_=''):
@@ -549,9 +535,11 @@ class Msg:
             lock.release()
         return result
 
-    def get_latest_time_of_message(self, username_='', year_='all'):
+    def get_latest_time_of_message(self, username_='', time_range=None,year_='all'):
         if not self.open_flag:
             return None
+        if time_range:
+            start_time, end_time = convert_to_timestamp(time_range)
         sql = f'''
                 SELECT isSender,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,
                 strftime('%H:%M:%S', CreateTime,'unixepoch','localtime') as hour
@@ -559,7 +547,7 @@ class Msg:
                 WHERE Type=1 AND 
                 {'StrTalker = ? AND ' if username_ else f"'{username_}'=? AND "} 
                 hour BETWEEN '00:00:00' AND '05:00:00'
-                {"and strftime('%Y', CreateTime, 'unixepoch', 'localtime') = ?" if year_ != "all" else ""}
+                {'AND CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
                 ORDER BY hour DESC
                 LIMIT 20;
             '''

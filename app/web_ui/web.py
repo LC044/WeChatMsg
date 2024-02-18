@@ -94,8 +94,8 @@ def christmas(wxid):
         'my_nickname': Me().name,
         'first_time': first_time,
     }
-    wordcloud_cloud_data = analysis.wordcloud_christmas(contact.wxid)
-    msg_data = msg_db.get_messages_by_hour(contact.wxid, year_="2023")
+    wordcloud_cloud_data = analysis.wordcloud_christmas(contact.wxid,time_range=time_range)
+    msg_data = msg_db.get_messages_by_hour(contact.wxid, time_range=time_range)
     msg_data.sort(key=lambda x: x[1], reverse=True)
     desc = {
         '夜猫子': {'22:00', '23:00', '00:00', '01:00', '02:00', '03:00', '04:00', '05:00'},
@@ -108,7 +108,7 @@ def christmas(wxid):
     for key, item in desc.items():
         if time_ in item:
             label = key
-    latest_dialog = msg_db.get_latest_time_of_message(contact.wxid, year_='2023')
+    latest_dialog = msg_db.get_latest_time_of_message(contact.wxid, time_range=time_range)
     latest_time = latest_dialog[0][2] if latest_dialog else ''
     time_data = {
         'latest_time': latest_time,
