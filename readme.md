@@ -3,28 +3,28 @@
     <a href="https://github.com/LC044/WeChatMsg/stargazers">
         <img src="https://img.shields.io/github/stars/LC044/WeChatMsg.svg" />
     </a>
-    <a href="https://memotrace.lc044.love/" target="_blank">
+    <a href="https://memotrace.cn/" target="_blank">
         <img alt="GitHub forks" src="https://img.shields.io/github/forks/LC044/WeChatMsg?color=eb6ea5">
     </a>
-    <a href="https://memotrace.lc044.love/" target="_blank">
+    <a href="https://memotrace.cn/" target="_blank">
         <img src="https://img.shields.io/badge/WeChat-留痕-blue.svg">
     </a>
-    <a target="_blank" href="https://memotrace.lc044.love/">
+    <a target="_blank" href="https://memotrace.cn/">
         <img alt="Hits" src="https://hits.b3log.org/LC044/memotrace.svg">
     </a>
-    <a href="https://memotrace.lc044.love/" target="_blank">
+    <a href="https://memotrace.cn/" target="_blank">
         <img src="https://img.shields.io/github/license/LC044/WeChatMsg" />
     </a>
     <a href="https://github.com/LC044/WeChatMsg/releases" target="_blank">
         <img alt="GitHub release (with filter)" src="https://img.shields.io/github/v/release/LC044/WeChatMsg">
     </a>
-    <a href="https://memotrace.lc044.love/" target="_blank">
+    <a href="https://memotrace.cn/" target="_blank">
         <img alt="GitHub all releases" src="https://img.shields.io/github/downloads/LC044/WeChatMsg/total?color=3eb370">
     </a>
 </div>
 
 <div align="center">
-    <a href="https://memotrace.lc044.love/"><img src="https://memotrace.lc044.love/img/logo%20-%20%E5%89%AF%E6%9C%AC.png" height="240"/></a>
+    <a href="https://memotrace.cn/"><img src="https://memotrace.cn/img/logo%20-%20%E5%89%AF%E6%9C%AC.png" height="240"/></a>
 </div>
 
 <blockquote>
@@ -33,7 +33,7 @@
     <div style="position: absolute;top: 0;bottom: 0;left: 0;width: 2px;background-color: #000000;"></div>
     <h2>前言</h2>
     <div style="text-indent: 2em;">
-        <a align="center" href="https://memotrace.lc044.love/"><img src="./doc/images/logo99.png"/></a>
+        <a align="center" href="https://memotrace.cn/"><img src="./doc/images/logo99.png"/></a>
         <p style="text-indent:2em;">我深信有意义的不是微信，而是隐藏在对话框背后的一个个<strong>深刻故事</strong>。未来，每个人都能拥有AI的陪伴，而你的数据能够赋予它有关于你过去的珍贵记忆。我希望每个人都有将自己的生活痕迹👨‍👩‍👦👚🥗🏠️🚴🧋⛹️🛌🛀留存的权利，而不是遗忘💀。</p>
         <p style="text-indent:2em;">AI的发展不仅仅是技术的提升，更是情感💞的延续。每一个对话、每一个互动都是生活中独一无二的片段，是真实而动人的情感交流。因此，我希望AI工作者们能够<strong>善用这些自己的数据</strong>，用于培训独特的、属于个体的人工智能。让<strong>个人AI成为生活中的朋友</strong>，能够理解、记录并分享我们的欢笑、泪水和成长。</p>
         <p style="text-indent:2em;">那天，AI不再是高不可攀的存在，而是融入寻常百姓家的一部分。因为<strong>每个人能拥有自己的AI</strong>，将科技的力量融入生活的方方面面。这是一场关于真情实感的革命，一场让技术变得更加人性化的探索，让我们共同见证未来的美好。</p>
@@ -44,10 +44,10 @@
 </blockquote>
 
 ## 🍉功能
-- [![](https://img.shields.io/badge/MemoTrace-官网-blue)](https://memotrace.lc044.love/) 
+- [![](https://img.shields.io/badge/MemoTrace-官网-blue)](https://memotrace.cn/) 
 [![](https://img.shields.io/badge/GitHub-black.svg)](https://github.com/LC044/WeChatMsg)
 [![](https://img.shields.io/badge/Gitee-red.svg)](https://gitee.com/lc044/WeChatMsg)
-[![](https://img.shields.io/badge/Download-yellow.svg)](https://memotrace.lc044.love/)
+[![](https://img.shields.io/badge/Download-yellow.svg)](https://memotrace.cn/)
 - 🔒️🔑🔓️Windows本地微信数据库
 - 还原微信聊天界面
     - 🗨文本✅
@@ -61,7 +61,7 @@
   - CSV文档✅ 
   - TXT文档✅ 
   - Word文档✅ 
-- 分析聊天数据，做成[可视化年报](https://memotrace.lc044.love/demo.html)
+- 分析聊天数据，做成[可视化年报](https://memotrace.cn/demo.html)
 - 🔥**项目持续更新中**
 - 开发计划
   - 群组年度报告
@@ -103,7 +103,7 @@
 
 # ⌛使用
 
-下载地址：[https://memotrace.lc044.love/](https://memotrace.lc044.love/)
+下载地址：[https://memotrace.cn/](https://memotrace.cn/)
 
 下载打包好的exe可执行文件，双击即可运行
 

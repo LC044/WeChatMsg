@@ -1,7 +1,7 @@
 version = '1.0.2'
 contact = '701805520'
 github = 'https://github.com/LC044/WeChatMsg'
-website = 'https://memotrace.lc044.love/'
+website = 'https://memotrace.cn/'
 copyright = '© 2022-2024 SiYuan'
 license = 'GPLv3'
 description = [

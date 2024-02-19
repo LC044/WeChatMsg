@@ -67,7 +67,7 @@ class ContactInfo(QWidget, Ui_Form):
         self.toolButton_output.showMenu()
 
     def analysis(self):
-        # QDesktopServices.openUrl(QUrl("https://memotrace.lc044.love/"))
+        # QDesktopServices.openUrl(QUrl("https://memotrace.cn/"))
         self.report_thread = ReportThread(self.contact)
         # self.report_thread.okSignal.connect(lambda x: QDesktopServices.openUrl(QUrl("http://127.0.0.1:21314")))
         self.report_thread.start()
@@ -99,7 +99,7 @@ class ContactInfo(QWidget, Ui_Form):
         QDesktopServices.openUrl(QUrl(f"http://127.0.0.1:21314/christmas/{self.contact.wxid}"))
 
     def emotionale_Analysis(self):
-        QDesktopServices.openUrl(QUrl("https://memotrace.lc044.love/"))
+        QDesktopServices.openUrl(QUrl("https://memotrace.cn/"))
 
     def back(self):
         """

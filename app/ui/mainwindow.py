@@ -20,11 +20,11 @@ class Avatar(QLabel):
 
     def mouseDoubleClickEvent(self, e):  # 双击
         super().mouseDoubleClickEvent(e)
-        QDesktopServices.openUrl(QUrl("https://memotrace.lc044.love/"))
+        QDesktopServices.openUrl(QUrl("https://memotrace.cn/"))
 
     def mousePressEvent(self, e):  # 单击
         super().mousePressEvent(e)
-        QDesktopServices.openUrl(QUrl("https://memotrace.lc044.love/"))
+        QDesktopServices.openUrl(QUrl("https://memotrace.cn/"))
 
 
 class Ui_MainWindow(object):
