@@ -312,6 +312,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
                     me = Me()
                     me.wxid = dic.get('wxid')
                     me.name = dic.get('name')
+                    me.nickName = dic.get('name')
+                    me.remark = dic.get('name')
                     me.mobile = dic.get('mobile')
                     me.wx_dir = dic.get('wx_dir')
                     self.set_my_info(wxid)
