@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+from urllib.parse import urljoin
 
 import requests
 from flask import Flask, render_template, send_file, jsonify, make_response, request
@@ -9,6 +10,7 @@ from pyecharts.charts import Bar
 from app.DataBase import msg_db, micro_msg_db
 from app.DataBase.hard_link import decodeExtraBuf
 from app.analysis import analysis
+from app.config import SERVER_API_URL
 from app.person import Contact, Me, ContactDefault
 from app.util.emoji import get_most_emoji
 from app.util.region_conversion import conversion_region_to_chinese
@@ -22,7 +24,9 @@ start_time = '2023-1-01 00:00:00'
 end_time = '2023-12-31 23:59:59'
 time_range = (start_time, end_time)
 html: str = ''
-api_url = 'http://api.lc044.love/upload'
+
+api_url = urljoin(SERVER_API_URL,'upload')
+
 
 
 def get_contact(wxid) -> ContactDefault | Contact:

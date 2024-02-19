@@ -1,11 +1,13 @@
 import json
 import os.path
+from urllib.parse import urljoin
 
 import requests
 from PyQt5.QtCore import pyqtSignal, QThread
 from PyQt5.QtWidgets import QWidget, QMessageBox
 
 from app.components.QCursorGif import QCursorGif
+from app.config import SERVER_API_URL
 from app.decrypt.get_bias_addr import BiasAddr
 from .getBiasAddrUi import Ui_Form
 
@@ -98,7 +100,7 @@ class GetBiasAddrControl(QWidget, Ui_Form, QCursorGif):
                                 )
 
     def upload(self, version_data):
-        url = "http://api.lc044.love/wxBiasAddr"
+        url = urljoin(SERVER_API_URL,'wxBiasAddr')
         try:
             requests.post(url, json=version_data)
             print('版本信息上传成功')

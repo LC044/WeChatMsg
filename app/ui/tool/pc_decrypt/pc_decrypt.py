@@ -2,6 +2,7 @@ import json
 import os.path
 import sys
 import traceback
+from urllib.parse import urljoin
 
 import requests
 from PyQt5.QtCore import pyqtSignal, QThread, QUrl
@@ -11,7 +12,7 @@ from PyQt5.QtWidgets import QWidget, QMessageBox, QFileDialog
 from app.DataBase import msg_db, misc_db, close_db
 from app.DataBase.merge import merge_databases, merge_MediaMSG_databases
 from app.components.QCursorGif import QCursorGif
-from app.config import INFO_FILE_PATH, DB_DIR
+from app.config import INFO_FILE_PATH, DB_DIR, SERVER_API_URL
 from app.decrypt import get_wx_info, decrypt
 from app.log import logger
 from app.util import path
@@ -296,7 +297,7 @@ class MyThread(QThread):
         pass
 
     def get_bias_add(self, version):
-        url = "http://api.lc044.love/wxBiasAddr"
+        url = urljoin(SERVER_API_URL,'wxBiasAddr')
         data = {
             'version': version
         }

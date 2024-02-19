@@ -1,4 +1,4 @@
-version = '1.1.2'
+version = '1.0.2'
 contact = '701805520'
 github = 'https://github.com/LC044/WeChatMsg'
 website = 'https://memotrace.lc044.love/'
@@ -22,11 +22,11 @@ about = f'''
 '''
 
 # 数据存放文件路径
-
 INFO_FILE_PATH = './app/data/info.json'  # 个人信息文件
 DB_DIR = './app/Database/Msg'
 OUTPUT_DIR = './data/'  # 输出文件夹
 
 # 全局参数
-
 SEND_LOG_FLAG = True  # 是否发送错误日志
+SERVER_API_URL = 'http://api.lc044.love'  # api接口
+# SERVER_API_URL = 'http://127.0.0.1:8000'  # api接口
