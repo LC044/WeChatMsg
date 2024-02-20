@@ -54,8 +54,8 @@ class ContactQListWidgetItem(QListWidgetItem):
         self.avatorLabel = CAvatar(parent=self.widget, shape=CAvatar.Rectangle, size=QSize(30, 30),
                                    url=url, img_bytes=img_bytes)
         # 设置布局用来对nameLabel和avatorLabel进行布局
-        hbox = QHBoxLayout()
-        self.checkBox = QCheckBox()
+        hbox = QHBoxLayout(self.widget)
+        self.checkBox = QCheckBox(self.widget)
         self.checkBox.clicked.connect(self.select)
         hbox.addWidget(self.checkBox)
         hbox.addWidget(self.avatorLabel)
@@ -66,6 +66,11 @@ class ContactQListWidgetItem(QListWidgetItem):
         self.widget.setStyleSheet(Stylesheet)
         # 设置自定义的QListWidgetItem的sizeHint，不然无法显示
         self.setSizeHint(self.widget.sizeHint())
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
+        self.widget.setSizePolicy(sizePolicy)
 
     def select(self):
         """

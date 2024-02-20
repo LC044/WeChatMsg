@@ -186,7 +186,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
         }
 
         try:
-            os.makedirs('./app/data', exist_ok=True)
+
             with open(INFO_FILE_PATH, "w", encoding="utf-8") as f:
                 json.dump(dic, f, ensure_ascii=False, indent=4)
         except:
@@ -213,10 +213,7 @@ class DecryptThread(QThread):
         pass
 
     def run(self):
-        misc_db.close()
-        msg_db.close()
-        # micro_msg_db.close()
-        # hard_link_db.close()
+        close_db()
         output_dir = DB_DIR
         os.makedirs(output_dir, exist_ok=True)
         tasks = []

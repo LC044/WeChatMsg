@@ -470,25 +470,3 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
 
         super().close()
         self.exitSignal.emit(True)
-
-
-class LoadWindowThread(QThread):
-    okSignal = pyqtSignal(bool)
-
-    def __init__(self):
-        super().__init__()
-        self.num = 0
-
-    def loading(self):
-        self.num += 1
-        print('加载一个了')
-        if self.num == 2:
-            self.okSignal.emit(True)
-
-    def run(self):
-        self.chat_window = ChatWindow()
-        self.contact_window = ContactWindow()
-        self.contact_window.load_finish_signal.connect(self.loading)
-        self.chat_window.load_finish_signal.connect(self.loading)
-        print('加载完成')
-        self.okSignal.emit(True)

@@ -1,3 +1,5 @@
+import os
+
 version = '1.0.2'
 contact = '701805520'
 github = 'https://github.com/LC044/WeChatMsg'
@@ -25,7 +27,9 @@ about = f'''
 INFO_FILE_PATH = './app/data/info.json'  # 个人信息文件
 DB_DIR = './app/Database/Msg'
 OUTPUT_DIR = './data/'  # 输出文件夹
-
+os.makedirs('./app/data', exist_ok=True)
+os.makedirs(DB_DIR, exist_ok=True)
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 # 全局参数
 SEND_LOG_FLAG = True  # 是否发送错误日志
 SERVER_API_URL = 'http://api.lc044.love'  # api接口

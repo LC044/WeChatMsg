@@ -9,28 +9,12 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtWidgets import QLabel
-
-
-class Avatar(QLabel):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-    def mouseDoubleClickEvent(self, e):  # 双击
-        super().mouseDoubleClickEvent(e)
-        QDesktopServices.openUrl(QUrl("https://memotrace.cn/"))
-
-    def mousePressEvent(self, e):  # 单击
-        super().mousePressEvent(e)
-        QDesktopServices.openUrl(QUrl("https://memotrace.cn/"))
 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(605, 553)
+        MainWindow.resize(605, 565)
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(12)
@@ -40,7 +24,7 @@ class Ui_MainWindow(object):
         MainWindow.setMouseTracking(True)
         MainWindow.setStyleSheet("")
         MainWindow.setIconSize(QtCore.QSize(50, 24))
-        MainWindow.setDockOptions(QtWidgets.QMainWindow.AllowTabbedDocks | QtWidgets.QMainWindow.AnimatedDocks)
+        MainWindow.setDockOptions(QtWidgets.QMainWindow.AllowTabbedDocks|QtWidgets.QMainWindow.AnimatedDocks)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setMouseTracking(True)
         self.centralwidget.setObjectName("centralwidget")
@@ -56,7 +40,7 @@ class Ui_MainWindow(object):
         self.frame_info.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame_info.setLineWidth(5)
         self.frame_info.setObjectName("frame_info")
-        self.myavatar = Avatar(self.frame_info)
+        self.myavatar = QtWidgets.QLabel(self.frame_info)
         self.myavatar.setGeometry(QtCore.QRect(10, 40, 60, 60))
         self.myavatar.setObjectName("myavatar")
         self.listWidget = QtWidgets.QListWidget(self.frame_info)
@@ -89,7 +73,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.stackedWidget)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 605, 27))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 605, 33))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(12)
@@ -161,8 +145,9 @@ class Ui_MainWindow(object):
         self.menu_2.addAction(self.action_help_decrypt)
         self.menu_2.addAction(self.action_help_chat)
         self.menu_2.addAction(self.action_help_contact)
-        self.menu_about.addAction(self.action_desc)
         self.menu_about.addAction(self.action_update)
+        self.menu_about.addSeparator()
+        self.menu_about.addAction(self.action_desc)
         self.menubar.addAction(self.menu_F.menuAction())
         self.menubar.addAction(self.menu_data.menuAction())
         self.menubar.addAction(self.menu_2.menuAction())
@@ -196,7 +181,7 @@ class Ui_MainWindow(object):
         self.action_3.setText(_translate("MainWindow", "保存"))
         self.action_4.setText(_translate("MainWindow", "退出"))
         self.action_help_decrypt.setText(_translate("MainWindow", "解密教程"))
-        self.action_desc.setText(_translate("MainWindow", "说明"))
+        self.action_desc.setText(_translate("MainWindow", "关于软件"))
         self.action_help_chat.setText(_translate("MainWindow", "聊天相关"))
         self.action_help_contact.setText(_translate("MainWindow", "好友相关"))
         self.action_output_CSV.setText(_translate("MainWindow", "CSV"))

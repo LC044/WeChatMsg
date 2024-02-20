@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(639, 599)
+        Dialog.resize(791, 599)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
@@ -42,6 +42,7 @@ class Ui_Dialog(object):
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setSizeConstraint(QtWidgets.QLayout.SetMinimumSize)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(Dialog)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
@@ -68,6 +69,7 @@ class Ui_Dialog(object):
         self.verticalLayout.addItem(spacerItem1)
         self.horizontalLayout_2.addLayout(self.verticalLayout)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_2.setSizeConstraint(QtWidgets.QLayout.SetMinimumSize)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.label_2 = QtWidgets.QLabel(Dialog)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
@@ -79,8 +81,10 @@ class Ui_Dialog(object):
         self.verticalLayout_2.addWidget(self.label_2)
         self.horizontalLayout_2.addLayout(self.verticalLayout_2)
         self.listWidget = QtWidgets.QListWidget(Dialog)
+        self.listWidget.setMinimumSize(QtCore.QSize(0, 0))
         self.listWidget.setObjectName("listWidget")
         self.horizontalLayout_2.addWidget(self.listWidget)
+        self.horizontalLayout_2.setStretch(2, 1)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
         self.textBrowser = QtWidgets.QTextBrowser(Dialog)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -88,7 +92,7 @@ class Ui_Dialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.textBrowser.sizePolicy().hasHeightForWidth())
         self.textBrowser.setSizePolicy(sizePolicy)
-        self.textBrowser.setMaximumSize(QtCore.QSize(16777215, 120))
+        self.textBrowser.setMaximumSize(QtCore.QSize(16777215, 80))
         self.textBrowser.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.textBrowser.setTabStopWidth(0)
         self.textBrowser.setOpenExternalLinks(False)
@@ -117,7 +121,7 @@ class Ui_Dialog(object):
         self.btn_start.setStyleSheet("QPushButton{\n"
 "    background-color: rgb(233,233,233);\n"
 "    border-radius: 5px;\n"
-"    padding: 8px;\n"
+"    padding: 10px;\n"
 "}\n"
 "QPushButton:hover { \n"
 "    background-color: lightgray;\n"
