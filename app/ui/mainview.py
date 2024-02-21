@@ -264,6 +264,7 @@ class Avatar(QLabel):
         super().mousePressEvent(e)
         QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/7"))
 
+
 class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
     exitSignal = pyqtSignal(bool)
     okSignal = pyqtSignal(bool)
