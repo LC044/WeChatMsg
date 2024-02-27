@@ -173,6 +173,7 @@
 - [STDquantum](https://github.com/STDquantum)
 - [xuanli](https://github.com/xuanli)
 - [无名路人](https://github.com/wumingluren)
+- [时鹏亮](https://shipengliang.com)
 
 如果您提供赞助并希望出现在赞助者名单中，请在提交赞助时提供您的 GitHub 用户名或其他相关信息。
 

@@ -24,6 +24,8 @@ class ExceptionHanding:
         elif isinstance(self.exc_value, TypeError) and 'NoneType' in str(self.exc_value) and 'not iterable' in str(
                 self.exc_value):
             return '数据库错误，请删除app文件夹后重启电脑再运行软件'
+        elif isinstance(self.exc_value,KeyboardInterrupt):
+            return ''
         else:
             return '未知错误类型，可参考 https://blog.lc044.love/post/7 解决该问题\n温馨提示：重启电脑可解决80%的问题'
 
