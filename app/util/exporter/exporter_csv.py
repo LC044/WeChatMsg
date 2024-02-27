@@ -2,6 +2,7 @@ import csv
 import os
 
 from app.DataBase import msg_db
+from app.person import Me
 from app.util.exporter.exporter import ExporterBase
 from app.config import OUTPUT_DIR
 
@@ -23,7 +24,14 @@ class CSVExporter(ExporterBase):
             # 写入数据
             # writer.writerows(messages)
             for msg in messages:
-                other_data = [msg[13].remark, msg[13].nickName, msg[13].wxid] if self.contact.is_chatroom else []
+                if self.contact.is_chatroom:
+                    other_data = [msg[13].remark, msg[13].nickName, msg[13].wxid]
+                else:
+                    is_send = msg[4]
+                    Remark = Me().remark if is_send else self.contact.remark
+                    nickname = Me().nickName if is_send else self.contact.nickName
+                    wxid = Me().wxid if is_send else self.contact.wxid
+                    other_data = [Remark,nickname,wxid]
                 writer.writerow([*msg[:9], *other_data])
         print(f"【完成导出 CSV {self.contact.remark}】")
         self.okSignal.emit(1)
