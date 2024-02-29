@@ -350,18 +350,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
 
     def set_my_info(self, wxid):
         self.avatar = QPixmap()
-        try:
-            img_bytes = misc_db.get_avatar_buffer(wxid)
-        except:
-            logger.error(f'数据库错误:\n{traceback.format_exc()}')
-            QMessageBox.critical(self, "数据库错误", "请重启电脑后重试")
-            close_db()
-            import shutil
-            try:
-                shutil.rmtree(DB_DIR)
-            except:
-                pass
-            return
+        img_bytes = misc_db.get_avatar_buffer(wxid)
         if not img_bytes:
             return
         if img_bytes[:4] == b'\x89PNG':
@@ -377,7 +366,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
                 shutil.rmtree(DB_DIR)
             except:
                 pass
-            QMessageBox.critical(self, "数据库错误", "请重启电脑后重试")
+            QMessageBox.critical(self, "数据库错误", "数据库错误，请删除app文件夹后重启电脑再运行软件")
             return
         me = Me()
         me.set_avatar(img_bytes)

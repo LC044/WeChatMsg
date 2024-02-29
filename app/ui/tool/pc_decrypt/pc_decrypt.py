@@ -229,11 +229,11 @@ class DecryptThread(QThread):
                         tasks.append([self.key, inpath, output_path])
                     else:
                         try:
-                            name,suffix = file.split('.')
+                            name, suffix = file.split('.')
                             if suffix.startswith('db_SQLITE'):
                                 inpath = os.path.join(root, file)
                                 # print(inpath)
-                                output_path = os.path.join(output_dir, name+'.db')
+                                output_path = os.path.join(output_dir, name + '.db')
                                 tasks.append([self.key, inpath, output_path])
                         except:
                             continue
@@ -250,17 +250,9 @@ class DecryptThread(QThread):
         import shutil
         if os.path.exists(target_database):
             os.remove(target_database)
-        try:
-            shutil.copy2(os.path.join(DB_DIR, 'MSG0.db'), target_database)  # 使用一个数据库文件作为模板
-        except FileNotFoundError:
-            logger.error(traceback.format_exc())
-            self.errorSignal.emit(True)
+        shutil.copy2(os.path.join(DB_DIR, 'MSG0.db'), target_database)  # 使用一个数据库文件作为模板
         # 合并数据库
-        try:
-            merge_databases(source_databases, target_database)
-        except FileNotFoundError:
-            logger.error(traceback.format_exc())
-            QMessageBox.critical("错误", "数据库不存在\n请检查微信版本是否为最新")
+        merge_databases(source_databases, target_database)
 
         # 音频数据库文件
         target_database = os.path.join(DB_DIR, 'MediaMSG.db')
@@ -268,17 +260,10 @@ class DecryptThread(QThread):
         if os.path.exists(target_database):
             os.remove(target_database)
         source_databases = [os.path.join(DB_DIR, f"MediaMSG{i}.db") for i in range(1, 50)]
-        try:
-            shutil.copy2(os.path.join(DB_DIR, 'MediaMSG0.db'), target_database)  # 使用一个数据库文件作为模板
-        except FileNotFoundError:
-            logger.error(traceback.format_exc())
-            self.errorSignal.emit(True)
+        shutil.copy2(os.path.join(DB_DIR, 'MediaMSG0.db'), target_database)  # 使用一个数据库文件作为模板
+
         # 合并数据库
-        try:
-            merge_MediaMSG_databases(source_databases, target_database)
-        except FileNotFoundError:
-            logger.error(traceback.format_exc())
-            QMessageBox.critical("错误", "数据库不存在\n请检查微信版本是否为最新")
+        merge_MediaMSG_databases(source_databases, target_database)
         self.okSignal.emit('ok')
         # self.signal.emit('100')
 
@@ -294,7 +279,7 @@ class MyThread(QThread):
         pass
 
     def get_bias_add(self, version):
-        url = urljoin(SERVER_API_URL,'wxBiasAddr')
+        url = urljoin(SERVER_API_URL, 'wxBiasAddr')
         data = {
             'version': version
         }

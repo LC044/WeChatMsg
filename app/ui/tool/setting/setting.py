@@ -122,11 +122,11 @@ class SettingControl(QWidget, Ui_Form):
                 f.write(stopwords)
         if os.path.exists('./app/data/new_words.txt'):
             with open('./app/data/new_words.txt', 'r', encoding='utf-8') as f:
-                stopwords = set(f.read().splitlines())
+                new_words = set(f.read().splitlines())
                 self.plainTextEdit_newword.setPlainText(' '.join(new_words))
         else:
             self.plainTextEdit_newword.setPlainText(' '.join(new_words))
-            stopwords = '\n'.join(stopwords)
+            stopwords = '\n'.join(new_words)
             with open('./app/data/new_words.txt', 'w', encoding='utf-8') as f:
                 f.write(stopwords)
 
