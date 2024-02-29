@@ -1,11 +1,13 @@
 """
 定义各种联系人
 """
-
+import json
 import os.path
 import re
 from typing import Dict
 from PyQt5.QtGui import QPixmap
+
+from app.config import INFO_FILE_PATH
 from app.ui.Icon import Icon
 
 
@@ -66,7 +68,16 @@ class Me(Person):
         self.smallHeadImgUrl = ''
         self.nickName = self.name
         self.remark = self.nickName
+        self.token = ''
 
+    def save_info(self):
+        if os.path.exists(INFO_FILE_PATH):
+            with open(INFO_FILE_PATH, 'r', encoding='utf-8') as f:
+                info_data = json.loads(f.read())
+            info_data['name'] = self.name
+            info_data['mobile'] = self.mobile
+            with open(INFO_FILE_PATH, 'w', encoding='utf-8') as f:
+                json.dump(info_data, f, ensure_ascii=False, indent=4)
 
 class Contact(Person):
     def __init__(self, contact_info: Dict):
@@ -84,7 +95,7 @@ class Contact(Person):
         self.avatar = QPixmap()
         self.avatar_path = Icon.Default_avatar_path
         self.is_chatroom = self.wxid.__contains__('@chatroom')
-        self.detail:Dict = contact_info.get('detail')
+        self.detail: Dict = contact_info.get('detail')
         self.label_name = contact_info.get('label_name')  # 联系人的标签分类
 
         """

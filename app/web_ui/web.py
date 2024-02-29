@@ -163,6 +163,7 @@ def upload():
         'html_content': html,
         'wxid': contact.wxid,
         'username': Me().wxid,
+        'token':Me().token,
         'type': 'contact'
     }
     response = requests.post(api_url, data=data)

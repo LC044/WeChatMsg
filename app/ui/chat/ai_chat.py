@@ -15,7 +15,7 @@ try:
 except:
     from chatInfoUi import Ui_Form
 from app.components.bubble_message import BubbleMessage
-from app.person import Me,ContactDefault
+from app.person import Me, ContactDefault
 
 
 class Message(QWidget):
@@ -114,7 +114,7 @@ class AIChat(QWidget, Ui_Form):
 
     def eventFilter(self, obj, event):
         if obj == self.textEdit and event.type() == event.KeyPress:
-            key = event.key()
+            key = event.token()
             if key == 16777220:  # 回车键的键值
                 self.send_msg()
                 self.textEdit.setText('')
@@ -137,6 +137,7 @@ class AIChatThread(QThread):
         url = 'http://api.lc044.love/chat'
         data = {
             'username': Me().wxid,
+            'token': Me().token,
             'messages': [
                 {
                     'role': 'user',
@@ -160,12 +161,13 @@ class AIChatThread(QThread):
                         print(trunk)
                         self.msgSignal.emit(trunk)
             else:
+                print(resp.text)
                 error = resp.json().get('error')
                 logger.error(f'ai请求错误:{error}')
                 self.msgSignal.emit(error)
         except Exception as e:
             error = str(e)
-            logger.error(f'ai请求错误:{error}')
+            logger.error(f'ai请求错误:{error}{traceback.format_exc()}')
             self.msgSignal.emit(error)
 
 

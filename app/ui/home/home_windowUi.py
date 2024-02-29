@@ -18,7 +18,15 @@ class Ui_Dialog(object):
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         Dialog.setFont(font)
-        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(Dialog)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        spacerItem = QtWidgets.QSpacerItem(20, 157, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_2.addItem(spacerItem)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem1)
+        self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.btn_report = QtWidgets.QPushButton(Dialog)
         font = QtGui.QFont()
@@ -27,6 +35,65 @@ class Ui_Dialog(object):
         self.btn_report.setFont(font)
         self.btn_report.setObjectName("btn_report")
         self.verticalLayout.addWidget(self.btn_report)
+        self.label = QtWidgets.QLabel(Dialog)
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
+        self.label.setObjectName("label")
+        self.verticalLayout.addWidget(self.label)
+        self.gridLayout = QtWidgets.QGridLayout()
+        self.gridLayout.setObjectName("gridLayout")
+        self.label_4 = QtWidgets.QLabel(Dialog)
+        self.label_4.setObjectName("label_4")
+        self.gridLayout.addWidget(self.label_4, 0, 0, 1, 1)
+        self.lineEdit_phone = QtWidgets.QLineEdit(Dialog)
+        self.lineEdit_phone.setStyleSheet("background:transparent;\n"
+"\n"
+"                                                                    border-radius:5px;\n"
+"                                                                    border-top: 0px solid #b2e281;\n"
+"                                                                    border-bottom: 2px solid black;\n"
+"                                                                    border-right: 0px solid #b2e281;\n"
+"                                                                    border-left: 0px solid #b2e281;\n"
+"\n"
+"\n"
+"                                                                    border-style:outset\n"
+"                                                                ")
+        self.lineEdit_phone.setFrame(False)
+        self.lineEdit_phone.setObjectName("lineEdit_phone")
+        self.gridLayout.addWidget(self.lineEdit_phone, 0, 1, 1, 1)
+        self.lineEdit_name = QtWidgets.QLineEdit(Dialog)
+        self.lineEdit_name.setStyleSheet("background:transparent;\n"
+"\n"
+"                                                                    border-radius:5px;\n"
+"                                                                    border-top: 0px solid #b2e281;\n"
+"                                                                    border-bottom: 2px solid black;\n"
+"                                                                    border-right: 0px solid #b2e281;\n"
+"                                                                    border-left: 0px solid #b2e281;\n"
+"\n"
+"\n"
+"                                                                    border-style:outset\n"
+"                                                                ")
+        self.lineEdit_name.setFrame(False)
+        self.lineEdit_name.setObjectName("lineEdit_name")
+        self.gridLayout.addWidget(self.lineEdit_name, 1, 1, 1, 1)
+        self.label_wxid = QtWidgets.QLabel(Dialog)
+        self.label_wxid.setText("")
+        self.label_wxid.setObjectName("label_wxid")
+        self.gridLayout.addWidget(self.label_wxid, 2, 1, 1, 1)
+        self.label_5 = QtWidgets.QLabel(Dialog)
+        self.label_5.setObjectName("label_5")
+        self.gridLayout.addWidget(self.label_5, 1, 0, 1, 1)
+        self.label_6 = QtWidgets.QLabel(Dialog)
+        self.label_6.setObjectName("label_6")
+        self.gridLayout.addWidget(self.label_6, 2, 0, 1, 1)
+        self.verticalLayout.addLayout(self.gridLayout)
+        self.btn_save = QtWidgets.QPushButton(Dialog)
+        self.btn_save.setObjectName("btn_save")
+        self.verticalLayout.addWidget(self.btn_save)
+        self.horizontalLayout.addLayout(self.verticalLayout)
+        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem2)
+        self.verticalLayout_2.addLayout(self.horizontalLayout)
+        spacerItem3 = QtWidgets.QSpacerItem(20, 157, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_2.addItem(spacerItem3)
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -35,3 +102,8 @@ class Ui_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
         self.btn_report.setText(_translate("Dialog", "我的年度聊天报告"))
+        self.label.setText(_translate("Dialog", "修改个人信息"))
+        self.label_4.setText(_translate("Dialog", "手机号"))
+        self.label_5.setText(_translate("Dialog", "微信昵称"))
+        self.label_6.setText(_translate("Dialog", "wxid"))
+        self.btn_save.setText(_translate("Dialog", "保存"))

@@ -18,6 +18,7 @@ from app.log import logger
 from app.util import path
 from . import decryptUi
 from ...Icon import Icon
+from ...menu.about_dialog import Decrypt
 
 
 class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
@@ -37,15 +38,19 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
         self.btn_start.clicked.connect(self.decrypt)
         self.btn_getinfo.clicked.connect(self.get_info)
         self.btn_db_dir.clicked.connect(self.select_db_dir)
-        self.lineEdit.returnPressed.connect(self.set_wxid)
-        self.lineEdit.textChanged.connect(self.set_wxid_)
+        # self.lineEdit.returnPressed.connect(self.set_wxid)
+        # self.lineEdit.textChanged.connect(self.set_wxid_)
+        self.lineEdit_name.returnPressed.connect(self.set_wxid)
+        self.lineEdit_name.textChanged.connect(self.set_wxid_)
+        self.lineEdit_phone.returnPressed.connect(self.set_wxid)
+        self.lineEdit_phone.textChanged.connect(self.set_wxid_)
         self.btn_help.clicked.connect(self.show_help)
         self.btn_getinfo.setIcon(Icon.Get_info_Icon)
         self.btn_db_dir.setIcon(Icon.Folder_Icon)
         self.btn_start.setIcon(Icon.Start_Icon)
         self.btn_help.setIcon(Icon.Help_Icon)
         self.info = {}
-        self.lineEdit.setFocus()
+        self.lineEdit_name.setFocus()
         self.ready = False
         self.wx_dir = None
 
@@ -79,12 +84,12 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
             self.ready = True
             self.info = result[0]
             self.label_key.setText(self.info['key'])
-            self.lineEdit.setText(self.info['wxid'])
-            self.label_name.setText(self.info['name'])
-            self.label_phone.setText(self.info['mobile'])
+            self.label_wxid.setText(self.info['wxid'])
+            self.lineEdit_name.setText(self.info['name'])
+            self.lineEdit_phone.setText(self.info['mobile'])
             self.label_pid.setText(str(self.info['pid']))
             self.label_version.setText(self.info['version'])
-            self.lineEdit.setFocus()
+            self.lineEdit_name.setFocus()
             self.checkBox.setCheckable(True)
             self.checkBox.setChecked(True)
             self.get_wxidSignal.emit(self.info['wxid'])
@@ -102,11 +107,18 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
         self.stopBusy()
 
     def set_wxid_(self):
-        self.info['wxid'] = self.lineEdit.text()
+        if self.sender() == self.lineEdit_name:
+            self.info['name'] = self.lineEdit_name.text()
+        elif self.sender() == self.lineEdit_phone:
+            self.info['mobel'] = self.lineEdit_phone.text()
 
     def set_wxid(self):
-        self.info['wxid'] = self.lineEdit.text()
-        QMessageBox.information(self, "ok", f"wxid修改成功{self.info['wxid']}")
+        if self.sender() == self.lineEdit_name:
+            self.info['name'] = self.lineEdit_name.text()
+            QMessageBox.information(self, "ok", f"昵称修改成功{self.info['name']}")
+        elif self.sender() == self.lineEdit_phone:
+            self.info['mobile'] = self.lineEdit_phone.text()
+            QMessageBox.information(self, "ok", f"手机号修改成功{self.info['mobile']}")
 
     def select_db_dir(self):
         directory = QFileDialog.getExistingDirectory(
@@ -132,7 +144,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
         if not self.wx_dir:
             QMessageBox.critical(self, "错误", "请先选择微信安装路径")
             return
-        if self.lineEdit.text() == 'None':
+        if self.label_wxid.text() == 'None':
             QMessageBox.critical(self, "错误", "请填入wxid")
             return
         db_dir = os.path.join(self.wx_dir, 'Msg')
@@ -182,11 +194,10 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
             'wxid': self.info['wxid'],
             'wx_dir': self.wx_dir,
             'name': self.info['name'],
-            'mobile': self.info['mobile']
+            'mobile': self.info['mobile'],
+            'token': Decrypt.decrypt(self.info['wxid'])
         }
-
         try:
-
             with open(INFO_FILE_PATH, "w", encoding="utf-8") as f:
                 json.dump(dic, f, ensure_ascii=False, indent=4)
         except:
