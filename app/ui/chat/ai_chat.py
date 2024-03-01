@@ -114,7 +114,7 @@ class AIChat(QWidget, Ui_Form):
 
     def eventFilter(self, obj, event):
         if obj == self.textEdit and event.type() == event.KeyPress:
-            key = event.token()
+            key = event.key()
             if key == 16777220:  # 回车键的键值
                 self.send_msg()
                 self.textEdit.setText('')
