@@ -457,14 +457,13 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         # 添加自定义按钮
         custom_button = error_box.addButton('更新', QMessageBox.ActionRole)
         is_update_online = update_info.get('is_update_online')
-        custom_button.clicked.connect(lambda x:self.update_(update_info.get('download_url'),is_update_online))
+        custom_button.clicked.connect(lambda x: self.update_(update_info.get('download_url'), is_update_online))
         error_box.addButton(QMessageBox.Cancel)
         # 显示对话框
         error_box.exec_()
 
-    def update_(self, url,is_update_online):
+    def update_(self, url, is_update_online):
         QDesktopServices.openUrl(QUrl("https://memotrace.cn/"))
-
 
     def about(self):
         """
@@ -485,6 +484,8 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
 
         super().close()
         self.exitSignal.emit(True)
+
+
 class UpdateThread(QThread):
     updateSignal = pyqtSignal(dict)
 
@@ -510,7 +511,7 @@ class UpdateThread(QThread):
 
         with open(INFO_FILE_PATH, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
-        server_url = urljoin(SERVER_API_URL,'update')
+        server_url = urljoin(SERVER_API_URL, 'update')
         data = {'version': version}
         try:
             response = requests.post(server_url, json=data)
