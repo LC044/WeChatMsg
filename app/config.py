@@ -1,6 +1,6 @@
 import os
 
-version = '1.1.2'
+version = '2.0.0'
 contact = '701805520'
 github = 'https://github.com/LC044/WeChatMsg'
 website = 'https://memotrace.cn/'

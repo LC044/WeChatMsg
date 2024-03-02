@@ -9,11 +9,16 @@
 """
 import json
 import os.path
+import subprocess
+import sys
+import time
 import traceback
+from urllib.parse import urljoin
 
+import requests
 from PyQt5.QtCore import pyqtSignal, QThread, QSize, QUrl, Qt
 from PyQt5.QtGui import QPixmap, QIcon, QDesktopServices
-from PyQt5.QtWidgets import QMainWindow, QLabel, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QLabel, QMessageBox, QPushButton
 
 from app.DataBase import misc_db, micro_msg_db, close_db
 from app.ui.Icon import Icon
@@ -26,12 +31,12 @@ from app.ui.home.home_window import HomeWindow
 from .menu.export import ExportDialog
 from app.util.exporter.output import Output
 from ..components.QCursorGif import QCursorGif
-from ..config import INFO_FILE_PATH, DB_DIR
+from ..config import INFO_FILE_PATH, DB_DIR, SERVER_API_URL, version
 from ..log import logger
 from ..person import Me
 
 try:
-    from app.ui.menu.about_dialog import AboutDialog, version, UpdateThread
+    from app.ui.menu.about_dialog import AboutDialog
 except ModuleNotFoundError:
     logger.error(f'Python版本错误:Python>=3.10,仅支持3.10、3.11、3.12')
     raise ValueError('Python版本错误:Python>=3.10,仅支持3.10、3.11、3.12')
@@ -333,6 +338,9 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         self.action_help_faq.triggered.connect(
             lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/7")))
         self.about_view = AboutDialog(main_window=self, parent=self)
+        self.update_thread = UpdateThread(check_time=True)
+        self.update_thread.updateSignal.connect(self.show_update)
+        self.update_thread.start()
         # self.statusbar.set
 
     def setCurrentIndex(self, row):
@@ -430,9 +438,41 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         当前版本:{version},最新版本:{update_info.get('latest_version')}<br>
         更新内容:
         {update_info.get('description')}
-        <br><a href='{update_info.get('download_url')}'>点击下载</a>
+        <br><a href='https://memotrace.cn/'>查看详情</a>
         '''
-        QMessageBox.information(self, '更新通知', detail)
+
+        # 创建一个 QMessageBox 对象
+        error_box = QMessageBox()
+
+        # 设置对话框的标题
+        error_box.setWindowTitle("更新通知")
+        pixmap = QPixmap(Icon.logo_ico_path)
+        icon = QIcon(pixmap)
+        error_box.setWindowIcon(icon)
+        # 设置对话框的文本消息
+        error_box.setText(detail)
+        # 设置对话框的图标，使用 QMessageBox.Critical 作为图标类型
+        error_box.setIcon(QMessageBox.Information)
+        # 添加一个“确定”按钮
+        # 添加自定义按钮
+        custom_button = error_box.addButton('更新', QMessageBox.ActionRole)
+        is_update_online = update_info.get('is_update_online')
+        custom_button.clicked.connect(lambda x:self.update_(update_info.get('download_url'),is_update_online))
+        error_box.addButton(QMessageBox.Cancel)
+        # 显示对话框
+        error_box.exec_()
+
+    def update_(self, url,is_update_online):
+        if is_update_online:
+            print('更新软件', url)
+            exe_path = r'./update.exe'
+            self.close()
+            if os.path.exists(exe_path):
+                subprocess.run(f'start /B {exe_path} --url {url}', shell=True, check=True)
+            sys.exit()
+        else:
+            QDesktopServices.openUrl(QUrl("https://memotrace.cn/"))
+
 
     def about(self):
         """
@@ -445,15 +485,7 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         self.close()
 
     def closeEvent(self, event):
-        reply = QMessageBox.question(self, '确认退出', '确定要退出吗？',
-                                     QMessageBox.Yes | QMessageBox.No,
-                                     QMessageBox.No)
-
-        if reply == QMessageBox.Yes:
-            close_db()
-            event.accept()
-        else:
-            event.ignore()
+        close_db()
 
     def close(self) -> bool:
         close_db()
@@ -461,3 +493,40 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
 
         super().close()
         self.exitSignal.emit(True)
+class UpdateThread(QThread):
+    updateSignal = pyqtSignal(dict)
+
+    def __init__(self, check_time=False):
+        super().__init__()
+        self.check_time = check_time
+
+    def run(self):
+        now_time = time.time()
+        try:
+            with open(INFO_FILE_PATH, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            update_time = data.get('update_time')
+            if update_time:
+                if now_time - update_time < 14400 and self.check_time:
+                    return
+        except:
+            os.makedirs(os.path.dirname(INFO_FILE_PATH), exist_ok=True)
+            data = {
+                'update_time': now_time
+            }
+        data['update_time'] = now_time
+
+        with open(INFO_FILE_PATH, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+        server_url = urljoin(SERVER_API_URL,'update')
+        data = {'version': version}
+        try:
+            response = requests.post(server_url, json=data)
+            if response.status_code == 200:
+                update_info = response.json()
+                self.updateSignal.emit(update_info)
+            else:
+                print("检查更新失败")
+        except:
+            update_info = {'update_available': False}
+            self.updateSignal.emit(update_info)

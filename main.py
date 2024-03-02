@@ -34,6 +34,7 @@ def excepthook(exc_type, exc_value, traceback_):
     error_box.setIcon(QMessageBox.Critical)
     # 添加一个“确定”按钮
     error_box.addButton(QMessageBox.Ok)
+
     # 显示对话框
     error_box.exec_()
 

@@ -31,6 +31,15 @@ class Ui_Dialog(object):
         self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
         self.verticalLayout.addWidget(self.progressBar)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.btn_start_update = QtWidgets.QPushButton(Dialog)
+        self.btn_start_update.setObjectName("btn_start_update")
+        self.horizontalLayout.addWidget(self.btn_start_update)
+        self.btn_cancle = QtWidgets.QPushButton(Dialog)
+        self.btn_cancle.setObjectName("btn_cancle")
+        self.horizontalLayout.addWidget(self.btn_cancle)
+        self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -38,4 +47,6 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.btn_report.setText(_translate("Dialog", "正在更新"))
+        self.btn_report.setText(_translate("Dialog", "更新程序"))
+        self.btn_start_update.setText(_translate("Dialog", "开始更新"))
+        self.btn_cancle.setText(_translate("Dialog", "取消更新"))
