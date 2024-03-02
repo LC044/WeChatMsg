@@ -1,12 +1,14 @@
 import sys
 import time
 import traceback
+from urllib.parse import urljoin
 
 import requests
 from PyQt5.QtCore import QThread, pyqtSignal, QSize, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QApplication, QTextBrowser, QMessageBox
 
+from app.config import SERVER_API_URL
 from app.log import logger
 from app.ui.Icon import Icon
 
@@ -134,7 +136,7 @@ class AIChatThread(QThread):
         self.msg = ''
 
     def run(self) -> None:
-        url = 'http://api.lc044.love/chat'
+        url = urljoin(SERVER_API_URL, 'chat')
         data = {
             'username': Me().wxid,
             'token': Me().token,

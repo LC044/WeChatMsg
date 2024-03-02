@@ -100,15 +100,14 @@ class GetBiasAddrControl(QWidget, Ui_Form, QCursorGif):
                                 )
 
     def upload(self, version_data):
-        url = urljoin(SERVER_API_URL,'wxBiasAddr')
+        url = urljoin(SERVER_API_URL, 'wxBiasAddr')
         try:
-            requests.post(url, json=version_data)
+            requests.post(url, json={'bias_dict': version_data})
             print('版本信息上传成功')
         except:
             pass
 
     def get_bias_addr(self):
-
         account = self.lineEdit_wx_alias.text()
         mobile = self.lineEdit_tel.text()
         name = self.lineEdit_wx_name.text()
