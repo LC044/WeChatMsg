@@ -46,7 +46,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
         self.lineEdit_phone.textChanged.connect(self.set_wxid_)
         self.btn_help.clicked.connect(self.show_help)
         self.btn_getinfo.setIcon(Icon.Get_info_Icon)
-        self.btn_db_dir.setIcon(Icon.Folder_Icon)
+        # self.btn_db_dir.setIcon(Icon.Folder_Icon)
         self.btn_start.setIcon(Icon.Start_Icon)
         self.btn_help.setIcon(Icon.Help_Icon)
         self.info = {}
@@ -63,7 +63,7 @@ class DecryptControl(QWidget, decryptUi.Ui_Dialog, QCursorGif):
     # @log
     def get_info(self):
         self.startBusy()
-        self.get_info_thread = MyThread(self.version_list)
+        self.get_info_thread = InfoThread(self.version_list)
         self.get_info_thread.signal.connect(self.set_info)
         self.get_info_thread.start()
 
@@ -279,11 +279,11 @@ class DecryptThread(QThread):
         # self.signal.emit('100')
 
 
-class MyThread(QThread):
+class InfoThread(QThread):
     signal = pyqtSignal(list)
 
     def __init__(self, version_list=None):
-        super(MyThread, self).__init__()
+        super(InfoThread, self).__init__()
         self.version_list = version_list
 
     def __del__(self):

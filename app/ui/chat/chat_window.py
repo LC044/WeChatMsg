@@ -2,7 +2,7 @@ import shutil
 
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QWidget, QMessageBox, QAction, QLineEdit
+from PyQt5.QtWidgets import QWidget, QMessageBox, QAction, QLineEdit, QVBoxLayout
 
 from app.DataBase import micro_msg_db, misc_db, msg_db, close_db
 from app.components import ContactQListWidgetItem, ScrollBar
@@ -29,6 +29,7 @@ QListWidget {
     max-height: 1200px;
     color: black;
     border:none;
+    background-color: transparent;
 }
 QListWidget::item{
     height:60px;
@@ -42,7 +43,6 @@ QListWidget::item:selected {
     font-weight: bold;
 }
 """
-
 
 class ChatWindow(QWidget, Ui_Form):
     load_finish_signal = pyqtSignal(bool)
@@ -58,6 +58,10 @@ class ChatWindow(QWidget, Ui_Form):
         self.show_chats()
         self.visited = set()
         self.now_index = 0
+        
+        if parent:
+            parent.setLayout(QVBoxLayout())
+            parent.layout().addWidget(self)
 
     def init_ui(self):
         search_action = QAction(self.lineEdit)
@@ -77,7 +81,6 @@ class ChatWindow(QWidget, Ui_Form):
         self.stackedWidget.addWidget(chat_info_window)
 
     def show_chats(self):
-        # return
         if self.ok_flag:
             return
         msg_db.init_database()
@@ -109,7 +112,6 @@ class ChatWindow(QWidget, Ui_Form):
         self.listWidget.setCurrentRow(index)
 
     def show_chat(self, contact):
-        # return
         self.contacts[0].append(contact.remark)
         self.contacts[1].append(contact.nickName)
         contact_item = ContactQListWidgetItem(contact.remark, contact.smallHeadImgUrl, contact.smallHeadImgBLOG)

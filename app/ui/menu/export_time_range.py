@@ -10,9 +10,6 @@ try:
 except:
     from time_range import Ui_Dialog
 Stylesheet = '''
-QToolButton{
-    color:#000000;
-}
 QCalendarWidget QAbstractItemView:disabled {
 
 }

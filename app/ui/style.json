@@ -1,0 +1,170 @@
+{
+	"QMainWindow":[
+		{
+			"tittle":"留痕",
+			"icon":":/icons/logo3.0.ico",
+			"frameless": true,
+			"transluscentBg": true,
+			"sizeGrip": "sizeGrip",
+			"navigation":[
+				{
+					"minimize":"minimizeBtn",
+					"close": "closeBtn",
+					"restore":[
+						{	
+							"buttonName": "restoreBtn",
+							"normalIcon": ":/icons/icons/square.svg",
+							"maximizedIcon": ":/icons/icons/copy.svg"
+						}
+					],
+					"moveWindow": "headerContainer",
+					"tittleBar": "headerContainer"
+				}
+			]
+		}
+	],
+	"QCustomSlideMenu": [
+		{
+		"name": "leftMenuContainer",
+		"defaultSize": [{
+			"width": 50,
+			"height": "parent"
+		}],
+		"collapsedSize": [{
+			"width": 50,
+			"height": "parent"
+		}],
+		"expandedSize": [{
+			"width": 90,
+			"height": "parent"
+		}],
+		"toggleButton": [{
+			"buttonName": "menuBtn",
+			"icons": [{
+				"whenMenuIsCollapsed": ":/icons/icons/align-justify-white.svg",
+				"whenMenuIsExpanded": ":/icons/icons/chevron-left-white.svg"
+			}]
+		}],
+		"menuTransitionAnimation": [{
+			"animationDuration": 200,
+			"animationEasingCurve": "Linear"
+		}]
+	},
+	{
+		"name": "centerMenuContainer",
+		"defaultSize": [{
+			"width": 0,
+			"height": "parent"
+		}],
+		"collapsedSize": [{
+			"width": 0,
+			"height": "parent"
+		}],
+		"expandedSize": [{
+			"width": 200,
+			"height": "parent"
+		}],
+		"menuTransitionAnimation": [{
+			"animationDuration": 200,
+			"animationEasingCurve": "Linear"
+		}]
+	},
+	{
+		"name": "popupNotificationsContainer",
+		"defaultSize": [{
+			"width": 0,
+			"height": "auto"
+		}],
+		"collapsedSize": [{
+			"width": 0,
+			"height": "auto"
+		}],
+		"expandedSize": [{
+			"width": 555,
+			"height": 106
+		}],
+		"menuTransitionAnimation": [{
+			"animationDuration": 200,
+			"animationEasingCurve": "Linear"
+		}],
+		"floatPosition": [
+			{
+				"relativeTo": "centralwidget",
+				"position": "center-center",
+				"shadow":[
+					{
+						"color": "#000",
+						"blurRadius": 20,
+						"xOffset": 0,
+						"yOffset": 0
+					}
+				]
+			}
+		]
+	}
+	],
+	"QCustomQStackedWidget":[
+		{
+			"name":"centerMenuPages",
+			"navigation":[
+				{
+					"navigationButtons":[
+						{
+							"toolBtn": "toolPage",
+							"msgBtn": "msgPage",
+							"friendBtn": "friendPage",
+							"userBtn": "userPage"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name":"mainContentsPages",
+			"navigation":[
+				{
+					"navigationButtons":[
+						{
+							"toolBtn": "decryptMainPage",
+							"msgBtn": "msgMainPage",
+							"friendBtn": "friendMainPage",
+							"userBtn": "reportMainPage",
+							"decryptBtn": "decryptMainPage",
+							"decryptBtn2": "decryptMainPage2",
+							"dataBtn": "dataMainPage",
+							"reportBtn": "reportMainPage",
+							"aboutBtn": "aboutMainPage",
+							"helpBtn": "helpMainPage",
+							"settingBtn": "settingMainPage"
+						}
+					]
+				}
+			]
+		}
+	],
+	"QPushButtonGroup": [
+		{
+		"Buttons": [
+			"toolBtn",
+			"msgBtn",
+			"friendBtn",
+			"userBtn"
+		],
+		"Style":[{
+			"Active": "background-color: #1f232a; color: #fff;",
+			"NotActive": "color: #aaa;"
+		}]
+		},
+		{
+			"Buttons": [
+				"aboutBtn",
+				"helpBtn",
+				"settingBtn"
+			],
+			"Style":[{
+				"Active": "background-color: #1f232a; color: #fff;",
+				"NotActive": "color: #aaa;"
+			}]
+		}
+	]
+}

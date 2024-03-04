@@ -86,10 +86,10 @@ class ContactUi(QtWidgets.QPushButton):
         self.gridLayout1.setRowStretch(0, 5)
         self.gridLayout1.setRowStretch(1, 3)
         self.setLayout(self.gridLayout1)
-        self.setStyleSheet(
-            "QPushButton {background-color: rgb(220,220,220);}"
-            "QPushButton:hover{background-color: rgb(208,208,208);}\n"
-        )
+        # self.setStyleSheet(
+        #     "QPushButton {background-color: rgb(220,220,220);}"
+        #     "QPushButton:hover{background-color: rgb(208,208,208);}\n"
+        # )
 
     def show_info(self, id):
         time = datetime.now().strftime("%m-%d %H:%M")

@@ -58,6 +58,12 @@ class ContactInfo(QWidget, Ui_Form):
         self.toDocxAct.triggered.connect(self.output)
         self.toCSVAct.triggered.connect(self.output)
         self.toTxtAct.triggered.connect(self.output)
+        
+        self.btn_back.setVisible(False)
+        self.btn_report.setVisible(False)
+        self.btn_analysis.setVisible(False)
+        self.btn_emotion.setVisible(False)
+        self.toolButton_output.setVisible(False)
 
     def set_contact(self, contact: Contact):
         self.view_userinfo.set_contact(contact)
