@@ -317,7 +317,7 @@ class MainWinController(QMainWindow, Ui_MainWindow):
     def show_update(self, update_info):
         if not update_info.get('update_available'):
             self.message_notification("当前已是最新版本")
-            # return
+            return
         detail = f'''当前版本:{version},最新版本:{update_info.get('latest_version')}
         更新内容:{update_info.get('description')}
         <a href='{update_info.get('download_url')}'>点击下载</a>
