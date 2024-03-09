@@ -272,13 +272,16 @@ class HtmlExporter(ExporterBase):
         display_name = self.get_display_name(is_send, message)
         try:
             text_info_map = {
-                1: transfer_detail["pay_memo"] or "转账",
+                1: transfer_detail["pay_memo"] or "发起转账",
                 3: "已收款",
                 4: "已退还",
-                7: "未知",
+                5: "非实时转账收款",
+                7: "发起非实时转账",
+                8: "未知",
+                9: "未知",
             }
             doc.write(
-                f"""{{ type:49, sub_type:2000,text:'{text_info_map[transfer_detail["paysubtype"]]}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',paysubtype:{transfer_detail["paysubtype"]},pay_memo:'{transfer_detail["pay_memo"]}',feedesc:'{transfer_detail["feedesc"]}',}},\n""")
+                f"""{{ type:49,sub_type:2000,text:'{text_info_map[transfer_detail["paysubtype"]]}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}',paysubtype:{transfer_detail["paysubtype"]},pay_memo:'{transfer_detail["pay_memo"]}',feedesc:'{transfer_detail["feedesc"]}',}},\n""")
         except Exception as e:
             logger.error(f'转账解析错误：{transfer_detail}\n{traceback.format_exc()}')
     def call(self, doc, message):
