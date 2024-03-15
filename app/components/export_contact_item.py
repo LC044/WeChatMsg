@@ -10,19 +10,10 @@ except:
     from CAvatar import CAvatar
 
 Stylesheet = """
-QWidget{
-    background: rgb(238,244,249);
-}
 """
 Stylesheet_hover = """
-QWidget,QLabel{
-    background: rgb(230, 235, 240);
-}
 """
 Stylesheet_clicked = """
-QWidget,QLabel{
-    background: rgb(230, 235, 240);
-}
 """
 
 

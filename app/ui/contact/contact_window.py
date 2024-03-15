@@ -1,7 +1,7 @@
 from typing import List
 
 from PyQt5.QtCore import QThread, pyqtSignal
-from PyQt5.QtWidgets import QWidget, QMessageBox, QAction, QLineEdit, QLabel
+from PyQt5.QtWidgets import QWidget, QMessageBox, QAction, QLineEdit, QLabel, QVBoxLayout
 
 from app.DataBase import micro_msg_db, misc_db, close_db
 from app.components import ContactQListWidgetItem, ScrollBar
@@ -33,6 +33,7 @@ QListWidget {
     max-height: 1200px;
     color: black;
     border:none;
+    background-color: transparent;
 }
 QListWidget::item{
     height:60px;
@@ -67,6 +68,10 @@ class ContactWindow(QWidget, Ui_Form):
         self.contacts_list:List[Contact] = []
         self.show_contacts()
         self.contact_info_window = None
+        
+        if parent:
+            parent.setLayout(QVBoxLayout())
+            parent.layout().addWidget(self)
 
     def init_ui(self):
         search_action = QAction(self.lineEdit)

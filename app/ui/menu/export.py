@@ -16,7 +16,7 @@ from app.person import Contact
 from app.ui.menu.exportUi import Ui_Dialog
 from app.ui.menu.export_time_range import TimeRangeDialog
 
-types = {
+export_types = {
     '文本': 1,
     '图片': 3,
     '语音': 34,
@@ -29,7 +29,7 @@ types = {
     '音视频通话': 50,
     '拍一拍等系统消息': 10000,
 }
-file_format = {
+export_file_format = {
     'Docx': Output.DOCX,
     'TXT': Output.TXT,
     'HTML': Output.HTML,
@@ -82,7 +82,7 @@ class ExportDialog(QDialog, Ui_Dialog):
         self.total_msg_num = 99999  # 总的消息个数
         self.num = 0  # 当前完成的消息个数
         self.timer.timeout.connect(self.update_elapsed_time)
-        self.show_thread = ShowContactThread()
+        self.show_thread = ShowContactExportThread()
         self.show_thread.showSingal.connect(self.show_contact)
         # self.show_thread.load_finish_signal.connect(self.stop_loading)
         self.show_thread.start()
@@ -143,7 +143,7 @@ class ExportDialog(QDialog, Ui_Dialog):
     def export_data(self):
         self.btn_start.setEnabled(False)
         # 在这里获取用户选择的导出数据类型
-        selected_types = {types[export_type]: checkbox.isChecked() for export_type, checkbox in
+        selected_types = {export_types[export_type]: checkbox.isChecked() for export_type, checkbox in
                           zip(self.export_choices.keys(), self.findChildren(QCheckBox, 'message_type'))}
 
         # 在这里根据用户选择的数据类型执行导出操作
@@ -152,7 +152,7 @@ class ExportDialog(QDialog, Ui_Dialog):
         file_types = []
         for checkbox in [self.checkBox_txt, self.checkBox_csv, self.checkBox_html, self.checkBox_word]:
             if checkbox.isChecked():
-                file_types.append(file_format[checkbox.text()])
+                file_types.append(export_file_format[checkbox.text()])
         select_contacts = []
         count = self.listWidget.count()
         # 遍历listwidget中的内容
@@ -245,7 +245,7 @@ class ExportDialog(QDialog, Ui_Dialog):
         self.label_process.setText(f"导出进度: {progress_percentage}% {remark}")
 
 
-class ShowContactThread(QThread):
+class ShowContactExportThread(QThread):
     showSingal = pyqtSignal(Contact)
     load_finish_signal = pyqtSignal(bool)
 

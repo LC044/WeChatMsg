@@ -7,19 +7,10 @@ from PyQt5.QtWidgets import *
 from .CAvatar import CAvatar
 
 Stylesheet = """
-QWidget{
-    background: rgb(238,244,249);
-}
 """
 Stylesheet_hover = """
-QWidget,QLabel{
-    background: rgb(230, 235, 240);
-}
 """
 Stylesheet_clicked = """
-QWidget,QLabel{
-    background: rgb(230, 235, 240);
-}
 """
 
 
@@ -66,7 +57,7 @@ class ContactQListWidgetItem(QListWidgetItem):
         @return:
         """
         self.widget.is_selected = True
-        self.widget.setStyleSheet(Stylesheet_clicked)
+        # self.widget.setStyleSheet(Stylesheet_clicked)
 
     def dis_select(self):
         """
