@@ -137,16 +137,22 @@
 
 # 🏆致谢
 
+<details>
+
 * PC微信工具:[https://github.com/xaoyaoo/PyWxDump](https://github.com/xaoyaoo/PyWxDump)
 * PyQt组件库:[https://github.com/PyQt5/CustomWidgets](https://github.com/PyQt5/CustomWidgets)
 * 得力小助手:[ChatGPT](https://chat.openai.com/)
+
+</details>
 
 ---
 > \[!IMPORTANT]
 > 
 > 声明：该项目有且仅有一个目的：“留痕”——我的数据我做主，前提是“我的数据”其次才是“我做主”，禁止任何人以任何形式将其用于任何非法用途，对于使用该程序所造成的任何后果，所有创作者不承担任何责任🙄<br>
-> 该软件不能找回删除的聊天记录，任何企图篡改微信聊天数据的想法都是无稽之谈。本项目所有功能均建立在”前言“的基础之上，基于该项目的所有开发者均不能接受任何有悖于”前言“的功能需求，违者后果自负。
-> <br>软件贩子勿扰，违规违法勿扰，二次开发请务必遵守开源协议
+> 该软件不能找回删除的聊天记录，任何企图篡改微信聊天数据的想法都是无稽之谈。<br>
+> 本项目所有功能均建立在”前言“的基础之上，基于该项目的所有开发者均不能接受任何有悖于”前言“的功能需求，违者后果自负。<br>
+> 如果该项目侵犯了您或您产品的任何权益，请联系我删除<br>
+> 软件贩子勿扰，违规违法勿扰，二次开发请务必遵守开源协议
 
 [![Star History Chart](https://api.star-history.com/svg?repos=LC044/WeChatMsg&type=Date)](https://star-history.com/?utm_source=bestxtools.com#LC044/WeChatMsg&Date)
 
