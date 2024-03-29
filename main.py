@@ -63,40 +63,19 @@ class ViewController(QWidget):
     def __init__(self):
         super().__init__()
         self.viewMainWindow = None
-        self.viewDecrypt = None
 
-    def loadPCDecryptView(self):
-        """
-        登录界面
-        :return:
-        """
-        self.viewDecrypt = pc_decrypt.DecryptControl()
-        self.viewDecrypt.DecryptSignal.connect(self.show_success)
-        self.viewDecrypt.show()
-
-    def loadMainWinView(self, username=None):
-        """
-        聊天界面
-        :param username: 账号
-        :return:
-        """
-        username = ''
+    def loadMainWinView(self):
         start = time.time()
-        self.viewMainWindow = mainview.MainWinController(username=username)
+        self.viewMainWindow = mainview.MainWinController()
         self.viewMainWindow.exitSignal.connect(self.close)
         try:
             self.viewMainWindow.setWindowTitle(f"留痕-{version}")
             self.viewMainWindow.show()
             end = time.time()
-            self.viewMainWindow.init_ui()
-            print('ok', '本次加载用了', end - start, 's')
-
+            print('加载成功', '本次加载用了', end - start, 's')
         except Exception as e:
             print(f"Exception: {e}")
             logger.error(traceback.format_exc())
-
-    def show_success(self):
-        QMessageBox.about(self, "解密成功", "数据库文件存储在\napp/DataBase/Msg\n文件夹下")
 
     def close(self) -> bool:
         close_db()
@@ -105,15 +84,12 @@ class ViewController(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    font = QFont('微软雅黑', 12)  # 使用 Times New Roman 字体，字体大小为 14
+    font = QFont('微软雅黑', 12)
     app.setFont(font)
     view = ViewController()
     widget = view.viewMainWindow
     try:
-        # view.loadPCDecryptView()
         view.loadMainWinView()
-        # view.show()
-        # view.show_success()
         sys.exit(app.exec_())
     except Exception as e:
         print(f"Exception: {e}")

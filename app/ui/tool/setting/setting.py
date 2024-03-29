@@ -145,7 +145,7 @@ class SettingControl(QWidget, Ui_Form):
         QMessageBox.about(self, "添加成功", "自定义词添加成功")
 
     def send_error_log(self):
-        self.send_thread = MyThread()
+        self.send_thread = ErrorThread()
         self.send_thread.signal.connect(self.show_resp)
         self.send_thread.start()
 
@@ -156,11 +156,11 @@ class SettingControl(QWidget, Ui_Form):
             QMessageBox.about(self, "发送结果", f"{message.get('code')}:{message.get('errmsg')}")
 
 
-class MyThread(QThread):
+class ErrorThread(QThread):
     signal = pyqtSignal(dict)
 
     def __init__(self, message=''):
-        super(MyThread, self).__init__()
+        super(ErrorThread, self).__init__()
         if message:
             self.message = message
         else:

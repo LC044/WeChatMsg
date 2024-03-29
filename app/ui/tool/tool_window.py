@@ -67,9 +67,9 @@ class ToolWindow(QWidget, Ui_Dialog):
     def init_ui(self):
         self.listWidget.clear()
         self.listWidget.currentRowChanged.connect(self.setCurrentIndex)
-        chat_item = QListWidgetItem(Icon.Decrypt_Icon, '解密', self.listWidget)
+        # chat_item = QListWidgetItem(Icon.Decrypt_Icon, '解密', self.listWidget)
         contact_item = QListWidgetItem(Icon.Contact_Icon, '设置', self.listWidget)
-        myinfo_item = QListWidgetItem(Icon.Home_Icon, '解密2', self.listWidget)
+        # myinfo_item = QListWidgetItem(Icon.Home_Icon, '解密2', self.listWidget)
         tool_item = QListWidgetItem(Icon.Home_Icon, '别点', self.listWidget)
 
         self.decrypt_window = DecryptControl()

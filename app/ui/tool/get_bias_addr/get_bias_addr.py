@@ -118,7 +118,7 @@ class GetBiasAddrControl(QWidget, Ui_Form, QCursorGif):
         key = None
         db_path = "test"
         self.startBusy()
-        self.thread = MyThread(account, mobile, name, key, db_path)
+        self.thread = BiasThread(account, mobile, name, key, db_path)
         self.thread.signal.connect(self.set_bias_addr)
         self.thread.start()
 
@@ -129,11 +129,11 @@ class GetBiasAddrControl(QWidget, Ui_Form, QCursorGif):
         self.biasAddrSignal.emit(data)
 
 
-class MyThread(QThread):
+class BiasThread(QThread):
     signal = pyqtSignal(dict)
 
     def __init__(self, account, mobile, name, key, db_path):
-        super(MyThread, self).__init__()
+        super(BiasThread, self).__init__()
         self.account = account
         self.mobile = mobile
         self.name = name

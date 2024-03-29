@@ -14,8 +14,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(840, 752)
-        Form.setStyleSheet("background: rgb(240, 240, 240);")
+        # Form.resize(840, 752)
+        # Form.setStyleSheet("background: rgb(240, 240, 240);")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout_2.setSpacing(6)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
