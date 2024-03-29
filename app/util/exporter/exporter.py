@@ -104,8 +104,8 @@ class ExporterBase(QThread):
         self.last_timestamp = 0
         self.time_range = time_range
         self.messages = messages
-        origin_path = os.path.join(os.getcwd(), OUTPUT_DIR, '聊天记录', self.contact.remark)
-        makedirs(origin_path)
+        self.origin_path = os.path.join(os.getcwd(), OUTPUT_DIR, '聊天记录', self.contact.remark)
+        makedirs(self.origin_path)
 
     def run(self):
         self.export()

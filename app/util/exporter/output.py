@@ -13,6 +13,7 @@ from docxcompose.composer import Composer
 from app.util.exporter.exporter_csv import CSVExporter
 from app.util.exporter.exporter_docx import DocxExporter
 from app.util.exporter.exporter_html import HtmlExporter
+from app.util.exporter.exporter_json import JsonExporter
 from app.util.exporter.exporter_txt import TxtExporter
 from app.DataBase.hard_link import decodeExtraBuf
 from app.config import OUTPUT_DIR
@@ -42,6 +43,7 @@ class Output(QThread):
     CSV_ALL = 3
     CONTACT_CSV = 4
     TXT = 5
+    JSON = 6
     Batch = 10086
 
     def __init__(self, contact, type_=DOCX, message_types={}, sub_type=[], time_range=None, parent=None):
@@ -160,6 +162,8 @@ class Output(QThread):
                     self.to_csv(contact, self.message_types, True)
                 elif type_ == self.HTML:
                     self.to_html(contact, self.message_types, True)
+                elif type_ == self.JSON:
+                    self.to_json(contact,self.message_types,True)
 
     def batch_finish_one(self, num):
         self.nowContact.emit(self.contact[self.batch_num // len(self.sub_type)].remark)
@@ -208,6 +212,15 @@ class Output(QThread):
         if not is_batch:
             Child.rangeSignal.connect(self.rangeSignal)
         Child.okSignal.connect(self.merge_docx if not is_batch else self.batch_finish_one)
+        Child.start()
+
+    def to_json(self, contact, message_types, is_batch=False):
+        Child = JsonExporter(contact, type_=self.JSON, message_types=message_types, time_range=self.time_range)
+        self.children.append(Child)
+        Child.progressSignal.connect(self.progress)
+        if not is_batch:
+            Child.rangeSignal.connect(self.rangeSignal)
+        Child.okSignal.connect(self.okSignal if not is_batch else self.batch_finish_one)
         Child.start()
 
     def to_txt(self, contact, message_types, is_batch=False):
@@ -275,6 +288,8 @@ class Output(QThread):
             self.to_csv(self.contact, self.message_types)
         elif self.output_type == self.HTML:
             self.to_html(self.contact, self.message_types)
+        elif self.output_type == self.JSON:
+            self.to_json(self.contact, self.message_types)
         elif self.output_type == self.Batch:
             self.batch_export()
 

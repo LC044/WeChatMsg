@@ -45,12 +45,14 @@ class ContactInfo(QWidget, Ui_Form):
         self.toCSVAct = QAction(Icon.ToCSV, '导出CSV', self)
         self.toHtmlAct = QAction(Icon.ToHTML, '导出HTML', self)
         self.toTxtAct = QAction(Icon.ToTXT, '导出TXT', self)
+        self.toJsonAct = QAction(Icon.ToTXT, '导出json', self)
         self.toolButton_output.setPopupMode(QToolButton.MenuButtonPopup)
         self.toolButton_output.clicked.connect(self.toolButton_show)
         menu.addAction(self.toDocxAct)
         menu.addAction(self.toCSVAct)
         menu.addAction(self.toHtmlAct)
         menu.addAction(self.toTxtAct)
+        menu.addAction(self.toJsonAct)
         self.toolButton_output.setMenu(menu)
         self.toolButton_output.setIcon(Icon.Output)
         # self.toolButton_output.addSeparator()
@@ -58,6 +60,7 @@ class ContactInfo(QWidget, Ui_Form):
         self.toDocxAct.triggered.connect(self.output)
         self.toCSVAct.triggered.connect(self.output)
         self.toTxtAct.triggered.connect(self.output)
+        self.toJsonAct.triggered.connect(self.output)
 
     def set_contact(self, contact: Contact):
         self.view_userinfo.set_contact(contact)
@@ -126,7 +129,9 @@ class ContactInfo(QWidget, Ui_Form):
         elif self.sender() == self.toTxtAct:
             dialog = ExportDialog(self.contact, title='选择导出的消息类型', file_type='txt', parent=self)
             result = dialog.exec_()  # 使用exec_()获取用户的操作结果
-
+        elif self.sender() == self.toJsonAct:
+            dialog = ExportDialog(self.contact, title='选择导出的消息类型', file_type='json', parent=self)
+            result = dialog.exec_()  # 使用exec_()获取用户的操作结果
 
 class ReportThread(QThread):
     okSignal = pyqtSignal(bool)

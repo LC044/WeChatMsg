@@ -34,6 +34,7 @@ file_format = {
     'TXT': Output.TXT,
     'HTML': Output.HTML,
     'CSV': Output.CSV,
+    'JSON': Output.JSON,
 }
 Stylesheet = """
 """
@@ -150,7 +151,7 @@ class ExportDialog(QDialog, Ui_Dialog):
         print("选择的数据类型:", selected_types)
 
         file_types = []
-        for checkbox in [self.checkBox_txt, self.checkBox_csv, self.checkBox_html, self.checkBox_word]:
+        for checkbox in [self.checkBox_txt, self.checkBox_csv, self.checkBox_html, self.checkBox_word,self.checkBox_json]:
             if checkbox.isChecked():
                 file_types.append(file_format[checkbox.text()])
         select_contacts = []
