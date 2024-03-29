@@ -330,6 +330,8 @@ token 不参与 `loss` 计算。
 
 配置文件
 
+config/lora.yaml
+
 ```yaml
 data_config:
   train_file: train.json
@@ -389,7 +391,7 @@ python finetune_hf.py  data/  E:\\Project\\Python\\Langchain-Chatchat\\chatglm3-
 
 ## 部署
 
-api_server.py修改微调保存路径
+在api_server.py修改微调保存路径
 ```python
 model, tokenizer = load_model_and_tokenizer(
         r'E:\Project\Python\ChatGLM3\finetune_demo\output03-24\checkpoint-224000'
@@ -438,3 +440,11 @@ def simple_chat(use_stream=True):
 if __name__ == "__main__":
     simple_chat(use_stream=True)
 ```
+
+## 体验地址
+
+[https://chat/memotrace.cn/](https://chat/memotrace.cn/)
+
+![img.png](img/img.png)
+
+![img.png](img/img2.png)
