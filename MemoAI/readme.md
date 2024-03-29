@@ -404,7 +404,7 @@ model, tokenizer = load_model_and_tokenizer(
 python api_server.py
 ```
 
-调用示例
+调用示例(你可以在任意一个支持ChatGPT的应用中使用它):
 
 ```python
 from openai import OpenAI
