@@ -4,7 +4,39 @@
 
 导出json格式的聊天记录。
 
-![img.png](images/img10.png)
+![img.png](../doc/images/img10.png)
+
+如果你想合并多个联系人的数据，可以直接运行下面的代码合并
+
+```python
+import json
+import os
+
+data_dir = r'E:\Project\Python\MemoTrace\data\聊天记录'
+
+dev_res = []
+train_res = []
+
+for filepath, dirnames, filenames in os.walk(data_dir):
+    for filename in filenames:
+        if filename.endswith('.json'):
+            print(filename, filepath)
+            filepath_ = os.path.join(filepath, filename)
+            with open(filepath_, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            if data:
+                if filename.endswith('train.json'):
+                    train_res += data
+                else:
+                    dev_res += data
+
+with open('train.json', 'w', encoding='utf-8') as f:
+    json.dump(train_res, f, ensure_ascii=False, indent=4)
+
+with open('dev.json', 'w', encoding='utf-8') as f:
+    json.dump(dev_res, f, ensure_ascii=False, indent=4)
+
+```
 
 你现在应该有两个文件，dev.json(验证集)和train.json(训练集)
 
@@ -353,4 +385,56 @@ peft_config:
 
 ```shell
 python finetune_hf.py  data/  E:\\Project\\Python\\Langchain-Chatchat\\chatglm3-6b  configs/lora.yaml yes
+```
+
+## 部署
+
+api_server.py修改微调保存路径
+```python
+model, tokenizer = load_model_and_tokenizer(
+        r'E:\Project\Python\ChatGLM3\finetune_demo\output03-24\checkpoint-224000'
+    )
+```
+
+直接运行即可
+
+```shell
+python api_server.py
+```
+
+调用示例
+
+```python
+from openai import OpenAI
+
+base_url = "http://127.0.0.1:8002/v1/"
+client = OpenAI(api_key="EMPTY", base_url=base_url)
+
+def simple_chat(use_stream=True):
+    messages = [
+        {
+            "role": "user",
+            "content": "你好啊"
+        }
+    ]
+    response = client.chat.completions.create(
+        model="chatglm3-6b",
+        messages=messages,
+        stream=use_stream,
+        max_tokens=256,
+        temperature=0.8,
+        presence_penalty=1.1,
+        top_p=0.8)
+    if response:
+        if use_stream:
+            for chunk in response:
+                print(chunk.choices[0].delta.content, end='')
+        else:
+            content = response.choices[0].message.content
+            print(content)
+    else:
+        print("Error:", response.status_code)
+
+if __name__ == "__main__":
+    simple_chat(use_stream=True)
 ```
