@@ -1,3 +1,4 @@
+import json
 import sys
 import time
 import traceback
@@ -8,6 +9,7 @@ from PyQt5.QtCore import QThread, pyqtSignal, QSize, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QApplication, QTextBrowser, QMessageBox
 
+from app import config
 from app.config import SERVER_API_URL
 from app.log import logger
 from app.ui.Icon import Icon
@@ -63,6 +65,8 @@ class AIChat(QWidget, Ui_Form):
         self.show_chats()
         self.pushButton.clicked.connect(self.send_msg)
         self.toolButton.clicked.connect(self.tool)
+        self.btn_clear.clicked.connect(self.clear_dialog)
+        self.btn_clear.setIcon(Icon.Clear_Icon)
 
     def init_ui(self):
         self.textEdit.installEventFilter(self)
@@ -93,6 +97,16 @@ class AIChat(QWidget, Ui_Form):
         self.now_message = message1
         self.show_chat_thread.start()
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+
+    def clear_dialog(self):
+        self.show_chat_thread.history = []
+        while self.verticalLayout_message.count():
+            item = self.verticalLayout_message.takeAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()
+            else:
+                del item
 
     def show_chats(self):
         # return
@@ -134,13 +148,16 @@ class AIChatThread(QThread):
     def __init__(self):
         super().__init__()
         self.msg = ''
+        self.history = []
 
     def run(self) -> None:
         url = urljoin(SERVER_API_URL, 'chat')
         data = {
             'username': Me().wxid,
             'token': Me().token,
+            'version': config.version,
             'messages': [
+                *self.history,
                 {
                     'role': 'user',
                     "content": self.msg
@@ -156,17 +173,36 @@ class AIChatThread(QThread):
             #     time.sleep(0.05)
             # return
             resp = requests.post(url, json=data, stream=True)
+            message = {
+                'role': 'user',
+                'content': self.msg
+            }
+            resp_message = {
+                'role': 'assistant',
+                'content': ''
+            }
             if resp.status_code == 200:
                 for line in resp.iter_lines():
                     if line:
                         trunk = line.decode('utf-8')
-                        print(trunk)
-                        self.msgSignal.emit(trunk)
+                        try:
+                            data = json.loads(trunk.strip('data: '))
+                            answer = data.get('answer')
+                            print(answer)
+                            if isinstance(answer, str):
+                                resp_message['content'] += answer
+                                self.msgSignal.emit(answer)
+                        except:
+                            print(trunk)
+                            resp_message['content'] += trunk
+                            self.msgSignal.emit(trunk)
             else:
                 print(resp.text)
                 error = resp.json().get('error')
                 logger.error(f'ai请求错误:{error}')
                 self.msgSignal.emit(error)
+            self.history.append(message)
+            self.history.append(resp_message)
         except Exception as e:
             error = str(e)
             logger.error(f'ai请求错误:{error}{traceback.format_exc()}')

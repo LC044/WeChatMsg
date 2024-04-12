@@ -1,6 +1,6 @@
 import os
 
-version = '2.0.0'
+version = '2.0.5'
 contact = '701805520'
 github = 'https://github.com/LC044/WeChatMsg'
 website = 'https://memotrace.cn/'
@@ -33,5 +33,3 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 # 全局参数
 SEND_LOG_FLAG = True  # 是否发送错误日志
 SERVER_API_URL = 'http://api.lc044.love'  # api接口
-# SERVER_API_URL = 'https://api.memotrace.cn/'
-# SERVER_API_URL = 'http://127.0.0.1:8000'  # api接口

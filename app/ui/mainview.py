@@ -336,12 +336,11 @@ class MainWinController(QMainWindow, mainwindow.Ui_MainWindow, QCursorGif):
         self.startBusy()
         self.action_update.triggered.connect(self.update)
         self.action_help_faq.triggered.connect(
-            lambda: QDesktopServices.openUrl(QUrl("https://blog.lc044.love/post/7")))
+            lambda: QDesktopServices.openUrl(QUrl("https://memotrace.cn/doc/posts/error/")))
         self.about_view = AboutDialog(main_window=self, parent=self)
         self.update_thread = UpdateThread(check_time=True)
         self.update_thread.updateSignal.connect(self.show_update)
         self.update_thread.start()
-        # self.statusbar.set
 
     def setCurrentIndex(self, row):
         self.stackedWidget.setCurrentIndex(row)

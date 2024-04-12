@@ -117,8 +117,6 @@
 
 ## PC端使用过程中部分问题解决（可参考）
 
-<details>
-
 #### 🤔如果您在pc端使用的时候出现问题，可以先参考以下方面，如果仍未解决，可以在群里交流~
 
 * 不支持Win7
@@ -131,9 +129,7 @@
   * 换电脑
 如果您在运行可执行程序的时候出现闪退的现象，请右击软件使用管理员权限运行。
 
-[查看详细教程](https://blog.lc044.love/post/5)
-
-</details>
+[查看详细教程](https://memotrace.cn/doc/)
 
 # 🏆致谢
 
@@ -216,7 +212,7 @@
 
 后续更新将会在公众号同步发布
 <div>
-  <img src="https://blog.lc044.love/static/img/3fd32f1732a2c8f53a7eb923472b8f19.clipboard-2023-12-18.webp">
+  <img src="https://blog.lc044.love/static/img/b8df8c594a4cabaa0a62025767a3cfd9.weixin.webp">
   <img src="./doc/images/qq2.jpg" height="200">
 </div>
 
