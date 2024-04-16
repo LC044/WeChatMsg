@@ -40,7 +40,7 @@ with open('dev.json', 'w', encoding='utf-8') as f:
 
 你现在应该有两个文件，dev.json(验证集)和train.json(训练集)
 
-## 二、下载ChatGLM3-68模型
+## 二、下载ChatGLM3-6B模型
 
 下载地址:[https://github.com/THUDM/ChatGLM3](https://github.com/THUDM/ChatGLM3)
 
@@ -443,7 +443,7 @@ if __name__ == "__main__":
 
 ## 体验地址
 
-[https://chat/memotrace.cn/](https://chat/memotrace.cn/)
+[https://chat.memotrace.cn/](https://chat.memotrace.cn/)
 
 ![img.png](img/img.png)
 
