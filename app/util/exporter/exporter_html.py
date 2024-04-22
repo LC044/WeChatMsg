@@ -16,6 +16,7 @@ from app.util.compress_content import parser_reply, share_card, music_share, fil
 from app.util.emoji import get_emoji_url
 from app.util.image import get_image_path, get_image
 from app.util.music import get_music_path
+from app.util.replace_text import replace_text
 
 icon_files = {
     './icon/word.png': ['doc', 'docx'],
@@ -40,6 +41,7 @@ class HtmlExporter(ExporterBase):
         display_name = self.get_display_name(is_send, message)
         avatar = self.get_avatar_path(is_send, message)
         str_content = escape_js_and_html(str_content)
+        str_content = replace_text(str_content)
         doc.write(
             f'''{{ type:{1}, text: '{str_content}',is_send:{is_send},avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}'}},'''
         )
@@ -144,6 +146,7 @@ class HtmlExporter(ExporterBase):
         contentText = escape_js_and_html(content.get('title'))
         if refer_msg:
             referText = f"{escape_js_and_html(refer_msg.get('displayname'))}：{escape_js_and_html(refer_msg.get('content'))}"
+            referText = replace_text(referText)
             doc.write(
                 f'''{{ type:49, text: '{contentText}',is_send:{is_send},sub_type:{content.get('type')},refer_text: '{referText}',avatar_path:'{avatar}',timestamp:{timestamp},is_chatroom:{is_chatroom},displayname:'{display_name}'}},'''
             )
