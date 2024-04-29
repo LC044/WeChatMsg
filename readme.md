@@ -3,7 +3,7 @@
     <a href="https://github.com/LC044/WeChatMsg/stargazers">
         <img src="https://img.shields.io/github/stars/LC044/WeChatMsg.svg" />
     </a>
-    <a href="https://memotrace.cn/" target="_blank">
+    <a href="https://github.com/LC044/WeChatMsg/forks" target="_blank">
         <img alt="GitHub forks" src="https://img.shields.io/github/forks/LC044/WeChatMsg?color=eb6ea5">
     </a>
     <a href="https://memotrace.cn/" target="_blank">
@@ -12,7 +12,7 @@
     <a target="_blank" href="https://memotrace.cn/">
         <img alt="Hits" src="https://hits.b3log.org/LC044/memotrace.svg">
     </a>
-    <a href="https://memotrace.cn/" target="_blank">
+    <a href="https://github.com/LC044/WeChatMsg/blob/master/LICENSE" target="_blank">
         <img src="https://img.shields.io/github/license/LC044/WeChatMsg" />
     </a>
     <a href="https://github.com/LC044/WeChatMsg/releases" target="_blank">
