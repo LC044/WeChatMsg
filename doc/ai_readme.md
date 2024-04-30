@@ -8,7 +8,7 @@
 
 你现在应该有两个文件，dev.json(验证集)和train.json(训练集)
 
-## 二、下载ChatGLM3-68模型
+## 二、下载ChatGLM3-6B模型
 
 下载地址:[https://github.com/THUDM/ChatGLM3](https://github.com/THUDM/ChatGLM3)
 
