@@ -189,7 +189,7 @@
 后续更新将会在公众号同步发布
 <div>
   <img src="https://blog.lc044.love/static/img/b8df8c594a4cabaa0a62025767a3cfd9.weixin.webp">
-  <img src="./doc/images/qq2.jpg" height="200">
+  <img src="./doc/images/qq3.jpg" height="200">
 </div>
 
 ## AI交流
