@@ -2,9 +2,17 @@ import ctypes
 import sys
 import time
 import traceback
+from PyQt5.QtGui import QFont, QPixmap, QIcon
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import Qt
 
 from app.log.exception_handling import ExceptionHanding, send_error_msg
 from app.ui.Icon import Icon
+from app.DataBase import close_db
+from app.log import logger
+from app.ui import mainview
+from app.ui.tool.pc_decrypt import pc_decrypt
+from app.config import version, SEND_LOG_FLAG
 
 widget = None
 
@@ -44,15 +52,7 @@ def excepthook(exc_type, exc_value, traceback_):
 
 # 设置 excepthook
 sys.excepthook = excepthook
-from PyQt5.QtGui import QFont, QPixmap, QIcon
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt
 
-from app.DataBase import close_db
-from app.log import logger
-from app.ui import mainview
-from app.ui.tool.pc_decrypt import pc_decrypt
-from app.config import version, SEND_LOG_FLAG
 
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("WeChatReport")
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
