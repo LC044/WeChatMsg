@@ -1,0 +1,52 @@
+{
+    "model_space": "YOUR-NAME-SPACE",
+    "model_name": "YOUR-MODEL-NAME",
+    "model_type": "Qwen_v20",
+    "model_path": "./dashinfer_models/",
+    "data_type": "float32",
+    "device_type": "CPU",
+    "device_ids": [
+        0
+    ],
+    "multinode_mode": false,
+    "engine_config": {
+        "engine_max_length": 1024,
+        "engine_max_batch": 2,
+        "do_profiling": false,
+        "num_threads": 0,
+        "matmul_precision": "medium"
+    },
+    "generation_config": {
+        "temperature": 0.7,
+        "early_stopping": true,
+        "top_k": 20,
+        "top_p": 0.8,
+        "repetition_penalty": 1.05,
+        "presence_penalty": 0.0,
+        "min_length": 0,
+        "max_length": 8192,
+        "no_repeat_ngram_size": 0,
+        "eos_token_id": 151643,
+        "seed": 1234,
+        "stop_words_ids": [
+            [
+                151643
+            ],
+            [
+                151644
+            ],
+            [
+                151645
+            ]
+        ]
+    },
+    "convert_config": {
+        "do_dynamic_quantize_convert": false
+    },
+    "quantization_config": {
+        "activation_type": "bfloat16",
+        "weight_type": "uint8",
+        "SubChannel": true,
+        "GroupSize": 512
+    }
+}
