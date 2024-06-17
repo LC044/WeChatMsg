@@ -14,6 +14,7 @@ from app.config import SERVER_API_URL
 from app.person import Contact, Me, ContactDefault
 from app.util.emoji import get_most_emoji
 from app.util.region_conversion import conversion_region_to_chinese
+from app.util.replace_text import replace_text
 
 app = Flask(__name__)
 
@@ -113,6 +114,10 @@ def christmas(wxid):
         if time_ in item:
             label = key
     latest_dialog = msg_db.get_latest_time_of_message(contact.wxid, time_range=time_range)
+
+    for i, dialog in enumerate(latest_dialog):
+        latest_dialog[i] = (dialog[0], replace_text(dialog[1]), dialog[2], dialog[3])
+
     latest_time = latest_dialog[0][2] if latest_dialog else ''
     time_data = {
         'latest_time': latest_time,
