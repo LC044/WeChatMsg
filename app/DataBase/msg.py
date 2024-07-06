@@ -3,6 +3,7 @@ import random
 import sqlite3
 import threading
 import traceback
+from collections import defaultdict
 from datetime import datetime, date
 from typing import Tuple
 
@@ -222,7 +223,7 @@ class Msg:
         # result.sort(key=lambda x: x[5])
         # return self.add_sender(result)
 
-    def get_messages_all(self,time_range=None):
+    def get_messages_all(self, time_range=None):
         if time_range:
             start_time, end_time = convert_to_timestamp(time_range)
         sql = f'''
@@ -241,6 +242,45 @@ class Msg:
             lock.release()
         result.sort(key=lambda x: x[5])
         return result
+
+    def get_messages_group_by_day(
+            self,
+            username_: str,
+            time_range: Tuple[int | float | str | date, int | float | str | date] = None,
+
+    ) -> dict:
+        """
+        return dict {
+            date: messages
+        }
+        """
+        if not self.open_flag:
+            return {}
+        if time_range:
+            start_time, end_time = convert_to_timestamp(time_range)
+        sql = f'''
+            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent,DisplayContent
+            from MSG
+            where StrTalker=? AND type=1
+            {'AND CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
+            order by CreateTime;
+        '''
+        try:
+            lock.acquire(True)
+            self.cursor.execute(sql, [username_])
+            result = self.cursor.fetchall()
+        finally:
+            lock.release()
+        result = parser_chatroom_message(result) if username_.__contains__('@chatroom') else result
+
+        # 按天分组存储聊天记录
+        grouped_results = defaultdict(list)
+        for row in result:
+            '2024-01-01'
+            date = row[8][:10]  # 获取日期部分
+            grouped_results[date].append(row)  # 将消息加入对应的日期列表中
+
+        return grouped_results
 
     def get_messages_length(self):
         sql = '''
@@ -329,7 +369,7 @@ class Msg:
                 result = self.cursor.fetchall()
         return result
 
-    def get_messages_by_keyword(self, username_, keyword, num=5, max_len=10,time_range=None, year_='all'):
+    def get_messages_by_keyword(self, username_, keyword, num=5, max_len=10, time_range=None, year_='all'):
         if not self.open_flag:
             return None
         if time_range:
@@ -491,7 +531,7 @@ class Msg:
             lock.release()
         return result
 
-    def get_messages_by_hour(self, username_, time_range=None,year_='all'):
+    def get_messages_by_hour(self, username_, time_range=None, year_='all'):
         result = []
         if not self.open_flag:
             return result
@@ -535,7 +575,7 @@ class Msg:
             lock.release()
         return result
 
-    def get_latest_time_of_message(self, username_='', time_range=None,year_='all'):
+    def get_latest_time_of_message(self, username_='', time_range=None, year_='all'):
         if not self.open_flag:
             return None
         if time_range:
@@ -743,7 +783,7 @@ class Msg:
     def get_send_messages_number_by_hour(
             self,
             time_range: Tuple[int | float | str | date, int | float | str | date] = None,
-    )->list:
+    ) -> list:
         """
         统计每个（小时）时段自己总共发了多少消息，从最多到最少排序\n
         return be like [('23', 9526), ('00', 7890), ('22', 7600),  ..., ('05', 29)]
@@ -773,11 +813,12 @@ class Msg:
         finally:
             lock.release()
         return result
+
     def get_message_length(
             self,
             username_='',
             time_range: Tuple[int | float | str | date, int | float | str | date] = None,
-    )->int:
+    ) -> int:
         """
                 统计自己总共发消息的字数，包含type=1的文本和type=49,subtype=57里面自己发的文本
                 """
@@ -806,9 +847,9 @@ class Msg:
             return None
         try:
             lock.acquire(True)
-            self.cursor.execute(sql_type_1,[username_])
+            self.cursor.execute(sql_type_1, [username_])
             result_type_1 = self.cursor.fetchall()[0][0]
-            self.cursor.execute(sql_type_49,[username_])
+            self.cursor.execute(sql_type_49, [username_])
             result_type_49 = self.cursor.fetchall()
         except sqlite3.DatabaseError:
             logger.error(f'{traceback.format_exc()}\n数据库损坏请删除msg文件夹重试')
@@ -822,6 +863,7 @@ class Msg:
             sum_type_49 += len(content["title"])
         sum_type_1 = result_type_1 if result_type_1 else 0
         return sum_type_1 + sum_type_49
+
     def close(self):
         if self.open_flag:
             try:

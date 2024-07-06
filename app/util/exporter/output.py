@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import QFileDialog
 from docx.oxml.ns import qn
 from docxcompose.composer import Composer
 
+from app.util.exporter.exporter_ai_txt import AiTxtExporter
 from app.util.exporter.exporter_csv import CSVExporter
 from app.util.exporter.exporter_docx import DocxExporter
 from app.util.exporter.exporter_html import HtmlExporter
@@ -44,6 +45,7 @@ class Output(QThread):
     CONTACT_CSV = 4
     TXT = 5
     JSON = 6
+    AI_TXT = 7
     Batch = 10086
 
     def __init__(self, contact, type_=DOCX, message_types={}, sub_type=[], time_range=None, parent=None):
@@ -158,6 +160,9 @@ class Output(QThread):
                 elif type_ == self.TXT:
                     # print('批量导出txt')
                     self.to_txt(contact, self.message_types, True)
+                elif type_ == self.AI_TXT:
+                    # print('批量导出txt')
+                    self.to_ai_txt(contact, self.message_types, True)
                 elif type_ == self.CSV:
                     self.to_csv(contact, self.message_types, True)
                 elif type_ == self.HTML:
@@ -232,6 +237,15 @@ class Output(QThread):
         Child.okSignal.connect(self.okSignal if not is_batch else self.batch_finish_one)
         Child.start()
 
+    def to_ai_txt(self, contact, message_types, is_batch=False):
+        Child = AiTxtExporter(contact, type_=self.TXT, message_types=message_types, time_range=self.time_range)
+        self.children.append(Child)
+        Child.progressSignal.connect(self.progress)
+        if not is_batch:
+            Child.rangeSignal.connect(self.rangeSignal)
+        Child.okSignal.connect(self.okSignal if not is_batch else self.batch_finish_one)
+        Child.start()
+
     def to_html(self, contact, message_types, is_batch=False):
         Child = HtmlExporter(contact, type_=self.output_type, message_types=message_types, time_range=self.time_range)
         self.children.append(Child)
@@ -284,6 +298,8 @@ class Output(QThread):
             self.contact_to_csv()
         elif self.output_type == self.TXT:
             self.to_txt(self.contact, self.message_types)
+        elif self.output_type == self.AI_TXT:
+            self.to_ai_txt(self.contact, self.message_types)
         elif self.output_type == self.CSV:
             self.to_csv(self.contact, self.message_types)
         elif self.output_type == self.HTML:
