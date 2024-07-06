@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>微信年度聊天报告</title>
     <link rel="stylesheet" href="https://memotrace.cn/static/css/style.css">
+    <style>
+    .emoji_img {
+        width: 22px;
+        height: 22px;
+        vertical-align: middle;
+    }
+    </style>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@latest/dist/echarts.min.js"></script>
     <script type="text/javascript" src="https://assets.pyecharts.org/assets/v5/echarts-wordcloud.min.js"></script>
     <link rel="stylesheet" href="https://memotrace.cn/static/css/fullpage.min.css" />
@@ -143,14 +150,14 @@
                              <div class="item item-left">
                                 <img class="bubble-avatar" src="{{ta_avatar_path}}">
                                 <div class="bubble bubble-left">
-                                    {{dialog[1]}}
+                                    {{dialog[1] | safe}}
                                 </div>
                             </div>
                         {% endif %}
                         {% if dialog[0]==1: %}
                              <div class="item item-right">
                                 <div class="bubble bubble-right">
-                                    {{dialog[1]}}
+                                    {{dialog[1] | safe}}
                                 </div>
                                  <img class="bubble-avatar" src="{{my_avatar_path}}">
                             </div>
