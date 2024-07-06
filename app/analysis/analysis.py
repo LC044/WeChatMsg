@@ -1,4 +1,5 @@
 import os
+import re
 from collections import Counter
 import sys
 from datetime import datetime
@@ -28,6 +29,7 @@ def wordcloud_(wxid, time_range=None):
         }
     # text = ''.join(map(lambda x: x[7], txt_messages))
     text = ''.join(map(lambda x: x[7], txt_messages))  # 1“我”说的话，0“Ta”说的话
+    text = re.sub(r'^@\w+\s', '', text)  # 去掉@的人
 
     total_msg_len = len(text)
     # 使用jieba进行分词，并加入停用词
