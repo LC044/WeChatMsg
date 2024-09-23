@@ -4,6 +4,7 @@
 # Description:
 # Author:       xaoyaoo
 # Date:         2023/08/22
+# License:      https://github.com/xaoyaoo/PyWxDump/blob/3b794bcb47b0457d1245ce5b4cfec61b74524073/LICENSE MIT
 # -------------------------------------------------------------------------------
 import argparse
 import ctypes
@@ -247,20 +248,6 @@ class BiasAddr:
         key_bias = self.get_key_bias2(self.db_path) if key_bias <= 0 and self.db_path else key_bias
 
         rdata = {self.version: [name_bias, account_bias, mobile_bias, 0, key_bias]}
-
-        if version_list_path and os.path.exists(version_list_path):
-            with open(version_list_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                data.update(rdata)
-            with open(version_list_path, "w", encoding="utf-8") as f:
-                json.dump(data, f, ensure_ascii=False, indent=4)
-        if os.path.exists(logging_path) and isinstance(logging_path, str):
-            with open(logging_path, "a", encoding="utf-8") as f:
-                f.write("{版本号:昵称,账号,手机号,邮箱,KEY}" + "\n")
-                f.write(str(rdata) + "\n")
-        elif logging_path:
-            print("{版本号:昵称,账号,手机号,邮箱,KEY}")
-            print(rdata)
         return rdata
 
 

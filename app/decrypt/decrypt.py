@@ -4,6 +4,7 @@
 # Description:
 # Author:       xaoyaoo
 # Date:         2023/08/21
+# License:      https://github.com/xaoyaoo/PyWxDump/blob/3b794bcb47b0457d1245ce5b4cfec61b74524073/LICENSE MIT
 # 微信数据库采用的加密算法是256位的AES-CBC。数据库的默认的页大小是4096字节即4KB，其中每一个页都是被单独加解密的。
 # 加密文件的每一个页都有一个随机的初始化向量，它被保存在每一页的末尾。
 # 加密文件的每一页都存有着消息认证码，算法使用的是HMAC-SHA1（安卓数据库使用的是SHA512）。它也被保存在每一页的末尾。
