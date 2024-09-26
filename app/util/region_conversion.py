@@ -333,29 +333,21 @@ city_mapping = {
 
 
 def conversion_province_to_chinese(province):
-    area = ''
-    if province in province_mapping:
-        area = f'{province_mapping[province]}'
-    return area
-
+    return province_mapping.get(province, '')
 
 def conversion_region_to_chinese(region: tuple):
-    area = ''
-    if not region:
-        return area
-    if region[2]:
-        if region[2] in city_mapping:
-            area = city_mapping[region[2]]
-        else:
-            area = region[2]
-    if region[1]:
-        if region[1] in province_mapping:
-            area = f'{province_mapping[region[1]]} {area}'
-        else:
-            area = f'{region[1]} {area}'
-    if region[0]:
-        if region[0] in country_mapping:
-            area = f'{country_mapping[region[0]]} {area}'
-        else:
-            area = f'{region[0]} {area}'
-    return area
+    country, province, city = region
+    area_parts = []
+
+    if country:
+        area_parts.append(country_mapping.get(country, country))
+
+    if province:
+        province_name = province_mapping.get(province, province)
+        area_parts.append(province_name)
+
+    if city:
+        city_name = city_mapping.get(city, city)
+        area_parts.append(city_name)
+
+    return ' '.join(area_parts)
