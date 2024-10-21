@@ -327,7 +327,7 @@ def get_key(db_path, addr_len):
     pm = pymem.Pymem("WeChat.exe")
     module_name = "WeChatWin.dll"
 
-    MicroMsg_path = os.path.join(db_path, "MSG", "MicroMsg.db")
+    MicroMsg_path = os.path.join(db_path, "Msg", "MicroMsg.db")
 
     type1_addrs = pm.pattern_scan_module(phone_type1.encode(), module_name, return_multiple=True)
     type2_addrs = pm.pattern_scan_module(phone_type2.encode(), module_name, return_multiple=True)
