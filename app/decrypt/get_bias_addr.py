@@ -216,7 +216,7 @@ class BiasAddr:
         pm = pymem.Pymem("WeChat.exe")
         module_name = "WeChatWin.dll"
 
-        MicroMsg_path = os.path.join(db_path, "MSG", "MicroMsg.db")
+        MicroMsg_path = os.path.join(db_path, "Msg", "MicroMsg.db")
 
         module = pymem.process.module_from_name(pm.process_handle, module_name)
 
