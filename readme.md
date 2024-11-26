@@ -1,4 +1,5 @@
-<a href="https://hellogithub.com/repository/93df3704446343068e67fc174a34be47" target="_blank"><img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=93df3704446343068e67fc174a34be47&claim_uid=AzZ0bVgHmTOEej5" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+## [留下你对2024年度聊天报告的期待](https://github.com/LC044/WeChatMsg/issues/532)
+
 <h1 align="center">我的数据我做主</h1>
 <div align="center">
     <a href="https://github.com/LC044/WeChatMsg/stargazers">
