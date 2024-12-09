@@ -23,6 +23,7 @@
     <a href="https://memotrace.cn/" target="_blank">
         <img alt="GitHub all releases" src="https://img.shields.io/github/downloads/LC044/WeChatMsg/total?color=3eb370">
     </a>
+    <a href="https://hellogithub.com/repository/93df3704446343068e67fc174a34be47" target="_blank"><img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=93df3704446343068e67fc174a34be47&claim_uid=AzZ0bVgHmTOEej5&theme=small" alt="Featured｜HelloGitHub" /></a>
 </div>
 
 <div align="center">
