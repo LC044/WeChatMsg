@@ -70,6 +70,45 @@
   - Word文档✅
 - 分析聊天数据，做成[可视化年报](https://memotrace.cn/demo.html)
 
+## 2024年度报告
+
+### 预览
+
+[个人年度报告在线预览](https://memotrace.cn/2024/single/)
+
+[双人年度报告在线预览](https://memotrace.cn/2024Report/)
+
+手机可以扫码观看
+
+<img src="/doc/images/qrcode0.png" height="300px"/>
+
+![](/doc/images/demo1.gif)
+
+### 源码地址
+
+[https://github.com/LC044/AnnualReport](https://github.com/LC044/AnnualReport)
+
+## 2.2更新预告
+
+### 全面适配微信4.0
+
+![](/doc/images/数据库架构设计图.png)
+
+  * 全新框架、重构底层逻辑
+  * 更低的内存占用
+  * 更快的导出速度
+
+### 全新的Ui
+  * 更简洁
+  * 更流畅
+  * 更友好
+  * 前后端彻底分离
+
+### 更宽松的许可证
+
+  - 如果跟其他模块兼容的话，将采用MIT许可证
+  - 已有功能代码全开源
+
 ## 🥤效果
 
 <details>
