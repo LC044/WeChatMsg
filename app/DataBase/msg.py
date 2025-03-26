@@ -5,8 +5,9 @@ import threading
 import traceback
 from collections import defaultdict
 from datetime import datetime, date
-from typing import Tuple
+from typing import Tuple, List, Optional, Dict, Any
 
+from app.DataBase.db_pool import db_pool
 from app.log import logger
 from app.util.compress_content import parser_reply
 from app.util.protocbuf.msg_pb2 import MessageBytesExtra
@@ -140,8 +141,6 @@ class MsgType:
 
 class Msg:
     def __init__(self):
-        self.DB = None
-        self.cursor = None
         self.open_flag = False
         self.init_database()
 
@@ -151,9 +150,6 @@ class Msg:
             if path:
                 db_path = path
             if os.path.exists(db_path):
-                self.DB = sqlite3.connect(db_path, check_same_thread=False)
-                # '''创建游标'''
-                self.cursor = self.DB.cursor()
                 self.open_flag = True
                 if lock.locked():
                     lock.release()
@@ -200,48 +196,137 @@ class Msg:
             a[10]: BytesExtra,
             a[11]: CompressContent,
             a[12]: DisplayContent,
-            a[13]: 联系人的类（如果是群聊就有，不是的话没有这个字段）
         """
         if not self.open_flag:
-            return None
-        if time_range:
-            start_time, end_time = convert_to_timestamp(time_range)
-        sql = f'''
-            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,CompressContent,DisplayContent
-            from MSG
-            where StrTalker=?
-            {'AND CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
-            order by CreateTime
+            return []
+        
+        begin_time, end_time = convert_to_timestamp(time_range)
+        
+        sql = '''
+            SELECT 
+                localId, 
+                TalkerId, 
+                Type, 
+                SubType, 
+                IsSender, 
+                CreateTime, 
+                Status, 
+                StrContent, 
+                strftime('%Y-%m-%d %H:%M:%S', datetime(CreateTime, 'unixepoch', 'localtime')), 
+                MsgSvrID, 
+                BytesExtra, 
+                CompressContent, 
+                DisplayContent 
+            FROM MSG 
+            WHERE StrTalker = ? 
+            AND (? = 0 OR CreateTime >= ?) 
+            AND (? = 0 OR CreateTime <= ?) 
+            ORDER BY CreateTime DESC
         '''
+        
+        params = (username_, begin_time, begin_time, end_time, end_time)
+        
         try:
-            lock.acquire(True)
-            self.cursor.execute(sql, [username_])
-            result = self.cursor.fetchall()
-        finally:
-            lock.release()
-        return parser_chatroom_message(result) if username_.__contains__('@chatroom') else result
-        # result.sort(key=lambda x: x[5])
-        # return self.add_sender(result)
+            results = db_pool.execute_query(db_path, sql, params)
+            
+            # 处理群聊信息
+            if results and username_.startswith('chatroom'):
+                results = parser_chatroom_message(results)
+            
+            return results
+        except Exception as e:
+            logger.error(f"获取聊天记录失败: {e}\n{traceback.format_exc()}")
+            return []
+
+    def batch_insert_messages(self, messages_data: List[Dict[str, Any]]) -> bool:
+        """
+        批量插入消息数据
+        
+        Args:
+            messages_data: 消息数据列表，每个字典包含一条消息的所有字段
+            
+        Returns:
+            bool: 是否成功插入
+        """
+        if not self.open_flag or not messages_data:
+            return False
+            
+        # 构建插入SQL
+        sql = '''
+            INSERT INTO MSG (
+                MsgId, TalkerId, Type, SubType, IsSender, CreateTime, 
+                Status, StrContent, StrTalker, MsgSvrID, BytesExtra, 
+                CompressContent, DisplayContent
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        '''
+        
+        # 准备参数列表
+        params_list = [
+            (
+                msg.get('MsgId', ''), 
+                msg.get('TalkerId', ''), 
+                msg.get('Type', 0), 
+                msg.get('SubType', 0),
+                msg.get('IsSender', 0), 
+                msg.get('CreateTime', int(time.time())),
+                msg.get('Status', 0), 
+                msg.get('StrContent', ''), 
+                msg.get('StrTalker', ''),
+                msg.get('MsgSvrID', ''), 
+                msg.get('BytesExtra', None), 
+                msg.get('CompressContent', None),
+                msg.get('DisplayContent', None)
+            )
+            for msg in messages_data
+        ]
+        
+        try:
+            db_pool.execute_batch(db_path, sql, params_list)
+            return True
+        except Exception as e:
+            logger.error(f"批量插入消息失败: {e}\n{traceback.format_exc()}")
+            return False
 
     def get_messages_all(self, time_range=None):
-        if time_range:
-            start_time, end_time = convert_to_timestamp(time_range)
-        sql = f'''
-            select localId,TalkerId,Type,SubType,IsSender,CreateTime,Status,StrContent,strftime('%Y-%m-%d %H:%M:%S',CreateTime,'unixepoch','localtime') as StrTime,MsgSvrID,BytesExtra,StrTalker,Reserved1,CompressContent
-            from MSG
-            {'WHERE CreateTime>' + str(start_time) + ' AND CreateTime<' + str(end_time) if time_range else ''}
-            order by CreateTime
-        '''
+        """
+        获取所有聊天记录
+        @param time_range:
+        @return:
+        """
         if not self.open_flag:
-            return None
+            return []
+            
+        begin_time, end_time = convert_to_timestamp(time_range)
+        
+        sql = '''
+            SELECT 
+                localId, 
+                TalkerId, 
+                Type, 
+                SubType, 
+                IsSender, 
+                CreateTime, 
+                Status, 
+                StrContent, 
+                strftime('%Y-%m-%d %H:%M:%S', datetime(CreateTime, 'unixepoch', 'localtime')), 
+                MsgSvrID, 
+                BytesExtra, 
+                CompressContent, 
+                DisplayContent,
+                StrTalker
+            FROM MSG
+            WHERE (? = 0 OR CreateTime >= ?)
+            AND (? = 0 OR CreateTime <= ?)
+            ORDER BY CreateTime DESC
+        '''
+        
+        params = (begin_time, begin_time, end_time, end_time)
+        
         try:
-            lock.acquire(True)
-            self.cursor.execute(sql)
-            result = self.cursor.fetchall()
-        finally:
-            lock.release()
-        result.sort(key=lambda x: x[5])
-        return result
+            return db_pool.execute_query(db_path, sql, params)
+        except Exception as e:
+            logger.error(f"获取所有聊天记录失败: {e}\n{traceback.format_exc()}")
+            return []
 
     def get_messages_group_by_day(
             self,
@@ -865,13 +950,8 @@ class Msg:
         return sum_type_1 + sum_type_49
 
     def close(self):
-        if self.open_flag:
-            try:
-                lock.acquire(True)
-                self.open_flag = False
-                self.DB.close()
-            finally:
-                lock.release()
+        """关闭数据库连接，不再需要显式关闭，由连接池管理"""
+        self.open_flag = False
 
     def __del__(self):
         self.close()
