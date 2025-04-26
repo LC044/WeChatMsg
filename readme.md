@@ -12,15 +12,6 @@
     <a target="_blank" href="#">
         <img alt="Hits" src="https://hits.b3log.org/LC044/memotrace.svg">
     </a>
-    <a href="#" target="_blank">
-        <img src="https://img.shields.io/github/license/LC044/WeChatMsg" />
-    </a>
-    <a href="https://github.com/LC044/WeChatMsg/releases" target="_blank">
-        <img alt="GitHub release (with filter)" src="https://img.shields.io/github/v/release/LC044/WeChatMsg">
-    </a>
-    <a href="#" target="_blank">
-        <img alt="GitHub all releases" src="https://img.shields.io/github/downloads/LC044/WeChatMsg/total?color=3eb370">
-    </a>
 </div>
 
 <div align="center">
@@ -43,7 +34,22 @@
 </div>
 </blockquote>
 
+## 其他项目
+
+* [EasyBox-一个实用多功能工具箱](https://github.com/LC044/EasyBox)
+  * PDF转Word、PDF合并
+  * 网页转PDF
+  * 根据文件名修改图片的拍摄时间
+
 ## 2024年度报告
+
+### 预览
+
+手机可以扫码观看
+
+<img src="/doc/images/qrcode0.png" height="300px"/>
+
+![](/doc/images/demo1.gif)
 
 ### 源码地址
 
