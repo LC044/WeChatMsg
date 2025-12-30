@@ -49,6 +49,10 @@
 
 ![](./doc/image1.png)
 
+2025年度报告将在这个项目实现
+
+![年度报告](./doc/年度报告.jpg)
+
 ## 其他项目
 
 * [EasyBox-一个实用多功能工具箱](https://github.com/LC044/EasyBox)
